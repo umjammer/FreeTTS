@@ -1,0 +1,31 @@
+Input Texts
+=============
+1.txt - set of 1 word sentences
+10.txt - set of 10 word sentences
+100.txt - set of 100 word sentences
+2.txt - set of 2 word sentences
+5.txt - set of 5 word sentences
+alice.txt - First several chapters of 'Alice in wonderland'
+alice2 - Tweaked version of alice.txt (eliminates some troubling
+homophones)
+first.wave.txt - Text used in first wave test 
+gettysburg_address.txt - the gettysburg address
+journey.txt - Journey to the center of the earth input text
+numbers.test - Text normalization test input
+numbers.test.words - Text normaliztion test input
+README - This description
+shuffle.awk - script that outputs words in random order
+simple.txt - very small simple input text
+SmallSet.txt - small simple input text
+TinySet.txt - set of very very small text inputs
+TokenGame.txt - Tokenizer test input text
+
+
+Reference Output Texts
+============================
+flite.<version>.TokenGame.rel - relation output
+flite.<version>.alice2.rel - relation output
+flite.<version>.time.rel - relation output
+flite.<version>.wave.first.float.txt - first wave output
+flite.<version>.wave.time.float.txt - time wave output
+wave.dump.txt - wave output

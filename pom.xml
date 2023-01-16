@@ -1,0 +1,452 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>org.jvoicexml</groupId>
+  <artifactId>freetts</artifactId>
+  <version>1.2.3-SNAPSHOT</version>
+
+  <properties>
+    <user_voice_base_path>com/sun/speech/freetts/en/us</user_voice_base_path>
+<!--
+    <clunit_voice></clunit_voice>
+    <diphone_voice></diphone_voice>
+-->
+  </properties>
+
+  <profiles>
+    <profile>
+      <!-- mvn -P compile_voice_db test-compile -->
+      <id>compile_voice_db</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-antrun-plugin</artifactId>
+            <version>3.1.0</version>
+            <executions>
+              <execution>
+                <id>kal8_db</id>
+                <phase>test-compile</phase>
+                <goals>
+                  <goal>run</goal>
+                </goals>
+                <configuration>
+                  <target>
+                    <property name="project.resources.directory" value="src/main/resources" />
+                    <property name="project.testResources.directory" value="src/test/resources" />
+                    <mkdir dir="${project.resources.directory}/com/sun/speech/freetts/en/us/cmu_us_kal" />
+                    <java classname="com.sun.speech.freetts.diphone.DiphoneUnitDatabase" fork="true">
+                      <classpath>
+                        <path refid="maven.compile.classpath"/>
+                        <path refid="maven.test.classpath"/>
+                      </classpath>
+                      <arg line="-src ${project.resources.directory}/com/sun/speech/freetts/en/us/cmu_us_kal" />
+                      <arg line="-dest ${project.testResources.directory}/com/sun/speech/freetts/en/us/cmu_us_kal" />
+                      <arg line="-generate_binary cmu_us_kal.txt" />
+                    </java>
+                  </target>
+                </configuration>
+              </execution>
+              <execution>
+                <id>kal16_db</id>
+                <phase>test-compile</phase>
+                <goals>
+                  <goal>run</goal>
+                </goals>
+                <configuration>
+                  <target>
+                    <property name="project.resources.directory" value="src/main/resources" />
+                    <property name="project.testResources.directory" value="src/test/resources" />
+                    <mkdir dir="${project.testResources.directory}/com/sun/speech/freetts/en/us/cmu_us_kal" />
+                    <java classname="com.sun.speech.freetts.diphone.DiphoneUnitDatabase" fork="true">
+                      <classpath>
+                        <path refid="maven.compile.classpath"/>
+                        <path refid="maven.test.classpath"/>
+                      </classpath>
+                      <arg line="-src ${project.resources.directory}/com/sun/speech/freetts/en/us/cmu_us_kal" />
+                      <arg line="-dest ${project.testResources.directory}/com/sun/speech/freetts/en/us/cmu_us_kal" />
+                      <arg line="-generate_binary cmu_us_kal16.txt" />
+                    </java>
+                  </target>
+                </configuration>
+              </execution>
+              <execution>
+                <id>time_awb_db</id>
+                <goals>
+                  <goal>run</goal>
+                </goals>
+                <phase>test-compile</phase>
+                <configuration>
+                  <target>
+                    <property name="project.resources.directory" value="src/main/resources" />
+                    <property name="project.testResources.directory" value="src/test/resources" />
+                    <mkdir dir="${project.testResources.directory}/com/sun/speech/freetts/en/us/cmu_time_awb" />
+                    <java classname="com.sun.speech.freetts.clunits.ClusterUnitDatabase" fork="true">
+                      <classpath>
+                        <path refid="maven.compile.classpath"/>
+                        <path refid="maven.test.classpath"/>
+                      </classpath>
+                      <arg line="-src ${project.resources.directory}/com/sun/speech/freetts/en/us/cmu_time_awb" />
+                      <arg line="-dest ${project.testResources.directory}/com/sun/speech/freetts/en/us/cmu_time_awb" />
+                      <arg line="-generate_binary cmu_time_awb.txt" />
+                    </java>
+                  </target>
+                </configuration>
+              </execution>
+              <execution>
+                <id>clunit_voice_db</id>
+                <phase>test-compile</phase>
+                <goals>
+                  <goal>run</goal>
+                </goals>
+                <configuration>
+                  <target if="${clunit_voice}">
+                    <property name="project.resources.directory" value="src/main/resources" />
+                    <property name="project.testResources.directory" value="src/test/resources" />
+                    <property name="user_voice_base_path" value="${user_voice_base_path}" />
+                    <property name="clunit_voice" value="${clunit_voice}" />
+                    <mkdir dir="${project.testResources.directory}/${user_voice_base_path}/${clunit_voice}" />
+                    <java classname="com.sun.speech.freetts.clunits.ClusterUnitDatabase" fork="true">
+                      <classpath>
+                        <path refid="maven.compile.classpath"/>
+                        <path refid="maven.test.classpath"/>
+                      </classpath>
+                      <arg line="-src ${project.resources.directory}/${user_voice_base_path}" />
+                      <arg line="-dest ${project.testResources.directory}/${user_voice_base_path}/${clunit_voice}" />
+                      <arg line="-generate_binary ${clunit_voice}.txt" />
+                    </java>
+                  </target>
+                </configuration>
+              </execution>
+              <execution>
+                <id>diphone_voice_db</id>
+                <phase>test-compile</phase>
+                <goals>
+                  <goal>run</goal>
+                </goals>
+                <configuration>
+                  <target if="${diphone_voice}">
+                    <property name="project.resources.directory" value="src/main/resources" />
+                    <property name="project.testResources.directory" value="src/test/resources" />
+                    <property name="user_voice_base_path" value="com/sun/speech/freetts/en/us" />
+                    <property name="diphone_voice" value="${diphone_voice}" />
+                    <mkdir dir="${project.testResources.directory}/${user_voice_base_path}/${diphone_voice}" />
+                    <java classname="com.sun.speech.freetts.clunits.ClusterUnitDatabase" fork="true">
+                      <classpath>
+                        <path refid="maven.compile.classpath"/>
+                        <path refid="maven.test.classpath"/>
+                      </classpath>
+                      <arg line="-src ${project.resources.directory}/${user_voice_base_path}" />
+                      <arg line="-dest ${project.testResources.directory}/${user_voice_base_path}/${diphone_voice}" />
+                      <arg line="-generate_binary ${diphone_voice}.txt" />
+                    </java>
+                  </target>
+                </configuration>
+              </execution>
+
+              <execution>
+                <id>cmulex_db</id>
+                <phase>test-compile</phase>
+                <goals>
+                  <goal>run</goal>
+                </goals>
+                <configuration>
+                  <target>
+                    <property name="project.resources.directory" value="src/main/resources" />
+                    <property name="project.testResources.directory" value="src/test/resources" />
+                    <java classname="com.sun.speech.freetts.en.us.CMULexicon" fork="true">
+                      <classpath>
+                        <path refid="maven.compile.classpath"/>
+                        <path refid="maven.test.classpath"/>
+                      </classpath>
+                      <arg line="-src ${project.resources.directory}/com/sun/speech/freetts/en/us" />
+                      <arg line="-dest ${project.testResources.directory}/com/sun/speech/freetts/en/us" />
+                      <arg line="-name cmulex" />
+                      <arg line="-generate_binary" />
+                    </java>
+                  </target>
+                </configuration>
+              </execution>
+              <execution>
+                <id>cmulex_lts_db</id>
+                <phase>test-compile</phase>
+                <goals>
+                  <goal>run</goal>
+                </goals>
+                <configuration>
+                  <target>
+                    <property name="project.resources.directory" value="src/main/resources" />
+                    <property name="project.testResources.directory" value="src/test/resources" />
+                    <java classname="com.sun.speech.freetts.lexicon.LetterToSoundImpl" fork="true">
+                      <classpath>
+                        <path refid="maven.compile.classpath"/>
+                        <path refid="maven.test.classpath"/>
+                      </classpath>
+                      <arg line="-src ${project.resources.directory}/com/sun/speech/freetts/en/us" />
+                      <arg line="-dest ${project.testResources.directory}/com/sun/speech/freetts/en/us" />
+                      <arg line="-name cmulex_lts" />
+                      <arg line="-generate_binary" />
+                    </java>
+                  </target>
+                </configuration>
+              </execution>
+              <execution>
+                <id>cmudict04_db</id>
+                <phase>test-compile</phase>
+                <goals>
+                  <goal>run</goal>
+                </goals>
+                <configuration>
+                  <target>
+                    <property name="project.resources.directory" value="src/main/resources" />
+                    <property name="project.testResources.directory" value="src/test/resources" />
+                    <java classname="com.sun.speech.freetts.en.us.CMULexicon" fork="true">
+                      <classpath>
+                        <path refid="maven.compile.classpath"/>
+                        <path refid="maven.test.classpath"/>
+                      </classpath>
+                      <arg line="-src ${project.resources.directory}/com/sun/speech/freetts/en/us" />
+                      <arg line="-dest ${project.testResources.directory}/com/sun/speech/freetts/en/us" />
+                      <arg line="-name cmudict04" />
+                      <arg line="-generate_binary" />
+                    </java>
+                  </target>
+                </configuration>
+              </execution>
+              <execution>
+                <id>cmudict04_lts_db</id>
+                <phase>test-compile</phase>
+                <goals>
+                  <goal>run</goal>
+                </goals>
+                <configuration>
+                  <target>
+                    <property name="project.resources.directory" value="src/main/resources" />
+                    <property name="project.testResources.directory" value="src/test/resources" />
+                    <java classname="com.sun.speech.freetts.lexicon.LetterToSoundImpl" fork="true">
+                      <classpath>
+                        <path refid="maven.compile.classpath"/>
+                        <path refid="maven.test.classpath"/>
+                      </classpath>
+                      <arg line="-src ${project.resources.directory}/com/sun/speech/freetts/en/us" />
+                      <arg line="-dest ${project.testResources.directory}/com/sun/speech/freetts/en/us" />
+                      <arg line="-name cmudict04_lts" />
+                      <arg line="-generate_binary" />
+                    </java>
+                  </target>
+                </configuration>
+              </execution>
+              <execution>
+                <id>cmutimelex_db</id>
+                <phase>test-compile</phase>
+                <goals>
+                  <goal>run</goal>
+                </goals>
+                <configuration>
+                  <target>
+                    <property name="project.resources.directory" value="src/main/resources" />
+                    <property name="project.testResources.directory" value="src/test/resources" />
+                    <java classname="com.sun.speech.freetts.en.us.CMULexicon" fork="true">
+                      <classpath>
+                        <path refid="maven.compile.classpath"/>
+                        <path refid="maven.test.classpath"/>
+                      </classpath>
+                      <arg line="-src ${project.resources.directory}/com/sun/speech/freetts/en/us" />
+                      <arg line="-dest ${project.testResources.directory}/com/sun/speech/freetts/en/us" />
+                      <arg line="-name cmutimelex" />
+                      <arg line="-generate_binary" />
+                    </java>
+                  </target>
+                </configuration>
+              </execution>
+              <execution>
+                <id>cmutimelex_lts_db</id>
+                <phase>test-compile</phase>
+                <goals>
+                  <goal>run</goal>
+                </goals>
+                <configuration>
+                  <target>
+                    <property name="project.resources.directory" value="src/main/resources" />
+                    <property name="project.testResources.directory" value="src/test/resources" />
+                    <java classname="com.sun.speech.freetts.lexicon.LetterToSoundImpl" fork="true">
+                      <classpath>
+                        <path refid="maven.compile.classpath"/>
+                        <path refid="maven.test.classpath"/>
+                      </classpath>
+                      <arg line="-src ${project.resources.directory}/com/sun/speech/freetts/en/us" />
+                      <arg line="-dest ${project.testResources.directory}/com/sun/speech/freetts/en/us" />
+                      <arg line="-name cmutimelex_lts" />
+                      <arg line="-generate_binary" />
+                    </java>
+                  </target>
+                </configuration>
+              </execution>
+              <execution>
+                <id>germanlex_db</id>
+                <phase>test-compile</phase>
+                <goals>
+                  <goal>run</goal>
+                </goals>
+                <configuration>
+                  <target>
+                    <property name="project.resources.directory" value="src/main/resources" />
+                    <property name="project.testResources.directory" value="src/test/resources" />
+                    <mkdir dir="${project.testResources.directory}/de/dfki/lt/freetts/de" />
+                    <java classname="de.dfki.lt.freetts.de.GermanLexicon" fork="true">
+                      <classpath>
+                        <path refid="maven.compile.classpath"/>
+                        <path refid="maven.test.classpath"/>
+                      </classpath>
+                      <arg line="-src ${project.resources.directory}/de/dfki/lt/freetts/de" />
+                      <arg line="-dest ${project.testResources.directory}/de/dfki/lt/freetts/de" />
+                      <arg line="-name germanlex" />
+                      <arg line="-generate_binary" />
+                    </java>
+                  </target>
+                </configuration>
+              </execution>
+              <execution>
+                <id>germanlex_lts_db</id>
+                <phase>test-compile</phase>
+                <goals>
+                  <goal>run</goal>
+                </goals>
+                <configuration>
+                  <target>
+                    <property name="project.resources.directory" value="src/main/resources" />
+                    <property name="project.testResources.directory" value="src/test/resources" />
+                    <mkdir dir="${project.testResources.directory}/de/dfki/lt/freetts/de" />
+                    <java classname="com.sun.speech.freetts.lexicon.LetterToSoundImpl" fork="true">
+                      <classpath>
+                        <path refid="maven.compile.classpath"/>
+                        <path refid="maven.test.classpath"/>
+                      </classpath>
+                      <arg line="-src ${project.resources.directory}/de/dfki/lt/freetts/de" />
+                      <arg line="-dest ${project.testResources.directory}/de/dfki/lt/freetts/de" />
+                      <arg line="-name germanlex_lts" />
+                      <arg line="-generate_binary" />
+                    </java>
+                  </target>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.10.1</version>
+        <configuration>
+          <source>1.8</source>
+          <target>1.8</target>
+          <encoding>UTF-8</encoding>
+          <excludes>
+            <exclude>com/sun/speech/engine/**</exclude>
+            <exclude>com/sun/speech/freetts/jsapi/**</exclude>
+          </excludes>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>3.0.0-M7</version>
+        <configuration>
+          <includes>
+            <include>**/*</include>
+          </includes>
+          <argLine>
+            -Djava.util.logging.config.file=${project.build.testOutputDirectory}/logging.properties
+          </argLine>
+          <trimStackTrace>false</trimStackTrace>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-antrun-plugin</artifactId>
+        <version>3.1.0</version>
+        <executions>
+          <execution>
+            <id>freetts_jar</id>
+            <phase>compile</phase>
+            <goals>
+              <goal>run</goal>
+            </goals>
+            <configuration>
+              <target>
+                <jar jarfile="${project.build.directory}/vavi-instrumentation-${project.version}.jar"
+                     manifest="src/instrumentation/resources/manifest.mf">
+                  <fileset dir="${project.build.outputDirectory}">
+                    <include name="vavix/lang/instrumentation/*Instrumentation.class" />
+                    <include name="vavix/lang/instrumentation/*ClassFileTransformer*.class" />
+                  </fileset>
+                  <zipfileset src="${org.javassist:javassist:jar}"
+                              excludes="META-INF/**"/>
+                </jar>
+              </target>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+
+  <repositories>
+    <repository>
+      <id>jitpack.io</id>
+      <url>https://jitpack.io</url>
+    </repository>
+  </repositories>
+
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>org.junit</groupId>
+        <artifactId>junit-bom</artifactId>
+        <version>5.9.1</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+
+  <dependencies>
+    <dependency>
+      <groupId>com.github.umjammer.jsapi</groupId>
+      <artifactId>org.jvoicexml.jsapi2.freetts</artifactId>
+      <version>0.6.2</version>
+      <exclusions>
+        <exclusion>
+          <groupId>net.sf.sociaal</groupId>
+          <artifactId>freetts</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-api</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-engine</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.junit.platform</groupId>
+      <artifactId>junit-platform-commons</artifactId>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+</project>

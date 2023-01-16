@@ -1,2 +1,0 @@
-The tokenizer takes 2.2 seconds to run.
-The flay rod has gone out of skewl on the treadle.
