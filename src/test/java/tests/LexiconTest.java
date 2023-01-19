@@ -41,7 +41,7 @@ public class LexiconTest {
     @BeforeEach
     protected void setUp() {
         try {
-            lex = CMULexicon.getInstance(false);
+            lex = CMULexicon.getInstance(true);
             assertNotNull(lex, "Lexicon Created");
             final InputStream in =
                     LexiconTest.class.getResourceAsStream("LEX.txt");
