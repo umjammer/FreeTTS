@@ -1,13 +1,14 @@
 /**
  * Portions Copyright 2001 Sun Microsystems, Inc.
- * Portions Copyright 1999-2001 Language Technologies Institute, 
+ * Portions Copyright 1999-2001 Language Technologies Institute,
  * Carnegie Mellon University.
  * All Rights Reserved.  Use is subject to license terms.
- * 
+ * <p>
  * See the file "license.terms" for information on usage and
- * redistribution of this file, and for a DISCLAIMER OF ALL 
+ * redistribution of this file, and for a DISCLAIMER OF ALL
  * WARRANTIES.
  */
+
 package com.sun.speech.freetts.cart;
 
 import java.io.BufferedReader;
@@ -27,6 +28,7 @@ import com.sun.speech.freetts.Item;
 import com.sun.speech.freetts.PathExtractor;
 import com.sun.speech.freetts.PathExtractorImpl;
 import com.sun.speech.freetts.util.Utilities;
+
 
 /**
  * Implementation of a Classification and Regression Tree (CART) that is
@@ -84,7 +86,7 @@ import com.sun.speech.freetts.util.Utilities;
 public class CARTImpl implements CART {
     /** Logger instance. */
     private static final Logger LOGGER =
-        Logger.getLogger(CARTImpl.class.getName());
+            Logger.getLogger(CARTImpl.class.getName());
     /**
      * Entry in file represents the total number of nodes in the
      * file.  This should be at the top of the file.  The format
@@ -119,7 +121,7 @@ public class CARTImpl implements CART {
      * resizing.
      */
     Node[] cart = null;
-    
+
     /**
      * The number of nodes in the CART.
      */
@@ -131,7 +133,7 @@ public class CARTImpl implements CART {
      * @param url the location of the CART data
      *
      * @throws IOException if errors occur while reading the data
-     */ 
+     */
     public CARTImpl(URL url) throws IOException {
         BufferedReader reader;
         String line;
@@ -154,25 +156,25 @@ public class CARTImpl implements CART {
      * @param nodes the number of nodes to read for this cart
      *
      * @throws IOException if errors occur while reading the data
-     */ 
+     */
     public CARTImpl(BufferedReader reader, int nodes) throws IOException {
-	this(nodes);
+        this(nodes);
         String line;
-	for (int i = 0; i < nodes; i++) {
-	    line = reader.readLine();
-	    if (!line.startsWith("***")) {
-		parseAndAdd(line);
-	    }
+        for (int i = 0; i < nodes; i++) {
+            line = reader.readLine();
+            if (!line.startsWith("***")) {
+                parseAndAdd(line);
+            }
         }
     }
-    
+
     /**
      * Creates a new CART that will be populated with nodes later.
      *
      * @param numNodes the number of nodes
      */
     private CARTImpl(int numNodes) {
-	cart = new Node[numNodes];
+        cart = new Node[numNodes];
     }
 
     /**
@@ -183,10 +185,10 @@ public class CARTImpl implements CART {
      * @throws IOException if an error occurs during output
      */
     public void dumpBinary(DataOutputStream os) throws IOException {
-	os.writeInt(cart.length);
-	for (int i = 0; i < cart.length; i++) {
-	    cart[i].dumpBinary(os);
-	}
+        os.writeInt(cart.length);
+        for (int i = 0; i < cart.length; i++) {
+            cart[i].dumpBinary(os);
+        }
     }
 
     /**
@@ -250,14 +252,14 @@ public class CARTImpl implements CART {
      * have to be parsed.
      */
     public static CART loadBinary(ByteBuffer bb) throws IOException {
-	int numNodes = bb.getInt();
-	CARTImpl cart = new CARTImpl(numNodes);
+        int numNodes = bb.getInt();
+        CARTImpl cart = new CARTImpl(numNodes);
 
-	for (int i = 0; i < numNodes; i++) {
-	    String nodeCreationLine = Utilities.getString(bb);
-	    cart.parseAndAdd(nodeCreationLine);
-	}
-	return cart;
+        for (int i = 0; i < numNodes; i++) {
+            String nodeCreationLine = Utilities.getString(bb);
+            cart.parseAndAdd(nodeCreationLine);
+        }
+        return cart;
     }
 
     /**
@@ -273,16 +275,16 @@ public class CARTImpl implements CART {
      * have to be parsed.
      */
     public static CART loadBinary(DataInputStream is) throws IOException {
-	int numNodes = is.readInt();
-	CARTImpl cart = new CARTImpl(numNodes);
+        int numNodes = is.readInt();
+        CARTImpl cart = new CARTImpl(numNodes);
 
-	for (int i = 0; i < numNodes; i++) {
-	    String nodeCreationLine = Utilities.getString(is);
-	    cart.parseAndAdd(nodeCreationLine);
-	}
-	return cart;
+        for (int i = 0; i < numNodes; i++) {
+            String nodeCreationLine = Utilities.getString(is);
+            cart.parseAndAdd(nodeCreationLine);
+        }
+        return cart;
     }
-    
+
     /**
      * Creates a node from the given input line and add it to the CART.
      * It expects the TOTAL line to come before any of the nodes.
@@ -290,11 +292,11 @@ public class CARTImpl implements CART {
      * @param line a line of input to parse
      */
     protected void parseAndAdd(String line) {
-        StringTokenizer tokenizer = new StringTokenizer(line," ");
-        String type = tokenizer.nextToken();        
+        StringTokenizer tokenizer = new StringTokenizer(line, " ");
+        String type = tokenizer.nextToken();
         if (type.equals(LEAF) || type.equals(NODE)) {
             cart[curNode] = getNode(type, tokenizer, curNode);
-	    cart[curNode].setCreationLine(line);
+            cart[curNode].setCreationLine(line);
             curNode++;
         } else if (type.equals(TOTAL)) {
             cart = new Node[Integer.parseInt(tokenizer.nextToken())];
@@ -323,15 +325,15 @@ public class CARTImpl implements CART {
             int qfalse = Integer.parseInt(tokenizer.nextToken());
             if (operand.equals(OPERAND_MATCHES)) {
                 return new MatchingNode(feature,
-                                        value.toString(),
-                                        currentNode + 1,
-                                        qfalse);
+                        value.toString(),
+                        currentNode + 1,
+                        qfalse);
             } else {
                 return new ComparisonNode(feature,
-                                          value,
-                                          operand,
-                                          currentNode + 1,
-                                          qfalse);
+                        value,
+                        operand,
+                        currentNode + 1,
+                        qfalse);
             }
         } else if (type.equals(LEAF)) {
             return new LeafNode(parseValue(tokenizer.nextToken()));
@@ -349,7 +351,7 @@ public class CARTImpl implements CART {
      */
     protected Object parseValue(String string) {
         int openParen = string.indexOf("(");
-        String type = string.substring(0,openParen);
+        String type = string.substring(0, openParen);
         String value = string.substring(openParen + 1, string.length() - 1);
         if (type.equals("String")) {
             return value;
@@ -358,20 +360,20 @@ public class CARTImpl implements CART {
         } else if (type.equals("Integer")) {
             return new Integer(Integer.parseInt(value));
         } else if (type.equals("List")) {
-	    StringTokenizer tok = new StringTokenizer(value, ",");
-	    int size = tok.countTokens();
+            StringTokenizer tok = new StringTokenizer(value, ",");
+            int size = tok.countTokens();
 
-	    int[] values = new int[size];
-	    for (int i = 0; i < size; i++) {
-	        float fval = Float.parseFloat(tok.nextToken());
-		values[i] = Math.round(fval);
-	    }
-	    return values;
-	} else {
+            int[] values = new int[size];
+            for (int i = 0; i < size; i++) {
+                float fval = Float.parseFloat(tok.nextToken());
+                values[i] = Math.round(fval);
+            }
+            return values;
+        } else {
             throw new Error("Unknown type: " + type);
         }
     }
-    
+
     /**
      * Passes the given item through this CART and returns the
      * interpretation.
@@ -386,7 +388,7 @@ public class CARTImpl implements CART {
 
         while (!(cart[nodeIndex] instanceof LeafNode)) {
             decision = (DecisionNode) cart[nodeIndex];
-	    nodeIndex = decision.getNextNode(item);
+            nodeIndex = decision.getNextNode(item);
         }
         if (LOGGER.isLoggable(Level.FINER)) {
             LOGGER.finer("LEAF " + cart[nodeIndex].getValue());
@@ -402,7 +404,7 @@ public class CARTImpl implements CART {
          * The value of this node.
          */
         protected Object value;
-	private String creationLine;
+        private String creationLine;
 
         /**
          * Create a new Node with the given value.
@@ -410,7 +412,7 @@ public class CARTImpl implements CART {
         public Node(Object value) {
             this.value = value;
         }
-    
+
         /**
          * Get the value.
          */
@@ -433,24 +435,24 @@ public class CARTImpl implements CART {
             } else {
                 return value.getClass().toString() + "(" + value.toString() + ")";
             }
-        }    
+        }
 
-	/**
-	 * sets the line of text used to create this node.
-	 * @param line the creation line
-	 */
-	public void setCreationLine(String line) {
-	    creationLine = line;
-	}
+        /**
+         * sets the line of text used to create this node.
+         * @param line the creation line
+         */
+        public void setCreationLine(String line) {
+            creationLine = line;
+        }
 
-	/**
-	 * Dumps the binary form of this node.
-	 * @param os the output stream to output the node on
-	 * @throws IOException if an IO error occurs
-	 */
-	final public void dumpBinary(DataOutputStream os) throws IOException {
-	    Utilities.outString(os, creationLine);
-	}
+        /**
+         * Dumps the binary form of this node.
+         * @param os the output stream to output the node on
+         * @throws IOException if an IO error occurs
+         */
+        final public void dumpBinary(DataOutputStream os) throws IOException {
+            Utilities.outString(os, creationLine);
+        }
     }
 
     /**
@@ -460,7 +462,7 @@ public class CARTImpl implements CART {
         /**
          * The feature used to find a value from an Item.
          */
-	private PathExtractor path;
+        private PathExtractor path;
 
         /**
          * Index of Node to go to if the comparison doesn't match.
@@ -480,26 +482,26 @@ public class CARTImpl implements CART {
         }
 
 
-	/**
-	 * Find the feature associated with this DecisionNode
-	 * and the given item
-	 * @param item the item to start from
-	 * @return the object representing the feature
-	 */
-	public Object findFeature(Item item) {
-	    return path.findFeature(item);
-	}
+        /**
+         * Find the feature associated with this DecisionNode
+         * and the given item
+         * @param item the item to start from
+         * @return the object representing the feature
+         */
+        public Object findFeature(Item item) {
+            return path.findFeature(item);
+        }
 
 
-	/**
-	 * Returns the next node based upon the
-	 * descision determined at this node
-	 * @param item the current item.
-	 * @return the index of the next node
-	 */
-	public final int getNextNode(Item item) {
-	    return getNextNode(findFeature(item));
-	}
+        /**
+         * Returns the next node based upon the
+         * descision determined at this node
+         * @param item the current item.
+         * @return the index of the next node
+         */
+        public final int getNextNode(Item item) {
+            return getNextNode(findFeature(item));
+        }
 
         /**
          * Create a new DecisionNode.
@@ -517,7 +519,7 @@ public class CARTImpl implements CART {
             this.qtrue = qtrue;
             this.qfalse = qfalse;
         }
-    
+
         /**
          * Get the next Node to go to in the CART.  The return
          * value is an index in the CART.
@@ -533,17 +535,17 @@ public class CARTImpl implements CART {
          * LESS_THAN
          */
         final static String LESS_THAN = "<";
-    
+
         /**
          * EQUALS
          */
         final static String EQUALS = "=";
-    
+
         /**
          * GREATER_THAN
          */
         final static String GREATER_THAN = ">";
-    
+
         /**
          * The comparison type.  One of LESS_THAN, GREATER_THAN, or
          *  EQUAL_TO.
@@ -565,8 +567,8 @@ public class CARTImpl implements CART {
                               int qfalse) {
             super(feature, value, qtrue, qfalse);
             if (!comparisonType.equals(LESS_THAN)
-                && !comparisonType.equals(EQUALS)
-                && !comparisonType.equals(GREATER_THAN)) {
+                    && !comparisonType.equals(EQUALS)
+                    && !comparisonType.equals(GREATER_THAN)) {
                 throw new Error("Invalid comparison type: " + comparisonType);
             } else {
                 this.comparisonType = comparisonType;
@@ -583,11 +585,11 @@ public class CARTImpl implements CART {
          * @param val the value to compare
          */
         public int getNextNode(Object val) {
-	    boolean yes = false;
-	    int ret;
+            boolean yes = false;
+            int ret;
 
             if (comparisonType.equals(LESS_THAN)
-                || comparisonType.equals(GREATER_THAN)) {
+                    || comparisonType.equals(GREATER_THAN)) {
                 float cart_fval;
                 float fval;
                 if (value instanceof Float) {
@@ -603,46 +605,46 @@ public class CARTImpl implements CART {
                 if (comparisonType.equals(LESS_THAN)) {
                     yes = (fval < cart_fval);
                 } else {
-                    yes =  (fval > cart_fval);
+                    yes = (fval > cart_fval);
                 }
             } else { // comparisonType = "="
                 String sval = val.toString();
                 String cart_sval = value.toString();
                 yes = sval.equals(cart_sval);
             }
-	    if (yes) {
-		ret = qtrue;
-	    } else {
-		ret = qfalse;
-	    }
+            if (yes) {
+                ret = qtrue;
+            } else {
+                ret = qfalse;
+            }
 
-	    if (LOGGER.isLoggable(Level.FINER)) {
-	        LOGGER.finer(trace(val, yes, ret));
-	    }
+            if (LOGGER.isLoggable(Level.FINER)) {
+                LOGGER.finer(trace(val, yes, ret));
+            }
 
-	    return ret;
+            return ret;
         }
 
-	private String trace(Object value, boolean match, int next) {
-	    return
-                "NODE " + getFeature() + " ["
-		+ value + "] " 
-		+ comparisonType + " [" 
-                + getValue() + "] "
-		+ (match ? "Yes" : "No") + " next " +
-		    next;
-	}
+        private String trace(Object value, boolean match, int next) {
+            return
+                    "NODE " + getFeature() + " ["
+                            + value + "] "
+                            + comparisonType + " ["
+                            + getValue() + "] "
+                            + (match ? "Yes" : "No") + " next " +
+                            next;
+        }
 
         /**
          * Get a string representation of this Node.
          */
         public String toString() {
             return
-                "NODE " + getFeature() + " "
-                + comparisonType + " "
-                + getValueString() + " "
-                + Integer.toString(qtrue) + " "
-                + Integer.toString(qfalse);
+                    "NODE " + getFeature() + " "
+                            + comparisonType + " "
+                            + getValueString() + " "
+                            + Integer.toString(qtrue) + " "
+                            + Integer.toString(qfalse);
         }
     }
 
@@ -651,7 +653,7 @@ public class CARTImpl implements CART {
      */
     static class MatchingNode extends DecisionNode {
         Pattern pattern;
-    
+
         /**
          * Create a new MatchingNode with the given values.
          * @param feature the string used to get a value from an Item
@@ -673,8 +675,8 @@ public class CARTImpl implements CART {
          */
         public int getNextNode(Object val) {
             return pattern.matcher((String) val).matches()
-                ? qtrue
-                : qfalse;
+                    ? qtrue
+                    : qfalse;
         }
 
         /**
@@ -682,7 +684,7 @@ public class CARTImpl implements CART {
          */
         public String toString() {
             StringBuffer buf = new StringBuffer(
-                NODE + " " + getFeature() + " " + OPERAND_MATCHES);
+                    NODE + " " + getFeature() + " " + OPERAND_MATCHES);
             buf.append(getValueString() + " ");
             buf.append(Integer.toString(qtrue) + " ");
             buf.append(Integer.toString(qfalse));

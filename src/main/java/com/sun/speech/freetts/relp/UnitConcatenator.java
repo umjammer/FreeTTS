@@ -1,13 +1,14 @@
 /**
  * Portions Copyright 2001 Sun Microsystems, Inc.
- * Portions Copyright 1999-2001 Language Technologies Institute, 
+ * Portions Copyright 1999-2001 Language Technologies Institute,
  * Carnegie Mellon University.
  * All Rights Reserved.  Use is subject to license terms.
- * 
+ * <p>
  * See the file "license.terms" for information on usage and
- * redistribution of this file, and for a DISCLAIMER OF ALL 
+ * redistribution of this file, and for a DISCLAIMER OF ALL
  * WARRANTIES.
  */
+
 package com.sun.speech.freetts.relp;
 
 import com.sun.speech.freetts.FeatureSet;
@@ -18,6 +19,7 @@ import com.sun.speech.freetts.Unit;
 import com.sun.speech.freetts.Utterance;
 import com.sun.speech.freetts.UtteranceProcessor;
 import com.sun.speech.freetts.util.Utilities;
+
 
 /**
  * Concatenates the Units in the given Utterance to the target_lpc
@@ -31,8 +33,8 @@ public class UnitConcatenator implements UtteranceProcessor {
     static private final int ADD_RESIDUAL_PULSE = 1;
     static private final int ADD_RESIDUAL_WINDOWED = 2;
     static private final int ADD_RESIDUAL = 3;
-    public final static String PROP_OUTPUT_LPC = 
-	"com.sun.speech.freetts.outputLPC";
+    public final static String PROP_OUTPUT_LPC =
+            "com.sun.speech.freetts.outputLPC";
     private boolean outputLPC = Utilities.getBoolean(PROP_OUTPUT_LPC);
 
 
@@ -50,91 +52,91 @@ public class UnitConcatenator implements UtteranceProcessor {
     public void processUtterance(Utterance utterance) throws ProcessException {
         float uIndex = 0, m;
         int pmI = 0, targetResidualPosition = 0,
-            targetStart = 0, targetEnd, residualSize, numberFrames;
+                targetStart = 0, targetEnd, residualSize, numberFrames;
         Relation unitRelation = utterance.getRelation(Relation.UNIT);
 
-	SampleInfo sampleInfo;
-	
+        SampleInfo sampleInfo;
 
-	int addResidualMethod = ADD_RESIDUAL;
-	
-	String residualType = utterance.getString("residual_type");
-	if (residualType != null) {
-	    if (residualType.equals("pulse")) {
-		addResidualMethod = ADD_RESIDUAL_PULSE;
-	    } else if (residualType.equals("windowed")) {
-		addResidualMethod = ADD_RESIDUAL_WINDOWED;
-	    }
-	}
 
-	sampleInfo = (SampleInfo) utterance.getObject(SampleInfo.UTT_NAME);
-	if (sampleInfo == null) {
-	    throw new IllegalStateException
-		("UnitConcatenator: SampleInfo does not exist");
-	}
+        int addResidualMethod = ADD_RESIDUAL;
 
-	LPCResult lpcResult = (LPCResult) utterance.getObject("target_lpcres");
-	lpcResult.setValues(sampleInfo.getNumberOfChannels(),
-			    sampleInfo.getSampleRate(),
-			    sampleInfo.getResidualFold(),
-			    sampleInfo.getCoeffMin(),
-			    sampleInfo.getCoeffRange());
+        String residualType = utterance.getString("residual_type");
+        if (residualType != null) {
+            if (residualType.equals("pulse")) {
+                addResidualMethod = ADD_RESIDUAL_PULSE;
+            } else if (residualType.equals("windowed")) {
+                addResidualMethod = ADD_RESIDUAL_WINDOWED;
+            }
+        }
 
-	// create the array of final residual sizes
-	int[] targetTimes = lpcResult.getTimes();
-	int[] residualSizes = lpcResult.getResidualSizes();
+        sampleInfo = (SampleInfo) utterance.getObject(SampleInfo.UTT_NAME);
+        if (sampleInfo == null) {
+            throw new IllegalStateException
+                    ("UnitConcatenator: SampleInfo does not exist");
+        }
 
-	int samplesSize = 0;
-	if (lpcResult.getNumberOfFrames() > 0) {
-		samplesSize = targetTimes[lpcResult.getNumberOfFrames() - 1];
-	}
-	lpcResult.resizeResiduals(samplesSize);
-	
-	for (Item unitItem = unitRelation.getHead(); unitItem != null;
-	     unitItem = unitItem.getNext()) {
-	    FeatureSet featureSet = unitItem.getFeatures();
+        LPCResult lpcResult = (LPCResult) utterance.getObject("target_lpcres");
+        lpcResult.setValues(sampleInfo.getNumberOfChannels(),
+                sampleInfo.getSampleRate(),
+                sampleInfo.getResidualFold(),
+                sampleInfo.getCoeffMin(),
+                sampleInfo.getCoeffRange());
 
-	    targetEnd = featureSet.getInt("target_end");
-	    Unit unit = (Unit) featureSet.getObject("unit");
-	    int unitSize = unit.getSize();
+        // create the array of final residual sizes
+        int[] targetTimes = lpcResult.getTimes();
+        int[] residualSizes = lpcResult.getResidualSizes();
 
-	    uIndex = 0;
-	    m = (float)unitSize/(float)(targetEnd - targetStart);
-	    numberFrames = lpcResult.getNumberOfFrames();
-	    
-	    // for all the pitchmarks that are required
-	    for (; (pmI < numberFrames) &&
-		     (targetTimes[pmI] <= targetEnd); pmI++) {
+        int samplesSize = 0;
+        if (lpcResult.getNumberOfFrames() > 0) {
+            samplesSize = targetTimes[lpcResult.getNumberOfFrames() - 1];
+        }
+        lpcResult.resizeResiduals(samplesSize);
 
-		Sample sample = unit.getNearestSample(uIndex);
-		
-		// Get LPC coefficients by copying
-		lpcResult.setFrame(pmI, sample.getFrameData());
+        for (Item unitItem = unitRelation.getHead(); unitItem != null;
+             unitItem = unitItem.getNext()) {
+            FeatureSet featureSet = unitItem.getFeatures();
 
-		// Get residual by copying
-		residualSize = lpcResult.getFrameShift(pmI);
-		
-		residualSizes[pmI] = residualSize;
-		byte[] residualData = sample.getResidualData();
+            targetEnd = featureSet.getInt("target_end");
+            Unit unit = (Unit) featureSet.getObject("unit");
+            int unitSize = unit.getSize();
 
-		if (addResidualMethod == ADD_RESIDUAL_PULSE) {
-		    lpcResult.copyResidualsPulse
-			(residualData, targetResidualPosition, residualSize);
-		} else {
-		    lpcResult.copyResiduals
-			(residualData, targetResidualPosition, residualSize);
-		}
-		
-		targetResidualPosition += residualSize;
-		uIndex += ((float) residualSize * m);
-	    }
-	    targetStart = targetEnd;
-	}
-	lpcResult.setNumberOfFrames(pmI);
+            uIndex = 0;
+            m = (float) unitSize / (float) (targetEnd - targetStart);
+            numberFrames = lpcResult.getNumberOfFrames();
 
-	if (outputLPC) {
-	    lpcResult.dump();
-	}
+            // for all the pitchmarks that are required
+            for (; (pmI < numberFrames) &&
+                    (targetTimes[pmI] <= targetEnd); pmI++) {
+
+                Sample sample = unit.getNearestSample(uIndex);
+
+                // Get LPC coefficients by copying
+                lpcResult.setFrame(pmI, sample.getFrameData());
+
+                // Get residual by copying
+                residualSize = lpcResult.getFrameShift(pmI);
+
+                residualSizes[pmI] = residualSize;
+                byte[] residualData = sample.getResidualData();
+
+                if (addResidualMethod == ADD_RESIDUAL_PULSE) {
+                    lpcResult.copyResidualsPulse
+                            (residualData, targetResidualPosition, residualSize);
+                } else {
+                    lpcResult.copyResiduals
+                            (residualData, targetResidualPosition, residualSize);
+                }
+
+                targetResidualPosition += residualSize;
+                uIndex += ((float) residualSize * m);
+            }
+            targetStart = targetEnd;
+        }
+        lpcResult.setNumberOfFrames(pmI);
+
+        if (outputLPC) {
+            lpcResult.dump();
+        }
     }
 
     /**
@@ -142,7 +144,7 @@ public class UnitConcatenator implements UtteranceProcessor {
      * @return the string form of this object.
      */
     public String toString() {
-	return "UnitConcatenator";
+        return "UnitConcatenator";
     }
 }
 

@@ -1,13 +1,14 @@
 /**
  * Portions Copyright 2003 Sun Microsystems, Inc.
- * Portions Copyright 1999-2001 Language Technologies Institute, 
+ * Portions Copyright 1999-2001 Language Technologies Institute,
  * Carnegie Mellon University.
  * All Rights Reserved.  Use is subject to license terms.
- * 
+ * <p>
  * See the file "license.terms" for information on usage and
- * redistribution of this file, and for a DISCLAIMER OF ALL 
+ * redistribution of this file, and for a DISCLAIMER OF ALL
  * WARRANTIES.
  */
+
 package com.sun.speech.freetts.clunits;
 
 import java.io.BufferedOutputStream;
@@ -53,13 +54,13 @@ import com.sun.speech.freetts.util.Utilities;
  */
 public class ClusterUnitDatabase {
 
-    final  static int CLUNIT_NONE = 65535;
+    final static int CLUNIT_NONE = 65535;
 
     private DatabaseClusterUnit[] units;
     private UnitType[] unitTypes;
     private SampleSet sts;
     private SampleSet mcep;
-    
+
     private UnitOriginInfo[] unitOrigins; // for debugging
 
     private int continuityWeight;
@@ -89,25 +90,25 @@ public class ClusterUnitDatabase {
      * @throws IOException if there is trouble opening the DB
      */
     ClusterUnitDatabase(URL url, boolean isBinary) throws IOException {
-	BulkTimer.LOAD.start("ClusterUnitDatabase");
-	InputStream is = Utilities.getInputStream(url);
-	if (isBinary) {
-	    loadBinary(is);
-	} else {
-	    loadText(is);
-	}
-	is.close();
-    // Attempt to load debug info from a .debug resource.
-    // This will silently fail if no debug info is available.
-    String urlString = url.toExternalForm();
-    URL debugURL = new URL(urlString.substring(0, urlString.lastIndexOf(".")) + ".debug");
-    try {
-        InputStream debugInfoStream = Utilities.getInputStream(debugURL);
-        loadUnitOrigins(debugInfoStream);
-    } catch (IOException ioe) {
-        // Silently ignore if you cannot load the debug info
-    }
-	BulkTimer.LOAD.stop("ClusterUnitDatabase");
+        BulkTimer.LOAD.start("ClusterUnitDatabase");
+        InputStream is = Utilities.getInputStream(url);
+        if (isBinary) {
+            loadBinary(is);
+        } else {
+            loadText(is);
+        }
+        is.close();
+        // Attempt to load debug info from a .debug resource.
+        // This will silently fail if no debug info is available.
+        String urlString = url.toExternalForm();
+        URL debugURL = new URL(urlString.substring(0, urlString.lastIndexOf(".")) + ".debug");
+        try {
+            InputStream debugInfoStream = Utilities.getInputStream(debugURL);
+            loadUnitOrigins(debugInfoStream);
+        } catch (IOException ioe) {
+            // Silently ignore if you cannot load the debug info
+        }
+        BulkTimer.LOAD.stop("ClusterUnitDatabase");
     }
 
 
@@ -120,7 +121,7 @@ public class ClusterUnitDatabase {
      * @return the begininning sample index
      */
     int getStart(int unitEntry) {
-	return units[unitEntry].start;
+        return units[unitEntry].start;
     }
 
     /**
@@ -132,7 +133,7 @@ public class ClusterUnitDatabase {
      * @return the ending sample index
      */
     int getEnd(int unitEntry) {
-	return units[unitEntry].end;
+        return units[unitEntry].end;
     }
 
     /**
@@ -143,7 +144,7 @@ public class ClusterUnitDatabase {
      * @return the phone for the entry
      */
     int getPhone(int unitEntry) {
-	return units[unitEntry].phone;
+        return units[unitEntry].phone;
     }
 
     /**
@@ -154,14 +155,14 @@ public class ClusterUnitDatabase {
      * @return the cart 
      */
     CART getTree(String unitType) {
-	CART cart =  (CART) cartMap.get(unitType);
+        CART cart = (CART) cartMap.get(unitType);
 
-	if (cart == null) {
-	    System.err.println("ClusterUnitDatabase: can't find tree for " 
-		    + unitType);
-	    return defaultCart; 	// "graceful" failrue
-	}
-	return cart;
+        if (cart == null) {
+            System.err.println("ClusterUnitDatabase: can't find tree for "
+                    + unitType);
+            return defaultCart;    // "graceful" failrue
+        }
+        return cart;
     }
 
     /**
@@ -173,23 +174,23 @@ public class ClusterUnitDatabase {
      */
 // [[[TODO: perhaps replace this with  java.util.Arrays.binarySearch]]]
     int getUnitTypeIndex(String name) {
-	int start, end, mid, c;
+        int start, end, mid, c;
 
-	start = 0;
-	end = unitTypes.length;
+        start = 0;
+        end = unitTypes.length;
 
-	while (start < end) {
-	    mid = (start + end) / 2;
-	    c = unitTypes[mid].getName().compareTo(name);
-	    if (c == 0) {
-		return mid;
-	    } else if (c > 0) {
-		end = mid;
-	    } else {
-		start = mid + 1;
-	    }
-	}
-	return -1;
+        while (start < end) {
+            mid = (start + end) / 2;
+            c = unitTypes[mid].getName().compareTo(name);
+            if (c == 0) {
+                return mid;
+            } else if (c > 0) {
+                end = mid;
+            } else {
+                start = mid + 1;
+            }
+        }
+        return -1;
     }
 
     /**
@@ -201,17 +202,17 @@ public class ClusterUnitDatabase {
      * @return the index.
      */
     int getUnitIndex(String unitType, int instance) {
-	int i = getUnitTypeIndex(unitType);
-	if (i == -1) {
-	    error("getUnitIndex: can't find unit type " + unitType);
-	    i = 0;
-	}
-	if (instance >= unitTypes[i].getCount()) {
-	    error("getUnitIndex: can't find instance " 
-		    + instance + " of " + unitType);
-	    instance = 0;
-	}
-	return unitTypes[i].getStart() + instance;
+        int i = getUnitTypeIndex(unitType);
+        if (i == -1) {
+            error("getUnitIndex: can't find unit type " + unitType);
+            i = 0;
+        }
+        if (instance >= unitTypes[i].getCount()) {
+            error("getUnitIndex: can't find instance "
+                    + instance + " of " + unitType);
+            instance = 0;
+        }
+        return unitTypes[i].getStart() + instance;
     }
 
 
@@ -223,14 +224,14 @@ public class ClusterUnitDatabase {
      * @return the index for the name
      */
     int getUnitIndexName(String name) {
-	int lastIndex = name.lastIndexOf('_');
-	if (lastIndex == -1) {
-	    error("getUnitIndexName: bad unit name " + name);
-	    return -1;
-	}
-	int index = Integer.parseInt(name.substring(lastIndex + 1));
-	String type = name.substring(0, lastIndex);
-	return getUnitIndex(type, index);
+        int lastIndex = name.lastIndexOf('_');
+        if (lastIndex == -1) {
+            error("getUnitIndexName: bad unit name " + name);
+            return -1;
+        }
+        int index = Integer.parseInt(name.substring(lastIndex + 1));
+        String type = name.substring(0, lastIndex);
+        return getUnitIndex(type, index);
     }
 
     /**
@@ -239,7 +240,7 @@ public class ClusterUnitDatabase {
      * @return the extend selections setting
      */
     int getExtendSelections() {
-	return extendSelections;
+        return extendSelections;
     }
 
     /**
@@ -248,7 +249,7 @@ public class ClusterUnitDatabase {
      * @return the next unit
      */
     int getNextUnit(int which) {
-	return units[which].next;
+        return units[which].next;
     }
 
     /**
@@ -259,7 +260,7 @@ public class ClusterUnitDatabase {
      * @return the previous unit
      */
     int getPrevUnit(int which) {
-	return units[which].prev;
+        return units[which].prev;
     }
 
 
@@ -272,12 +273,12 @@ public class ClusterUnitDatabase {
      * @return <code>true</code> if the types of units a and b are
      *     equal; otherwise return <code>false</code> 
      */
-    boolean isUnitTypeEqual(int unitA, int unitB)  {
-	return units[unitA].type == units[unitB].type;
-	// String nameA = units[unitA].getName();
-	// String nameB = units[unitB].getName();
-	// int lastUnderscore = nameA.lastIndexOf('_');
-	// return nameA.regionMatches(0, nameB, 0, lastUnderscore + 1);
+    boolean isUnitTypeEqual(int unitA, int unitB) {
+        return units[unitA].type == units[unitB].type;
+        // String nameA = units[unitA].getName();
+        // String nameB = units[unitB].getName();
+        // int lastUnderscore = nameA.lastIndexOf('_');
+        // return nameA.regionMatches(0, nameB, 0, lastUnderscore + 1);
     }
 
     /**
@@ -286,26 +287,26 @@ public class ClusterUnitDatabase {
      * @return the optimal coupling setting
      */
     int getOptimalCoupling() {
-	return optimalCoupling;
+        return optimalCoupling;
     }
 
     /**
      * Retrieves the continuity weight setting.
      *
-     * 
-     * @return  the continuity weight setting
+     *
+     * @return the continuity weight setting
      */
-    int getContinuityWeight()  {
-	return continuityWeight;
+    int getContinuityWeight() {
+        return continuityWeight;
     }
 
     /**
      * Retrieves the join weights.
      *
-     * @return  the join weights
+     * @return the join weights
      */
     int[] getJoinWeights() {
-	return joinWeights;
+        return joinWeights;
     }
 
 
@@ -317,9 +318,9 @@ public class ClusterUnitDatabase {
      * @return the unit or the defaultUnit if not found.
      */
     DatabaseClusterUnit getUnit(String unitName) {
-	return null;
+        return null;
     }
-    
+
     /**
      * Looks up the unit with the given index.
      *
@@ -328,7 +329,7 @@ public class ClusterUnitDatabase {
      * @return the unit 
      */
     DatabaseClusterUnit getUnit(int which) {
-	return units[which];
+        return units[which];
     }
 
     /**
@@ -345,23 +346,23 @@ public class ClusterUnitDatabase {
             return null;
     }
 
-    
+
     /**
      * Returns the name of this UnitDatabase.
      *
      * @return the name of the database
      */
     String getName() {
-	return "ClusterUnitDatabase";
+        return "ClusterUnitDatabase";
     }
-    
+
     /**
      * Returns the sample info for this set of data.
      *
      * @return the sample info
      */
     SampleInfo getSampleInfo() {
-	return sts.getSampleInfo();
+        return sts.getSampleInfo();
     }
 
 
@@ -371,7 +372,7 @@ public class ClusterUnitDatabase {
      * @return the sample list
      */
     SampleSet getSts() {
-	return sts;
+        return sts;
     }
 
     /**
@@ -380,7 +381,7 @@ public class ClusterUnitDatabase {
      * @return the Mel Ceptra list
      */
     SampleSet getMcep() {
-	return mcep;
+        return mcep;
     }
 
     /**
@@ -391,7 +392,7 @@ public class ClusterUnitDatabase {
      * @return the amount to right shift (or zero if not possible)
      */
     int getJoinWeightShift() {
-	return joinWeightShift;
+        return joinWeightShift;
     }
 
 
@@ -403,20 +404,20 @@ public class ClusterUnitDatabase {
      * @return the amount to right shift (or zero if not possible)
      */
     private int calcJoinWeightShift(int[] joinWeights) {
-	int first = joinWeights[0];
-	for (int i = 1; i < joinWeights.length; i++) {
-	    if (joinWeights[i] != first) {
-		return 0;
-	    }
-	}
+        int first = joinWeights[0];
+        for (int i = 1; i < joinWeights.length; i++) {
+            if (joinWeights[i] != first) {
+                return 0;
+            }
+        }
 
-	int divisor = 65536 / first;
-	if (divisor == 2) {
-	    return 1;
-	} else if (divisor == 4) {
-	    return 2;
-	}
-	return 0;
+        int divisor = 65536 / first;
+        if (divisor == 2) {
+            return 1;
+        } else if (divisor == 4) {
+            return 2;
+        }
+        return 0;
     }
 
     /**
@@ -429,37 +430,37 @@ public class ClusterUnitDatabase {
         String line;
 
 
-	unitList = new ArrayList();
-	unitTypesList = new ArrayList();
+        unitList = new ArrayList();
+        unitTypesList = new ArrayList();
 
-	if (is == null) {
-	    throw new Error("Can't load cluster db file.");
-	}
+        if (is == null) {
+            throw new Error("Can't load cluster db file.");
+        }
 
-	reader = new BufferedReader(new InputStreamReader(is));
+        reader = new BufferedReader(new InputStreamReader(is));
         try {
             line = reader.readLine();
-	    lineCount++;
+            lineCount++;
             while (line != null) {
                 if (!line.startsWith("***")) {
                     parseAndAdd(line, reader);
                 }
                 line = reader.readLine();
             }
-	    reader.close();
+            reader.close();
 
-	    units = new DatabaseClusterUnit[unitList.size()];
-	    units = (DatabaseClusterUnit[]) unitList.toArray(units);
-	    unitList = null;
+            units = new DatabaseClusterUnit[unitList.size()];
+            units = (DatabaseClusterUnit[]) unitList.toArray(units);
+            unitList = null;
 
-	    unitTypes = new UnitType[unitTypesList.size()];
-	    unitTypes = (UnitType[]) unitTypesList.toArray(unitTypes);
-	    unitTypesList = null;
+            unitTypes = new UnitType[unitTypesList.size()];
+            unitTypes = (UnitType[]) unitTypesList.toArray(unitTypes);
+            unitTypesList = null;
 
         } catch (IOException e) {
             throw new Error(e.getMessage() + " at line " + lineCount);
         } finally {
-	}
+        }
     }
 
     /**
@@ -471,68 +472,68 @@ public class ClusterUnitDatabase {
      * @throws IOException if an error occurs while reading
      */
     private void parseAndAdd(String line, BufferedReader reader)
-	throws IOException {
-	try {
-	    StringTokenizer tokenizer = new StringTokenizer(line," ");
-	    String tag = tokenizer.nextToken();
-	    if (tag.equals("CONTINUITY_WEIGHT")) {
-		continuityWeight = Integer.parseInt(tokenizer.nextToken());
-	    } else if (tag.equals("OPTIMAL_COUPLING")) {
-		optimalCoupling = Integer.parseInt(tokenizer.nextToken());
-	    }  else if (tag.equals("EXTEND_SELECTIONS")) {
-		extendSelections = Integer.parseInt(tokenizer.nextToken());
-	    }  else if (tag.equals("JOIN_METHOD")) {
-		joinMethod = Integer.parseInt(tokenizer.nextToken());
-	    }  else if (tag.equals("JOIN_WEIGHTS")) {
-		int numWeights = Integer.parseInt(tokenizer.nextToken());
-    		joinWeights = new int[numWeights];
-		for (int i = 0; i < numWeights; i++) {
-		    joinWeights[i]  = Integer.parseInt(tokenizer.nextToken());
-		}
+            throws IOException {
+        try {
+            StringTokenizer tokenizer = new StringTokenizer(line, " ");
+            String tag = tokenizer.nextToken();
+            if (tag.equals("CONTINUITY_WEIGHT")) {
+                continuityWeight = Integer.parseInt(tokenizer.nextToken());
+            } else if (tag.equals("OPTIMAL_COUPLING")) {
+                optimalCoupling = Integer.parseInt(tokenizer.nextToken());
+            } else if (tag.equals("EXTEND_SELECTIONS")) {
+                extendSelections = Integer.parseInt(tokenizer.nextToken());
+            } else if (tag.equals("JOIN_METHOD")) {
+                joinMethod = Integer.parseInt(tokenizer.nextToken());
+            } else if (tag.equals("JOIN_WEIGHTS")) {
+                int numWeights = Integer.parseInt(tokenizer.nextToken());
+                joinWeights = new int[numWeights];
+                for (int i = 0; i < numWeights; i++) {
+                    joinWeights[i] = Integer.parseInt(tokenizer.nextToken());
+                }
 
-		joinWeightShift = calcJoinWeightShift(joinWeights);
+                joinWeightShift = calcJoinWeightShift(joinWeights);
 
-	    } else if (tag.equals("STS")) {
-		String name = tokenizer.nextToken();
-		if (name.equals("STS")) {
-		    sts = new SampleSet(tokenizer, reader);
-		} else {
-		    mcep = new SampleSet(tokenizer, reader);
-		}
-	    } else if (tag.equals("UNITS")) {
-		int type = Integer.parseInt(tokenizer.nextToken());
-		int phone = Integer.parseInt(tokenizer.nextToken());
-		int start = Integer.parseInt(tokenizer.nextToken());
-		int end = Integer.parseInt(tokenizer.nextToken());
-		int prev = Integer.parseInt(tokenizer.nextToken());
-		int next = Integer.parseInt(tokenizer.nextToken());
-		DatabaseClusterUnit unit 
-		      = new DatabaseClusterUnit(type, phone, start, 
-			      end, prev, next);
-		unitList.add(unit);
-	    } else if (tag.equals("CART")) {
-		String name = tokenizer.nextToken();
-		int nodes = Integer.parseInt(tokenizer.nextToken());
-		CART cart = new CARTImpl(reader, nodes);
-		cartMap.put(name, cart);
+            } else if (tag.equals("STS")) {
+                String name = tokenizer.nextToken();
+                if (name.equals("STS")) {
+                    sts = new SampleSet(tokenizer, reader);
+                } else {
+                    mcep = new SampleSet(tokenizer, reader);
+                }
+            } else if (tag.equals("UNITS")) {
+                int type = Integer.parseInt(tokenizer.nextToken());
+                int phone = Integer.parseInt(tokenizer.nextToken());
+                int start = Integer.parseInt(tokenizer.nextToken());
+                int end = Integer.parseInt(tokenizer.nextToken());
+                int prev = Integer.parseInt(tokenizer.nextToken());
+                int next = Integer.parseInt(tokenizer.nextToken());
+                DatabaseClusterUnit unit
+                        = new DatabaseClusterUnit(type, phone, start,
+                        end, prev, next);
+                unitList.add(unit);
+            } else if (tag.equals("CART")) {
+                String name = tokenizer.nextToken();
+                int nodes = Integer.parseInt(tokenizer.nextToken());
+                CART cart = new CARTImpl(reader, nodes);
+                cartMap.put(name, cart);
 
-		if (defaultCart == null) {
-		    defaultCart = cart;
-		}
-	    } else if (tag.equals("UNIT_TYPE")) {
-		String name = tokenizer.nextToken();
-		int start = Integer.parseInt(tokenizer.nextToken());
-		int count = Integer.parseInt(tokenizer.nextToken());
-		UnitType unitType = new UnitType(name, start, count);
-		unitTypesList.add(unitType);
-	    } else {
-		throw new Error("Unsupported tag " + tag + " in db line `" + line + "'");
-	    }
-	} catch (NoSuchElementException nse) {
-	    throw new Error("Error parsing db " + nse.getMessage());
-	} catch (NumberFormatException nfe) {
-	    throw new Error("Error parsing numbers in db line `" + line + "':" + nfe.getMessage());
-	}
+                if (defaultCart == null) {
+                    defaultCart = cart;
+                }
+            } else if (tag.equals("UNIT_TYPE")) {
+                String name = tokenizer.nextToken();
+                int start = Integer.parseInt(tokenizer.nextToken());
+                int count = Integer.parseInt(tokenizer.nextToken());
+                UnitType unitType = new UnitType(name, start, count);
+                unitTypesList.add(unitType);
+            } else {
+                throw new Error("Unsupported tag " + tag + " in db line `" + line + "'");
+            }
+        } catch (NoSuchElementException nse) {
+            throw new Error("Error parsing db " + nse.getMessage());
+        } catch (NumberFormatException nfe) {
+            throw new Error("Error parsing numbers in db line `" + line + "':" + nfe.getMessage());
+        }
     }
 
     /**
@@ -544,21 +545,21 @@ public class ClusterUnitDatabase {
      *
      */
     private void loadBinary(InputStream is) throws IOException {
-	// we get better performance if we can map the file in
-	// 1.0 seconds vs. 1.75 seconds, but we can't
-	// always guarantee that we can do that.
-	if (is instanceof FileInputStream) {
-	    FileInputStream fis = (FileInputStream) is;
-	    FileChannel fc = fis.getChannel();
+        // we get better performance if we can map the file in
+        // 1.0 seconds vs. 1.75 seconds, but we can't
+        // always guarantee that we can do that.
+        if (is instanceof FileInputStream) {
+            FileInputStream fis = (FileInputStream) is;
+            FileChannel fc = fis.getChannel();
 
-	    MappedByteBuffer bb = 
-		fc.map(FileChannel.MapMode.READ_ONLY, 0, (int) fc.size());
-	    bb.load();
-	    loadBinary(bb);
-	    is.close();
-	} else {
-	    loadBinary(new DataInputStream(is));
-	}
+            MappedByteBuffer bb =
+                    fc.map(FileChannel.MapMode.READ_ONLY, 0, (int) fc.size());
+            bb.load();
+            loadBinary(bb);
+            is.close();
+        } else {
+            loadBinary(new DataInputStream(is));
+        }
     }
 
     /**
@@ -570,50 +571,50 @@ public class ClusterUnitDatabase {
      */
     private void loadBinary(ByteBuffer bb) throws IOException {
 
-	if (bb.getInt() != MAGIC)  {
-	    throw new Error("Bad magic in db");
-	}
-	if (bb.getInt() != VERSION)  {
-	    throw new Error("Bad VERSION in db");
-	}
+        if (bb.getInt() != MAGIC) {
+            throw new Error("Bad magic in db");
+        }
+        if (bb.getInt() != VERSION) {
+            throw new Error("Bad VERSION in db");
+        }
 
-	continuityWeight = bb.getInt();
-	optimalCoupling = bb.getInt();
-	extendSelections = bb.getInt();
-	joinMethod = bb.getInt();
-	joinWeightShift = bb.getInt();
+        continuityWeight = bb.getInt();
+        optimalCoupling = bb.getInt();
+        extendSelections = bb.getInt();
+        joinMethod = bb.getInt();
+        joinWeightShift = bb.getInt();
 
-	int weightLength = bb.getInt();
-	joinWeights = new int[weightLength];
-	for (int i = 0; i < joinWeights.length; i++) {
-	    joinWeights[i] = bb.getInt();
-	}
+        int weightLength = bb.getInt();
+        joinWeights = new int[weightLength];
+        for (int i = 0; i < joinWeights.length; i++) {
+            joinWeights[i] = bb.getInt();
+        }
 
-	int unitsLength = bb.getInt();
-	units = new DatabaseClusterUnit[unitsLength];
-	for (int i = 0; i < units.length; i++) {
-	    units[i] = new DatabaseClusterUnit(bb);
-	}
+        int unitsLength = bb.getInt();
+        units = new DatabaseClusterUnit[unitsLength];
+        for (int i = 0; i < units.length; i++) {
+            units[i] = new DatabaseClusterUnit(bb);
+        }
 
-	int unitTypesLength = bb.getInt();
-	unitTypes = new UnitType[unitTypesLength];
-	for (int i = 0; i < unitTypes.length; i++) {
-	    unitTypes[i] = new UnitType(bb);
-	}
-	sts = new SampleSet(bb);
-	mcep = new SampleSet(bb);
+        int unitTypesLength = bb.getInt();
+        unitTypes = new UnitType[unitTypesLength];
+        for (int i = 0; i < unitTypes.length; i++) {
+            unitTypes[i] = new UnitType(bb);
+        }
+        sts = new SampleSet(bb);
+        mcep = new SampleSet(bb);
 
-	int numCarts = bb.getInt();
-	cartMap = new HashMap();
-	for (int i = 0; i < numCarts; i++) {
-	    String name = Utilities.getString(bb);
-	    CART cart = CARTImpl.loadBinary(bb);
-	    cartMap.put(name, cart);
+        int numCarts = bb.getInt();
+        cartMap = new HashMap();
+        for (int i = 0; i < numCarts; i++) {
+            String name = Utilities.getString(bb);
+            CART cart = CARTImpl.loadBinary(bb);
+            cartMap.put(name, cart);
 
-	    if (defaultCart == null) {
-		defaultCart = cart;
-	    }
-	}
+            if (defaultCart == null) {
+                defaultCart = cart;
+            }
+        }
     }
 
     /**
@@ -625,52 +626,52 @@ public class ClusterUnitDatabase {
      */
     private void loadBinary(DataInputStream is) throws IOException {
 
-	if (is.readInt() != MAGIC)  {
-	    throw new Error("Bad magic in db");
-	}
-	if (is.readInt() != VERSION)  {
-	    throw new Error("Bad VERSION in db");
-	}
+        if (is.readInt() != MAGIC) {
+            throw new Error("Bad magic in db");
+        }
+        if (is.readInt() != VERSION) {
+            throw new Error("Bad VERSION in db");
+        }
 
-	continuityWeight = is.readInt();
-	optimalCoupling = is.readInt();
-	extendSelections = is.readInt();
-	joinMethod = is.readInt();
-	joinWeightShift = is.readInt();
+        continuityWeight = is.readInt();
+        optimalCoupling = is.readInt();
+        extendSelections = is.readInt();
+        joinMethod = is.readInt();
+        joinWeightShift = is.readInt();
 
-	int weightLength = is.readInt();
-	joinWeights = new int[weightLength];
-	for (int i = 0; i < joinWeights.length; i++) {
-	    joinWeights[i] = is.readInt();
-	}
+        int weightLength = is.readInt();
+        joinWeights = new int[weightLength];
+        for (int i = 0; i < joinWeights.length; i++) {
+            joinWeights[i] = is.readInt();
+        }
 
-	int unitsLength = is.readInt();
-	units = new DatabaseClusterUnit[unitsLength];
-	for (int i = 0; i < units.length; i++) {
-	    units[i] = new DatabaseClusterUnit(is);
-	}
+        int unitsLength = is.readInt();
+        units = new DatabaseClusterUnit[unitsLength];
+        for (int i = 0; i < units.length; i++) {
+            units[i] = new DatabaseClusterUnit(is);
+        }
 
-	int unitTypesLength = is.readInt();
-	unitTypes = new UnitType[unitTypesLength];
-	for (int i = 0; i < unitTypes.length; i++) {
-	    unitTypes[i] = new UnitType(is);
-	}
-	sts = new SampleSet(is);
-	mcep = new SampleSet(is);
+        int unitTypesLength = is.readInt();
+        unitTypes = new UnitType[unitTypesLength];
+        for (int i = 0; i < unitTypes.length; i++) {
+            unitTypes[i] = new UnitType(is);
+        }
+        sts = new SampleSet(is);
+        mcep = new SampleSet(is);
 
-	int numCarts = is.readInt();
-	cartMap = new HashMap();
-	for (int i = 0; i < numCarts; i++) {
-	    String name = Utilities.getString(is);
-	    CART cart = CARTImpl.loadBinary(is);
-	    cartMap.put(name, cart);
+        int numCarts = is.readInt();
+        cartMap = new HashMap();
+        for (int i = 0; i < numCarts; i++) {
+            String name = Utilities.getString(is);
+            CART cart = CARTImpl.loadBinary(is);
+            cartMap.put(name, cart);
 
-	    if (defaultCart == null) {
-		defaultCart = cart;
-	    }
-	}
+            if (defaultCart == null) {
+                defaultCart = cart;
+            }
+        }
     }
-    
+
     /**
      * Load debug info about the origin of units from the given input stream.
      * The file format is identical to that of the Festvox .catalogue files.
@@ -680,11 +681,10 @@ public class ClusterUnitDatabase {
      * @param is the input stream from which to read the debug info.
      * @throws IOException if a read problem occurs.
      */
-    private void loadUnitOrigins(InputStream is)  throws IOException
-    {
+    private void loadUnitOrigins(InputStream is) throws IOException {
         unitOrigins = new UnitOriginInfo[units.length];
         BufferedReader in = new BufferedReader(new InputStreamReader(is));
-        
+
         String currentLine = null;
         // Skip EST header:
         while ((currentLine = in.readLine()) != null) {
@@ -699,7 +699,8 @@ public class ClusterUnitDatabase {
                 unitOrigins[index].originFile = tokens[1];
                 unitOrigins[index].originStart = Float.valueOf(tokens[2]).floatValue();
                 unitOrigins[index].originEnd = Float.valueOf(tokens[4]).floatValue();
-            } catch (NumberFormatException nfe) {}
+            } catch (NumberFormatException nfe) {
+            }
         }
         in.close();
     }
@@ -711,55 +712,55 @@ public class ClusterUnitDatabase {
      * @param path the path to dump the file to
      */
     void dumpBinary(String path) {
-	try {
-	    FileOutputStream fos = new FileOutputStream(path);
-	    DataOutputStream os = new DataOutputStream(new
-		    BufferedOutputStream(fos));
+        try {
+            FileOutputStream fos = new FileOutputStream(path);
+            DataOutputStream os = new DataOutputStream(new
+                    BufferedOutputStream(fos));
 
-	    os.writeInt(MAGIC);
-	    os.writeInt(VERSION);
-	    os.writeInt(continuityWeight);
-	    os.writeInt(optimalCoupling);
-	    os.writeInt(extendSelections);
-	    os.writeInt(joinMethod);
-	    os.writeInt(joinWeightShift);
-	    os.writeInt(joinWeights.length);
-	    for (int i = 0; i < joinWeights.length; i++) {
-		os.writeInt(joinWeights[i]);
-	    }
+            os.writeInt(MAGIC);
+            os.writeInt(VERSION);
+            os.writeInt(continuityWeight);
+            os.writeInt(optimalCoupling);
+            os.writeInt(extendSelections);
+            os.writeInt(joinMethod);
+            os.writeInt(joinWeightShift);
+            os.writeInt(joinWeights.length);
+            for (int i = 0; i < joinWeights.length; i++) {
+                os.writeInt(joinWeights[i]);
+            }
 
-	    os.writeInt(units.length);
-	    for (int i = 0; i < units.length; i++) {
-		units[i].dumpBinary(os);
-	    }
+            os.writeInt(units.length);
+            for (int i = 0; i < units.length; i++) {
+                units[i].dumpBinary(os);
+            }
 
-	    os.writeInt(unitTypes.length);
-	    for (int i = 0; i < unitTypes.length; i++) {
-		unitTypes[i].dumpBinary(os);
-	    }
-	    sts.dumpBinary(os);
-	    mcep.dumpBinary(os);
+            os.writeInt(unitTypes.length);
+            for (int i = 0; i < unitTypes.length; i++) {
+                unitTypes[i].dumpBinary(os);
+            }
+            sts.dumpBinary(os);
+            mcep.dumpBinary(os);
 
-	    os.writeInt(cartMap.size());
-	    for (Iterator i = cartMap.keySet().iterator(); i.hasNext();) {
-		String name = (String) i.next();
-		CART cart =  (CART) cartMap.get(name);
+            os.writeInt(cartMap.size());
+            for (Iterator i = cartMap.keySet().iterator(); i.hasNext(); ) {
+                String name = (String) i.next();
+                CART cart = (CART) cartMap.get(name);
 
-		Utilities.outString(os, name);
-		cart.dumpBinary(os);
-	    }
-	    os.close();
+                Utilities.outString(os, name);
+                cart.dumpBinary(os);
+            }
+            os.close();
 
-	    // note that we are not currently saving the state
-	    // of the default cart
+            // note that we are not currently saving the state
+            // of the default cart
 
-	} catch (FileNotFoundException fe) {
-	    throw new Error("Can't dump binary database " +
-		    fe.getMessage());
-	} catch (IOException ioe) {
-	    throw new Error("Can't write binary database " +
-		    ioe.getMessage());
-	}
+        } catch (FileNotFoundException fe) {
+            throw new Error("Can't dump binary database " +
+                    fe.getMessage());
+        } catch (IOException ioe) {
+            throw new Error("Can't write binary database " +
+                    ioe.getMessage());
+        }
     }
 
 
@@ -771,8 +772,8 @@ public class ClusterUnitDatabase {
      * @return true if the databases are identical
      */
     public boolean compare(ClusterUnitDatabase other) {
-	System.out.println("Warning: Compare not implemented yet");
-	return false;
+        System.out.println("Warning: Compare not implemented yet");
+        return false;
     }
 
     /**
@@ -800,93 +801,93 @@ public class ClusterUnitDatabase {
      *		<li> <code> -showTimes </code> shows timings for any
      *		loading, comparing or dumping operation
      *    </ul>
-     * 
+     *
      */
     public static void main(String[] args) {
-	boolean showTimes = false;
+        boolean showTimes = false;
         String srcPath = ".";
         String destPath = ".";
 
-	try {
-	    if (args.length > 0) {
-		BulkTimer timer = new BulkTimer();
-		timer.start();
-		for (int i = 0 ; i < args.length; i++) {
+        try {
+            if (args.length > 0) {
+                BulkTimer timer = new BulkTimer();
+                timer.start();
+                for (int i = 0; i < args.length; i++) {
                     if (args[i].equals("-src")) {
                         srcPath = args[++i];
                     } else if (args[i].equals("-dest")) {
                         destPath = args[++i];
                     } else if (args[i].equals("-generate_binary")) {
-                         String name = "clunits.txt";
-                         if (i + 1 < args.length) {
-                             String nameArg = args[++i];
-                             if (!nameArg.startsWith("-")) {
-                                 name = nameArg;
-                             }
-			 }
+                        String name = "clunits.txt";
+                        if (i + 1 < args.length) {
+                            String nameArg = args[++i];
+                            if (!nameArg.startsWith("-")) {
+                                name = nameArg;
+                            }
+                        }
 
-                         int suffixPos = name.lastIndexOf(".txt");
+                        int suffixPos = name.lastIndexOf(".txt");
 
-                         String binaryName = "clunits.bin";
-                         if (suffixPos != -1) {
-                             binaryName = name.substring(0, suffixPos) + ".bin";
-                         }
+                        String binaryName = "clunits.bin";
+                        if (suffixPos != -1) {
+                            binaryName = name.substring(0, suffixPos) + ".bin";
+                        }
 
-			 System.out.println("Loading " + name);
-			 timer.start("load_text");
-			 ClusterUnitDatabase udb = new
-			     ClusterUnitDatabase(
-				new URL("file:" + srcPath + "/" + name),
+                        System.out.println("Loading " + name);
+                        timer.start("load_text");
+                        ClusterUnitDatabase udb = new
+                                ClusterUnitDatabase(
+                                new URL("file:" + srcPath + "/" + name),
                                 false);
-			 timer.stop("load_text");
+                        timer.stop("load_text");
 
-			 System.out.println("Dumping " + binaryName);
-			 timer.start("dump_binary");
-	    		 udb.dumpBinary(destPath + "/" + binaryName);
-			 timer.stop("dump_binary");
+                        System.out.println("Dumping " + binaryName);
+                        timer.start("dump_binary");
+                        udb.dumpBinary(destPath + "/" + binaryName);
+                        timer.stop("dump_binary");
 
-		    } else if (args[i].equals("-compare")) {
+                    } else if (args[i].equals("-compare")) {
 
-			timer.start("load_text");
-			 ClusterUnitDatabase udb = new
-			     ClusterUnitDatabase(
-				new URL("file:./cmu_time_awb.txt"), false);
-			timer.stop("load_text");
+                        timer.start("load_text");
+                        ClusterUnitDatabase udb = new
+                                ClusterUnitDatabase(
+                                new URL("file:./cmu_time_awb.txt"), false);
+                        timer.stop("load_text");
 
-			timer.start("load_binary");
-			ClusterUnitDatabase budb = 
-			    new ClusterUnitDatabase(
-				    new URL("file:./cmu_time_awb.bin"), true);
-			timer.stop("load_binary");
+                        timer.start("load_binary");
+                        ClusterUnitDatabase budb =
+                                new ClusterUnitDatabase(
+                                        new URL("file:./cmu_time_awb.bin"), true);
+                        timer.stop("load_binary");
 
-			timer.start("compare");
-			if (udb.compare(budb)) {
-			    System.out.println("other compare ok");
-			} else {
-			    System.out.println("other compare different");
-			}
-			timer.stop("compare");
-		    } else if (args[i].equals("-showtimes")) {
-			showTimes = true;
-		    } else {
-			System.out.println("Unknown option " + args[i]);
-		    }
-		}
-		timer.stop();
-		if (showTimes) {
-		    timer.show("ClusterUnitDatabase");
-		}
-	    } else {
-		System.out.println("Options: ");
-		System.out.println("    -src path");
-		System.out.println("    -dest path");
-		System.out.println("    -compare");
-		System.out.println("    -generate_binary");
-		System.out.println("    -showTimes");
-	    }
-	} catch (IOException ioe) {
-	    System.err.println(ioe);
-	}
+                        timer.start("compare");
+                        if (udb.compare(budb)) {
+                            System.out.println("other compare ok");
+                        } else {
+                            System.out.println("other compare different");
+                        }
+                        timer.stop("compare");
+                    } else if (args[i].equals("-showtimes")) {
+                        showTimes = true;
+                    } else {
+                        System.out.println("Unknown option " + args[i]);
+                    }
+                }
+                timer.stop();
+                if (showTimes) {
+                    timer.show("ClusterUnitDatabase");
+                }
+            } else {
+                System.out.println("Options: ");
+                System.out.println("    -src path");
+                System.out.println("    -dest path");
+                System.out.println("    -compare");
+                System.out.println("    -generate_binary");
+                System.out.println("    -showTimes");
+            }
+        } catch (IOException ioe) {
+            System.err.println(ioe);
+        }
     }
 
 
@@ -895,91 +896,91 @@ public class ClusterUnitDatabase {
      */
     class DatabaseClusterUnit {
 
-	int type;
-	int phone;
-	int start;
-	int end;
-	int prev;
-	int next;
+        int type;
+        int phone;
+        int start;
+        int end;
+        int prev;
+        int next;
 
-	/**
-	 * Constructs a unit.
-	 *
-	 * @param type the name of the unit
-	 * @param phone the name of the unit
-	 * @param start the starting frame
-	 * @param end the ending frame
-	 * @param prev the previous index
-	 * @param next the next index
-	 */
-	DatabaseClusterUnit(int type, int phone, int start, 
-		int end, int prev, int next) {
-	    this.type = type;
-	    this.phone = phone;
-	    this.start = start;
-	    this.end = end;
-	    this.prev = prev;
-	    this.next = next;
-	}
+        /**
+         * Constructs a unit.
+         *
+         * @param type the name of the unit
+         * @param phone the name of the unit
+         * @param start the starting frame
+         * @param end the ending frame
+         * @param prev the previous index
+         * @param next the next index
+         */
+        DatabaseClusterUnit(int type, int phone, int start,
+                            int end, int prev, int next) {
+            this.type = type;
+            this.phone = phone;
+            this.start = start;
+            this.end = end;
+            this.prev = prev;
+            this.next = next;
+        }
 
-	/**
-	 * Creates a unit by reading it from the given byte buffer.
-	 *
-	 * @param bb source of the DatabaseClusterUnit data
-	 *
-	 * @throws IOException if an IO error occurs
-	 */
-	DatabaseClusterUnit(ByteBuffer bb) throws IOException {
-	    this.type = bb.getInt();
-	    this.phone = bb.getInt();
-	    this.start = bb.getInt();
-	    this.end = bb.getInt();
-	    this.prev = bb.getInt();
-	    this.next = bb.getInt();
-	}
+        /**
+         * Creates a unit by reading it from the given byte buffer.
+         *
+         * @param bb source of the DatabaseClusterUnit data
+         *
+         * @throws IOException if an IO error occurs
+         */
+        DatabaseClusterUnit(ByteBuffer bb) throws IOException {
+            this.type = bb.getInt();
+            this.phone = bb.getInt();
+            this.start = bb.getInt();
+            this.end = bb.getInt();
+            this.prev = bb.getInt();
+            this.next = bb.getInt();
+        }
 
-	/**
-	 * Creates a unit by reading it from the given input stream.
-	 *
-	 * @param is source of the DatabaseClusterUnit data
-	 *
-	 * @throws IOException if an IO error occurs
-	 */
-	DatabaseClusterUnit(DataInputStream is) throws IOException {
-	    this.type = is.readInt();
-	    this.phone = is.readInt();
-	    this.start = is.readInt();
-	    this.end = is.readInt();
-	    this.prev = is.readInt();
-	    this.next = is.readInt();
-	}
+        /**
+         * Creates a unit by reading it from the given input stream.
+         *
+         * @param is source of the DatabaseClusterUnit data
+         *
+         * @throws IOException if an IO error occurs
+         */
+        DatabaseClusterUnit(DataInputStream is) throws IOException {
+            this.type = is.readInt();
+            this.phone = is.readInt();
+            this.start = is.readInt();
+            this.end = is.readInt();
+            this.prev = is.readInt();
+            this.next = is.readInt();
+        }
 
-	/**
-	 * Returns the name of the unit.
-	 *
-	 * @return the name
-	 */
-	String getName() {
-	    return unitTypes[type].getName();
-	}
+        /**
+         * Returns the name of the unit.
+         *
+         * @return the name
+         */
+        String getName() {
+            return unitTypes[type].getName();
+        }
 
-	/**
-	 * Dumps this unit to the given output stream.
-	 *
-	 * @param os the output stream
-	 *
-	 * @throws IOException if an error occurs.
-	 */
-	void dumpBinary(DataOutputStream os) throws IOException {
-	    os.writeInt(type);
-	    os.writeInt(phone);
-	    os.writeInt(start);
-	    os.writeInt(end);
-	    os.writeInt(prev);
-	    os.writeInt(next);
-	}
+        /**
+         * Dumps this unit to the given output stream.
+         *
+         * @param os the output stream
+         *
+         * @throws IOException if an error occurs.
+         */
+        void dumpBinary(DataOutputStream os) throws IOException {
+            os.writeInt(type);
+            os.writeInt(phone);
+            os.writeInt(start);
+            os.writeInt(end);
+            os.writeInt(prev);
+            os.writeInt(next);
+        }
     }
-    
+
     /**
      * Represents debug information about the origin of a unit.
      */
@@ -995,7 +996,7 @@ public class ClusterUnitDatabase {
      * @param s the error message
      */
     private void error(String s) {
-	System.out.println("ClusterUnitDatabase Error: " + s);
+        System.out.println("ClusterUnitDatabase Error: " + s);
     }
 }
 
@@ -1015,9 +1016,9 @@ class UnitType {
      * @param count the number of elements for this type
      */
     UnitType(String name, int start, int count) {
-	this.name = name;
-	this.start = start;
-	this.count = count;
+        this.name = name;
+        this.start = start;
+        this.count = count;
     }
 
     /**
@@ -1028,9 +1029,9 @@ class UnitType {
      * @throws IOException if an IO error occurs
      */
     UnitType(DataInputStream is) throws IOException {
-	this.name = Utilities.getString(is);
-	this.start = is.readInt();
-	this.count = is.readInt();
+        this.name = Utilities.getString(is);
+        this.start = is.readInt();
+        this.count = is.readInt();
     }
 
     /**
@@ -1041,18 +1042,18 @@ class UnitType {
      * @throws IOException if an IO error occurs
      */
     UnitType(ByteBuffer bb) throws IOException {
-	this.name = Utilities.getString(bb);
-	this.start = bb.getInt();
-	this.count = bb.getInt();
+        this.name = Utilities.getString(bb);
+        this.start = bb.getInt();
+        this.count = bb.getInt();
     }
 
     /**
      * Gets the name for this unit type
-     * 
+     *
      * @return the name for the type
      */
     String getName() {
-	return name;
+        return name;
     }
 
     /**
@@ -1061,7 +1062,7 @@ class UnitType {
      * @return the start index
      */
     int getStart() {
-	return start;
+        return start;
     }
 
     /**
@@ -1070,7 +1071,7 @@ class UnitType {
      * @return the  count for this type
      */
     int getCount() {
-	return count;
+        return count;
     }
 
     /**
@@ -1081,8 +1082,8 @@ class UnitType {
      * @throws IOException if an error occurs.
      */
     void dumpBinary(DataOutputStream os) throws IOException {
-	Utilities.outString(os, name);
-	os.writeInt(start);
-	os.writeInt(count);
+        Utilities.outString(os, name);
+        os.writeInt(start);
+        os.writeInt(count);
     }
 }

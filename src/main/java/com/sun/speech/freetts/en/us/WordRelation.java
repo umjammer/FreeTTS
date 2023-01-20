@@ -1,20 +1,21 @@
 /**
  * Portions Copyright 2001 Sun Microsystems, Inc.
- * Portions Copyright 1999-2001 Language Technologies Institute, 
+ * Portions Copyright 1999-2001 Language Technologies Institute,
  * Carnegie Mellon University.
  * All Rights Reserved.  Use is subject to license terms.
- * 
+ * <p>
  * See the file "license.terms" for information on usage and
- * redistribution of this file, and for a DISCLAIMER OF ALL 
+ * redistribution of this file, and for a DISCLAIMER OF ALL
  * WARRANTIES.
  */
+
 package com.sun.speech.freetts.en.us;
 
 import com.sun.speech.freetts.FeatureSet;
-import com.sun.speech.freetts.FeatureSetImpl;
 import com.sun.speech.freetts.Item;
 import com.sun.speech.freetts.Relation;
 import com.sun.speech.freetts.Utterance;
+
 
 /**
  * Helper class to add words and breaks into a Relation object.
@@ -26,8 +27,8 @@ public class WordRelation {
 
 
     private WordRelation(Relation parentRelation, TokenToWords tokenToWords) {
-	this.relation = parentRelation;
-	this.tokenToWords = tokenToWords;
+        this.relation = parentRelation;
+        this.tokenToWords = tokenToWords;
     }
 
 
@@ -41,9 +42,9 @@ public class WordRelation {
      * @return a WordRelation object
      */
     public static WordRelation createWordRelation(Utterance utterance,
-						  TokenToWords tokenToWords) {
-	Relation relation = utterance.createRelation(Relation.WORD);
-	return new WordRelation(relation, tokenToWords);
+                                                  TokenToWords tokenToWords) {
+        Relation relation = utterance.createRelation(Relation.WORD);
+        return new WordRelation(relation, tokenToWords);
     }
 
 
@@ -51,11 +52,11 @@ public class WordRelation {
      * Adds a break as a feature to the last item in the list.
      */
     public void addBreak() {
-	Item wordItem = (Item) relation.getTail();
-	if (wordItem != null) {
-	    FeatureSet featureSet = wordItem.getFeatures();
-	    featureSet.setString("break", "1");
-	}
+        Item wordItem = (Item) relation.getTail();
+        if (wordItem != null) {
+            FeatureSet featureSet = wordItem.getFeatures();
+            featureSet.setString("break", "1");
+        }
     }
 
 
@@ -65,11 +66,11 @@ public class WordRelation {
      * @param word the word to add
      */
     public void addWord(String word) {
-	Item tokenItem = tokenToWords.getTokenItem();
-	Item wordItem = tokenItem.createDaughter();
-	FeatureSet featureSet = wordItem.getFeatures();
-	featureSet.setString("name", word);
-	relation.appendItem(wordItem);
+        Item tokenItem = tokenToWords.getTokenItem();
+        Item wordItem = tokenItem.createDaughter();
+        FeatureSet featureSet = wordItem.getFeatures();
+        featureSet.setString("name", word);
+        relation.appendItem(wordItem);
     }
 
 
@@ -79,9 +80,9 @@ public class WordRelation {
      * @param word the word to set
      */
     public void setLastWord(String word) {
-	Item lastItem = relation.getTail();
-	FeatureSet featureSet = lastItem.getFeatures();
-	featureSet.setString("name", word);
+        Item lastItem = relation.getTail();
+        FeatureSet featureSet = lastItem.getFeatures();
+        featureSet.setString("name", word);
     }
 
 
@@ -91,6 +92,6 @@ public class WordRelation {
      * @return the last item
      */
     public Item getTail() {
-	return relation.getTail();
+        return relation.getTail();
     }
 }

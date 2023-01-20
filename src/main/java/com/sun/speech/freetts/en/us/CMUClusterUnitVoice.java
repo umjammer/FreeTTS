@@ -1,13 +1,14 @@
 /**
  * Portions Copyright 2001 Sun Microsystems, Inc.
- * Portions Copyright 1999-2001 Language Technologies Institute, 
+ * Portions Copyright 1999-2001 Language Technologies Institute,
  * Carnegie Mellon University.
  * All Rights Reserved.  Use is subject to license terms.
- * 
+ * <p>
  * See the file "license.terms" for information on usage and
- * redistribution of this file, and for a DISCLAIMER OF ALL 
+ * redistribution of this file, and for a DISCLAIMER OF ALL
  * WARRANTIES.
  */
+
 package com.sun.speech.freetts.en.us;
 
 import java.io.IOException;
@@ -20,8 +21,8 @@ import com.sun.speech.freetts.UtteranceProcessor;
 import com.sun.speech.freetts.clunits.ClusterUnitPitchmarkGenerator;
 import com.sun.speech.freetts.clunits.ClusterUnitSelector;
 import com.sun.speech.freetts.relp.UnitConcatenator;
-
 import de.dfki.lt.freetts.ConcatenativeVoice;
+
 
 /**
  * Defines voice that does cluster unit selection.
@@ -48,13 +49,13 @@ public class CMUClusterUnitVoice extends CMUVoice implements ConcatenativeVoice 
      * for this voice.
      */
     public CMUClusterUnitVoice(String name, Gender gender, Age age,
-            String description, Locale locale, String domain,
-            String organization, CMULexicon lexicon, URL database) {
-	super(name, gender, age, description, locale,
+                               String description, Locale locale, String domain,
+                               String organization, CMULexicon lexicon, URL database) {
+        super(name, gender, age, description, locale,
                 domain, organization, lexicon);
-	setRate(150f);
-	setPitch(100F);
-	setPitchRange(12F);
+        setRate(150f);
+        setPitch(100F);
+        setPitchRange(12F);
         this.database = database;
     }
 
@@ -74,59 +75,59 @@ public class CMUClusterUnitVoice extends CMUVoice implements ConcatenativeVoice 
      * @throws IOException if an I/O error occurs
      */
     protected void setupFeatureSet() throws IOException {
-	super.setupFeatureSet();
-	getFeatures().setString(FEATURE_JOIN_TYPE, "simple_join");
+        super.setupFeatureSet();
+        getFeatures().setString(FEATURE_JOIN_TYPE, "simple_join");
     }
 
     /**
      * Returns the unit selector to be used by this voice.
      * Derived voices typically override this to customize behaviors.
      * This voice uses  a cluster unit selector as the unit selector.
-     * 
+     *
      * @return the post lexical processor
-     * 
+     *
      * @throws IOException if an IO error occurs while getting
      *     processor
      */
     public UtteranceProcessor getUnitSelector() throws IOException {
-	return new ClusterUnitSelector(getDatabase());
+        return new ClusterUnitSelector(getDatabase());
     }
 
     /**
      * Returns the pitch mark generator to be used by this voice.
      * Derived voices typically override this to customize behaviors.
      * There is no default unit selector
-     * 
+     *
      * @return the post lexical processor
-     * 
+     *
      * @throws IOException if an IO error occurs while getting
      *     processor
      */
     public UtteranceProcessor getPitchmarkGenerator() throws IOException {
-	return new ClusterUnitPitchmarkGenerator();
+        return new ClusterUnitPitchmarkGenerator();
     }
 
     /**
      * Returns the unit concatenator to be used by this voice.
      * Derived voices typically override this to customize behaviors.
      * There is no default unit selector
-     * 
+     *
      * @return the post lexical processor
-     * 
+     *
      * @throws IOException if an IO error occurs while getting
      *     processor
      */
     public UtteranceProcessor getUnitConcatenator() throws IOException {
-	return new UnitConcatenator();
+        return new UnitConcatenator();
     }
 
-    
+
     /**
      * Converts this object to a string
-     * 
+     *
      * @return a string representation of this object
      */
     public String toString() {
-	return "CMUClusterUnitVoice";
+        return "CMUClusterUnitVoice";
     }
 }

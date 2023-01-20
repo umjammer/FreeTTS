@@ -1,13 +1,14 @@
 /**
  * Portions Copyright 2001 Sun Microsystems, Inc.
- * Portions Copyright 1999-2001 Language Technologies Institute, 
+ * Portions Copyright 1999-2001 Language Technologies Institute,
  * Carnegie Mellon University.
  * All Rights Reserved.  Use is subject to license terms.
- * 
+ * <p>
  * See the file "license.terms" for information on usage and
- * redistribution of this file, and for a DISCLAIMER OF ALL 
+ * redistribution of this file, and for a DISCLAIMER OF ALL
  * WARRANTIES.
  */
+
 package com.sun.speech.freetts;
 
 import java.util.ArrayList;
@@ -39,26 +40,26 @@ import com.sun.speech.freetts.util.Utilities;
 public class PathExtractorImpl implements PathExtractor {
     /** Logger instance. */
     private static final Logger LOGGER =
-        Logger.getLogger(PathExtractorImpl.class.getName());
+            Logger.getLogger(PathExtractorImpl.class.getName());
 
     /**
-      * If this system property is set to true, paths will
-      * not be compiled.
-      */
+     * If this system property is set to true, paths will
+     * not be compiled.
+     */
     public final static String INTERPRET_PATHS_PROPERTY =
-	"com.sun.speech.freetts.interpretCartPaths";
+            "com.sun.speech.freetts.interpretCartPaths";
 
     /**
      * If this system property is set to true, CART feature/item
      * paths will only be compiled as needed.
      */
     public final static String LAZY_COMPILE_PROPERTY =
-	"com.sun.speech.freetts.lazyCartCompile";
+            "com.sun.speech.freetts.lazyCartCompile";
 
-    private final static boolean INTERPRET_PATHS = 
-	Utilities.getProperty(INTERPRET_PATHS_PROPERTY, "false").equals("true");
-    private final static boolean LAZY_COMPILE  = 
-	Utilities.getProperty(LAZY_COMPILE_PROPERTY, "true").equals("true");
+    private final static boolean INTERPRET_PATHS =
+            Utilities.getProperty(INTERPRET_PATHS_PROPERTY, "false").equals("true");
+    private final static boolean LAZY_COMPILE =
+            Utilities.getProperty(LAZY_COMPILE_PROPERTY, "true").equals("true");
 
     private String pathAndFeature;
     private String path;
@@ -70,31 +71,31 @@ public class PathExtractorImpl implements PathExtractor {
      * Creates a path for the given feature.
      */
     public PathExtractorImpl(String pathAndFeature, boolean wantFeature) {
-	this.pathAndFeature = pathAndFeature;
-	if (INTERPRET_PATHS)  {
-	    path = pathAndFeature;
-	    return;
-	}
-    
-	if (wantFeature) {
-	    int lastDot = pathAndFeature.lastIndexOf(".");
-	    // string can be of the form "p.feature" or just "feature"
+        this.pathAndFeature = pathAndFeature;
+        if (INTERPRET_PATHS) {
+            path = pathAndFeature;
+            return;
+        }
 
-	    if (lastDot == -1) {
-		feature = pathAndFeature;
-		path = null;
-	    } else {
-		feature = pathAndFeature.substring(lastDot + 1);
-		path = pathAndFeature.substring(0, lastDot);
-	    }
-	    this.wantFeature = wantFeature;
-	} else {
-	    this.path = pathAndFeature;
-	}
+        if (wantFeature) {
+            int lastDot = pathAndFeature.lastIndexOf(".");
+            // string can be of the form "p.feature" or just "feature"
 
-	if (!LAZY_COMPILE) {
-	    compiledPath = compile(path);
-	}
+            if (lastDot == -1) {
+                feature = pathAndFeature;
+                path = null;
+            } else {
+                feature = pathAndFeature.substring(lastDot + 1);
+                path = pathAndFeature.substring(0, lastDot);
+            }
+            this.wantFeature = wantFeature;
+        } else {
+            this.path = pathAndFeature;
+        }
+
+        if (!LAZY_COMPILE) {
+            compiledPath = compile(path);
+        }
     }
 
     /**
@@ -104,47 +105,47 @@ public class PathExtractorImpl implements PathExtractor {
      */
     public Item findItem(Item item) {
 
-	if (INTERPRET_PATHS) {
-	    return item.findItem(path);
-	}
+        if (INTERPRET_PATHS) {
+            return item.findItem(path);
+        }
 
-	if (compiledPath == null) {
-	    compiledPath = compile(path);
-	}
+        if (compiledPath == null) {
+            compiledPath = compile(path);
+        }
 
-	Item pitem = item;
+        Item pitem = item;
 
-	for (int i = 0; pitem != null && i < compiledPath.length; ) {
-	    OpEnum op = (OpEnum) compiledPath[i++];
-	    if (op == OpEnum.NEXT) {
-		pitem = pitem.getNext();
-	    } else if (op == OpEnum.PREV) {
-		pitem = pitem.getPrevious();
-	    } else if (op == OpEnum.NEXT_NEXT) {
-		pitem = pitem.getNext();
-		if (pitem != null) {
-		    pitem = pitem.getNext();
-		}
-	    } else if (op == OpEnum.PREV_PREV) {
-		pitem = pitem.getPrevious();
-		if (pitem != null) {
-		    pitem = pitem.getPrevious();
-		}
-	    } else if (op == OpEnum.PARENT) {
-		pitem = pitem.getParent();
-	    } else if (op == OpEnum.DAUGHTER) {
-		pitem = pitem.getDaughter();
-	    } else if (op == OpEnum.LAST_DAUGHTER) {
-		pitem = pitem.getLastDaughter();
-	    } else if (op == OpEnum.RELATION) {
-		String relationName = (String) compiledPath[i++];
-		pitem = pitem.getSharedContents().getItemRelation(relationName);
-	    } else {
-		System.out.println("findItem: bad feature " + op +
-			" in " + path);
-	    }
-	}
-	return pitem;
+        for (int i = 0; pitem != null && i < compiledPath.length; ) {
+            OpEnum op = (OpEnum) compiledPath[i++];
+            if (op == OpEnum.NEXT) {
+                pitem = pitem.getNext();
+            } else if (op == OpEnum.PREV) {
+                pitem = pitem.getPrevious();
+            } else if (op == OpEnum.NEXT_NEXT) {
+                pitem = pitem.getNext();
+                if (pitem != null) {
+                    pitem = pitem.getNext();
+                }
+            } else if (op == OpEnum.PREV_PREV) {
+                pitem = pitem.getPrevious();
+                if (pitem != null) {
+                    pitem = pitem.getPrevious();
+                }
+            } else if (op == OpEnum.PARENT) {
+                pitem = pitem.getParent();
+            } else if (op == OpEnum.DAUGHTER) {
+                pitem = pitem.getDaughter();
+            } else if (op == OpEnum.LAST_DAUGHTER) {
+                pitem = pitem.getLastDaughter();
+            } else if (op == OpEnum.RELATION) {
+                String relationName = (String) compiledPath[i++];
+                pitem = pitem.getSharedContents().getItemRelation(relationName);
+            } else {
+                System.out.println("findItem: bad feature " + op +
+                        " in " + path);
+            }
+        }
+        return pitem;
     }
 
 
@@ -156,44 +157,44 @@ public class PathExtractorImpl implements PathExtractor {
      */
     public Object findFeature(Item item) {
 
-	if (INTERPRET_PATHS) {
-	    return item.findFeature(path);
-	}
+        if (INTERPRET_PATHS) {
+            return item.findFeature(path);
+        }
 
-	Item pitem = findItem(item);
-	Object results = null;
-	if (pitem != null) {
-	        if (LOGGER.isLoggable(Level.FINER)) {
-	            LOGGER.finer("findFeature: Item [" + pitem + "], feature '" 
-	                    + feature + "'");
-	        }
+        Item pitem = findItem(item);
+        Object results = null;
+        if (pitem != null) {
+            if (LOGGER.isLoggable(Level.FINER)) {
+                LOGGER.finer("findFeature: Item [" + pitem + "], feature '"
+                        + feature + "'");
+            }
 
-	    FeatureProcessor fp =
-		pitem.getOwnerRelation().getUtterance().
-		    getVoice().getFeatureProcessor(feature);
+            FeatureProcessor fp =
+                    pitem.getOwnerRelation().getUtterance().
+                            getVoice().getFeatureProcessor(feature);
 
-	    if (fp != null) {
-	        if (LOGGER.isLoggable(Level.FINER)) {
-	            LOGGER.finer(
-	                    "findFeature: There is a feature processor for '" 
-	                    + feature + "'");
-	        }
-		try {
-		    results = fp.process(pitem);
-		} catch (ProcessException pe) {
-		    LOGGER.severe("trouble while processing " + fp);
-		     throw new Error(pe);
-		}
-	    } else {
-		results = pitem.getFeatures().getObject(feature);
-	    }
-	}
+            if (fp != null) {
+                if (LOGGER.isLoggable(Level.FINER)) {
+                    LOGGER.finer(
+                            "findFeature: There is a feature processor for '"
+                                    + feature + "'");
+                }
+                try {
+                    results = fp.process(pitem);
+                } catch (ProcessException pe) {
+                    LOGGER.severe("trouble while processing " + fp);
+                    throw new Error(pe);
+                }
+            } else {
+                results = pitem.getFeatures().getObject(feature);
+            }
+        }
 
-	results = (results == null) ? "0" : results;
-	if (LOGGER.isLoggable(Level.FINER)) {
-	    LOGGER.finer("findFeature: ...results = '" + results + "'");
-	}
-	return results;
+        results = (results == null) ? "0" : results;
+        if (LOGGER.isLoggable(Level.FINER)) {
+            LOGGER.finer("findFeature: ...results = '" + results + "'");
+        }
+        return results;
     }
 
 
@@ -204,34 +205,34 @@ public class PathExtractorImpl implements PathExtractor {
      * of an array path traversal enums and associated strings
      */
     private Object[] compile(String path) {
-	List list = new ArrayList();
+        List list = new ArrayList();
 
-	if (path == null) {
-	    return list.toArray();
-	}
+        if (path == null) {
+            return list.toArray();
+        }
 
-	StringTokenizer tok = new StringTokenizer(path, ":.");
+        StringTokenizer tok = new StringTokenizer(path, ":.");
 
-	while (tok.hasMoreTokens()) {
-	    String token = tok.nextToken();
-	    OpEnum op = OpEnum.getInstance(token);
-	    if (op == null) {
-		throw new Error("Bad path compiled " + path);
-	    } 
+        while (tok.hasMoreTokens()) {
+            String token = tok.nextToken();
+            OpEnum op = OpEnum.getInstance(token);
+            if (op == null) {
+                throw new Error("Bad path compiled " + path);
+            }
 
-	    list.add(op);
+            list.add(op);
 
-	    if (op == OpEnum.RELATION) {
-		list.add(tok.nextToken());
-	    }
-	}
-	return list.toArray();
+            if (op == OpEnum.RELATION) {
+                list.add(tok.nextToken());
+            }
+        }
+        return list.toArray();
     }
 
     // inherited for Object
 
     public String toString() {
-	return pathAndFeature;
+        return pathAndFeature;
     }
 
 
@@ -267,8 +268,8 @@ class OpEnum {
      * @param name the path name for this Enum
      */
     private OpEnum(String name) {
-	this.name = name;
-	map.put(name, this);
+        this.name = name;
+        map.put(name, this);
     }
 
     /**
@@ -277,11 +278,11 @@ class OpEnum {
      * @param name the name of the OpEnum of interest
      */
     public static OpEnum getInstance(String name) {
-	return (OpEnum) map.get(name);
+        return (OpEnum) map.get(name);
     }
 
     // inherited from Object
     public String toString() {
-	return name;
+        return name;
     }
 }

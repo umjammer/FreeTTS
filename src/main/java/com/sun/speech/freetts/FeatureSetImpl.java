@@ -1,13 +1,14 @@
 /**
  * Portions Copyright 2001 Sun Microsystems, Inc.
- * Portions Copyright 1999-2001 Language Technologies Institute, 
+ * Portions Copyright 1999-2001 Language Technologies Institute,
  * Carnegie Mellon University.
  * All Rights Reserved.  Use is subject to license terms.
- * 
+ * <p>
  * See the file "license.terms" for information on usage and
- * redistribution of this file, and for a DISCLAIMER OF ALL 
+ * redistribution of this file, and for a DISCLAIMER OF ALL
  * WARRANTIES.
  */
+
 package com.sun.speech.freetts;
 
 import java.io.PrintWriter;
@@ -20,6 +21,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.sun.speech.freetts.util.Utilities;
+
 
 /**
  * Implementation of the FeatureSet interface.
@@ -43,7 +45,7 @@ public class FeatureSetImpl implements FeatureSet {
      * @return true if the named feature is present
      */
     public boolean isPresent(String name) {
-	return featureMap.containsKey(name);
+        return featureMap.containsKey(name);
     }
 
 
@@ -53,7 +55,7 @@ public class FeatureSetImpl implements FeatureSet {
      * @param name the name of the feature of interest
      */
     public void remove(String name) {
-	featureMap.remove(name);
+        featureMap.remove(name);
     }
 
     /**
@@ -97,7 +99,7 @@ public class FeatureSetImpl implements FeatureSet {
      *   float
      */
     public float getFloat(String name) {
-	return ((Float) getObject(name)).floatValue();
+        return ((Float) getObject(name)).floatValue();
     }
 
     /**
@@ -109,7 +111,7 @@ public class FeatureSetImpl implements FeatureSet {
      *   is not found
      */
     public Object getObject(String name) {
-	return featureMap.get(name);
+        return featureMap.get(name);
     }
 
     /**
@@ -119,7 +121,7 @@ public class FeatureSetImpl implements FeatureSet {
      * @param value the value of the feature
      */
     public void setInt(String name, int value) {
-	setObject(name, new Integer(value));
+        setObject(name, new Integer(value));
     }
 
     /**
@@ -129,7 +131,7 @@ public class FeatureSetImpl implements FeatureSet {
      * @param value the value of the feature
      */
     public void setFloat(String name, float value) {
-	setObject(name, new Float(value));
+        setObject(name, new Float(value));
     }
 
     /**
@@ -139,7 +141,7 @@ public class FeatureSetImpl implements FeatureSet {
      * @param value the value of the feature
      */
     public void setString(String name, String value) {
-	setObject(name, value);
+        setObject(name, value);
     }
 
     /**
@@ -149,7 +151,7 @@ public class FeatureSetImpl implements FeatureSet {
      * @param value the value of the feature
      */
     public void setObject(String name, Object value) {
-	featureMap.put(name, value);
+        featureMap.put(name, value);
     }
 
     /**
@@ -161,7 +163,7 @@ public class FeatureSetImpl implements FeatureSet {
      * @param title the title
      */
     public void dump(PrintWriter output, int pad, String title) {
-	dump(output, pad, title, false);
+        dump(output, pad, title, false);
     }
 
     /**
@@ -173,36 +175,36 @@ public class FeatureSetImpl implements FeatureSet {
      * @param showName if <code>true</code>, include the feature name
      */
     public void dump(PrintWriter output, int pad, String title,
-	    boolean showName) {
-	List keys = new ArrayList(featureMap.keySet());
+                     boolean showName) {
+        List keys = new ArrayList(featureMap.keySet());
 
-	if (formatter == null) {
-	    formatter = new DecimalFormat("########0.000000");
-	}
-	// Collections.sort(keys);
-	 Collections.reverse(keys);  // to match flite
+        if (formatter == null) {
+            formatter = new DecimalFormat("########0.000000");
+        }
+        // Collections.sort(keys);
+        Collections.reverse(keys);  // to match flite
 
-	Utilities.dump(output, pad, title);
-	for (Iterator i = keys.iterator(); i.hasNext(); ) {
-	    String key = (String) i.next();
+        Utilities.dump(output, pad, title);
+        for (Iterator i = keys.iterator(); i.hasNext(); ) {
+            String key = (String) i.next();
 
-	    if (!showName && key.equals("name")) {
-		continue;
-	    }
+            if (!showName && key.equals("name")) {
+                continue;
+            }
 
-	    Object value = getObject(key);
-	    if (value instanceof Dumpable) {
-		Dumpable d = (Dumpable) value;
-		d.dump(output, pad + 4, key); 
-	    } else {
-		if (value instanceof Float) {
-		    Float fval = (Float) value;
-	            Utilities.dump(output, pad + 4, key + "=" + 
-			    formatter.format(fval.floatValue()));
-		} else {
-	            Utilities.dump(output, pad + 4, key + "=" + value);
-		}
-	    }
-	}
+            Object value = getObject(key);
+            if (value instanceof Dumpable) {
+                Dumpable d = (Dumpable) value;
+                d.dump(output, pad + 4, key);
+            } else {
+                if (value instanceof Float) {
+                    Float fval = (Float) value;
+                    Utilities.dump(output, pad + 4, key + "=" +
+                            formatter.format(fval.floatValue()));
+                } else {
+                    Utilities.dump(output, pad + 4, key + "=" + value);
+                }
+            }
+        }
     }
 }

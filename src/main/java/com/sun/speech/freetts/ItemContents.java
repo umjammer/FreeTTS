@@ -1,15 +1,18 @@
 /**
  * Portions Copyright 2001 Sun Microsystems, Inc.
- * Portions Copyright 1999-2001 Language Technologies Institute, 
+ * Portions Copyright 1999-2001 Language Technologies Institute,
  * Carnegie Mellon University.
  * All Rights Reserved.  Use is subject to license terms.
- * 
+ * <p>
  * See the file "license.terms" for information on usage and
- * redistribution of this file, and for a DISCLAIMER OF ALL 
+ * redistribution of this file, and for a DISCLAIMER OF ALL
  * WARRANTIES.
  */
+
 package com.sun.speech.freetts;
+
 import java.io.PrintWriter;
+
 
 /**
  * Contains the information that is shared between multiple items.
@@ -22,10 +25,10 @@ public class ItemContents {
      * Class Constructor.
      */
     public ItemContents() {
-	features = new FeatureSetImpl();
-	relations = new FeatureSetImpl();
+        features = new FeatureSetImpl();
+        relations = new FeatureSetImpl();
     }
-    
+
     /**
      * Adds the given item to the set of relations. Whenever an item
      * is added to a relation, it should add the name and the Item reference
@@ -36,9 +39,9 @@ public class ItemContents {
      * @param item the item reference in the relation
      */
     public void addItemRelation(String relationName, Item item) {
-	// System.out.println("AddItemRelation: " + relationName
+        // System.out.println("AddItemRelation: " + relationName
         //                    + " item: " + item);
-	relations.setObject(relationName, item);
+        relations.setObject(relationName, item);
     }
 
     /**
@@ -47,14 +50,14 @@ public class ItemContents {
      * @param relationName the name of the relation/item to remove
      */
     public void removeItemRelation(String relationName) {
-	relations.remove(relationName);
+        relations.remove(relationName);
     }
 
     // for debugging
     public void showRelations() {
-	PrintWriter pw = new PrintWriter(System.out);
-	relations.dump(pw, 0, "Contents relations", true);
-	pw.flush();
+        PrintWriter pw = new PrintWriter(System.out);
+        relations.dump(pw, 0, "Contents relations", true);
+        pw.flush();
     }
 
     /**
@@ -67,7 +70,7 @@ public class ItemContents {
      * relation, or null if it does not exist
      */
     public Item getItemRelation(String relationName) {
-	return (Item) relations.getObject(relationName);
+        return (Item) relations.getObject(relationName);
     }
 
     /**
@@ -76,6 +79,6 @@ public class ItemContents {
      * @return the FeatureSet for this contents
      */
     public FeatureSet getFeatures() {
-	return features; 
+        return features;
     }
 }

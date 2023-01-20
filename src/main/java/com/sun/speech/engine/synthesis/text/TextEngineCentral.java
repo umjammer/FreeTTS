@@ -1,15 +1,17 @@
 /**
  * Copyright 2001 Sun Microsystems, Inc.
- * 
+ * <p>
  * See the file "license.terms" for information on usage and
- * redistribution of this file, and for a DISCLAIMER OF ALL 
+ * redistribution of this file, and for a DISCLAIMER OF ALL
  * WARRANTIES.
  */
+
 package com.sun.speech.engine.synthesis.text;
 
 import javax.speech.EngineCentral;
-import javax.speech.EngineModeDesc;
 import javax.speech.EngineList;
+import javax.speech.EngineModeDesc;
+
 
 /**
  * Supports the JSAPI 1.0 <code>EngineCentral</code> interface for a
@@ -25,7 +27,7 @@ public class TextEngineCentral implements EngineCentral {
     /**
      * Simple mode.
      */
-    static private TextSynthesizerModeDesc textModeDesc = 
+    static private TextSynthesizerModeDesc textModeDesc =
             new TextSynthesizerModeDesc();
 
     /**

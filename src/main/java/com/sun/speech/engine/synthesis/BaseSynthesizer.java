@@ -1,10 +1,11 @@
 /**
  * Copyright 1998-2001 Sun Microsystems, Inc.
- * 
+ * <p>
  * See the file "license.terms" for information on usage and
- * redistribution of this file, and for a DISCLAIMER OF ALL 
+ * redistribution of this file, and for a DISCLAIMER OF ALL
  * WARRANTIES.
  */
+
 package com.sun.speech.engine.synthesis;
 
 import java.io.IOException;
@@ -13,7 +14,6 @@ import java.net.URL;
 import java.util.Collection;
 import java.util.Enumeration;
 import java.util.Iterator;
-
 import javax.speech.EngineListener;
 import javax.speech.EngineStateError;
 import javax.speech.SpeechEvent;
@@ -31,15 +31,16 @@ import com.sun.speech.engine.BaseEngineProperties;
 import com.sun.speech.engine.SpeechEventDispatcher;
 import com.sun.speech.engine.SpeechEventUtilities;
 
+
 /**
  * Supports the JSAPI 1.0 <code>Synthesizer</code> interface that
  * performs the core non-engine-specific functions.
- * 
+ *
  * <p>An actual JSAPI synthesizer implementation needs to extend or
  * modify this implementation.
  */
 abstract public class BaseSynthesizer extends BaseEngine
-    implements Synthesizer, SpeechEventDispatcher {
+        implements Synthesizer, SpeechEventDispatcher {
 
     /**
      * Set of speakable listeners belonging to the <code>Synthesizer</code>.
@@ -54,7 +55,7 @@ abstract public class BaseSynthesizer extends BaseEngine
      * The list can be created in the constructor methods.
      */
     protected VoiceList voiceList;
-    
+
     /**
      * Creates a new Synthesizer in the <code>DEALLOCATED</code> state.
      *
@@ -74,12 +75,12 @@ abstract public class BaseSynthesizer extends BaseEngine
      *   <code>jsmlText</code> is processed
      *
      * @throws JSMLException if the JSML text contains errors
-     * @throws EngineStateError 
+     * @throws EngineStateError
      *   if this <code>Synthesizer</code> in the <code>DEALLOCATED</code> or 
      *   <code>DEALLOCATING_RESOURCES</code> states
      */
     public void speak(Speakable jsmlText, SpeakableListener listener)
-        throws JSMLException, EngineStateError {
+            throws JSMLException, EngineStateError {
         checkEngineState(DEALLOCATED | DEALLOCATING_RESOURCES);
         BaseSynthesizerQueueItem item = createQueueItem();
         item.setData(this, jsmlText, listener);
@@ -93,7 +94,7 @@ abstract public class BaseSynthesizer extends BaseEngine
      * @param listener the listener to be notified as the
      *   JSML text is processed
      *
-     * @throws EngineStateError 
+     * @throws EngineStateError
      *   if this <code>Synthesizer</code> in the <code>DEALLOCATED</code> or 
      *   <code>DEALLOCATING_RESOURCES</code> states
      * @throws IOException
@@ -103,8 +104,8 @@ abstract public class BaseSynthesizer extends BaseEngine
      *    if errors are encountered with the <code>JSMLurl</code>
      */
     public void speak(URL jsmlURL, SpeakableListener listener)
-        throws JSMLException, MalformedURLException,
-        IOException, EngineStateError {
+            throws JSMLException, MalformedURLException,
+            IOException, EngineStateError {
         checkEngineState(DEALLOCATED | DEALLOCATING_RESOURCES);
         BaseSynthesizerQueueItem item = createQueueItem();
         item.setData(this, jsmlURL, listener);
@@ -118,13 +119,13 @@ abstract public class BaseSynthesizer extends BaseEngine
      * @param listener the listener to be notified as the
      *   JSML text is processed
      *
-     * @throws EngineStateError 
+     * @throws EngineStateError
      *   if this <code>Synthesizer</code> in the <code>DEALLOCATED</code> or 
      *   <code>DEALLOCATING_RESOURCES</code> states
      * @throws JSMLException if the JSML text contains errors
      */
     public void speak(String jsmlText, SpeakableListener listener)
-        throws JSMLException, EngineStateError {
+            throws JSMLException, EngineStateError {
         checkEngineState(DEALLOCATED | DEALLOCATING_RESOURCES);
         BaseSynthesizerQueueItem item = createQueueItem();
         item.setData(this, jsmlText, false, listener);
@@ -139,12 +140,12 @@ abstract public class BaseSynthesizer extends BaseEngine
      * @param listener the listener to be notified as the
      *   text is processed
      *
-     * @throws EngineStateError 
+     * @throws EngineStateError
      *   if this <code>Synthesizer</code> in the <code>DEALLOCATED</code> or 
      *   <code>DEALLOCATING_RESOURCES</code> states
      */
     public void speakPlainText(String text, SpeakableListener listener)
-        throws EngineStateError {
+            throws EngineStateError {
         checkEngineState(DEALLOCATED | DEALLOCATING_RESOURCES);
         try {
             BaseSynthesizerQueueItem item = createQueueItem();
@@ -165,12 +166,12 @@ abstract public class BaseSynthesizer extends BaseEngine
      *   in the given bit pattern.
      */
     protected String stateToString(long state) {
-	StringBuffer buf = new StringBuffer();
+        StringBuffer buf = new StringBuffer();
         if ((state & Synthesizer.QUEUE_EMPTY) != 0)
             buf.append(" QUEUE_EMPTY ");
         if ((state & Synthesizer.QUEUE_NOT_EMPTY) != 0)
             buf.append(" QUEUE_NOT_EMPTY ");
-	return super.stateToString(state) + buf.toString();
+        return super.stateToString(state) + buf.toString();
     }
 
     /**
@@ -191,13 +192,13 @@ abstract public class BaseSynthesizer extends BaseEngine
      * @return
      *   IPA phonemic representation of text or <code>null</code>
      *
-     * @throws EngineStateError 
+     * @throws EngineStateError
      *   if this <code>Synthesizer</code> in the <code>DEALLOCATED</code> or 
      *   <code>DEALLOCATING_RESOURCES</code> states
      */
     public String phoneme(String text) throws EngineStateError {
         checkEngineState(DEALLOCATED | DEALLOCATING_RESOURCES);
-        
+
         // BaseSynthesizer does not implement phoneme.  The sub-class
         // should override this method if it supports text to phoneme
         // conversion.  Returning null is legal behavior.
@@ -212,7 +213,7 @@ abstract public class BaseSynthesizer extends BaseEngine
      *   an <code>Enumeration</code> of the speech output queue or
      *   <code>null</code>.
      *
-     * @throws EngineStateError 
+     * @throws EngineStateError
      *   if this <code>Synthesizer</code> in the <code>DEALLOCATED</code> or 
      *   <code>DEALLOCATING_RESOURCES</code> states
      */
@@ -221,7 +222,7 @@ abstract public class BaseSynthesizer extends BaseEngine
     /**
      * Cancels the item at the top of the queue.
      *
-     * @throws EngineStateError 
+     * @throws EngineStateError
      *   if this <code>Synthesizer</code> in the <code>DEALLOCATED</code> or 
      *   <code>DEALLOCATING_RESOURCES</code> states
      */
@@ -235,17 +236,17 @@ abstract public class BaseSynthesizer extends BaseEngine
      *
      * @throws IllegalArgumentException
      *  if the source object is not found in the speech output queue.
-     * @throws EngineStateError 
+     * @throws EngineStateError
      *   if this <code>Synthesizer</code> in the <code>DEALLOCATED</code> or 
      *   <code>DEALLOCATING_RESOURCES</code> states
      */
     abstract public void cancel(Object source)
-        throws IllegalArgumentException, EngineStateError;
+            throws IllegalArgumentException, EngineStateError;
 
     /**
      * Cancels all items on the output queue.
      *
-     * @throws EngineStateError 
+     * @throws EngineStateError
      *   if this <code>Synthesizer</code> in the <code>DEALLOCATED</code> or 
      *   <code>DEALLOCATING_RESOURCES</code> states
      */
@@ -302,19 +303,19 @@ abstract public class BaseSynthesizer extends BaseEngine
      *   a subclass.
      */
     protected BaseEngineProperties createEngineProperties() {
-        SynthesizerModeDesc desc = (SynthesizerModeDesc)engineModeDesc;
-        BaseVoice defaultVoice = (BaseVoice)(desc.getVoices()[0]);
-        
+        SynthesizerModeDesc desc = (SynthesizerModeDesc) engineModeDesc;
+        BaseVoice defaultVoice = (BaseVoice) (desc.getVoices()[0]);
+
         float defaultPitch = defaultVoice.defaultPitch;
         float defaultPitchRange = defaultVoice.defaultPitchRange;
         float defaultSpeakingRate = defaultVoice.defaultSpeakingRate;
         float defaultVolume = defaultVoice.defaultVolume;
-        
+
         return new BaseSynthesizerProperties(defaultVoice,
-                                             defaultPitch,
-                                             defaultPitchRange,
-                                             defaultSpeakingRate,
-                                             defaultVolume);
+                defaultPitch,
+                defaultPitchRange,
+                defaultSpeakingRate,
+                defaultVolume);
     }
 
     /**
@@ -334,7 +335,7 @@ abstract public class BaseSynthesizer extends BaseEngine
      */
     protected VoiceList getVoiceList() {
         return voiceList;
-    }    
+    }
 
     /**
      * Utility function that generates <code>QUEUE_UPDATED</code>
@@ -349,18 +350,18 @@ abstract public class BaseSynthesizer extends BaseEngine
      *
      * @see #fireQueueUpdated
      * @see #dispatchSpeechEvent
-     * 
+     *
      */
     public void postQueueUpdated(boolean topOfQueueChanged,
                                  long oldState, long newState) {
         SpeechEventUtilities.postSpeechEvent(
-            this,
-            new SynthesizerEvent(this,
-                                 SynthesizerEvent.QUEUE_UPDATED,
-                                 topOfQueueChanged,
-                                 oldState, newState));
+                this,
+                new SynthesizerEvent(this,
+                        SynthesizerEvent.QUEUE_UPDATED,
+                        topOfQueueChanged,
+                        oldState, newState));
     }
-    
+
     /**
      * Utility function that sends a <code>QUEUE_UPDATED</code>
      * event to all <code>SynthesizerListeners</code>.  
@@ -378,12 +379,12 @@ abstract public class BaseSynthesizer extends BaseEngine
         while (iterator.hasNext()) {
             EngineListener el = (EngineListener) iterator.next();
             if (el instanceof SynthesizerListener) {
-                SynthesizerListener sl = (SynthesizerListener)el;
+                SynthesizerListener sl = (SynthesizerListener) el;
                 sl.queueUpdated(event);
             }
         }
     }
-    
+
     /**
      * Utility function that generates <code>QUEUE_EMPTIED</code>
      * event and posts it to the event queue.  Eventually
@@ -398,13 +399,13 @@ abstract public class BaseSynthesizer extends BaseEngine
      */
     public void postQueueEmptied(long oldState, long newState) {
         SpeechEventUtilities.postSpeechEvent(
-            this,
-            new SynthesizerEvent(this,
-                                 SynthesizerEvent.QUEUE_EMPTIED,
-                                 false,
-                                 oldState, newState));
+                this,
+                new SynthesizerEvent(this,
+                        SynthesizerEvent.QUEUE_EMPTIED,
+                        false,
+                        oldState, newState));
     }
-    
+
     /**
      * Utility function that sends a <code>QUEUE_EMPTIED</code>
      * event to all <code>SynthesizerListeners</code>.  
@@ -422,7 +423,7 @@ abstract public class BaseSynthesizer extends BaseEngine
         while (iterator.hasNext()) {
             EngineListener el = (EngineListener) iterator.next();
             if (el instanceof SynthesizerListener) {
-                SynthesizerListener sl = (SynthesizerListener)el;
+                SynthesizerListener sl = (SynthesizerListener) el;
                 sl.queueEmptied(event);
             }
         }
@@ -441,18 +442,18 @@ abstract public class BaseSynthesizer extends BaseEngine
      */
     public void dispatchSpeechEvent(SpeechEvent event) {
         switch (event.getId()) {
-            case SynthesizerEvent.QUEUE_EMPTIED:
-                fireQueueEmptied((SynthesizerEvent) event);
-                break;
-            case SynthesizerEvent.QUEUE_UPDATED:
-                fireQueueUpdated((SynthesizerEvent) event);
-                break;
+        case SynthesizerEvent.QUEUE_EMPTIED:
+            fireQueueEmptied((SynthesizerEvent) event);
+            break;
+        case SynthesizerEvent.QUEUE_UPDATED:
+            fireQueueUpdated((SynthesizerEvent) event);
+            break;
 
-            // Defer to BaseEngine to handle the rest.
-            //
-            default:
-                super.dispatchSpeechEvent(event);
-                break;
+        // Defer to BaseEngine to handle the rest.
+        //
+        default:
+            super.dispatchSpeechEvent(event);
+            break;
         }
     }
 }

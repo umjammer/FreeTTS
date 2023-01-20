@@ -1,10 +1,11 @@
 /**
  * Copyright 2001 Sun Microsystems, Inc.
- * 
+ * <p>
  * See the file "license.terms" for information on usage and
- * redistribution of this file, and for a DISCLAIMER OF ALL 
+ * redistribution of this file, and for a DISCLAIMER OF ALL
  * WARRANTIES.
  */
+
 package com.sun.speech.freetts;
 
 /**
@@ -25,14 +26,18 @@ public class Gender implements Comparable<Gender> {
     // Assign an ordinal to this gender
     private final int ordinal = nextOrdinal++;
 
-    private Gender(String name) {this.name = name;}
+    private Gender(String name) {
+        this.name = name;
+    }
 
     /**
      * Generates a human readable name describing the gender.
      *
      * @return the name of the gender
      */
-    public String toString() {return name;}
+    public String toString() {
+        return name;
+    }
 
     /**
      * Compare two genders.  If either is DONT_CARE, then returns 0.

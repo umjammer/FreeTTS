@@ -1,21 +1,22 @@
 /**
  * Copyright 2001 Sun Microsystems, Inc.
- * 
+ * <p>
  * See the file "license.terms" for information on usage and
- * redistribution of this file, and for a DISCLAIMER OF ALL 
+ * redistribution of this file, and for a DISCLAIMER OF ALL
  * WARRANTIES.
  */
+
 package com.sun.speech.engine.synthesis.text;
 
 import java.util.Enumeration;
 import java.util.Vector;
-
 import javax.speech.Engine;
 import javax.speech.EngineStateError;
 import javax.speech.synthesis.SynthesizerModeDesc;
 
 import com.sun.speech.engine.synthesis.BaseSynthesizer;
 import com.sun.speech.engine.synthesis.BaseSynthesizerQueueItem;
+
 
 /**
  * Supports a simple text-output-only JSAPI 1.0 <code>Synthesizer</code>.
@@ -47,8 +48,8 @@ public class TextSynthesizer extends BaseSynthesizer {
         synchronized (engineStateLock) {
             long newState = ALLOCATED | RESUMED;
             newState |= (outputHandler.isQueueEmpty()
-                         ? QUEUE_EMPTY
-                         : QUEUE_NOT_EMPTY);
+                    ? QUEUE_EMPTY
+                    : QUEUE_NOT_EMPTY);
             states = setEngineState(CLEAR_ALL_STATE, newState);
         }
         outputHandler.start();
@@ -64,7 +65,7 @@ public class TextSynthesizer extends BaseSynthesizer {
         outputHandler.terminate();
         postEngineDeallocated(states[0], states[1]);
     }
-    
+
     /**
      * Creates a TextSynthesizerQueueItem.
      *
@@ -81,7 +82,7 @@ public class TextSynthesizer extends BaseSynthesizer {
      *   an <code>Enumeration</code> of the speech output queue or
      *   <code>null</code>.
      *
-     * @throws EngineStateError 
+     * @throws EngineStateError
      *   if this <code>Synthesizer</code> in the <code>DEALLOCATED</code> or 
      *   <code>DEALLOCATING_RESOURCES</code> states
      */
@@ -104,7 +105,7 @@ public class TextSynthesizer extends BaseSynthesizer {
     /**
      * Cancels the item at the top of the queue.
      *
-     * @throws EngineStateError 
+     * @throws EngineStateError
      *   if this <code>Synthesizer</code> in the <code>DEALLOCATED</code> or 
      *   <code>DEALLOCATING_RESOURCES</code> states
      */
@@ -121,12 +122,12 @@ public class TextSynthesizer extends BaseSynthesizer {
      *
      * @throws IllegalArgumentException
      *  if the source object is not found in the speech output queue.
-     * @throws EngineStateError 
+     * @throws EngineStateError
      *   if this <code>Synthesizer</code> in the <code>DEALLOCATED</code> or 
      *   <code>DEALLOCATING_RESOURCES</code> states
      */
     public void cancel(Object source)
-        throws IllegalArgumentException, EngineStateError {
+            throws IllegalArgumentException, EngineStateError {
         checkEngineState(DEALLOCATED | DEALLOCATING_RESOURCES);
         outputHandler.cancelItem(source);
     }
@@ -134,7 +135,7 @@ public class TextSynthesizer extends BaseSynthesizer {
     /**
      * Cancels all items on the output queue.
      *
-     * @throws EngineStateError 
+     * @throws EngineStateError
      *   if this <code>Synthesizer</code> in the <code>DEALLOCATED</code> or 
      *   <code>DEALLOCATING_RESOURCES</code> states
      */
@@ -148,7 +149,7 @@ public class TextSynthesizer extends BaseSynthesizer {
      */
     protected void handlePause() {
         outputHandler.pauseItem();
-    }    
+    }
 
     /**
      * Resumes the output.
@@ -163,7 +164,7 @@ public class TextSynthesizer extends BaseSynthesizer {
      */
     public class OutputHandler extends Thread {
         protected boolean done = false;
-        
+
         /**
          * Internal speech output queue that will contain a set of 
          * TextSynthesizerQueueItems.
@@ -176,12 +177,12 @@ public class TextSynthesizer extends BaseSynthesizer {
          * The current item to speak.
          */
         TextSynthesizerQueueItem currentItem;
-    
+
         /**
          * Object to lock on for setting the current item.
          */
         protected Object currentItemLock = new Object();
-        
+
         /**
          * Current output "speaking" rate.
          * Updated as /rate[166.3]/ controls are detected in the output text.
@@ -219,14 +220,14 @@ public class TextSynthesizer extends BaseSynthesizer {
         public void terminate() {
             done = true;
         }
-        
+
         /**
          * Returns the current queue.
          *
          * @return the current queue
          */
         public Enumeration enumerateQueue() {
-            synchronized(queue) {
+            synchronized (queue) {
                 return queue.elements();
             }
         }
@@ -237,11 +238,11 @@ public class TextSynthesizer extends BaseSynthesizer {
          * @return <code>true</code> if the queue is empty
          */
         public boolean isQueueEmpty() {
-            synchronized(queue) {
+            synchronized (queue) {
                 return queue.size() == 0;
             }
         }
-        
+
         /**
          * Adds an item to be spoken to the output queue.
          *
@@ -249,14 +250,14 @@ public class TextSynthesizer extends BaseSynthesizer {
          */
         public void appendQueue(TextSynthesizerQueueItem item) {
             boolean topOfQueueChanged;
-            synchronized(queue) {
+            synchronized (queue) {
                 topOfQueueChanged = (queue.size() == 0);
                 queue.addElement(item);
                 queue.notifyAll();
-            }            
+            }
             if (topOfQueueChanged) {
                 long[] states = setEngineState(QUEUE_EMPTY,
-                                               QUEUE_NOT_EMPTY);
+                        QUEUE_NOT_EMPTY);
                 postQueueUpdated(topOfQueueChanged, states[0], states[1]);
             }
         }
@@ -267,26 +268,26 @@ public class TextSynthesizer extends BaseSynthesizer {
         protected void cancelItem() {
             cancelItem(CANCEL);
         }
-        
+
         /**
          * Cancels all items.
          */
         protected void cancelAllItems() {
             cancelItem(CANCEL_ALL);
         }
-        
+
         /**
          * Cancels all or just the current item.
          *
          * @param cancelType <code>CANCEL</code> or <code>CANCEL_ALL</code>
          */
         protected void cancelItem(int cancelType) {
-            synchronized(queue) {
+            synchronized (queue) {
                 if (queue.size() == 0) {
                     return;
                 }
             }
-            synchronized(commandLock) {
+            synchronized (commandLock) {
                 command = cancelType;
                 commandLock.notifyAll();
                 while (command != CANCEL_COMPLETE) {
@@ -304,7 +305,7 @@ public class TextSynthesizer extends BaseSynthesizer {
                 commandLock.notifyAll();
             }
         }
-            
+
         /**
          * Cancels the given item.
          *
@@ -345,7 +346,7 @@ public class TextSynthesizer extends BaseSynthesizer {
          * Pauses the output.
          */
         protected void pauseItem() {
-            synchronized(commandLock) {
+            synchronized (commandLock) {
                 if (command != PAUSE) {
                     command = PAUSE;
                     commandLock.notifyAll();
@@ -357,7 +358,7 @@ public class TextSynthesizer extends BaseSynthesizer {
          * Resumes the output.
          */
         protected void resumeItem() {
-            synchronized(commandLock) {
+            synchronized (commandLock) {
                 if (command != RESUME) {
                     command = RESUME;
                     commandLock.notifyAll();
@@ -374,13 +375,13 @@ public class TextSynthesizer extends BaseSynthesizer {
             TextSynthesizerQueueItem item;
             int currentCommand;
             boolean queueEmptied;
-            
+
             if (testEngineState(Engine.PAUSED)) {
                 command = PAUSE;
             } else {
                 command = RESUME;
             }
-            
+
             while (!done) {
                 item = getQueueItem();
                 item.postTopOfQueue();
@@ -388,48 +389,48 @@ public class TextSynthesizer extends BaseSynthesizer {
                 if (currentCommand == CANCEL_ALL) {
                     Vector itemList = new Vector();
                     itemList.add(item);
-                    synchronized(queue) {
+                    synchronized (queue) {
                         queue.remove(0);
                         while (queue.size() > 0) {
                             itemList.add(queue.remove(0));
                         }
                     }
-                    synchronized(commandLock) {
+                    synchronized (commandLock) {
                         command = CANCEL_COMPLETE;
                         commandLock.notifyAll();
                     }
                     while (itemList.size() > 0) {
-                        item = (TextSynthesizerQueueItem)(itemList.remove(0));
+                        item = (TextSynthesizerQueueItem) (itemList.remove(0));
                         item.postSpeakableCancelled();
                     }
                     long[] states = setEngineState(QUEUE_NOT_EMPTY,
-                                                   QUEUE_EMPTY);
+                            QUEUE_EMPTY);
                     postQueueEmptied(states[0], states[1]);
                     continue;
                 } else if (currentCommand == CANCEL) {
-                    synchronized(commandLock) {
+                    synchronized (commandLock) {
                         command = CANCEL_COMPLETE;
                         commandLock.notifyAll();
                     }
                     item.postSpeakableCancelled();
                 } else if ((currentCommand == PAUSE)
-                    || (currentCommand == RESUME)) {
+                        || (currentCommand == RESUME)) {
                     item.postSpeakableEnded();
                 }
-                
-                synchronized(queue) {
+
+                synchronized (queue) {
                     queue.remove(0);
                     queueEmptied = queue.size() == 0;
                     queue.notifyAll();
-                }                
+                }
 
                 if (queueEmptied) {
                     long[] states = setEngineState(QUEUE_NOT_EMPTY,
-                                                   QUEUE_EMPTY);
+                            QUEUE_EMPTY);
                     postQueueEmptied(states[0], states[1]);
-                } else { 
+                } else {
                     long[] states = setEngineState(QUEUE_NOT_EMPTY,
-                                                   QUEUE_NOT_EMPTY);
+                            QUEUE_NOT_EMPTY);
                     postQueueUpdated(true, states[0], states[1]);
                 }
             }
@@ -441,12 +442,11 @@ public class TextSynthesizer extends BaseSynthesizer {
          * @return the first item on the queue
          */
         protected TextSynthesizerQueueItem getQueueItem() {
-            synchronized(queue) {
+            synchronized (queue) {
                 while (queue.size() == 0) {
                     try {
                         queue.wait();
-                    }
-                    catch (InterruptedException e) {
+                    } catch (InterruptedException e) {
                         // Ignore interrupts and we'll loop around
                     }
                 }
@@ -466,10 +466,10 @@ public class TextSynthesizer extends BaseSynthesizer {
             String engineText;
             int engineTextIndex;
             boolean wasPaused = false;
-            
+
             System.out.println("----- BEGIN: "
-                               + item.getTypeString()
-                               + "-----");
+                    + item.getTypeString()
+                    + "-----");
 
             engineText = item.getEngineText();
             engineTextIndex = 0;
@@ -479,7 +479,7 @@ public class TextSynthesizer extends BaseSynthesizer {
             // For example, a call to pause followed by resume
             // followed by a pause might go unnoticed.]]]
             //
-            synchronized(commandLock) {
+            synchronized (commandLock) {
                 currentCommand = command;
             }
             while (engineTextIndex < engineText.length()) {
@@ -492,7 +492,7 @@ public class TextSynthesizer extends BaseSynthesizer {
                         item.postSpeakablePaused();
                         wasPaused = true;
                     }
-                    synchronized(commandLock) {
+                    synchronized (commandLock) {
                         while (command == PAUSE) {
                             try {
                                 commandLock.wait();
@@ -526,15 +526,15 @@ public class TextSynthesizer extends BaseSynthesizer {
                     //
                     if (isCommand(engineText, engineTextIndex)) {
                         engineTextIndex = processCommand(item,
-                                                         engineText,
-                                                         engineTextIndex);
+                                engineText,
+                                engineTextIndex);
                     } else if (isWhitespace(engineText, engineTextIndex)) {
                         engineTextIndex = processWhitespace(engineText,
-                                                            engineTextIndex);
+                                engineTextIndex);
                     } else {
                         engineTextIndex = processNormalText(item,
-                                                            engineText,
-                                                            engineTextIndex);
+                                engineText,
+                                engineTextIndex);
                     }
                 } else {
                     // Otherwise, the command is CANCEL or CANCEL_ALL
@@ -542,18 +542,18 @@ public class TextSynthesizer extends BaseSynthesizer {
                     //
                     break;
                 }
-                synchronized(commandLock) {
+                synchronized (commandLock) {
                     currentCommand = command;
                 }
             }
-            
+
             System.out.println("\n----- END: "
-                               + item.getTypeString()
-                               + "-----\n");
-            
+                    + item.getTypeString()
+                    + "-----\n");
+
             return currentCommand;
-        }        
-            
+        }
+
         /**
          * Determines if the next thing in line is a command.
          *
@@ -563,11 +563,11 @@ public class TextSynthesizer extends BaseSynthesizer {
          * @return <code>true</code> if the next thing in line is a command
          */
         protected boolean isCommand(String engineText, int index) {
-            if (!engineText.substring(index,index + 1).equals(
-                TextSynthesizerQueueItem.COMMAND_PREFIX)) {
+            if (!engineText.substring(index, index + 1).equals(
+                    TextSynthesizerQueueItem.COMMAND_PREFIX)) {
                 return false;
             }
-            
+
             // Test for all known commands
             //
             for (int i = 0;
@@ -575,13 +575,13 @@ public class TextSynthesizer extends BaseSynthesizer {
                  i++) {
                 if (engineText.startsWith(
                         TextSynthesizerQueueItem.COMMAND_PREFIX
-                        + TextSynthesizerQueueItem.ELEMENTS[i], index)) {
+                                + TextSynthesizerQueueItem.ELEMENTS[i], index)) {
                     return true;
                 }
             }
             return false;
         }
-    
+
         /**
          * Attempts to process a command starting at the next character
          * in the synthesizer text. Returns the new index.
@@ -601,10 +601,10 @@ public class TextSynthesizer extends BaseSynthesizer {
                  i++) {
                 if (engineText.startsWith(
                         TextSynthesizerQueueItem.COMMAND_PREFIX
-                        + TextSynthesizerQueueItem.ELEMENTS[i], index)) {
+                                + TextSynthesizerQueueItem.ELEMENTS[i], index)) {
                     int endIndex = engineText.indexOf(
-                        TextSynthesizerQueueItem.COMMAND_SUFFIX, index+1)
-                        + 1;
+                            TextSynthesizerQueueItem.COMMAND_SUFFIX, index + 1)
+                            + 1;
                     String commandText = engineText.substring(index, endIndex);
                     System.out.print(commandText);
                     System.out.flush();
@@ -643,8 +643,8 @@ public class TextSynthesizer extends BaseSynthesizer {
             // Identify full span of whitespace
             //
             int endIndex = index;
-            while (endIndex < engineText.length() && 
-                   Character.isWhitespace(engineText.charAt(endIndex))) {
+            while (endIndex < engineText.length() &&
+                    Character.isWhitespace(engineText.charAt(endIndex))) {
                 endIndex++;
             }
 
@@ -680,13 +680,13 @@ public class TextSynthesizer extends BaseSynthesizer {
                                         String engineText,
                                         int index) {
             String wordStr;
-            
+
             // Find the end of the plain text
             //
-            int endIndex = index+1;
-            while (endIndex < engineText.length() && 
-                   engineText.charAt(endIndex) != '/' &&
-                   !Character.isWhitespace(engineText.charAt(endIndex)))
+            int endIndex = index + 1;
+            while (endIndex < engineText.length() &&
+                    engineText.charAt(endIndex) != '/' &&
+                    !Character.isWhitespace(engineText.charAt(endIndex)))
                 endIndex++;
 
             // Display the text in a plain format

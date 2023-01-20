@@ -8,7 +8,6 @@
 
 package tests;
 
-import java.io.IOException;
 import java.net.URL;
 
 import com.sun.speech.freetts.PartOfSpeech;

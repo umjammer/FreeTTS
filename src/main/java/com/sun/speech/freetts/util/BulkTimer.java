@@ -1,15 +1,17 @@
 /**
  * Copyright 2001 Sun Microsystems, Inc.
- * 
+ * <p>
  * See the file "license.terms" for information on usage and
- * redistribution of this file, and for a DISCLAIMER OF ALL 
+ * redistribution of this file, and for a DISCLAIMER OF ALL
  * WARRANTIES.
  */
+
 package com.sun.speech.freetts.util;
 
 import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.Map;
+
 
 /**
  * Provides a suite of timers that are used to collect and generate
@@ -25,7 +27,7 @@ public class BulkTimer {
     private final static String SELF = "OverallTime";
     private boolean verbose;
     private Map<String, Timer> timers;
-    
+
 
     /**
      * Creates a bulk timer.
@@ -43,7 +45,7 @@ public class BulkTimer {
      * @param name the name of the timer to start
      */
     public void start(String name) {
-	getTimer(name).start();
+        getTimer(name).start();
     }
 
     /**
@@ -52,7 +54,7 @@ public class BulkTimer {
      * @param name the name of the timer
      */
     public void stop(String name) {
-	getTimer(name).stop(verbose);
+        getTimer(name).stop(verbose);
     }
 
     /**
@@ -64,7 +66,7 @@ public class BulkTimer {
      * <code> BulkTimer </code> .
      */
     public void start() {
-	getTimer(SELF).start();
+        getTimer(SELF).start();
     }
 
 
@@ -72,7 +74,7 @@ public class BulkTimer {
      * Stops the bulk timer.
      */
     public void stop() {
-	getTimer(SELF).stop(verbose);
+        getTimer(SELF).stop(verbose);
     }
 
     /**
@@ -81,7 +83,7 @@ public class BulkTimer {
      * @param verbose the verbose mode
      */
     public void setVerbose(boolean verbose) {
-	this.verbose = verbose;
+        this.verbose = verbose;
     }
 
     /**
@@ -91,7 +93,7 @@ public class BulkTimer {
      *     <code>false</code>.
      */
     public boolean isVerbose() {
-	return verbose;
+        return verbose;
     }
 
     /**
@@ -115,7 +117,7 @@ public class BulkTimer {
      */
     public void show(String title) {
         long overall = getTimer(SELF).getCurrentTime();
-        Collection<Timer>  values = timers.values();
+        Collection<Timer> values = timers.values();
         Timer.showTimesShortTitle(title);
         for (Timer timer : values) {
             timer.showTimes(overall);

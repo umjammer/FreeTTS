@@ -1,13 +1,14 @@
 /**
  * Portions Copyright 2001 Sun Microsystems, Inc.
- * Portions Copyright 1999-2001 Language Technologies Institute, 
+ * Portions Copyright 1999-2001 Language Technologies Institute,
  * Carnegie Mellon University.
  * All Rights Reserved.  Use is subject to license terms.
- * 
+ * <p>
  * See the file "license.terms" for information on usage and
- * redistribution of this file, and for a DISCLAIMER OF ALL 
+ * redistribution of this file, and for a DISCLAIMER OF ALL
  * WARRANTIES.
  */
+
 package com.sun.speech.freetts.lexicon;
 
 import java.io.BufferedOutputStream;
@@ -29,6 +30,7 @@ import java.util.StringTokenizer;
 
 import com.sun.speech.freetts.util.BulkTimer;
 import com.sun.speech.freetts.util.Utilities;
+
 
 /**
  * Provides the phone list for words using the CMU6 letter-to-sound
@@ -74,7 +76,7 @@ import com.sun.speech.freetts.util.Utilities;
  * size. So, for this implementation, the context window for the 'k'
  * in monkey is "#money#0". 
  * </ul>
- *  
+ *
  * <p>Here's how the phone for 'k' in 'monkey' might be determined: 
  *
  * <ul>
@@ -148,7 +150,7 @@ public class LetterToSoundImpl implements LetterToSound {
      * usage and a longer startup time. 
      */
     protected boolean tokenizeOnLoad = false;
-       
+
     /**
      * If true, the state string is tokenized the first time it is
      * referenced.  The side effects of this are quicker lookups, but
@@ -183,7 +185,7 @@ public class LetterToSoundImpl implements LetterToSound {
      * The 'window size' of the LTS rules.
      */
     private final static int WINDOW_SIZE = 4;
-        
+
     /**
      * An array of characters to hold a string for checking against a
      * rule.  This will be reused over and over again, so the goal
@@ -192,7 +194,7 @@ public class LetterToSoundImpl implements LetterToSound {
      * <code>cst_lts.c</code>.
      */
     private char[] fval_buff = new char[WINDOW_SIZE * 2];
-    
+
     /**
      * The indexes of the starting points for letters in the state machine.
      */
@@ -213,17 +215,17 @@ public class LetterToSoundImpl implements LetterToSound {
      * @throws NullPointerException if the ltsRules are null
      * @throws IOException if errors are encountered while reading the
      *   compiled form or the addenda
-     */ 
+     */
     public LetterToSoundImpl(URL ltsRules, boolean binary) throws IOException {
-	BulkTimer.LOAD.start("LTS");
-	InputStream is = ltsRules.openStream();
-	if (binary) {
-	    loadBinary(is);
-	} else {
-	    loadText(is);
-	}
-	is.close();
-	BulkTimer.LOAD.stop("LTS");
+        BulkTimer.LOAD.start("LTS");
+        InputStream is = ltsRules.openStream();
+        if (binary) {
+            loadBinary(is);
+        } else {
+            loadText(is);
+        }
+        is.close();
+        BulkTimer.LOAD.stop("LTS");
     }
 
     /**
@@ -241,10 +243,10 @@ public class LetterToSoundImpl implements LetterToSound {
         // Find out when to convert the phone string into an array.
         //
         String tokenize =
-	    Utilities.getProperty("com.sun.speech.freetts.lexicon.LTSTokenize",
-                               "load");
-	tokenizeOnLoad = tokenize.equals("load");
-	tokenizeOnLookup = tokenize.equals("lookup");
+                Utilities.getProperty("com.sun.speech.freetts.lexicon.LTSTokenize",
+                        "load");
+        tokenizeOnLoad = tokenize.equals("load");
+        tokenizeOnLookup = tokenize.equals("lookup");
 
         letterIndex = new HashMap();
 
@@ -267,51 +269,51 @@ public class LetterToSoundImpl implements LetterToSound {
      * @throws IOException if an error occurs on input.
      */
     private void loadBinary(InputStream is) throws IOException {
-	DataInputStream dis = new DataInputStream(is);
+        DataInputStream dis = new DataInputStream(is);
 
-	if (dis.readInt() != MAGIC) {
-	    throw new Error("Bad LTS binary file format");
-	}
+        if (dis.readInt() != MAGIC) {
+            throw new Error("Bad LTS binary file format");
+        }
 
-	if (dis.readInt() != VERSION) {
-	    throw new Error("Bad LTS binary file version");
-	}
+        if (dis.readInt() != VERSION) {
+            throw new Error("Bad LTS binary file version");
+        }
 
-	// read the phoneme table
+        // read the phoneme table
         //
-	int phonemeTableSize = dis.readInt();
-	phonemeTable = new ArrayList(phonemeTableSize);
+        int phonemeTableSize = dis.readInt();
+        phonemeTable = new ArrayList(phonemeTableSize);
 
-	for (int i = 0; i < phonemeTableSize; i++) {
-	    String phoneme = dis.readUTF();
-	    phonemeTable.add(phoneme);
-	}
+        for (int i = 0; i < phonemeTableSize; i++) {
+            String phoneme = dis.readUTF();
+            phonemeTable.add(phoneme);
+        }
 
-	// letter index
+        // letter index
         //
-	int letterIndexSize = dis.readInt();
-	letterIndex = new HashMap();
-	for (int i = 0; i < letterIndexSize; i++) {
-	    char c = dis.readChar();
-	    int index = dis.readInt();
-	    letterIndex.put(Character.toString(c), new Integer(index));
-	}
+        int letterIndexSize = dis.readInt();
+        letterIndex = new HashMap();
+        for (int i = 0; i < letterIndexSize; i++) {
+            char c = dis.readChar();
+            int index = dis.readInt();
+            letterIndex.put(Character.toString(c), new Integer(index));
+        }
 
-	// statemachine states
+        // statemachine states
         //
-	int stateMachineSize = dis.readInt();
-	stateMachine = new Object[stateMachineSize];
-	for (int i = 0; i < stateMachineSize; i++) {
-	    int type = dis.readInt();
+        int stateMachineSize = dis.readInt();
+        stateMachine = new Object[stateMachineSize];
+        for (int i = 0; i < stateMachineSize; i++) {
+            int type = dis.readInt();
 
-	    if (type == FinalState.TYPE) {
-		stateMachine[i] = FinalState.loadBinary(dis);
-	    } else if (type == DecisionState.TYPE) {
-		stateMachine[i] = DecisionState.loadBinary(dis);
-	    } else {
-		throw new Error("Unknown state type in LTS load");
-	    }
-	}
+            if (type == FinalState.TYPE) {
+                stateMachine[i] = FinalState.loadBinary(dis);
+            } else if (type == DecisionState.TYPE) {
+                stateMachine[i] = DecisionState.loadBinary(dis);
+            } else {
+                throw new Error("Unknown state type in LTS load");
+            }
+        }
     }
 
 
@@ -323,7 +325,7 @@ public class LetterToSoundImpl implements LetterToSound {
      * @param line the line of text from the input file
      */
     protected void parseAndAdd(String line) {
-        StringTokenizer tokenizer = new StringTokenizer(line," ");
+        StringTokenizer tokenizer = new StringTokenizer(line, " ");
         String type = tokenizer.nextToken();
 
         if (type.equals(STATE) || type.equals(PHONE)) {
@@ -339,7 +341,7 @@ public class LetterToSoundImpl implements LetterToSound {
                 throw new Error("Bad INDEX in file.");
             } else {
                 String c = tokenizer.nextToken();
-                letterIndex.put(c,index);
+                letterIndex.put(c, index);
             }
         } else if (type.equals(TOTAL)) {
             stateMachine = new Object[Integer.parseInt(tokenizer.nextToken())];
@@ -363,40 +365,40 @@ public class LetterToSoundImpl implements LetterToSound {
      * @throws IOException if a problem occurs during the dump
      */
     public void dumpBinary(String path) throws IOException {
-	FileOutputStream fos = new FileOutputStream(path);
-	DataOutputStream dos = new DataOutputStream(new
-		BufferedOutputStream(fos));
+        FileOutputStream fos = new FileOutputStream(path);
+        DataOutputStream dos = new DataOutputStream(new
+                BufferedOutputStream(fos));
 
-	dos.writeInt(MAGIC);
-	dos.writeInt(VERSION);
+        dos.writeInt(MAGIC);
+        dos.writeInt(VERSION);
 
-	// Phoneme table
+        // Phoneme table
         //
-	phonemeTable = findPhonemes();
-	dos.writeInt(phonemeTable.size());
-	for (Iterator i = phonemeTable.iterator(); i.hasNext(); ) {
-	    String phoneme = (String) i.next();
-	    dos.writeUTF(phoneme);
-	}
+        phonemeTable = findPhonemes();
+        dos.writeInt(phonemeTable.size());
+        for (Iterator i = phonemeTable.iterator(); i.hasNext(); ) {
+            String phoneme = (String) i.next();
+            dos.writeUTF(phoneme);
+        }
 
-	// letter index
+        // letter index
         //
-	dos.writeInt(letterIndex.size());
-	for (Iterator i = letterIndex.keySet().iterator(); i.hasNext(); ) {
-	    String letter = (String) i.next();
-	    int index = ((Integer) letterIndex.get(letter)).intValue();
-	    dos.writeChar(letter.charAt(0));
-	    dos.writeInt(index);
-	}
+        dos.writeInt(letterIndex.size());
+        for (Iterator i = letterIndex.keySet().iterator(); i.hasNext(); ) {
+            String letter = (String) i.next();
+            int index = ((Integer) letterIndex.get(letter)).intValue();
+            dos.writeChar(letter.charAt(0));
+            dos.writeInt(index);
+        }
 
-	// statemachine states
+        // statemachine states
         //
-	dos.writeInt(stateMachine.length);
+        dos.writeInt(stateMachine.length);
 
-	for (int i = 0; i < stateMachine.length; i++) {
-	    getState(i).writeBinary(dos);
-	}
-	dos.close();
+        for (int i = 0; i < stateMachine.length; i++) {
+            getState(i).writeBinary(dos);
+        }
+        dos.close();
     }
 
     /**
@@ -405,18 +407,18 @@ public class LetterToSoundImpl implements LetterToSound {
      * @return a list of all the phonemes
      */
     private List findPhonemes() {
-	Set set = new HashSet();
+        Set set = new HashSet();
         for (int i = 0; i < stateMachine.length; i++) {
-	    if (stateMachine[i] instanceof FinalState) {
-		FinalState fstate = (FinalState) stateMachine[i];
-		if (fstate.phoneList != null) {
-		    for (int j = 0; j < fstate.phoneList.length; j++) {
-			set.add(fstate.phoneList[j]);
-		    }
-		}
-	    }
-	}
-	return new ArrayList(set);
+            if (stateMachine[i] instanceof FinalState) {
+                FinalState fstate = (FinalState) stateMachine[i];
+                if (fstate.phoneList != null) {
+                    for (int j = 0; j < fstate.phoneList.length; j++) {
+                        set.add(fstate.phoneList[j]);
+                    }
+                }
+            }
+        }
+        return new ArrayList(set);
     }
 
 
@@ -453,7 +455,7 @@ public class LetterToSoundImpl implements LetterToSound {
         StringTokenizer tokenizer = new StringTokenizer(s, " ");
         return getState(tokenizer.nextToken(), tokenizer);
     }
-    
+
     /**
      * Gets the <code>State</code> based upon the <code>type</code>
      * and <code>tokenizer<code>.
@@ -489,20 +491,18 @@ public class LetterToSoundImpl implements LetterToSound {
 
         // Make full_buff look like "000#word#000"
         //
-        for (int i = 0; i < (WINDOW_SIZE - 1); i++) 
-        {
+        for (int i = 0; i < (WINDOW_SIZE - 1); i++) {
             full_buff[i] = '0';
         }
         full_buff[WINDOW_SIZE - 1] = '#';
-        word.getChars(0,word.length(),full_buff,WINDOW_SIZE);
-        for (int i = 0; i < (WINDOW_SIZE - 1); i++) 
-        {
+        word.getChars(0, word.length(), full_buff, WINDOW_SIZE);
+        for (int i = 0; i < (WINDOW_SIZE - 1); i++) {
             full_buff[full_buff.length - i - 1] = '0';
         }
         full_buff[full_buff.length - WINDOW_SIZE] = '#';
         return full_buff;
     }
-    
+
     /**
      * Calculates the phone list for a given word.  If a phone list cannot
      * be determined, <code>null</code> is returned.  This particular
@@ -523,7 +523,7 @@ public class LetterToSoundImpl implements LetterToSound {
         // Create "000#word#000"
         //
         char[] full_buff = getFullBuff(word);
-        
+
         // For each character in the word, create a WINDOW_SIZE
         // context on each size of the character, and then ask the
         // state machine what's next.  It's magic.  BTW, this goes
@@ -535,19 +535,19 @@ public class LetterToSoundImpl implements LetterToSound {
             for (int i = 0; i < WINDOW_SIZE; i++) {
                 fval_buff[i] = full_buff[pos + i];
                 fval_buff[i + WINDOW_SIZE] =
-                    full_buff[i + pos + 1 + WINDOW_SIZE];
+                        full_buff[i + pos + 1 + WINDOW_SIZE];
             }
-	    c = word.charAt(pos);
-	    startIndex = (Integer) letterIndex.get(Character.toString(c));
-	    if (startIndex == null) {
-		continue;
-	    }
+            c = word.charAt(pos);
+            startIndex = (Integer) letterIndex.get(Character.toString(c));
+            if (startIndex == null) {
+                continue;
+            }
             stateIndex = startIndex.intValue();
             currentState = getState(stateIndex);
             while (!(currentState instanceof FinalState)) {
                 stateIndex =
-                    ((DecisionState)
-                     currentState).getNextState(fval_buff);
+                        ((DecisionState)
+                                currentState).getNextState(fval_buff);
                 currentState = getState(stateIndex);
             }
             ((FinalState) currentState).append(phoneList);
@@ -564,32 +564,32 @@ public class LetterToSoundImpl implements LetterToSound {
      */
     public boolean compare(LetterToSoundImpl other) {
 
-	// compare letter index table
+        // compare letter index table
         //
-	for (Iterator i = letterIndex.keySet().iterator(); i.hasNext(); ) {
-	    String key = (String) i.next();
-	    Integer thisIndex = (Integer) letterIndex.get(key);
-	    Integer otherIndex = (Integer) other.letterIndex.get(key);
-	    if (!thisIndex.equals(otherIndex)) {
-		System.out.println("Bad Index for " + key);
-		return false;
-	    }
-	}
+        for (Iterator i = letterIndex.keySet().iterator(); i.hasNext(); ) {
+            String key = (String) i.next();
+            Integer thisIndex = (Integer) letterIndex.get(key);
+            Integer otherIndex = (Integer) other.letterIndex.get(key);
+            if (!thisIndex.equals(otherIndex)) {
+                System.out.println("Bad Index for " + key);
+                return false;
+            }
+        }
 
-	// compare states
+        // compare states
         //
-	for (int i = 0; i < stateMachine.length; i++) {
-	    State state = getState(i);
-	    State otherState = other.getState(i);
-	    if (!state.compare(otherState)) {
-		System.out.println("Bad state " + i);
-		return false;
-	    }
-	}
+        for (int i = 0; i < stateMachine.length; i++) {
+            State state = getState(i);
+            State otherState = other.getState(i);
+            if (!state.compare(otherState)) {
+                System.out.println("Bad state " + i);
+                return false;
+            }
+        }
 
-	return true;
+        return true;
     }
-	
+
     /**
      * A marker interface for the states in the LTS state machine.
      *
@@ -597,8 +597,9 @@ public class LetterToSoundImpl implements LetterToSound {
      * @see FinalState
      */
     static interface State {
-	public void writeBinary(DataOutputStream dos) throws IOException;
-	public boolean compare(State other);
+        public void writeBinary(DataOutputStream dos) throws IOException;
+
+        public boolean compare(State other);
     }
 
 
@@ -608,12 +609,12 @@ public class LetterToSoundImpl implements LetterToSound {
      * @see FinalState
      */
     static class DecisionState implements State {
-	final static int TYPE = 1;
+        final static int TYPE = 1;
         int index;
         char c;
         int qtrue;
         int qfalse;
-        
+
         /**
          * Class constructor.
          *
@@ -628,7 +629,7 @@ public class LetterToSoundImpl implements LetterToSound {
             this.qtrue = qtrue;
             this.qfalse = qfalse;
         }
-        
+
         /**
          * Gets the next state to go to based upon the given character
          * sequence.
@@ -640,7 +641,7 @@ public class LetterToSoundImpl implements LetterToSound {
         public int getNextState(char[] chars) {
             return (chars[index] == c) ? qtrue : qfalse;
         }
-        
+
         /**
          * Outputs this <code>State</code> as though it came from the
          * text input file.
@@ -649,61 +650,61 @@ public class LetterToSoundImpl implements LetterToSound {
          */
         public String toString() {
             return STATE + " " + Integer.toString(index)
-                + " " + Character.toString(c)
-                + " " + Integer.toString(qtrue)
-                + " " + Integer.toString(qfalse);
+                    + " " + Character.toString(c)
+                    + " " + Integer.toString(qtrue)
+                    + " " + Integer.toString(qfalse);
         }
 
-	/**
-	 * Writes this <code>State</code> to the given output stream.
+        /**
+         * Writes this <code>State</code> to the given output stream.
          *
-	 * @param dos the data output stream
+         * @param dos the data output stream
          *
-	 * @throws IOException if an error occurs
-	 */
-	public void writeBinary(DataOutputStream dos) throws IOException {
-	    dos.writeInt(TYPE);
-	    dos.writeInt(index);
-	    dos.writeChar(c);
-	    dos.writeInt(qtrue);
-	    dos.writeInt(qfalse);
-	}
+         * @throws IOException if an error occurs
+         */
+        public void writeBinary(DataOutputStream dos) throws IOException {
+            dos.writeInt(TYPE);
+            dos.writeInt(index);
+            dos.writeChar(c);
+            dos.writeInt(qtrue);
+            dos.writeInt(qfalse);
+        }
 
-	/**
-	 * Loads a <code>DecisionState</code> object from the given
+        /**
+         * Loads a <code>DecisionState</code> object from the given
          * input stream.
          *
-	 * @param dis the data input stream
-	 * @return a newly constructed decision state
+         * @param dis the data input stream
+         * @return a newly constructed decision state
          *
-	 * @throws IOException if an error occurs
-	 */
-	public static State loadBinary(DataInputStream dis)
-			    throws IOException {
-	    int index = dis.readInt();
-	    char c = dis.readChar();
-	    int qtrue = dis.readInt();
-	    int qfalse = dis.readInt();
-	    return new DecisionState(index, c, qtrue, qfalse);
-	}
+         * @throws IOException if an error occurs
+         */
+        public static State loadBinary(DataInputStream dis)
+                throws IOException {
+            int index = dis.readInt();
+            char c = dis.readChar();
+            int qtrue = dis.readInt();
+            int qfalse = dis.readInt();
+            return new DecisionState(index, c, qtrue, qfalse);
+        }
 
-	/**
-	 * Compares this state to another state for debugging purposes.
+        /**
+         * Compares this state to another state for debugging purposes.
          *
-	 * @param other the other state to compare against
+         * @param other the other state to compare against
          *
-	 * @return true if the states are equivalent
-	 */
-	public boolean compare(State other) {
-	    if (other instanceof DecisionState) {
-		DecisionState otherState = (DecisionState) other;
-		return index == otherState.index &&
-		       c == otherState.c &&
-		       qtrue == otherState.qtrue &&
-		       qfalse == otherState.qfalse;
-	    }
-	    return false;
-	}
+         * @return true if the states are equivalent
+         */
+        public boolean compare(State other) {
+            if (other instanceof DecisionState) {
+                DecisionState otherState = (DecisionState) other;
+                return index == otherState.index &&
+                        c == otherState.c &&
+                        qtrue == otherState.qtrue &&
+                        qfalse == otherState.qfalse;
+            }
+            return false;
+        }
     }
 
 
@@ -715,7 +716,7 @@ public class LetterToSoundImpl implements LetterToSound {
      * @see DecisionState
      */
     static class FinalState implements State {
-	final static int TYPE = 2;
+        final static int TYPE = 2;
         String[] phoneList;
 
         /**
@@ -732,7 +733,7 @@ public class LetterToSoundImpl implements LetterToSound {
                 if (i != -1) {
                     phoneList = new String[2];
                     phoneList[0] = phones.substring(0, i);
-                    phoneList[1] = phones.substring(i + 1);                
+                    phoneList[1] = phones.substring(i + 1);
                 } else {
                     phoneList = new String[1];
                     phoneList[0] = phones;
@@ -746,7 +747,7 @@ public class LetterToSoundImpl implements LetterToSound {
          * @param phones an array of phones for this state
          */
         public FinalState(String[] phones) {
-	    phoneList = phones;
+            phoneList = phones;
         }
 
         /**
@@ -782,76 +783,76 @@ public class LetterToSoundImpl implements LetterToSound {
             }
         }
 
-	/**
-	 * Compares this state to another state for debugging
-	 * purposes.
+        /**
+         * Compares this state to another state for debugging
+         * purposes.
          *
-	 * @param other the other state to compare against
+         * @param other the other state to compare against
          *
-	 * @return <code>true</code> if the states are equivalent
-	 */
-	public boolean compare(State other) {
-	    if (other instanceof FinalState) {
-		FinalState otherState = (FinalState) other;
-		if (phoneList == null) {
-		    return otherState.phoneList == null;
-		} else {
-		    for (int i = 0; i < phoneList.length; i++) {
-			if (!phoneList[i].equals(otherState.phoneList[i])) {
-			    return false;
-			}
-		    }
-		    return true;
-		}
-	    }
-	    return false;
-	}
+         * @return <code>true</code> if the states are equivalent
+         */
+        public boolean compare(State other) {
+            if (other instanceof FinalState) {
+                FinalState otherState = (FinalState) other;
+                if (phoneList == null) {
+                    return otherState.phoneList == null;
+                } else {
+                    for (int i = 0; i < phoneList.length; i++) {
+                        if (!phoneList[i].equals(otherState.phoneList[i])) {
+                            return false;
+                        }
+                    }
+                    return true;
+                }
+            }
+            return false;
+        }
 
 
-	/**
-	 * Writes this state to the given output stream.
+        /**
+         * Writes this state to the given output stream.
          *
-	 * @param dos the data output stream
+         * @param dos the data output stream
          *
-	 * @throws IOException if an error occurs
-	 */
-	public void writeBinary(DataOutputStream dos) throws IOException {
-	    dos.writeInt(TYPE);
-	    if (phoneList == null) {
-		dos.writeInt(0);
-	    } else {
-		dos.writeInt(phoneList.length);
-		for (int i = 0; i < phoneList.length; i++) {
-		    dos.writeInt(phonemeTable.indexOf(phoneList[i]));
-		}
-	    }
-	}
+         * @throws IOException if an error occurs
+         */
+        public void writeBinary(DataOutputStream dos) throws IOException {
+            dos.writeInt(TYPE);
+            if (phoneList == null) {
+                dos.writeInt(0);
+            } else {
+                dos.writeInt(phoneList.length);
+                for (int i = 0; i < phoneList.length; i++) {
+                    dos.writeInt(phonemeTable.indexOf(phoneList[i]));
+                }
+            }
+        }
 
-	/**
-	 * Loads a FinalState object from the given input stream
+        /**
+         * Loads a FinalState object from the given input stream
          *
-	 * @param dis the data input stream
+         * @param dis the data input stream
          *
-	 * @return a newly constructed final state
+         * @return a newly constructed final state
          *
-	 * @throws IOException if an error occurs
-	 */
-	public static State loadBinary(DataInputStream dis)
-			    throws IOException {
-	    String[] phoneList;
-	    int phoneListLength = dis.readInt();
+         * @throws IOException if an error occurs
+         */
+        public static State loadBinary(DataInputStream dis)
+                throws IOException {
+            String[] phoneList;
+            int phoneListLength = dis.readInt();
 
-	    if (phoneListLength == 0) {
-		phoneList = null;
-	    } else {
-		phoneList = new String[phoneListLength];
-	    }
-	    for (int i = 0; i < phoneListLength; i++) {
-		int index = dis.readInt();
-		phoneList[i] = (String) phonemeTable.get(index);
-	    }
-	    return new FinalState(phoneList);
-	}
+            if (phoneListLength == 0) {
+                phoneList = null;
+            } else {
+                phoneList = new String[phoneListLength];
+            }
+            for (int i = 0; i < phoneListLength; i++) {
+                int index = dis.readInt();
+                phoneList[i] = (String) phonemeTable.get(index);
+            }
+            return new FinalState(phoneList);
+        }
     }
 
 
@@ -859,78 +860,78 @@ public class LetterToSoundImpl implements LetterToSound {
      * Translates between text and binary forms of the CMU6 LTS rules.
      */
     public static void main(String[] args) {
-	LexiconImpl lex, lex2;
-	boolean showTimes = false;
+        LexiconImpl lex, lex2;
+        boolean showTimes = false;
         String srcPath = ".";
         String destPath = ".";
-	String name = "cmulex_lts";
+        String name = "cmulex_lts";
 
-	try {
-	    if (args.length > 0) {
-		BulkTimer timer = new BulkTimer();
-		timer.start();
-		for (int i = 0 ; i < args.length; i++) {
+        try {
+            if (args.length > 0) {
+                BulkTimer timer = new BulkTimer();
+                timer.start();
+                for (int i = 0; i < args.length; i++) {
                     if (args[i].equals("-src")) {
                         srcPath = args[++i];
                     } else if (args[i].equals("-dest")) {
                         destPath = args[++i];
-		    } else if (args[i].equals("-name")
-                               && i < args.length -1) {
-			name = args[++i];
-		    } else if (args[i].equals("-generate_binary")) {
+                    } else if (args[i].equals("-name")
+                            && i < args.length - 1) {
+                        name = args[++i];
+                    } else if (args[i].equals("-generate_binary")) {
 
-			 System.out.println("Loading " + name);
-			 timer.start("load_text");
-			 LetterToSoundImpl text = new LetterToSoundImpl(
-				new URL("file:" + srcPath + "/"
+                        System.out.println("Loading " + name);
+                        timer.start("load_text");
+                        LetterToSoundImpl text = new LetterToSoundImpl(
+                                new URL("file:" + srcPath + "/"
                                         + name + ".txt"),
                                 false);
-			 timer.stop("load_text");
+                        timer.stop("load_text");
 
-			 System.out.println("Dumping " + name);
-			 timer.start("dump_binary");
-			 text.dumpBinary(destPath + "/" + name + ".bin");
-			 timer.stop("dump_binary");
+                        System.out.println("Dumping " + name);
+                        timer.start("dump_binary");
+                        text.dumpBinary(destPath + "/" + name + ".bin");
+                        timer.stop("dump_binary");
 
-		    } else if (args[i].equals("-compare")) {
+                    } else if (args[i].equals("-compare")) {
 
-			timer.start("load_text");
-			 LetterToSoundImpl text = new LetterToSoundImpl(
-				new URL("file:./" + name + ".txt"),  false);
-			timer.stop("load_text");
+                        timer.start("load_text");
+                        LetterToSoundImpl text = new LetterToSoundImpl(
+                                new URL("file:./" + name + ".txt"), false);
+                        timer.stop("load_text");
 
-			timer.start("load_binary");
-			LetterToSoundImpl binary = new LetterToSoundImpl(
-				new URL("file:./" + name + ".bin"),  true);
-			timer.stop("load_binary");
+                        timer.start("load_binary");
+                        LetterToSoundImpl binary = new LetterToSoundImpl(
+                                new URL("file:./" + name + ".bin"), true);
+                        timer.stop("load_binary");
 
-			timer.start("compare");
-			if (!text.compare(binary)) {
-			    System.out.println("NOT EQUIVALENT");
-			} else {
-			    System.out.println("ok");
-			}
-			timer.stop("compare");
-		    } else if (args[i].equals("-showtimes")) {
-			showTimes = true;
-		    } else {
-			System.out.println("Unknown option " + args[i]);
-		    }
-		}
-		timer.stop();
-		if (showTimes) {
-		    timer.show("LTS loading and dumping");
-		}
-	    } else {
-		System.out.println("Options: ");
-		System.out.println("    -src path");
-		System.out.println("    -dest path");
-		System.out.println("    -compare");
-		System.out.println("    -generate_binary");
-		System.out.println("    -showTimes");
-	    }
-	} catch (IOException ioe) {
-	    System.err.println(ioe);
-	}
+                        timer.start("compare");
+                        if (!text.compare(binary)) {
+                            System.out.println("NOT EQUIVALENT");
+                        } else {
+                            System.out.println("ok");
+                        }
+                        timer.stop("compare");
+                    } else if (args[i].equals("-showtimes")) {
+                        showTimes = true;
+                    } else {
+                        System.out.println("Unknown option " + args[i]);
+                    }
+                }
+                timer.stop();
+                if (showTimes) {
+                    timer.show("LTS loading and dumping");
+                }
+            } else {
+                System.out.println("Options: ");
+                System.out.println("    -src path");
+                System.out.println("    -dest path");
+                System.out.println("    -compare");
+                System.out.println("    -generate_binary");
+                System.out.println("    -showTimes");
+            }
+        } catch (IOException ioe) {
+            System.err.println(ioe);
+        }
     }
 }

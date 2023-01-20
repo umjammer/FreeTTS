@@ -2,7 +2,7 @@
  * Copyright 2002 DFKI GmbH.
  * Portions Copyright 2002 Sun Microsystems, Inc.
  * All Rights Reserved.  Use is subject to license terms.
- *
+ * <p>
  * See the file "license.terms" for information on usage and
  * redistribution of this file, and for a DISCLAIMER OF ALL
  * WARRANTIES.
@@ -21,10 +21,10 @@ import com.sun.speech.freetts.UtteranceProcessor;
 import com.sun.speech.freetts.en.us.CMULexicon;
 import com.sun.speech.freetts.en.us.CMUVoice;
 import com.sun.speech.freetts.util.Utilities;
-
 import de.dfki.lt.freetts.mbrola.MbrolaAudioOutput;
 import de.dfki.lt.freetts.mbrola.MbrolaCaller;
 import de.dfki.lt.freetts.mbrola.ParametersToMbrolaConverter;
+
 
 /**
  * Defines an unlimited-domain diphone synthesis based voice using
@@ -36,8 +36,8 @@ public class MbrolaVoice extends CMUVoice {
     private String database;          // name of the voice database
 
     private static final String MRPA_TO_SAMPA_RENAME_LIST =
-        "V ah i iy I ih U uh { ae @ ax r= er A aa O ao u uw E eh EI ey AI ay OI oy aU aw @U ow j y h hh N ng S sh T th Z zh D dh tS ch dZ jh _ pau";
-    
+            "V ah i iy I ih U uh { ae @ ax r= er A aa O ao u uw E eh EI ey AI ay OI oy aU aw @U ow j y h hh N ng S sh T th Z zh D dh tS ch dZ jh _ pau";
+
     /**
      * Creates an MbrolaVoice.
      *
@@ -57,13 +57,13 @@ public class MbrolaVoice extends CMUVoice {
      * @param organization the organization which created the voice
      * @param lexicon the lexicon to use
      */
-    public MbrolaVoice(String databaseDirectory, 
+    public MbrolaVoice(String databaseDirectory,
                        String database, float rate, float pitch, float range,
                        String name, Gender gender, Age age,
                        String description, Locale locale, String domain,
                        String organization, CMULexicon lexicon) {
-	super(name, gender, age, description, locale,
-              domain, organization, lexicon);
+        super(name, gender, age, description, locale,
+                domain, organization, lexicon);
         setRate(rate);
         setPitch(pitch);
         setPitchRange(range);
@@ -76,12 +76,13 @@ public class MbrolaVoice extends CMUVoice {
     // the current CMUVoice.java framework. It only means that
     // after the Durator and the ContourGenerator, the classes
     // process the utterance (Selector before Concatenator).]]
+
     /**
      * Returns the unit selector to be used by this voice.
      * Derived voices typically override this to customize behaviors.
-     * 
+     *
      * @return the unit selector
-     * 
+     *
      * @throws IOException if an IO error occurs while getting
      *     processor
      */
@@ -93,7 +94,7 @@ public class MbrolaVoice extends CMUVoice {
      * Returns the command line that invokes the MBROLA executable.
      * The command will be in the form of:
      *
-     * <pre> {mbrolaExecutable} -e -R {mbrolaRenameList} {mbrolaVoiceDB} 
+     * <pre> {mbrolaExecutable} -e -R {mbrolaRenameList} {mbrolaVoiceDB}
      * - -.raw </pre>
      */
     protected String[] getMbrolaCommand() {
@@ -103,15 +104,15 @@ public class MbrolaVoice extends CMUVoice {
         // to stdout; translates CMU us radio to sampa phonetic symbols;
         // and only complains, but does not abort, when encountering an
         // unknown diphone:
-        String[] cmd = 
-             {getMbrolaBinary(), "-e", "-R",  getRenameList(), 
-             getDatabase(), "-", "-.raw"};
+        String[] cmd =
+                {getMbrolaBinary(), "-e", "-R", getRenameList(),
+                        getDatabase(), "-", "-.raw"};
 
-         if (false) {
-             for (int i = 0; i < cmd.length; i++) {
-                 System.out.println(cmd[i]);
-             }
-         }
+        if (false) {
+            for (int i = 0; i < cmd.length; i++) {
+                System.out.println(cmd[i]);
+            }
+        }
 
         return cmd;
     }
@@ -159,8 +160,8 @@ public class MbrolaVoice extends CMUVoice {
      * @return the absolute file name of the Voice database
      */
     public String getDatabase() {
-        return getMbrolaBase() + File.separator + 
-            databaseDirectory + File.separator + database;
+        return getMbrolaBase() + File.separator +
+                databaseDirectory + File.separator + database;
     }
 
 //    /**
@@ -181,6 +182,7 @@ public class MbrolaVoice extends CMUVoice {
     // the current CMUVoice.java framework. It only means that
     // after the Durator and the ContourGenerator, the classes
     // process the utterance (Selector before Concatenator).]]
+
     /**
      * Returns the unit concatenator to be used by this voice.
      * This method constructs the command line with which the
@@ -213,16 +215,16 @@ public class MbrolaVoice extends CMUVoice {
      */
     protected URL getResource(String resource) {
         return com.sun.speech.freetts.en.us.CMUVoice.class.
-            getResource(resource);
+                getResource(resource);
     }
 
     /**
      * Converts this object to a string
-     * 
+     *
      * @return a string representation of this object
      */
     public String toString() {
-	return "MbrolaVoice";
+        return "MbrolaVoice";
     }
 }
 

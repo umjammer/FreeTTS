@@ -1,23 +1,25 @@
 /**
  * Portions Copyright 2001 Sun Microsystems, Inc.
- * Portions Copyright 1999-2001 Language Technologies Institute, 
+ * Portions Copyright 1999-2001 Language Technologies Institute,
  * Carnegie Mellon University.
  * All Rights Reserved.  Use is subject to license terms.
- * 
+ * <p>
  * See the file "license.terms" for information on usage and
- * redistribution of this file, and for a DISCLAIMER OF ALL 
+ * redistribution of this file, and for a DISCLAIMER OF ALL
  * WARRANTIES.
  */
+
 package com.sun.speech.freetts.diphone;
 
 import com.sun.speech.freetts.FeatureSet;
 import com.sun.speech.freetts.Item;
-import com.sun.speech.freetts.relp.LPCResult;
-import com.sun.speech.freetts.UtteranceProcessor;
-import com.sun.speech.freetts.Utterance;
-import com.sun.speech.freetts.Relation;
 import com.sun.speech.freetts.ProcessException;
+import com.sun.speech.freetts.Relation;
+import com.sun.speech.freetts.Utterance;
+import com.sun.speech.freetts.UtteranceProcessor;
+import com.sun.speech.freetts.relp.LPCResult;
 import com.sun.speech.freetts.relp.SampleInfo;
+
 
 /**
  * Calculates pitchmarks. This is an utterance processor that expects
@@ -44,66 +46,66 @@ public class DiphonePitchmarkGenerator implements UtteranceProcessor {
      */
     public void processUtterance(Utterance utterance) throws ProcessException {
 
-	// precondition that must be satisfied
-	Relation targetRelation = utterance.getRelation(Relation.TARGET);
-	if (targetRelation == null) {
-	    throw new IllegalStateException
-		("DiphonePitchmarkGenerator: Target relation does not exist");
-	}
+        // precondition that must be satisfied
+        Relation targetRelation = utterance.getRelation(Relation.TARGET);
+        if (targetRelation == null) {
+            throw new IllegalStateException
+                    ("DiphonePitchmarkGenerator: Target relation does not exist");
+        }
 
-	SampleInfo sampleInfo;
-	sampleInfo = (SampleInfo) utterance.getObject(SampleInfo.UTT_NAME);
-	if (sampleInfo == null) {
-	    throw new IllegalStateException
-		("DiphonePitchmarkGenerator: SampleInfo does not exist");
-	}
-	
-	float pos, f0, m = 0;
-	float lf0 = utterance.getVoice().getPitch();
-	
-	double time = 0;
-	int pitchMarks = 0;  // how many pitch marks
+        SampleInfo sampleInfo;
+        sampleInfo = (SampleInfo) utterance.getObject(SampleInfo.UTT_NAME);
+        if (sampleInfo == null) {
+            throw new IllegalStateException
+                    ("DiphonePitchmarkGenerator: SampleInfo does not exist");
+        }
 
-	LPCResult lpcResult;
-	IntLinkedList timesList = new IntLinkedList();
-	
-	// first pass to count how many pitch marks will be required
-	for (Item targetItem = targetRelation.getHead();
-	     targetItem != null; targetItem = targetItem.getNext()) {
-	    FeatureSet featureSet = targetItem.getFeatures();
-	    pos = featureSet.getFloat("pos");
-	    f0 = featureSet.getFloat("f0");
-        //System.err.println("Target pos="+pos+", f0="+f0);
-	    if (time == pos) {
+        float pos, f0, m = 0;
+        float lf0 = utterance.getVoice().getPitch();
+
+        double time = 0;
+        int pitchMarks = 0;  // how many pitch marks
+
+        LPCResult lpcResult;
+        IntLinkedList timesList = new IntLinkedList();
+
+        // first pass to count how many pitch marks will be required
+        for (Item targetItem = targetRelation.getHead();
+             targetItem != null; targetItem = targetItem.getNext()) {
+            FeatureSet featureSet = targetItem.getFeatures();
+            pos = featureSet.getFloat("pos");
+            f0 = featureSet.getFloat("f0");
+            //System.err.println("Target pos="+pos+", f0="+f0);
+            if (time == pos) {
+                lf0 = f0;
+                continue;
+            }
+            m = (f0 - lf0) / pos;
+            //System.err.println("m=("+f0+"-"+lf0+")/"+pos+"="+m);
+            for (; time < pos; pitchMarks++) {
+                time += 1 / (lf0 + (time * m));
+                //System.err.println("f("+time+")="+((lf0+(time*m))));
+                // save the time value in a list
+                timesList.add((int) (time * sampleInfo.getSampleRate()));
+            }
             lf0 = f0;
-		continue;
-	    }
-	    m = (f0-lf0)/pos;
-        //System.err.println("m=("+f0+"-"+lf0+")/"+pos+"="+m);
-	    for (; time < pos; pitchMarks++) {
-		time += 1/(lf0 + (time * m));
-        //System.err.println("f("+time+")="+((lf0+(time*m))));
-		// save the time value in a list
-		timesList.add((int) (time * sampleInfo.getSampleRate()));
-	    }
-        lf0 = f0;
-	}
-	lpcResult = new LPCResult();
-	// resize the number of frames to the number of pitchmarks
-	lpcResult.resizeFrames(pitchMarks);
+        }
+        lpcResult = new LPCResult();
+        // resize the number of frames to the number of pitchmarks
+        lpcResult.resizeFrames(pitchMarks);
 
-	pitchMarks = 0;
+        pitchMarks = 0;
 
-	int[] targetTimes = lpcResult.getTimes();
-	
-	// second pass puts the values in
-	timesList.resetIterator();
-	for (; pitchMarks < targetTimes.length; pitchMarks++) {
-	    targetTimes[pitchMarks] = timesList.nextInt();
-	}
-	utterance.setObject("target_lpcres", lpcResult);
+        int[] targetTimes = lpcResult.getTimes();
+
+        // second pass puts the values in
+        timesList.resetIterator();
+        for (; pitchMarks < targetTimes.length; pitchMarks++) {
+            targetTimes[pitchMarks] = timesList.nextInt();
+        }
+        utterance.setObject("target_lpcres", lpcResult);
     }
-    
+
 
     /**
      * Returns a string representation of this object.
@@ -111,7 +113,7 @@ public class DiphonePitchmarkGenerator implements UtteranceProcessor {
      * @return a string representation of this object
      */
     public String toString() {
-	return "DiphonePitchmarkGenerator";
+        return "DiphonePitchmarkGenerator";
     }
 }
 
@@ -142,34 +144,34 @@ class IntLinkedList {
      * Constructs an empty IntLinkedList.
      */
     public IntLinkedList() {
-	head = null;
-	tail = null;
-	iterator = null;
+        head = null;
+        tail = null;
+        iterator = null;
     }
-    
+
     /**
      * Adds the given float to the end of the list.
      *
      * @param val the float to add
      */
     public void add(int val) {
-	IntListNode node = new IntListNode(val);
-	if (head == null) {
-	    head = node;
-	    tail = node;
-	} else {
-	    tail.next = node;
-	    tail = node;
-	}
+        IntListNode node = new IntListNode(val);
+        if (head == null) {
+            head = node;
+            tail = node;
+        } else {
+            tail.next = node;
+            tail = node;
+        }
     }
-    
+
     /**
      * Moves the iterator to point to the front of the list.
      */
     public void resetIterator() {
-	iterator = head;
+        iterator = head;
     }
-    
+
     /**
      * Returns the next float in the list, advances the iterator.
      * The <code>hasNext()</code> method MUST be called before calling
@@ -179,21 +181,21 @@ class IntLinkedList {
      * @return the next value
      */
     public int nextInt() {
-	int val = iterator.val;
-	if (iterator != null) {
-	    iterator = iterator.next;
-	}
-	return val;
+        int val = iterator.val;
+        if (iterator != null) {
+            iterator = iterator.next;
+        }
+        return val;
     }
-    
+
     /**
      * Checks if there are more elements for the iterator.
      *
      * @return <code>true</code>  if there are more elements; 
      *		otherwise <code>false</code>
-     */ 
+     */
     public boolean hasNext() {
-	return (iterator != null);
+        return (iterator != null);
     }
 }
 
@@ -210,7 +212,7 @@ class IntListNode {
      * @param val the value to be contained in the list
      */
     public IntListNode(int val) {
-	this.val = val;
-	next = null;
+        this.val = val;
+        next = null;
     }
 }

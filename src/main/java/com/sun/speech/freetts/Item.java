@@ -1,17 +1,19 @@
 /**
  * Portions Copyright 2001-2003 Sun Microsystems, Inc.
- * Portions Copyright 1999-2001 Language Technologies Institute, 
+ * Portions Copyright 1999-2001 Language Technologies Institute,
  * Carnegie Mellon University.
  * All Rights Reserved.  Use is subject to license terms.
- * 
+ * <p>
  * See the file "license.terms" for information on usage and
- * redistribution of this file, and for a DISCLAIMER OF ALL 
+ * redistribution of this file, and for a DISCLAIMER OF ALL
  * WARRANTIES.
  */
+
 package com.sun.speech.freetts;
 
 import java.io.PrintWriter;
 import java.util.StringTokenizer;
+
 
 /**
  * Represents a node in a Relation. Items can have shared contents but 
@@ -42,19 +44,19 @@ public class Item implements Dumpable {
      *   If null, a new sharedContents is created.
      */
     public Item(Relation relation, ItemContents sharedContents) {
-	ownerRelation = relation;
-	if (sharedContents != null) {
-	    contents = sharedContents;
-	} else {
-	    contents = new ItemContents();
-	}
-	parent = null;
-	daughter = null;
-	next = null;
-	prev = null;
+        ownerRelation = relation;
+        if (sharedContents != null) {
+            contents = sharedContents;
+        } else {
+            contents = new ItemContents();
+        }
+        parent = null;
+        daughter = null;
+        next = null;
+        prev = null;
 
 
-	getSharedContents().addItemRelation(relation.getName(), this);
+        getSharedContents().addItemRelation(relation.getName(), this);
     }
 
     /**
@@ -67,7 +69,7 @@ public class Item implements Dumpable {
      *   found
      */
     public Item getItemAs(String relationName) {
-	return getSharedContents().getItemRelation(relationName);
+        return getSharedContents().getItemRelation(relationName);
     }
 
 
@@ -77,7 +79,7 @@ public class Item implements Dumpable {
      * @return the relation that owns this item
      */
     public Relation getOwnerRelation() {
-	return ownerRelation;
+        return ownerRelation;
     }
 
     /**
@@ -86,7 +88,7 @@ public class Item implements Dumpable {
      * @return the shared item contents
      */
     public ItemContents getSharedContents() {
-	return contents;
+        return contents;
     }
 
     /**
@@ -95,7 +97,7 @@ public class Item implements Dumpable {
      * @return true if this item has daughters
      */
     public boolean hasDaughters() {
-	return daughter != null;
+        return daughter != null;
     }
 
     /**
@@ -104,9 +106,9 @@ public class Item implements Dumpable {
      * @return the first daughter or null if none
      */
     public Item getDaughter() {
-	return daughter;
+        return daughter;
     }
-    
+
     /**
      * Retrieves the Nth daughter of this item.
      *
@@ -115,12 +117,12 @@ public class Item implements Dumpable {
      * @return the Nth daughter or null if none at the given index
      */
     public Item getNthDaughter(int which) {
-	Item d = daughter;
-	int count = 0;
-	while (count++ != which && d != null) {
-	    d = d.next;
-	}
-	return d;
+        Item d = daughter;
+        int count = 0;
+        while (count++ != which && d != null) {
+            d = d.next;
+        }
+        return d;
     }
 
     /**
@@ -129,14 +131,14 @@ public class Item implements Dumpable {
      * @return the last daughter or null if none at the given index
      */
     public Item getLastDaughter() {
-	Item d = daughter;
-	if (d == null) {
-	    return null;
-	}
-	while (d.next != null) {
-	    d = d.next;
-	}
-	return d;
+        Item d = daughter;
+        if (d == null) {
+            return null;
+        }
+        while (d.next != null) {
+            d = d.next;
+        }
+        return d;
     }
 
     /**
@@ -145,24 +147,24 @@ public class Item implements Dumpable {
      * @param item the new daughter
      */
     public Item addDaughter(Item item) {
-	Item newItem;
-	ItemContents  contents;
+        Item newItem;
+        ItemContents contents;
 
-	Item p = getLastDaughter();
+        Item p = getLastDaughter();
 
-	if (p != null) {
-	    newItem = p.appendItem(item);
-	} else {
-	    if (item == null) {
-		contents = new ItemContents();
-	    } else {
-		contents = item.getSharedContents();
-	    }
-	    newItem = new Item(getOwnerRelation(), contents);
-	    newItem.parent = this;
-	    daughter = newItem;
-	}
-	return newItem;
+        if (p != null) {
+            newItem = p.appendItem(item);
+        } else {
+            if (item == null) {
+                contents = new ItemContents();
+            } else {
+                contents = item.getSharedContents();
+            }
+            newItem = new Item(getOwnerRelation(), contents);
+            newItem.parent = this;
+            daughter = newItem;
+        }
+        return newItem;
     }
 
     /**
@@ -172,7 +174,7 @@ public class Item implements Dumpable {
      * @return the newly created item that was added as a daughter
      */
     public Item createDaughter() {
-	return addDaughter(null);
+        return addDaughter(null);
     }
 
 
@@ -182,13 +184,13 @@ public class Item implements Dumpable {
      * @return the parent of this item
      */
     public Item getParent() {
-	Item n;
-	for (n = this; n.prev != null; n = n.prev) {
-	    if (n == null) {
-		return null;
-	    }
-	}
-	return n.parent;
+        Item n;
+        for (n = this; n.prev != null; n = n.prev) {
+            if (n == null) {
+                return null;
+            }
+        }
+        return n.parent;
     }
 
 
@@ -209,7 +211,7 @@ public class Item implements Dumpable {
      * @return the utterance that contains this item
      */
     public Utterance getUtterance() {
-	return getOwnerRelation().getUtterance();
+        return getOwnerRelation().getUtterance();
     }
 
     /**
@@ -218,7 +220,7 @@ public class Item implements Dumpable {
      * @return the feature set of this item
      */
     public FeatureSet getFeatures() {
-	return getSharedContents().getFeatures();
+        return getSharedContents().getFeatures();
     }
 
     /**
@@ -228,15 +230,15 @@ public class Item implements Dumpable {
      * @param pad the leading whitspace
      */
     public void dump(PrintWriter out, int pad, String title) {
-	String itemName = title + ":" + toString();
-	getFeatures().dump(out, pad, itemName);
-	if (hasDaughters()) {
-	    Item daughter = getDaughter();
-	    while (daughter != null) {
-		daughter.dump(out, pad + 8, "d");
-		daughter = daughter.next;
-	    }
-	}
+        String itemName = title + ":" + toString();
+        getFeatures().dump(out, pad, itemName);
+        if (hasDaughters()) {
+            Item daughter = getDaughter();
+            while (daughter != null) {
+                daughter.dump(out, pad + 8, "d");
+                daughter = daughter.next;
+            }
+        }
     }
 
     /**
@@ -262,30 +264,30 @@ public class Item implements Dumpable {
      * @param pathAndFeature the path to follow
      */
     public Object findFeature(String pathAndFeature) {
-	int lastDot;
-	String feature;
-	String path;
-	Item item;
-	FeatureProcessor fp;
+        int lastDot;
+        String feature;
+        String path;
+        Item item;
+        FeatureProcessor fp;
 
-	Voice voice = getOwnerRelation().getUtterance().getVoice();
-	Object results = null;
-	
-
-	lastDot = pathAndFeature.lastIndexOf(".");
-	// string can be of the form "p.feature" or just "feature"
-
-	if (lastDot == -1) {
-	    feature = pathAndFeature;
-	    path = null;
-	} else {
-	    feature = pathAndFeature.substring(lastDot + 1);
-	    path = pathAndFeature.substring(0, lastDot);
-	}
+        Voice voice = getOwnerRelation().getUtterance().getVoice();
+        Object results = null;
 
 
-	item = findItem(path);
-	if (item != null) {
+        lastDot = pathAndFeature.lastIndexOf(".");
+        // string can be of the form "p.feature" or just "feature"
+
+        if (lastDot == -1) {
+            feature = pathAndFeature;
+            path = null;
+        } else {
+            feature = pathAndFeature.substring(lastDot + 1);
+            path = pathAndFeature.substring(0, lastDot);
+        }
+
+
+        item = findItem(path);
+        if (item != null) {
             fp = voice.getFeatureProcessor(feature);
 
             if (fp != null) {
@@ -293,24 +295,23 @@ public class Item implements Dumpable {
                     results = fp.process(item);
                 } catch (ProcessException pe) {
                     System.err.println("Trouble while processing " +
-                                       fp.toString());
+                            fp.toString());
                 }
             } else {
                 results = item.getFeatures().getObject(feature);
             }
         }
-	results =  (results == null)
-		? "0" 
-		: results;
+        results = (results == null)
+                ? "0"
+                : results;
 
-    // System.out.println("FI " + pathAndFeature + " are " + results);
+        // System.out.println("FI " + pathAndFeature + " are " + results);
 
-	return results;
+        return results;
     }
 
-    /** 
+    /**
      * Finds the item specified by the given path.
-     
      * Path is a string of ":" or
      * "." separated strings with the following interpretations:
      * <ul>
@@ -330,46 +331,46 @@ public class Item implements Dumpable {
      * @return the item at the given path
      */
     public Item findItem(String path) {
-	Item pitem = this;
-	StringTokenizer tok;
-	
-	if (path == null) {
-	    return this;
-	}
+        Item pitem = this;
+        StringTokenizer tok;
 
-	tok = new StringTokenizer(path, ":.");
+        if (path == null) {
+            return this;
+        }
 
-	while (pitem != null && tok.hasMoreTokens()) {
-	    String token = tok.nextToken();
-	    if (token.equals("n")) {
-		pitem = pitem.getNext();
-	    } else if (token.equals("p")) {
-		pitem = pitem.getPrevious();
-	    } else if (token.equals("nn")) {
-		pitem = pitem.getNext();
-		if (pitem != null) {
-		    pitem = pitem.getNext();
-		}
-	    } else if (token.equals("pp")) {
-		pitem = pitem.getPrevious();
-		if (pitem != null) {
-		    pitem = pitem.getPrevious();
-		}
-	    } else if (token.equals("parent")) {
-		pitem = pitem.getParent();
-	    } else if (token.equals("daughter") || token.equals("daughter1")) {
-		pitem = pitem.getDaughter();
-	    } else if (token.equals("daughtern")) {
-		pitem = pitem.getLastDaughter();
-	    } else if (token.equals("R")) {
-		String relationName = tok.nextToken();
-		pitem = pitem.getSharedContents().getItemRelation(relationName);
-	    } else {
-		System.out.println("findItem: bad feature " + token +
-			" in " + path);
-	    }
-	}
-	return pitem;
+        tok = new StringTokenizer(path, ":.");
+
+        while (pitem != null && tok.hasMoreTokens()) {
+            String token = tok.nextToken();
+            if (token.equals("n")) {
+                pitem = pitem.getNext();
+            } else if (token.equals("p")) {
+                pitem = pitem.getPrevious();
+            } else if (token.equals("nn")) {
+                pitem = pitem.getNext();
+                if (pitem != null) {
+                    pitem = pitem.getNext();
+                }
+            } else if (token.equals("pp")) {
+                pitem = pitem.getPrevious();
+                if (pitem != null) {
+                    pitem = pitem.getPrevious();
+                }
+            } else if (token.equals("parent")) {
+                pitem = pitem.getParent();
+            } else if (token.equals("daughter") || token.equals("daughter1")) {
+                pitem = pitem.getDaughter();
+            } else if (token.equals("daughtern")) {
+                pitem = pitem.getLastDaughter();
+            } else if (token.equals("R")) {
+                String relationName = tok.nextToken();
+                pitem = pitem.getSharedContents().getItemRelation(relationName);
+            } else {
+                System.out.println("findItem: bad feature " + token +
+                        " in " + path);
+            }
+        }
+        return pitem;
     }
 
 
@@ -379,7 +380,7 @@ public class Item implements Dumpable {
      * @return the next item or null
      */
     public Item getNext() {
-	return next;
+        return next;
     }
 
 
@@ -389,7 +390,7 @@ public class Item implements Dumpable {
      * @return the previous item or null
      */
     public Item getPrevious() {
-	return prev;
+        return prev;
     }
 
 
@@ -402,27 +403,27 @@ public class Item implements Dumpable {
      * @return the newly appended item
      */
     public Item appendItem(Item originalItem) {
-	ItemContents contents;
-	Item newItem;
+        ItemContents contents;
+        Item newItem;
 
-	if (originalItem == null) {
-	    contents = null;
-	} else {
-	    contents = originalItem.getSharedContents();
-	}
+        if (originalItem == null) {
+            contents = null;
+        } else {
+            contents = originalItem.getSharedContents();
+        }
 
-	newItem = new Item(getOwnerRelation(), contents);
-	newItem.next = this.next;
-	if (this.next != null) {
-	    this.next.prev = newItem;
-	}
+        newItem = new Item(getOwnerRelation(), contents);
+        newItem.next = this.next;
+        if (this.next != null) {
+            this.next.prev = newItem;
+        }
 
-	attach(newItem);
+        attach(newItem);
 
-	if (this.ownerRelation.getTail() == this) {
-		this.ownerRelation.setTail(newItem);
-	}
-	return newItem;
+        if (this.ownerRelation.getTail() == this) {
+            this.ownerRelation.setTail(newItem);
+        }
+        return newItem;
     }
 
     /**
@@ -431,8 +432,8 @@ public class Item implements Dumpable {
      * @param item the item to append
      */
     void attach(Item item) {
-	this.next = item;
-	item.prev = this;
+        this.next = item;
+        item.prev = this;
     }
 
     /**
@@ -444,44 +445,43 @@ public class Item implements Dumpable {
      * @return the newly appended item
      */
     public Item prependItem(Item originalItem) {
-	ItemContents contents;
-	Item newItem;
+        ItemContents contents;
+        Item newItem;
 
-	if (originalItem == null) {
-	    contents = null;
-	} else {
-	    contents = originalItem.getSharedContents();
-	}
+        if (originalItem == null) {
+            contents = null;
+        } else {
+            contents = originalItem.getSharedContents();
+        }
 
-	newItem = new Item(getOwnerRelation(), contents);
-	newItem.prev = this.prev;
-	if (this.prev != null) {
-	    this.prev.next = newItem;
-	}
-	newItem.next = this;
-	this.prev = newItem;
-	if (this.parent != null) {
-	    this.parent.daughter = newItem;
-	    newItem.parent = this.parent;
-	    this.parent = null;
-	}
-	if (this.ownerRelation.getHead() == this) {
-	    this.ownerRelation.setHead(newItem);
-	}
-	return newItem;
+        newItem = new Item(getOwnerRelation(), contents);
+        newItem.prev = this.prev;
+        if (this.prev != null) {
+            this.prev.next = newItem;
+        }
+        newItem.next = this;
+        this.prev = newItem;
+        if (this.parent != null) {
+            this.parent.daughter = newItem;
+            newItem.parent = this.parent;
+            this.parent = null;
+        }
+        if (this.ownerRelation.getHead() == this) {
+            this.ownerRelation.setHead(newItem);
+        }
+        return newItem;
     }
-
 
 
     // Inherited from object
     public String toString() {
-	// if we have a feature called 'name' use that
-	// otherwise fall back on the default.
-	String name = getFeatures().getString("name");
-	if (name == null) {
-	    name = "";
-	}
-	return name;
+        // if we have a feature called 'name' use that
+        // otherwise fall back on the default.
+        String name = getFeatures().getString("name");
+        if (name == null) {
+            name = "";
+        }
+        return name;
     }
 
     /**
@@ -492,10 +492,10 @@ public class Item implements Dumpable {
      * @return true if the shared contents are the same
      */
     public boolean equalsShared(Item otherItem) {
-	if (otherItem == null) {
-	    return false;
-	} else {
-	    return getSharedContents().equals(otherItem.getSharedContents());
-	}
+        if (otherItem == null) {
+            return false;
+        } else {
+            return getSharedContents().equals(otherItem.getSharedContents());
+        }
     }
 }

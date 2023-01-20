@@ -1,13 +1,14 @@
 /**
  * Portions Copyright 2001 Sun Microsystems, Inc.
- * Portions Copyright 1999-2001 Language Technologies Institute, 
+ * Portions Copyright 1999-2001 Language Technologies Institute,
  * Carnegie Mellon University.
  * All Rights Reserved.  Use is subject to license terms.
- * 
+ * <p>
  * See the file "license.terms" for information on usage and
- * redistribution of this file, and for a DISCLAIMER OF ALL 
+ * redistribution of this file, and for a DISCLAIMER OF ALL
  * WARRANTIES.
  */
+
 package com.sun.speech.freetts.cart;
 
 import com.sun.speech.freetts.Item;
@@ -15,6 +16,7 @@ import com.sun.speech.freetts.ProcessException;
 import com.sun.speech.freetts.Relation;
 import com.sun.speech.freetts.Utterance;
 import com.sun.speech.freetts.UtteranceProcessor;
+
 
 /**
  * Annotates the <code>Relation.SYLLABLE</code> relations of an
@@ -35,13 +37,13 @@ public class Intonator implements UtteranceProcessor {
      * passed into the constructor.
      */
     protected CART accentCart;
-    
+
     /**
      * The tone CART used for this Intonation UtteranceProcessor.  It is
      * passed into the constructor.
      */
     protected CART toneCart;
-    
+
     /**
      * Creates a new Intonation UtteranceProcessor with the given
      * CARTs.
@@ -53,7 +55,7 @@ public class Intonator implements UtteranceProcessor {
         this.accentCart = accentCart;
         this.toneCart = toneCart;
     }
-    
+
     /**
      * Annotates the <code>Relation.SYLLABLE</code> relations of an
      * utterance with "accent"
@@ -68,8 +70,8 @@ public class Intonator implements UtteranceProcessor {
      */
     public void processUtterance(Utterance utterance) throws ProcessException {
         String results;
-	for (Item syllable =
-                 utterance.getRelation(Relation.SYLLABLE).getHead();
+        for (Item syllable =
+             utterance.getRelation(Relation.SYLLABLE).getHead();
              syllable != null;
              syllable = syllable.getNext()) {
             results = (String) accentCart.interpret(syllable);

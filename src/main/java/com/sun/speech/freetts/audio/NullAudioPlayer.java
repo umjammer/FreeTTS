@@ -1,15 +1,15 @@
 /**
  * Copyright 2001 Sun Microsystems, Inc.
- * 
+ * <p>
  * See the file "license.terms" for information on usage and
- * redistribution of this file, and for a DISCLAIMER OF ALL 
+ * redistribution of this file, and for a DISCLAIMER OF ALL
  * WARRANTIES.
  */
+
 package com.sun.speech.freetts.audio;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import javax.sound.sampled.AudioFormat;
 
 import com.sun.speech.freetts.util.BulkTimer;
@@ -23,7 +23,7 @@ import com.sun.speech.freetts.util.BulkTimer;
 public class NullAudioPlayer implements AudioPlayer {
     /** Logger instance. */
     private static final Logger LOGGER =
-        Logger.getLogger(NullAudioPlayer.class.getName());
+            Logger.getLogger(NullAudioPlayer.class.getName());
 
     private float volume = 1.0f;
     private AudioFormat audioFormat;
@@ -38,7 +38,7 @@ public class NullAudioPlayer implements AudioPlayer {
      */
     public NullAudioPlayer() {
     }
-    
+
 
     /**
      * Sets the audio format for this player
@@ -46,7 +46,7 @@ public class NullAudioPlayer implements AudioPlayer {
      * @param format the audio format
      */
     public void setAudioFormat(AudioFormat format) {
-	this.audioFormat = format;
+        this.audioFormat = format;
     }
 
     /**
@@ -55,7 +55,7 @@ public class NullAudioPlayer implements AudioPlayer {
      * @return the current audio format.
      */
     public AudioFormat getAudioFormat() {
-	return audioFormat;
+        return audioFormat;
     }
 
     /**
@@ -80,7 +80,7 @@ public class NullAudioPlayer implements AudioPlayer {
      * should be grouped between a reset/drain pair.
      */
     public void reset() {
-	timer.start("AudioOutput");
+        timer.start("AudioOutput");
     }
 
 
@@ -89,8 +89,6 @@ public class NullAudioPlayer implements AudioPlayer {
      */
     public void resume() {
     }
-	
-
 
 
     /**
@@ -98,7 +96,7 @@ public class NullAudioPlayer implements AudioPlayer {
      */
     public void close() {
     }
-        
+
 
     /**
      * Returns the current volume.
@@ -106,8 +104,8 @@ public class NullAudioPlayer implements AudioPlayer {
      * @return the current volume (between 0 and 1)
      */
     public float getVolume() {
-	return volume;
-    }	      
+        return volume;
+    }
 
     /**
      * Sets the current volume.
@@ -115,8 +113,8 @@ public class NullAudioPlayer implements AudioPlayer {
      * @param volume  the current volume (between 0 and 1)
      */
     public void setVolume(float volume) {
-	this.volume = volume;
-    }	      
+        this.volume = volume;
+    }
 
 
     /**
@@ -128,7 +126,7 @@ public class NullAudioPlayer implements AudioPlayer {
      *       	<code> false </code>if the write was cancelled.
      */
     public boolean write(byte[] audioData) {
-	return write(audioData, 0, audioData.length);
+        return write(audioData, 0, audioData.length);
     }
 
 
@@ -145,8 +143,8 @@ public class NullAudioPlayer implements AudioPlayer {
      *  Marks the end of a set of data
      *
      */
-    public boolean  end()  {
-	return true;
+    public boolean end() {
+        return true;
     }
 
     /**
@@ -160,27 +158,27 @@ public class NullAudioPlayer implements AudioPlayer {
      *       	<code> false </code>if the write was cancelled.
      */
     public boolean write(byte[] bytes, int offset, int size) {
-	totalBytes += size;
-	totalWrites ++;
-	if (firstSound) {
-	    timer.stop("AudioFirstSound");
-	    firstSound = false;
-	    if (LOGGER.isLoggable(Level.FINER)) {
-		timer.show("Null Trace");
-	    }
-	}
-	if (LOGGER.isLoggable(Level.FINER)) {
-	    LOGGER.fine("NullAudio: write " + size + " bytes.");
-	}
-	return true;
+        totalBytes += size;
+        totalWrites++;
+        if (firstSound) {
+            timer.stop("AudioFirstSound");
+            firstSound = false;
+            if (LOGGER.isLoggable(Level.FINER)) {
+                timer.show("Null Trace");
+            }
+        }
+        if (LOGGER.isLoggable(Level.FINER)) {
+            LOGGER.fine("NullAudio: write " + size + " bytes.");
+        }
+        return true;
     }
 
     /**
      * Starts the first sample timer
      */
     public void startFirstSampleTimer() {
-	firstSound = true;
-	timer.start("AudioFirstSound");
+        firstSound = true;
+        timer.start("AudioFirstSound");
     }
 
     /**
@@ -189,9 +187,9 @@ public class NullAudioPlayer implements AudioPlayer {
      * @return <code>true</code> if the audio played to completion,
      *     	<code> false </code>if the audio was stopped
      */
-    public boolean drain()  {
-	timer.stop("AudioOutput");
-	return true;
+    public boolean drain() {
+        timer.stop("AudioOutput");
+        return true;
     }
 
     /**
@@ -200,8 +198,8 @@ public class NullAudioPlayer implements AudioPlayer {
      *
      * @return the amount of audio in milliseconds
      */
-    public long getTime()  {
-	return -1L;
+    public long getTime() {
+        return -1L;
     }
 
 
@@ -215,6 +213,6 @@ public class NullAudioPlayer implements AudioPlayer {
      * Shows metrics for this audio player
      */
     public void showMetrics() {
-	timer.show("NullAudioPlayer");
+        timer.show("NullAudioPlayer");
     }
 }

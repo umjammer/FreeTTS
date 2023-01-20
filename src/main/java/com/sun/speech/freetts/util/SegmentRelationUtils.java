@@ -1,13 +1,14 @@
 /**
  * Portions Copyright 2001 Sun Microsystems, Inc.
- * Portions Copyright 1999-2001 Language Technologies Institute, 
+ * Portions Copyright 1999-2001 Language Technologies Institute,
  * Carnegie Mellon University.
  * All Rights Reserved.  Use is subject to license terms.
- * 
+ * <p>
  * See the file "license.terms" for information on usage and
- * redistribution of this file, and for a DISCLAIMER OF ALL 
+ * redistribution of this file, and for a DISCLAIMER OF ALL
  * WARRANTIES.
  */
+
 package com.sun.speech.freetts.util;
 
 import com.sun.speech.freetts.FeatureSet;
@@ -31,22 +32,22 @@ public class SegmentRelationUtils {
      */
     public static Item getItem(Relation segmentRelation, float time) {
 
-	Item lastSegment = segmentRelation.getTail();
-	
-	// if given time is closer to the front than the end, search from
-	// the front; otherwise, start search from end
-	// this might not be the best strategy though
+        Item lastSegment = segmentRelation.getTail();
 
-	float lastSegmentEndTime = SegmentRelationUtils.getSegmentEnd
-	    (lastSegment);
-	
-	if (time < 0 || lastSegmentEndTime < time) {
-	    return null;
-	} else if (lastSegmentEndTime - time > time) {
-	    return SegmentRelationUtils.findFromFront(segmentRelation, time);
-	} else {
-	    return SegmentRelationUtils.findFromEnd(segmentRelation, time);
-	}
+        // if given time is closer to the front than the end, search from
+        // the front; otherwise, start search from end
+        // this might not be the best strategy though
+
+        float lastSegmentEndTime = SegmentRelationUtils.getSegmentEnd
+                (lastSegment);
+
+        if (time < 0 || lastSegmentEndTime < time) {
+            return null;
+        } else if (lastSegmentEndTime - time > time) {
+            return SegmentRelationUtils.findFromFront(segmentRelation, time);
+        } else {
+            return SegmentRelationUtils.findFromEnd(segmentRelation, time);
+        }
     }
 
     /**
@@ -58,10 +59,10 @@ public class SegmentRelationUtils {
      * @return the <code>end</code> feature of the Segment
      */
     public static float getSegmentEnd(Item segment) {
-	FeatureSet segmentFeatureSet = segment.getFeatures();
-	return segmentFeatureSet.getFloat("end");
+        FeatureSet segmentFeatureSet = segment.getFeatures();
+        return segmentFeatureSet.getFloat("end");
     }
-    
+
     /**
      * Starting from the front of the given Segment Relation, finds the Item
      * that corresponds to the given time.
@@ -72,16 +73,16 @@ public class SegmentRelationUtils {
      * @return the Segment Item
      */
     public static Item findFromFront(Relation segmentRelation, float time) {
-	Item item = segmentRelation.getHead();
+        Item item = segmentRelation.getHead();
 
-	while (item != null &&
-	       time > SegmentRelationUtils.getSegmentEnd(item)) {
-	    item = item.getNext();
-	}
+        while (item != null &&
+                time > SegmentRelationUtils.getSegmentEnd(item)) {
+            item = item.getNext();
+        }
 
-	return item;
+        return item;
     }
-    
+
     /**
      * Starting from the end of the given Segment Relation, go backwards
      * to find the Item that corresponds to the given time.
@@ -92,17 +93,17 @@ public class SegmentRelationUtils {
      * @return the Segment Item
      */
     public static Item findFromEnd(Relation segmentRelation, float time) {
-	Item item = segmentRelation.getTail();
-		
-	while (item != null &&
-	       SegmentRelationUtils.getSegmentEnd(item) > time) {
-	    item = item.getPrevious();
-	}
+        Item item = segmentRelation.getTail();
 
-	if (item != segmentRelation.getTail()) {
-	    item = item.getNext();
-	}
+        while (item != null &&
+                SegmentRelationUtils.getSegmentEnd(item) > time) {
+            item = item.getPrevious();
+        }
 
-	return item;
+        if (item != segmentRelation.getTail()) {
+            item = item.getNext();
+        }
+
+        return item;
     }
 }

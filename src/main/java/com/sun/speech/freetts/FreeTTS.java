@@ -1,13 +1,14 @@
 /**
  * Portions Copyright 2001-2005 Sun Microsystems, Inc.
- * Portions Copyright 1999-2001 Language Technologies Institute, 
+ * Portions Copyright 1999-2001 Language Technologies Institute,
  * Carnegie Mellon University.
  * All Rights Reserved.  Use is subject to license terms.
- * 
+ * <p>
  * See the file "license.terms" for information on usage and
- * redistribution of this file, and for a DISCLAIMER OF ALL 
+ * redistribution of this file, and for a DISCLAIMER OF ALL
  * WARRANTIES.
  */
+
 package com.sun.speech.freetts;
 
 import java.io.BufferedReader;
@@ -21,7 +22,6 @@ import java.util.logging.ConsoleHandler;
 import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import javax.sound.sampled.AudioFileFormat;
 import javax.sound.sampled.AudioSystem;
 
@@ -32,13 +32,14 @@ import com.sun.speech.freetts.audio.NullAudioPlayer;
 import com.sun.speech.freetts.audio.RawFileAudioPlayer;
 import com.sun.speech.freetts.audio.SingleFileAudioPlayer;
 
+
 /**
  * Standalone utility that directly interacts with a CMUDiphoneVoice.
  */
 public class FreeTTS {
     /** Logger instance. */
     private static final Logger LOGGER =
-        Logger.getLogger(FreeTTS.class.getName());
+            Logger.getLogger(FreeTTS.class.getName());
 
     /** Version number. */
     public final static String VERSION = "FreeTTS 1.2.2";
@@ -60,7 +61,7 @@ public class FreeTTS {
 
     /**
      * Creates a FreeTTS object with the given Voice.
-     * 
+     *
      * @param voice
      *            the voice to use
      */
@@ -112,10 +113,10 @@ public class FreeTTS {
 
     /**
      * Returns the audio type based upon the extension of the given file
-     * 
+     *
      * @param file
      *            the file of interest
-     * 
+     *
      * @return the audio type of the file or null if it is a non-supported type
      */
     private AudioFileFormat.Type getAudioType(String file) {
@@ -132,10 +133,10 @@ public class FreeTTS {
 
     /**
      * Given a filename returns the extension for the file
-     * 
+     *
      * @param path
      *            the path to extract the extension from
-     * 
+     *
      * @return the extension or <code>null</code> if none
      */
     private static String getExtension(String path) {
@@ -149,10 +150,10 @@ public class FreeTTS {
 
     /**
      * Given a filename returns the basename for the file
-     * 
+     *
      * @param path
      *            the path to extract the basename from
-     * 
+     *
      * @return the basename of the file
      */
     private static String getBasename(String path) {
@@ -179,10 +180,10 @@ public class FreeTTS {
     /**
      * Converts the given text to speech based using processing options
      * currently set in FreeTTS.
-     * 
+     *
      * @param text
      *            the text to speak
-     * 
+     *
      * @return true if the utterance was played properly
      */
     public boolean textToSpeech(String text) {
@@ -192,10 +193,10 @@ public class FreeTTS {
     /**
      * Converts the given text to speech based using processing options
      * currently set in FreeTTS.
-     * 
+     *
      * @param text
      *            the text to speak
-     * 
+     *
      * @return true if the utterance was played properly
      */
     private boolean batchTextToSpeech(String text) {
@@ -233,7 +234,7 @@ public class FreeTTS {
 
     /**
      * Returns the voice used by FreeTTS.
-     * 
+     *
      * @return the voice used by freetts
      */
     protected Voice getVoice() {
@@ -242,7 +243,7 @@ public class FreeTTS {
 
     /**
      * Converts the text contained in the given stream to speech.
-     * 
+     *
      * @param is
      *            the stream containing the text to speak
      */
@@ -256,10 +257,10 @@ public class FreeTTS {
 
     /**
      * Converts the text contained in the given path to speech.
-     * 
+     *
      * @param urlPath
      *            the file containing the text to speak
-     * 
+     *
      * @return true if the utterance was played properly
      */
     public boolean urlToSpeech(String urlPath) {
@@ -276,10 +277,10 @@ public class FreeTTS {
 
     /**
      * Converts the text contained in the given path to speech.
-     * 
+     *
      * @param filePath
      *            the file containing the text to speak
-     * 
+     *
      * @return true if the utterance was played properly
      */
     public boolean fileToSpeech(String filePath) {
@@ -295,7 +296,7 @@ public class FreeTTS {
 
     /**
      * Turns audio playing on and off.
-     * 
+     *
      * @param silent
      *            if true, don't play audio
      */
@@ -305,9 +306,9 @@ public class FreeTTS {
 
     /**
      * Gets silent mode.
-     * 
+     *
      * @return true if in silent mode
-     * 
+     *
      * @see #setSilentMode
      */
     public boolean getSilentMode() {
@@ -316,7 +317,7 @@ public class FreeTTS {
 
     /**
      * Sets the input mode.
-     * 
+     *
      * @param inputMode
      *            the input mode
      */
@@ -326,9 +327,9 @@ public class FreeTTS {
 
     /**
      * Returns the InputMode.
-     * 
+     *
      * @return the input mode
-     * 
+     *
      * @see #setInputMode
      */
     public InputMode getInputMode() {
@@ -337,7 +338,7 @@ public class FreeTTS {
 
     /**
      * Sets the audio file .
-     * 
+     *
      * @param audioFile
      *            the audioFile
      */
@@ -348,7 +349,7 @@ public class FreeTTS {
     /**
      * Sets multi audio. If true, and an audio file has been set output will be
      * sent to multiple files
-     * 
+     *
      * @param multiAudio
      *            if <code>true</code> send output to multiple files.
      */
@@ -358,7 +359,7 @@ public class FreeTTS {
 
     /**
      * Sets streaming audio. If true, output will be sent to
-     * 
+     *
      * @param streamingAudio
      *            if <code>true</code> stream audio
      */
@@ -399,7 +400,7 @@ public class FreeTTS {
     /**
      * Starts interactive mode on the given FreeTTS. Reads text from the console
      * and gives it to FreeTTS to speak. terminates on end of file.
-     * 
+     *
      * @param freetts
      *            the engine
      */

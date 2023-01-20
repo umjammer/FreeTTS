@@ -1,17 +1,19 @@
 /**
  * Portions Copyright 2004 Sun Microsystems, Inc.
- * Portions Copyright 1999-2004 Language Technologies Institute, 
+ * Portions Copyright 1999-2004 Language Technologies Institute,
  * Carnegie Mellon University.
  * All Rights Reserved.  Use is subject to license terms.
- * 
+ * <p>
  * See the file "license.terms" for information on usage and
- * redistribution of this file, and for a DISCLAIMER OF ALL 
+ * redistribution of this file, and for a DISCLAIMER OF ALL
  * WARRANTIES.
  */
+
 package com.sun.speech.freetts;
 
 import java.util.LinkedList;
 import java.util.List;
+
 
 /**
  * Manages a process queue for utterances. Utterances that are
@@ -27,42 +29,42 @@ public class OutputQueue {
 
     /**
      * Creates an OutputQueue with the given size.
-     * 
+     *
      * @param size the size of the queue
      */
     public OutputQueue(int size) {
-	this.size = size;
+        this.size = size;
     }
 
     /**
      * Creates a queue with the default size.
      */
     public OutputQueue() {
-	this(DEFAULT_SIZE);
+        this(DEFAULT_SIZE);
     }
 
     /**
      * Posts the given utterance to the queue. This call will block if
      * the queue is full.
-     * 
+     *
      * @param utterance the utterance to post
      *
      * @throws IllegalStateException if the queue is closed
      */
     public synchronized void post(Utterance utterance) {
-	if (closed) {
-	    throw new IllegalStateException("output queue closed");
-	}
+        if (closed) {
+            throw new IllegalStateException("output queue closed");
+        }
 
-	while (list.size() >= size) {
-	    try {
-		wait();
-	    } catch (InterruptedException ie) {
-	    }
-	}
+        while (list.size() >= size) {
+            try {
+                wait();
+            } catch (InterruptedException ie) {
+            }
+        }
 
-	list.add(utterance);
-	notify();
+        list.add(utterance);
+        notify();
     }
 
 
@@ -70,19 +72,19 @@ public class OutputQueue {
      * Closes the queue.
      */
     public synchronized void close() {
-	closed = true;
-	list.add(null);
-	notify();
+        closed = true;
+        list.add(null);
+        notify();
     }
 
 
     /**
      * Determines if the queue is closed.
      *
-     * @return  true the queue is closed; otherwise false
+     * @return true the queue is closed; otherwise false
      */
     public boolean isClosed() {
-	return closed;
+        return closed;
     }
 
     /**
@@ -92,17 +94,17 @@ public class OutputQueue {
      * returned.
      */
     public synchronized Utterance pend() {
-	Utterance utterance = null;
-	while (list.size() == 0) {
-	    try {
-		wait();
-	    } catch (InterruptedException ie) {
-		return null;
-	    }
-	}
-	utterance = list.remove(0);
-	notify();
-	return utterance;
+        Utterance utterance = null;
+        while (list.size() == 0) {
+            try {
+                wait();
+            } catch (InterruptedException ie) {
+                return null;
+            }
+        }
+        utterance = list.remove(0);
+        notify();
+        return utterance;
     }
 
     /**

@@ -1,15 +1,17 @@
 /**
  * Copyright 2003 Sun Microsystems, Inc.
- * 
+ * <p>
  * See the file "license.terms" for information on usage and
- * redistribution of this file, and for a DISCLAIMER OF ALL 
+ * redistribution of this file, and for a DISCLAIMER OF ALL
  * WARRANTIES.
  */
+
 package com.sun.speech.freetts.jsapi;
 
 import com.sun.speech.engine.synthesis.BaseVoice;
 import com.sun.speech.freetts.ValidationException;
 import com.sun.speech.freetts.Validator;
+
 
 /**
  * Extends the BaseVoice class to encapsulate FreeTTSSynthesizer specific data.
@@ -27,13 +29,13 @@ public class FreeTTSVoice extends BaseVoice {
      */
     public FreeTTSVoice(com.sun.speech.freetts.Voice freettsVoice,
                         String validatorName) {
-        super(freettsVoice.getName()+Math.random(), freettsVoice.getName(),
+        super(freettsVoice.getName() + Math.random(), freettsVoice.getName(),
                 genderToInt(freettsVoice.getGender()),
                 ageToInt(freettsVoice.getAge()), freettsVoice.getStyle(),
                 freettsVoice.getPitch(), freettsVoice.getPitchRange(),
                 freettsVoice.getRate(), freettsVoice.getVolume());
-	this.freettsVoice = freettsVoice;
-        
+        this.freettsVoice = freettsVoice;
+
         if (validatorName != null) {
             try {
                 Class<?> clazz = Class.forName(validatorName);
@@ -97,7 +99,7 @@ public class FreeTTSVoice extends BaseVoice {
         } else {
             throw new Error("jaspi does not have an equivalent to age "
                     + age.toString());
-        } 
+        }
     }
 
     /**
@@ -116,7 +118,7 @@ public class FreeTTSVoice extends BaseVoice {
      * @return the name of this voice
      */
     public String toString() {
-	return getName();
+        return getName();
     }
 
 

@@ -1,13 +1,14 @@
 /**
  * Portions Copyright 2001 Sun Microsystems, Inc.
- * Portions Copyright 1999-2001 Language Technologies Institute, 
+ * Portions Copyright 1999-2001 Language Technologies Institute,
  * Carnegie Mellon University.
  * All Rights Reserved.  Use is subject to license terms.
- * 
+ * <p>
  * See the file "license.terms" for information on usage and
- * redistribution of this file, and for a DISCLAIMER OF ALL 
+ * redistribution of this file, and for a DISCLAIMER OF ALL
  * WARRANTIES.
  */
+
 package com.sun.speech.freetts;
 
 /**
@@ -20,7 +21,7 @@ public class Token {
     private String prepunctuation = null;
     private String postpunctuation = null;
     private int position = 0;  // position in the original input text
-    private int lineNumber = 0;   
+    private int lineNumber = 0;
 
     /**
      * Returns the whitespace characters of this Token.
@@ -29,7 +30,7 @@ public class Token {
      *   null if this Token does not use whitespace characters
      */
     public String getWhitespace() {
-	return whitespace;
+        return whitespace;
     }
 
     /**
@@ -39,7 +40,7 @@ public class Token {
      *   null if this Token does not use prepunctuation characters
      */
     public String getPrepunctuation() {
-	return prepunctuation;
+        return prepunctuation;
     }
 
     /**
@@ -49,7 +50,7 @@ public class Token {
      *   null if this Token does not use postpunctuation characters
      */
     public String getPostpunctuation() {
-	return postpunctuation;
+        return postpunctuation;
     }
 
     /**
@@ -58,7 +59,7 @@ public class Token {
      * @return the position of this token in the original input text
      */
     public int getPosition() {
-	return position;
+        return position;
     }
 
     /**
@@ -67,7 +68,7 @@ public class Token {
      * @return the line of this token in the original text
      */
     public int getLineNumber() {
-	return lineNumber;
+        return lineNumber;
     }
 
     /**
@@ -76,7 +77,7 @@ public class Token {
      * @param whitespace the whitespace character for this token
      */
     public void setWhitespace(String whitespace) {
-	this.whitespace = whitespace;
+        this.whitespace = whitespace;
     }
 
     /**
@@ -85,7 +86,7 @@ public class Token {
      * @param prepunctuation the prepunctuation characters
      */
     public void setPrepunctuation(String prepunctuation) {
-	this.prepunctuation = prepunctuation;
+        this.prepunctuation = prepunctuation;
     }
 
     /**
@@ -94,7 +95,7 @@ public class Token {
      * @param postpunctuation the postpunctuation characters
      */
     public void setPostpunctuation(String postpunctuation) {
-	this.postpunctuation = postpunctuation;
+        this.postpunctuation = postpunctuation;
     }
 
     /**
@@ -103,7 +104,7 @@ public class Token {
      * @param position the position of the input text
      */
     public void setPosition(int position) {
-	this.position = position;
+        this.position = position;
     }
 
     /**
@@ -112,25 +113,25 @@ public class Token {
      * @param lineNumber the line of this token in the original text
      */
     public void setLineNumber(int lineNumber) {
-	this.lineNumber = lineNumber;
+        this.lineNumber = lineNumber;
     }
-    
+
     /**
      * Returns the string associated with this token.
      *
-     * @return  the token if it exists; otherwise null
+     * @return the token if it exists; otherwise null
      */
     public String getWord() {
-	return token;
+        return token;
     }
-    
+
     /**
      * Sets the string of this Token.
      *
      * @param word the word for this token
      */
     public void setWord(String word) {
-	token = word;
+        token = word;
     }
 
     /**
@@ -139,21 +140,21 @@ public class Token {
      * @return the string representation of this object
      */
     public String toString() {
-	StringBuffer fullToken = new StringBuffer();
-	
-	if (whitespace != null) {
-	    fullToken.append(whitespace);
-	}
-	if (prepunctuation != null) {
-	    fullToken.append(prepunctuation);
-	}
-	if (token != null) {
-	    fullToken.append(token);
-	}
-	if (postpunctuation != null) {
-	    fullToken.append(postpunctuation);
-	}
-	return fullToken.toString();
+        StringBuffer fullToken = new StringBuffer();
+
+        if (whitespace != null) {
+            fullToken.append(whitespace);
+        }
+        if (prepunctuation != null) {
+            fullToken.append(prepunctuation);
+        }
+        if (token != null) {
+            fullToken.append(token);
+        }
+        if (postpunctuation != null) {
+            fullToken.append(postpunctuation);
+        }
+        return fullToken.toString();
     }
 }
 

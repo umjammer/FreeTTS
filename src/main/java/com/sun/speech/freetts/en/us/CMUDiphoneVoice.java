@@ -1,35 +1,32 @@
 /**
  * Portions Copyright 2001 Sun Microsystems, Inc.
- * Portions Copyright 1999-2001 Language Technologies Institute, 
+ * Portions Copyright 1999-2001 Language Technologies Institute,
  * Carnegie Mellon University.
  * All Rights Reserved.  Use is subject to license terms.
- * 
+ * <p>
  * See the file "license.terms" for information on usage and
- * redistribution of this file, and for a DISCLAIMER OF ALL 
+ * redistribution of this file, and for a DISCLAIMER OF ALL
  * WARRANTIES.
  */
+
 package com.sun.speech.freetts.en.us;
 
-import com.sun.speech.freetts.diphone.DiphonePitchmarkGenerator;
-import com.sun.speech.freetts.diphone.DiphoneUnitSelector;
+import java.io.IOException;
+import java.net.URL;
+import java.util.Locale;
+
+import com.sun.speech.freetts.Age;
+import com.sun.speech.freetts.Gender;
 import com.sun.speech.freetts.Item;
 import com.sun.speech.freetts.ProcessException;
 import com.sun.speech.freetts.Relation;
-import com.sun.speech.freetts.relp.UnitConcatenator;
 import com.sun.speech.freetts.Utterance;
 import com.sun.speech.freetts.UtteranceProcessor;
 import com.sun.speech.freetts.Voice;
-
-import com.sun.speech.freetts.Gender;
-import com.sun.speech.freetts.Age;
-
+import com.sun.speech.freetts.diphone.DiphonePitchmarkGenerator;
+import com.sun.speech.freetts.diphone.DiphoneUnitSelector;
+import com.sun.speech.freetts.relp.UnitConcatenator;
 import de.dfki.lt.freetts.ConcatenativeVoice;
-
-import java.util.Locale;
-
-import java.io.IOException;
-
-import java.net.URL;
 
 
 /**
@@ -47,7 +44,7 @@ public class CMUDiphoneVoice extends CMUVoice implements ConcatenativeVoice {
     public CMUDiphoneVoice() {
         this(null, null, null, null, null, null, null, null, null);
     }
-    
+
     /**
      * Creates a simple voice
      *
@@ -65,13 +62,13 @@ public class CMUDiphoneVoice extends CMUVoice implements ConcatenativeVoice {
      * @param database a url to the unit database file for this voice
      */
     public CMUDiphoneVoice(String name, Gender gender,
-            Age age, String description, Locale locale, String domain,
-            String organization, CMULexicon lexicon, URL database) {
-	super(name, gender, age, description, locale,
+                           Age age, String description, Locale locale, String domain,
+                           String organization, CMULexicon lexicon, URL database) {
+        super(name, gender, age, description, locale,
                 domain, organization, lexicon);
-	setRate(150f);
-	setPitch(100F);
-	setPitchRange(11F);
+        setRate(150f);
+        setPitch(100F);
+        setPitchRange(11F);
         this.database = database;
     }
 
@@ -99,20 +96,20 @@ public class CMUDiphoneVoice extends CMUVoice implements ConcatenativeVoice {
      * @throws IOException if an I/O error occurs
      */
     protected void setupFeatureSet() throws IOException {
-	super.setupFeatureSet();
+        super.setupFeatureSet();
     }
 
     /**
      * Returns the post lexical processor to be used by this voice.
      * Derived voices typically override this to customize behaviors.
-     * 
+     *
      * @return the Unit selector
-     * 
+     *
      * @throws IOException if an IO error occurs while getting
      *     processor
      */
     protected UtteranceProcessor getPostLexicalAnalyzer() throws IOException {
-	return new CMUDiphoneVoicePostLexicalAnalyzer();
+        return new CMUDiphoneVoicePostLexicalAnalyzer();
     }
 
     /**
@@ -120,28 +117,28 @@ public class CMUDiphoneVoice extends CMUVoice implements ConcatenativeVoice {
      * Derived voices typically override this to customize behaviors.
      * This voice uses a DiphonePitchMark generator to generate
      * pitchmarks.
-     * 
+     *
      * @return the pitchmark processor
-     * 
+     *
      * @throws IOException if an IO error occurs while getting
      *     processor
      */
     public UtteranceProcessor getPitchmarkGenerator() throws IOException {
-	return new DiphonePitchmarkGenerator();
+        return new DiphonePitchmarkGenerator();
     }
 
     /**
      * Returns the unit concatenator to be used by this voice.
      * Derived voices typically override this to customize behaviors.
      * This voice uses a relp.UnitConcatenator to concatenate units.
-     * 
+     *
      * @return the unit concatenator processor
-     * 
+     *
      * @throws IOException if an IO error occurs while getting
      *     processor
      */
     public UtteranceProcessor getUnitConcatenator() throws IOException {
-	return new UnitConcatenator();
+        return new UnitConcatenator();
     }
 
 
@@ -151,24 +148,24 @@ public class CMUDiphoneVoice extends CMUVoice implements ConcatenativeVoice {
      * This voice uses the DiphoneUnitSelector to select units. The
      * unit selector requires the name of a diphone database. If no
      * diphone database has been specified then an Error is thrown.
-     * 
+     *
      * @return the unit selector processor
-     * 
+     *
      * @throws IOException if an IO error occurs while getting
      *     processor
      */
     public UtteranceProcessor getUnitSelector() throws IOException {
-	return new DiphoneUnitSelector(getDatabase());
+        return new DiphoneUnitSelector(getDatabase());
     }
 
-    
+
     /**
      * Converts this object to a string
-     * 
+     *
      * @return a string representation of this object
      */
     public String toString() {
-	return "CMUDiphoneVoice";
+        return "CMUDiphoneVoice";
     }
 }
 
@@ -180,7 +177,7 @@ public class CMUDiphoneVoice extends CMUVoice implements ConcatenativeVoice {
  */
 class CMUDiphoneVoicePostLexicalAnalyzer implements UtteranceProcessor {
     UtteranceProcessor englishPostLex =
-        new com.sun.speech.freetts.en.PostLexicalAnalyzer();
+            new com.sun.speech.freetts.en.PostLexicalAnalyzer();
 
     /**
      * performs the processing
@@ -189,8 +186,8 @@ class CMUDiphoneVoicePostLexicalAnalyzer implements UtteranceProcessor {
      *         processing of the utterance
      */
     public void processUtterance(Utterance utterance) throws ProcessException {
-	fixPhoneme_AH(utterance);
-	englishPostLex.processUtterance(utterance);
+        fixPhoneme_AH(utterance);
+        englishPostLex.processUtterance(utterance);
     }
 
 
@@ -200,13 +197,13 @@ class CMUDiphoneVoicePostLexicalAnalyzer implements UtteranceProcessor {
      * @param utterance the utterance to fix
      */
     private void fixPhoneme_AH(Utterance utterance) {
-	for (Item item = utterance.getRelation(Relation.SEGMENT).getHead();
-		item != null;
-		item = item.getNext()) {
-	    if (item.getFeatures().getString("name").equals("ah")) {
-		item.getFeatures().setString("name", "aa");
-	    }
-	}
+        for (Item item = utterance.getRelation(Relation.SEGMENT).getHead();
+             item != null;
+             item = item.getNext()) {
+            if (item.getFeatures().getString("name").equals("ah")) {
+                item.getFeatures().setString("name", "aa");
+            }
+        }
     }
 
     // inherited from Object

@@ -9,7 +9,6 @@
 package tests;
 
 import java.io.IOException;
-import java.net.URL;
 
 import com.sun.speech.freetts.diphone.DiphoneUnitDatabase;
 import com.sun.speech.freetts.en.us.cmu_us_kal.KevinVoiceDirectory;

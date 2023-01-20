@@ -1,10 +1,11 @@
 /**
  * Copyright 2001 Sun Microsystems, Inc.
- * 
+ * <p>
  * See the file "license.terms" for information on usage and
- * redistribution of this file, and for a DISCLAIMER OF ALL 
+ * redistribution of this file, and for a DISCLAIMER OF ALL
  * WARRANTIES.
  */
+
 package com.sun.speech.freetts.audio;
 
 import java.io.ByteArrayInputStream;
@@ -15,13 +16,13 @@ import java.io.SequenceInputStream;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import javax.sound.sampled.AudioFileFormat;
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 
 import com.sun.speech.freetts.util.Utilities;
+
 
 /**
  * Streams audio to a file. 
@@ -31,7 +32,7 @@ import com.sun.speech.freetts.util.Utilities;
 public class SingleFileAudioPlayer implements AudioPlayer {
     /** Logger instance. */
     private static final Logger LOGGER =
-        Logger.getLogger(SingleFileAudioPlayer.class.getName());
+            Logger.getLogger(SingleFileAudioPlayer.class.getName());
 
     private AudioFormat currentFormat = null;
     private String baseName;
@@ -50,10 +51,10 @@ public class SingleFileAudioPlayer implements AudioPlayer {
      *
      */
     public SingleFileAudioPlayer(String baseName, AudioFileFormat.Type type) {
-	this.baseName = baseName + "." + type.getExtension();
-	this.outputType = type;
+        this.baseName = baseName + "." + type.getExtension();
+        this.outputType = type;
 
-	outputList = new Vector<InputStream>();
+        outputList = new Vector<InputStream>();
     }
 
     /**
@@ -65,8 +66,8 @@ public class SingleFileAudioPlayer implements AudioPlayer {
      */
     public SingleFileAudioPlayer() {
         this(Utilities.getProperty(
-                 "com.sun.speech.freetts.AudioPlayer.baseName", "freetts"),
-             AudioFileFormat.Type.WAVE);
+                        "com.sun.speech.freetts.AudioPlayer.baseName", "freetts"),
+                AudioFileFormat.Type.WAVE);
     }
 
     /**
@@ -78,7 +79,7 @@ public class SingleFileAudioPlayer implements AudioPlayer {
      *     the given format
      */
     public synchronized void setAudioFormat(AudioFormat format) {
-	currentFormat = format;
+        currentFormat = format;
     }
 
 
@@ -88,7 +89,7 @@ public class SingleFileAudioPlayer implements AudioPlayer {
      * @return format the audio format
      */
     public AudioFormat getAudioFormat() {
-	return currentFormat;
+        return currentFormat;
     }
 
 
@@ -103,7 +104,6 @@ public class SingleFileAudioPlayer implements AudioPlayer {
      */
     public synchronized void resume() {
     }
-	
 
 
     /**
@@ -131,21 +131,21 @@ public class SingleFileAudioPlayer implements AudioPlayer {
      * Closes this audio player
      */
     public synchronized void close() throws IOException {
-	try {
-	    File file = new File(baseName);
-	    InputStream is = new SequenceInputStream(outputList.elements());
-	    AudioInputStream ais = new AudioInputStream(is,
-		    currentFormat, totBytes / currentFormat.getFrameSize());
+        try {
+            File file = new File(baseName);
+            InputStream is = new SequenceInputStream(outputList.elements());
+            AudioInputStream ais = new AudioInputStream(is,
+                    currentFormat, totBytes / currentFormat.getFrameSize());
             if (LOGGER.isLoggable(Level.FINE)) {
                 LOGGER.fine("Avail " + ais.available());
                 LOGGER.fine("totBytes " + totBytes);
                 LOGGER.fine("FS " + currentFormat.getFrameSize());
             }
             LOGGER.info("Wrote synthesized speech to " + baseName);
-	    AudioSystem.write(ais, outputType, file);
-	} catch (IllegalArgumentException iae) {
-	    throw new IOException("Can't write audio type " + outputType, iae);
-	}
+            AudioSystem.write(ais, outputType, file);
+        } catch (IllegalArgumentException iae) {
+            throw new IOException("Can't write audio type " + outputType, iae);
+        }
     }
 
 
@@ -155,8 +155,8 @@ public class SingleFileAudioPlayer implements AudioPlayer {
      * @return the current volume (between 0 and 1)
      */
     public float getVolume() {
-	return 1.0f;
-    }	      
+        return 1.0f;
+    }
 
     /**
      * Sets the current volume.
@@ -164,9 +164,7 @@ public class SingleFileAudioPlayer implements AudioPlayer {
      * @param volume  the current volume (between 0 and 1)
      */
     public void setVolume(float volume) {
-    }	      
-
-
+    }
 
 
     /**
@@ -176,8 +174,8 @@ public class SingleFileAudioPlayer implements AudioPlayer {
      * @param size the size of data between now and the end
      */
     public void begin(int size) {
-	outputData = new byte[size];
-	curIndex = 0;
+        outputData = new byte[size];
+        curIndex = 0;
     }
 
     /**
@@ -188,10 +186,10 @@ public class SingleFileAudioPlayer implements AudioPlayer {
      *      output was cancelled or interrupted.
      *
      */
-    public boolean  end()  {
-	outputList.add(new ByteArrayInputStream(outputData));
-	totBytes += outputData.length;
-	return true;
+    public boolean end() {
+        outputList.add(new ByteArrayInputStream(outputData));
+        totBytes += outputData.length;
+        return true;
     }
 
 
@@ -201,8 +199,8 @@ public class SingleFileAudioPlayer implements AudioPlayer {
      * @return true if the audio played to completion, false if
      *   the audio was stopped
      */
-    public boolean drain()  {
-	return true;
+    public boolean drain() {
+        return true;
     }
 
     /**
@@ -210,8 +208,8 @@ public class SingleFileAudioPlayer implements AudioPlayer {
      *
      * @return the amount of audio in milliseconds
      */
-    public synchronized long getTime()  {
-	return -1L;
+    public synchronized long getTime() {
+        return -1L;
     }
 
 
@@ -220,9 +218,8 @@ public class SingleFileAudioPlayer implements AudioPlayer {
      */
     public synchronized void resetTime() {
     }
-    
 
-    
+
     /**
      * Writes the given bytes to the audio stream
      *
@@ -232,9 +229,9 @@ public class SingleFileAudioPlayer implements AudioPlayer {
      *       	<code> false </code>if the write was cancelled.
      */
     public boolean write(byte[] audioData) {
-	return write(audioData, 0, audioData.length);
+        return write(audioData, 0, audioData.length);
     }
-    
+
     /**
      * Writes the given bytes to the audio stream
      *
@@ -246,9 +243,9 @@ public class SingleFileAudioPlayer implements AudioPlayer {
      *       	<code> false </code>if the write was cancelled.
      */
     public boolean write(byte[] bytes, int offset, int size) {
-	System.arraycopy(bytes, offset, outputData, curIndex, size);
-	curIndex += size;
-	return true;
+        System.arraycopy(bytes, offset, outputData, curIndex, size);
+        curIndex += size;
+        return true;
     }
 
     /**
@@ -257,7 +254,7 @@ public class SingleFileAudioPlayer implements AudioPlayer {
      * @return the name of the audio player
      */
     public String toString() {
-	return "FileAudioPlayer";
+        return "FileAudioPlayer";
     }
 
     /**

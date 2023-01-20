@@ -1,10 +1,11 @@
 /**
  * Copyright 2003 Sun Microsystems, Inc.
- * 
+ * <p>
  * See the file "license.terms" for information on usage and
- * redistribution of this file, and for a DISCLAIMER OF ALL 
+ * redistribution of this file, and for a DISCLAIMER OF ALL
  * WARRANTIES.
  */
+
 package com.sun.speech.freetts.jsapi;
 
 import java.beans.PropertyVetoException;
@@ -13,7 +14,6 @@ import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.Vector;
 import java.util.logging.Logger;
-
 import javax.speech.EngineException;
 import javax.speech.EngineStateError;
 import javax.speech.synthesis.SynthesizerModeDesc;
@@ -26,6 +26,7 @@ import com.sun.speech.engine.synthesis.BaseVoice;
 import com.sun.speech.freetts.OutputQueue;
 import com.sun.speech.freetts.audio.AudioPlayer;
 
+
 /**
  * Provides  partial support for a JSAPI 1.0 synthesizer for the 
  * FreeTTS speech synthesis system.
@@ -33,7 +34,7 @@ import com.sun.speech.freetts.audio.AudioPlayer;
 public class FreeTTSSynthesizer extends BaseSynthesizer {
     /** Logger instance. */
     private static final Logger LOGGER =
-        Logger.getLogger(FreeTTSSynthesizer.class.getName());
+            Logger.getLogger(FreeTTSSynthesizer.class.getName());
 
     /**
      * Reference to output thread.
@@ -74,35 +75,33 @@ public class FreeTTSSynthesizer extends BaseSynthesizer {
      */
     protected void handleAllocate() throws EngineException {
         long states[];
-	boolean ok = false;
-	FreeTTSSynthesizerModeDesc desc = (FreeTTSSynthesizerModeDesc)
-	    getEngineModeDesc();
+        boolean ok = false;
+        FreeTTSSynthesizerModeDesc desc = (FreeTTSSynthesizerModeDesc)
+                getEngineModeDesc();
 
 
-	outputQueue = com.sun.speech.freetts.Voice.createOutputThread();
+        outputQueue = com.sun.speech.freetts.Voice.createOutputThread();
 
-	if (desc.getVoices().length > 0) {
-	    FreeTTSVoice freettsVoice = (FreeTTSVoice) desc.getVoices()[0];
-	    ok = setCurrentVoice(freettsVoice);
-	}
+        if (desc.getVoices().length > 0) {
+            FreeTTSVoice freettsVoice = (FreeTTSVoice) desc.getVoices()[0];
+            ok = setCurrentVoice(freettsVoice);
+        }
 
 
-
-	if (ok) {
-	    synchronized (engineStateLock) {
-		long newState = ALLOCATED | RESUMED;
-		newState |= (outputHandler.isQueueEmpty()
-			     ? QUEUE_EMPTY
-			     : QUEUE_NOT_EMPTY);
-		states = setEngineState(CLEAR_ALL_STATE, newState);
-	    }
-	    outputHandler.start();
-	    postEngineAllocated(states[0], states[1]);
-	} else {
-	    throw new EngineException("Can't allocate FreeTTS synthesizer");
-	}
+        if (ok) {
+            synchronized (engineStateLock) {
+                long newState = ALLOCATED | RESUMED;
+                newState |= (outputHandler.isQueueEmpty()
+                        ? QUEUE_EMPTY
+                        : QUEUE_NOT_EMPTY);
+                states = setEngineState(CLEAR_ALL_STATE, newState);
+            }
+            outputHandler.start();
+            postEngineAllocated(states[0], states[1]);
+        } else {
+            throw new EngineException("Can't allocate FreeTTS synthesizer");
+        }
     }
-
 
 
     /**
@@ -111,16 +110,16 @@ public class FreeTTSSynthesizer extends BaseSynthesizer {
      *
      * @param voice the new voice.
      */
-    private boolean setCurrentVoice(FreeTTSVoice voice) 
+    private boolean setCurrentVoice(FreeTTSVoice voice)
             throws EngineException {
 
-	com.sun.speech.freetts.Voice freettsVoice = voice.getVoice();
-	boolean ok = false;
+        com.sun.speech.freetts.Voice freettsVoice = voice.getVoice();
+        boolean ok = false;
 
 
-	if (!freettsVoice.isLoaded()) {
-	    freettsVoice.setOutputQueue(outputQueue);
-	    freettsVoice.allocate();
+        if (!freettsVoice.isLoaded()) {
+            freettsVoice.setOutputQueue(outputQueue);
+            freettsVoice.allocate();
             audio = freettsVoice.getAudioPlayer();
             if (audio == null) {
                 audio = new com.sun.speech.freetts.audio.JavaClipAudioPlayer();
@@ -128,18 +127,18 @@ public class FreeTTSSynthesizer extends BaseSynthesizer {
             if (audio == null) {
                 throw new EngineException("Can't get audio player");
             }
-	    freettsVoice.setAudioPlayer(audio);
-	}
+            freettsVoice.setAudioPlayer(audio);
+        }
 
-	if (freettsVoice.isLoaded()) {
-	    curVoice = voice;
-	    ok = true;
-	    // notify the world of potential property changes
-	    FreeTTSSynthesizerProperties props =
-		(FreeTTSSynthesizerProperties) getSynthesizerProperties();
-	    props.checkForPropertyChanges();
-	}
-	return ok;
+        if (freettsVoice.isLoaded()) {
+            curVoice = voice;
+            ok = true;
+            // notify the world of potential property changes
+            FreeTTSSynthesizerProperties props =
+                    (FreeTTSSynthesizerProperties) getSynthesizerProperties();
+            props.checkForPropertyChanges();
+        }
+        return ok;
     }
 
     /**
@@ -166,7 +165,7 @@ public class FreeTTSSynthesizer extends BaseSynthesizer {
 
         postEngineDeallocated(states[0], states[1]);
     }
-    
+
     /**
      * Factory method to create a BaseSynthesizerQueueItem.
      *
@@ -193,7 +192,7 @@ public class FreeTTSSynthesizer extends BaseSynthesizer {
     /**
      * Places an item on the speaking queue and send the queue update event.
      *
-     * @param item	the item to place  in the queue
+     * @param item    the item to place  in the queue
      */
     protected void appendQueue(BaseSynthesizerQueueItem item) {
         outputHandler.appendQueue((FreeTTSSynthesizerQueueItem) item);
@@ -212,16 +211,16 @@ public class FreeTTSSynthesizer extends BaseSynthesizer {
 
     /**
      * Cancels a specific object on the queue.
-     * 
+     *
      * @param source the object to cancel
      *
      * @throws IllegalArgumentException if the source object is not
      * 					currently in the queue
-     * @throws EngineStateError		the synthesizer is not in the
+     * @throws EngineStateError        the synthesizer is not in the
      * 					proper state
      */
     public void cancel(Object source)
-        throws IllegalArgumentException, EngineStateError {
+            throws IllegalArgumentException, EngineStateError {
         checkEngineState(DEALLOCATED | DEALLOCATING_RESOURCES);
         outputHandler.cancelItem(source);
     }
@@ -240,14 +239,14 @@ public class FreeTTSSynthesizer extends BaseSynthesizer {
      * Pauses the output
      */
     protected void handlePause() {
-	audio.pause();
-    }    
+        audio.pause();
+    }
 
     /**
      * Resumes the output
      */
     protected void handleResume() {
-	audio.resume();
+        audio.resume();
     }
 
     /**
@@ -258,108 +257,108 @@ public class FreeTTSSynthesizer extends BaseSynthesizer {
      * Override to set engine-specific defaults.
      */
     protected BaseEngineProperties createEngineProperties() {
-        SynthesizerModeDesc desc = (SynthesizerModeDesc)engineModeDesc;
-        FreeTTSVoice defaultVoice = (FreeTTSVoice)(desc.getVoices()[0]);
+        SynthesizerModeDesc desc = (SynthesizerModeDesc) engineModeDesc;
+        FreeTTSVoice defaultVoice = (FreeTTSVoice) (desc.getVoices()[0]);
         return new FreeTTSSynthesizerProperties(defaultVoice,
-			 defaultVoice.getPitch(),
-			 defaultVoice.getPitchRange(),
-			 defaultVoice.getSpeakingRate(),
-			 defaultVoice.getVolume());
+                defaultVoice.getPitch(),
+                defaultVoice.getPitchRange(),
+                defaultVoice.getSpeakingRate(),
+                defaultVoice.getVolume());
     }
 
     /**
      * Manages the FreeTTS synthesizer properties
      */
-     class FreeTTSSynthesizerProperties extends BaseSynthesizerProperties {
+    class FreeTTSSynthesizerProperties extends BaseSynthesizerProperties {
 
-	 /**
-	  * Constructor 
-	  * 
-	  * @param defaultVoice the voice to use as the default for
-	  * 			this synthesizer
-	  * @param defaultPitch the default pitch in hertz
-	  * @param defaultPitchRange the default range of pitch in
-	  * 			hertz
-	  * @param defaultSpeakingRate the default speaking rate in
-	  * 			words per minute
-	  * @param defaultVolume the default speaking volume 
-	  *			(0.0 to 1.0)
-	  */
-	 FreeTTSSynthesizerProperties(
-		 BaseVoice defaultVoice,
-		 float defaultPitch,
-		 float defaultPitchRange,
-		 float defaultSpeakingRate,
-		 float defaultVolume) {
+        /**
+         * Constructor
+         *
+         * @param defaultVoice the voice to use as the default for
+         * 			this synthesizer
+         * @param defaultPitch the default pitch in hertz
+         * @param defaultPitchRange the default range of pitch in
+         * 			hertz
+         * @param defaultSpeakingRate the default speaking rate in
+         * 			words per minute
+         * @param defaultVolume the default speaking volume
+         *			(0.0 to 1.0)
+         */
+        FreeTTSSynthesizerProperties(
+                BaseVoice defaultVoice,
+                float defaultPitch,
+                float defaultPitchRange,
+                float defaultSpeakingRate,
+                float defaultVolume) {
 
-	     super(defaultVoice, defaultPitch, defaultPitchRange, 
-		     defaultSpeakingRate, defaultVolume);
-	 }
+            super(defaultVoice, defaultPitch, defaultPitchRange,
+                    defaultSpeakingRate, defaultVolume);
+        }
 
-	/**
-	 * Resets the properties to their default values
-	 */
-	public void reset() {
-	    super.reset();
-	}
+        /**
+         * Resets the properties to their default values
+         */
+        public void reset() {
+            super.reset();
+        }
 
-	/**
-	 * Checks to see if any properties have changed and if so
-	 * fires the proper events
-	 */
-	void checkForPropertyChanges() {
-	    try {
-		float pitch = getPitch();
-		if (pitch != currentPitch) {
-		    super.setPitch(pitch);
-		}
-		
-		float pitchRange = getPitchRange();
-		if (pitchRange != currentPitchRange) {
-		    super.setPitchRange(pitchRange);
-		}
+        /**
+         * Checks to see if any properties have changed and if so
+         * fires the proper events
+         */
+        void checkForPropertyChanges() {
+            try {
+                float pitch = getPitch();
+                if (pitch != currentPitch) {
+                    super.setPitch(pitch);
+                }
 
-		float volume = getVolume();
-		if (volume != currentVolume) {
-		    super.setVolume(volume);
-		}
+                float pitchRange = getPitchRange();
+                if (pitchRange != currentPitchRange) {
+                    super.setPitchRange(pitchRange);
+                }
 
-		float speakingRate = getSpeakingRate();
-		if (speakingRate != currentSpeakingRate) {
-		    super.setSpeakingRate(speakingRate);
-		}
+                float volume = getVolume();
+                if (volume != currentVolume) {
+                    super.setVolume(volume);
+                }
 
-	    } catch (PropertyVetoException pve) {
-		// the actual properties in the voices have
-		// already changed to these new values so 
-		// we should not expect a PropertyVetoException
-	    }
-	}
+                float speakingRate = getSpeakingRate();
+                if (speakingRate != currentSpeakingRate) {
+                    super.setSpeakingRate(speakingRate);
+                }
 
-	/**
-	 * Get the baseline pitch for synthesis
-	 *
-	 * @return the current pitch (in hertz)
-	 */
-	public float getPitch() {
-	    com.sun.speech.freetts.Voice voice = curVoice.getVoice();
-	    return voice.getPitch();
-	}
+            } catch (PropertyVetoException pve) {
+                // the actual properties in the voices have
+                // already changed to these new values so
+                // we should not expect a PropertyVetoException
+            }
+        }
 
-	/**
-	 * Sets the voice to a voice that matches the given voice
-	 *
-	 * @param voice the voice that matches it
-	 */
-	public void setVoice(javax.speech.synthesis.Voice voice) {
-	    if (!curVoice.match(voice)) {
-		// chase through the voice list and find the first match
-		// and use that.  If no match, just ignore it.
-		FreeTTSSynthesizerModeDesc desc =
-		    (FreeTTSSynthesizerModeDesc) getEngineModeDesc();
-		javax.speech.synthesis.Voice voices[]  = desc.getVoices();
-		for (int i = 0; i < voices.length; i++) {
-		    if (voices[i].match(voice)) {
+        /**
+         * Get the baseline pitch for synthesis
+         *
+         * @return the current pitch (in hertz)
+         */
+        public float getPitch() {
+            com.sun.speech.freetts.Voice voice = curVoice.getVoice();
+            return voice.getPitch();
+        }
+
+        /**
+         * Sets the voice to a voice that matches the given voice
+         *
+         * @param voice the voice that matches it
+         */
+        public void setVoice(javax.speech.synthesis.Voice voice) {
+            if (!curVoice.match(voice)) {
+                // chase through the voice list and find the first match
+                // and use that.  If no match, just ignore it.
+                FreeTTSSynthesizerModeDesc desc =
+                        (FreeTTSSynthesizerModeDesc) getEngineModeDesc();
+                javax.speech.synthesis.Voice voices[] = desc.getVoices();
+                for (int i = 0; i < voices.length; i++) {
+                    if (voices[i].match(voice)) {
                         try {
                             if (setCurrentVoice((FreeTTSVoice) voices[i])) {
                                 try {
@@ -373,110 +372,110 @@ public class FreeTTSSynthesizer extends BaseSynthesizer {
                             System.err.println("Engine Exception: " +
                                     ee.getMessage());
                         }
-		    }
-		}
-	    }
-	}
+                    }
+                }
+            }
+        }
 
-	/**
-	 * Set the baseline pitch for the current synthesis voice.
-	 *
-	 * @param hertz sets the current pitch
-	 *
-	 * @throws PropertyVetoException if the synthesizer rejects or
-	 * 	limits the new value
-	 */
-	public void setPitch(float hertz) throws PropertyVetoException {
-	    if (hertz != getPitch()) {
-	    	com.sun.speech.freetts.Voice voice = curVoice.getVoice();
-		voice.setPitch(hertz);
-		super.setPitch(hertz);
-	    }
-	}
+        /**
+         * Set the baseline pitch for the current synthesis voice.
+         *
+         * @param hertz sets the current pitch
+         *
+         * @throws PropertyVetoException if the synthesizer rejects or
+         * 	limits the new value
+         */
+        public void setPitch(float hertz) throws PropertyVetoException {
+            if (hertz != getPitch()) {
+                com.sun.speech.freetts.Voice voice = curVoice.getVoice();
+                voice.setPitch(hertz);
+                super.setPitch(hertz);
+            }
+        }
 
 
-	/**
-	 * Get the pitch range for synthesis.
-	 *
-	 * @return the current range of pitch in hertz
-	 */
-	public float getPitchRange() {
-	    com.sun.speech.freetts.Voice voice = curVoice.getVoice();
-	    return voice.getPitchRange();
-	}
+        /**
+         * Get the pitch range for synthesis.
+         *
+         * @return the current range of pitch in hertz
+         */
+        public float getPitchRange() {
+            com.sun.speech.freetts.Voice voice = curVoice.getVoice();
+            return voice.getPitchRange();
+        }
 
-	/**
-	 * Set the pitch range for the current synthesis voice.
-	 *
-	 * @throws PropertyVetoException if the synthesizer rejects or
-	 * 	limits the new value
-	 */
-	public void setPitchRange(float hertz) throws PropertyVetoException {
-	    if (hertz != getPitchRange()) {
-		com.sun.speech.freetts.Voice voice = curVoice.getVoice();
-		voice.setPitchRange(hertz);
-		super.setPitchRange(hertz);
-	    }
-	}
+        /**
+         * Set the pitch range for the current synthesis voice.
+         *
+         * @throws PropertyVetoException if the synthesizer rejects or
+         * 	limits the new value
+         */
+        public void setPitchRange(float hertz) throws PropertyVetoException {
+            if (hertz != getPitchRange()) {
+                com.sun.speech.freetts.Voice voice = curVoice.getVoice();
+                voice.setPitchRange(hertz);
+                super.setPitchRange(hertz);
+            }
+        }
 
-	/**
-	 * Gets the current target speaking rate.  
-	 *
-	 * @return the current speaking rate in words per minute
-	 */
-	public float getSpeakingRate() {
-	    com.sun.speech.freetts.Voice voice = curVoice.getVoice();
-	    return voice.getRate();
-	}
+        /**
+         * Gets the current target speaking rate.
+         *
+         * @return the current speaking rate in words per minute
+         */
+        public float getSpeakingRate() {
+            com.sun.speech.freetts.Voice voice = curVoice.getVoice();
+            return voice.getRate();
+        }
 
-	/**
-	 * Set the target speaking rate.
-	 *
-	 * @param wpm sets the target speaking rate in 
-	 *	words per minute
-	 *
-	 * @throws PropertyVetoException if the synthesizer rejects or
-	 * 				limits the new value
-	 */
-	public void setSpeakingRate(float wpm) throws PropertyVetoException {
-	    if (wpm != getSpeakingRate()) {
-		com.sun.speech.freetts.Voice voice = curVoice.getVoice();
-		voice.setRate(wpm);
-		super.setSpeakingRate(wpm);
-	    }
-	}
+        /**
+         * Set the target speaking rate.
+         *
+         * @param wpm sets the target speaking rate in
+         *	words per minute
+         *
+         * @throws PropertyVetoException if the synthesizer rejects or
+         * 				limits the new value
+         */
+        public void setSpeakingRate(float wpm) throws PropertyVetoException {
+            if (wpm != getSpeakingRate()) {
+                com.sun.speech.freetts.Voice voice = curVoice.getVoice();
+                voice.setRate(wpm);
+                super.setSpeakingRate(wpm);
+            }
+        }
 
-	/**
-	 * Gets the current volume.  
-	 *
-	 * @return the current volume setting (between 0 and 1.0)
-	 */
-	public float getVolume() {
-	    com.sun.speech.freetts.Voice voice = curVoice.getVoice();
-	    return voice.getVolume();
-	}
+        /**
+         * Gets the current volume.
+         *
+         * @return the current volume setting (between 0 and 1.0)
+         */
+        public float getVolume() {
+            com.sun.speech.freetts.Voice voice = curVoice.getVoice();
+            return voice.getVolume();
+        }
 
-	/**
-	 * Sets the volume
-	 *
-	 * @param volume the new volume setting (between 0 and 1)
-	 *
-	 * @throws PropertyVetoException if the synthesizer rejects or
-	 * 	limits the new value
-	 */
-	public void setVolume(float volume) throws PropertyVetoException {
-	    if (volume > 1.0f)
-		volume = 1.0f;
-	    else if (volume < 0.0f)
-		volume = 0.0f;
-	
-	    if (volume != getVolume()) {
-		com.sun.speech.freetts.Voice voice = curVoice.getVoice();
-		voice.setVolume(volume);
-		super.setVolume(volume);
-	    }
-	}
-     }
+        /**
+         * Sets the volume
+         *
+         * @param volume the new volume setting (between 0 and 1)
+         *
+         * @throws PropertyVetoException if the synthesizer rejects or
+         * 	limits the new value
+         */
+        public void setVolume(float volume) throws PropertyVetoException {
+            if (volume > 1.0f)
+                volume = 1.0f;
+            else if (volume < 0.0f)
+                volume = 0.0f;
+
+            if (volume != getVolume()) {
+                com.sun.speech.freetts.Voice voice = curVoice.getVoice();
+                voice.setVolume(volume);
+                super.setVolume(volume);
+            }
+        }
+    }
 
 
     /**
@@ -485,7 +484,7 @@ public class FreeTTSSynthesizer extends BaseSynthesizer {
      */
     class OutputHandler extends Thread {
         protected boolean done = false;
-        
+
         /**
          * Internal speech output queue that will contain a set of 
          * FreeTTSSynthesizerQueueItems.
@@ -505,50 +504,50 @@ public class FreeTTSSynthesizer extends BaseSynthesizer {
          * shuts down this output handler
          */
         public synchronized void terminate() {
-	    synchronized (queue) {
-		done = true;
-		queue.notify();
-	    }
+            synchronized (queue) {
+                done = true;
+                queue.notify();
+            }
         }
-        
+
         /**
          * Returns an enumeration of the queue
-	 *
-	 * @return the enumeration queue
+         *
+         * @return the enumeration queue
          */
         public Enumeration enumerateQueue() {
-            synchronized(queue) {
+            synchronized (queue) {
                 return queue.elements();
             }
         }
 
         /**
          * Determines if the input queue is empty
-	 *
-	 * @return true if the queue is empty; otherwise false
+         *
+         * @return true if the queue is empty; otherwise false
          */
         public boolean isQueueEmpty() {
-            synchronized(queue) {
+            synchronized (queue) {
                 return queue.size() == 0;
             }
         }
-        
+
         /**
          * Add an item to be spoken to the output queue. Fires the
-	 * appropriate queue events
-	 *
-	 * @param item the item to add to the queue
+         * appropriate queue events
+         *
+         * @param item the item to add to the queue
          */
         public void appendQueue(FreeTTSSynthesizerQueueItem item) {
             boolean topOfQueueChanged;
-            synchronized(queue) {
+            synchronized (queue) {
                 topOfQueueChanged = (queue.size() == 0);
                 queue.addElement(item);
                 queue.notifyAll();
-            }            
+            }
             if (topOfQueueChanged) {
                 long[] states = setEngineState(QUEUE_EMPTY,
-                                               QUEUE_NOT_EMPTY);
+                        QUEUE_NOT_EMPTY);
                 postQueueUpdated(topOfQueueChanged, states[0], states[1]);
             }
         }
@@ -557,62 +556,62 @@ public class FreeTTSSynthesizer extends BaseSynthesizer {
          * Cancel the current item
          */
         protected void cancelItem() {
-	    FreeTTSSynthesizerQueueItem item = null;
+            FreeTTSSynthesizerQueueItem item = null;
 
-	    synchronized(queue) {
-	        audio.cancel();
-		if (queue.size() != 0) {
-		    item = (FreeTTSSynthesizerQueueItem) queue.remove(0);
-		    if (item != null) {
-			// item.postSpeakableCancelled();
-			item.cancelled();
+            synchronized (queue) {
+                audio.cancel();
+                if (queue.size() != 0) {
+                    item = (FreeTTSSynthesizerQueueItem) queue.remove(0);
+                    if (item != null) {
+                        // item.postSpeakableCancelled();
+                        item.cancelled();
                         queueDrained();
-		    }
-		}
-	    }
+                    }
+                }
+            }
         }
-        
+
         /**
          * Cancel all items in the queue
          */
         protected void cancelAllItems() {
-	    FreeTTSSynthesizerQueueItem item = null;
-	    Vector copy;
+            FreeTTSSynthesizerQueueItem item = null;
+            Vector copy;
 
-	    synchronized(queue) {
-	        audio.cancel();
-	    	copy = (Vector) queue.clone();
-		queue.clear();
-		queueDrained();
-	    }
-	    for (Iterator i = copy.iterator(); i.hasNext(); ) {
-		item = (FreeTTSSynthesizerQueueItem) i.next();
-		// item.postSpeakableCancelled();
+            synchronized (queue) {
+                audio.cancel();
+                copy = (Vector) queue.clone();
+                queue.clear();
+                queueDrained();
+            }
+            for (Iterator i = copy.iterator(); i.hasNext(); ) {
+                item = (FreeTTSSynthesizerQueueItem) i.next();
+                // item.postSpeakableCancelled();
                 item.cancelled();
-	    }
+            }
         }
-        
-            
+
+
         /**
          * Cancel the given item.
-	 *
-	 * @param source the item to cancel.
+         *
+         * @param source the item to cancel.
          */
         protected void cancelItem(Object source) {
-	    FreeTTSSynthesizerQueueItem item = null;
-	    synchronized(queue) {
-		int index = queue.indexOf(source);
-		if (index == 0) {
-		    cancelItem();
-		} else {
-		    item = (FreeTTSSynthesizerQueueItem) queue.remove(index);
-		    if (item != null) {
-			// item.postSpeakableCancelled();
-			item.cancelled();
+            FreeTTSSynthesizerQueueItem item = null;
+            synchronized (queue) {
+                int index = queue.indexOf(source);
+                if (index == 0) {
+                    cancelItem();
+                } else {
+                    item = (FreeTTSSynthesizerQueueItem) queue.remove(index);
+                    if (item != null) {
+                        // item.postSpeakableCancelled();
+                        item.cancelled();
                         queueDrained();
-		    }
-		}
-	    }
+                    }
+                }
+            }
         }
 
         /**
@@ -622,81 +621,80 @@ public class FreeTTSSynthesizer extends BaseSynthesizer {
             FreeTTSSynthesizerQueueItem item;
             while (!done) {
                 item = getQueueItem();
-		if (item != null) {
-		    outputItem(item);
-		    removeQueueItem(item); 
-		}
+                if (item != null) {
+                    outputItem(item);
+                    removeQueueItem(item);
+                }
             }
         }
 
         /**
          * Return, but do not remove, the first item on the queue.
-	 *
-	 * @return a queue item
+         *
+         * @return a queue item
          */
         protected FreeTTSSynthesizerQueueItem getQueueItem() {
-	    FreeTTSSynthesizerQueueItem item = null;
-            synchronized(queue) {
+            FreeTTSSynthesizerQueueItem item = null;
+            synchronized (queue) {
                 while (queue.size() == 0 && !done) {
                     try {
                         queue.wait();
-                    }
-                    catch (InterruptedException e) {
-			LOGGER.severe("Unexpected interrupt");
+                    } catch (InterruptedException e) {
+                        LOGGER.severe("Unexpected interrupt");
                         // Ignore interrupts and we'll loop around
                     }
                 }
 
-		if (done) {
-		    return null;
-		}
+                if (done) {
+                    return null;
+                }
                 item = (FreeTTSSynthesizerQueueItem) queue.elementAt(0);
             }
-	    item.postTopOfQueue();
-	    return item;
+            item.postTopOfQueue();
+            return item;
         }
 
         /**
          * removes the given item, posting the appropriate
-	 * events. The item may have already been removed (due to a
-	 * cancel).
-	 *
-	 * @param item the item to remove 
+         * events. The item may have already been removed (due to a
+         * cancel).
+         *
+         * @param item the item to remove
          */
         protected void removeQueueItem(FreeTTSSynthesizerQueueItem item) {
-	    boolean queueEmptied = false;
-            synchronized(queue) {
-		boolean found = queue.remove(item);
-		if (found) {
-		    queueDrained();
-		}
+            boolean queueEmptied = false;
+            synchronized (queue) {
+                boolean found = queue.remove(item);
+                if (found) {
+                    queueDrained();
+                }
             }
         }
 
-	/**
-	 * Should be called iff one or more items have been removed
-	 * from the queue. Generates the appropriate state changes and
-	 * events.
-	 */
-	private void queueDrained() {
-	    if (queue.size() == 0) {
-		long[] states = setEngineState(QUEUE_NOT_EMPTY, QUEUE_EMPTY);
-		postQueueEmptied(states[0], states[1]);
-	    } else { 
-		long[] states = setEngineState(QUEUE_NOT_EMPTY,
-					       QUEUE_NOT_EMPTY);
-		postQueueUpdated(true, states[0], states[1]);
-	    }
-	}
+        /**
+         * Should be called iff one or more items have been removed
+         * from the queue. Generates the appropriate state changes and
+         * events.
+         */
+        private void queueDrained() {
+            if (queue.size() == 0) {
+                long[] states = setEngineState(QUEUE_NOT_EMPTY, QUEUE_EMPTY);
+                postQueueEmptied(states[0], states[1]);
+            } else {
+                long[] states = setEngineState(QUEUE_NOT_EMPTY,
+                        QUEUE_NOT_EMPTY);
+                postQueueUpdated(true, states[0], states[1]);
+            }
+        }
 
         /**
          * Outputs the given queue item to the current voice
-	 *
-	 * @param item the item to output
+         *
+         * @param item the item to output
          */
         protected void outputItem(FreeTTSSynthesizerQueueItem item) {
-	    com.sun.speech.freetts.Voice voice = curVoice.getVoice();
-	    voice.speak(item);
+            com.sun.speech.freetts.Voice voice = curVoice.getVoice();
+            voice.speak(item);
         }
     }
 }

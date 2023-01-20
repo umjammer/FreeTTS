@@ -1,18 +1,20 @@
 /**
  * Portions Copyright 2001 Sun Microsystems, Inc.
- * Portions Copyright 1999-2001 Language Technologies Institute, 
+ * Portions Copyright 1999-2001 Language Technologies Institute,
  * Carnegie Mellon University.
  * All Rights Reserved.  Use is subject to license terms.
- * 
+ * <p>
  * See the file "license.terms" for information on usage and
- * redistribution of this file, and for a DISCLAIMER OF ALL 
+ * redistribution of this file, and for a DISCLAIMER OF ALL
  * WARRANTIES.
  */
+
 package com.sun.speech.freetts;
 
 import java.io.PrintWriter;
 
 import com.sun.speech.freetts.util.Utilities;
+
 
 /**
  * Represents an ordered set of {@link Item}s and their associated
@@ -96,7 +98,7 @@ public class Relation implements Dumpable {
      * the synthesized wave.
      */
     public static final String UNIT = "Unit";
-     
+
     /**
      * Creates a relation.
      *
@@ -104,10 +106,10 @@ public class Relation implements Dumpable {
      * @param owner the utterance that contains this relation
      */
     Relation(String name, Utterance owner) {
-	this.name = name;
-	this.owner = owner;
-	head = null;
-	tail = null;
+        this.name = name;
+        this.owner = owner;
+        head = null;
+        tail = null;
     }
 
     /**

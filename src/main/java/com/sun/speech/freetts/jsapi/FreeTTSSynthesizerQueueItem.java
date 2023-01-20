@@ -1,18 +1,19 @@
 /**
  * Copyright 2001 Sun Microsystems, Inc.
- * 
+ * <p>
  * See the file "license.terms" for information on usage and
- * redistribution of this file, and for a DISCLAIMER OF ALL 
+ * redistribution of this file, and for a DISCLAIMER OF ALL
  * WARRANTIES.
  */
+
 package com.sun.speech.freetts.jsapi;
 
 import java.io.InputStream;
 
-import org.w3c.dom.Document;
-
 import com.sun.speech.engine.synthesis.BaseSynthesizerQueueItem;
 import com.sun.speech.freetts.FreeTTSSpeakable;
+import org.w3c.dom.Document;
+
 
 /**
  * Represents an object on the speech output queue of a
@@ -21,8 +22,8 @@ import com.sun.speech.freetts.FreeTTSSpeakable;
  * document.
  */
 
-public class FreeTTSSynthesizerQueueItem extends BaseSynthesizerQueueItem 
-		implements FreeTTSSpeakable {
+public class FreeTTSSynthesizerQueueItem extends BaseSynthesizerQueueItem
+        implements FreeTTSSpeakable {
     /**
      * Construct a queue item.
      */
@@ -36,17 +37,17 @@ public class FreeTTSSynthesizerQueueItem extends BaseSynthesizerQueueItem
      * @return the DOM document for this object.
      */
     public Document getDocument() {
-	return super.getDocument();
+        return super.getDocument();
     }
 
-   /**
-    * Returns <code>true</code> if the item is an input stream
-    *
-    * @return true if the item is an input stream;
-    *   otherwise, returns <code> false </code>
-    */
+    /**
+     * Returns <code>true</code> if the item is an input stream
+     *
+     * @return true if the item is an input stream;
+     *   otherwise, returns <code> false </code>
+     */
     public boolean isStream() {
-	return false;
+        return false;
     }
 
     /**
@@ -55,20 +56,19 @@ public class FreeTTSSynthesizerQueueItem extends BaseSynthesizerQueueItem
      * @return the input stream
      */
     public InputStream getInputStream() {
-	return null;
+        return null;
     }
 
-   /**
-    * Returns <code>true</code> if the item is a JSML document
-    * (Java Speech Markup Language text).
-    *
-    * @return <code> true </code> if the item is a document; 
-    *   otherwise, returns <code> false </code>
-    */
+    /**
+     * Returns <code>true</code> if the item is a JSML document
+     * (Java Speech Markup Language text).
+     *
+     * @return <code> true </code> if the item is a document;
+     *   otherwise, returns <code> false </code>
+     */
     public boolean isDocument() {
-	return super.getDocument() != null;
+        return super.getDocument() != null;
     }
-
 
 
 }

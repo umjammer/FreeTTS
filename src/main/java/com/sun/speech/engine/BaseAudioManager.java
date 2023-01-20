@@ -1,16 +1,17 @@
 /**
  * Copyright 1998-2001 Sun Microsystems, Inc.
- * 
+ * <p>
  * See the file "license.terms" for information on usage and
- * redistribution of this file, and for a DISCLAIMER OF ALL 
+ * redistribution of this file, and for a DISCLAIMER OF ALL
  * WARRANTIES.
  */
+
 package com.sun.speech.engine;
 
 import java.util.Collection;
-
 import javax.speech.AudioListener;
 import javax.speech.AudioManager;
+
 
 /**
  * Supports the JSAPI 1.0 <code>AudioManager</code>
@@ -23,8 +24,8 @@ public class BaseAudioManager implements AudioManager {
      * <code>AudioEvents</code> on this object.
      */
     protected Collection listeners;
-    
-    /** 
+
+    /**
      * Class constructor.
      */
     public BaseAudioManager() {
@@ -42,7 +43,7 @@ public class BaseAudioManager implements AudioManager {
             listeners.add(listener);
         }
     }
-    
+
     /**
      * Removes an <code>AudioListener</code> from the list of
      * <code>AudioListeners</code>.

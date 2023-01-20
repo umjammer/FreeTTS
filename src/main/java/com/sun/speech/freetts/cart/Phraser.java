@@ -1,13 +1,14 @@
 /**
  * Portions Copyright 2001 Sun Microsystems, Inc.
- * Portions Copyright 1999-2001 Language Technologies Institute, 
+ * Portions Copyright 1999-2001 Language Technologies Institute,
  * Carnegie Mellon University.
  * All Rights Reserved.  Use is subject to license terms.
- * 
+ * <p>
  * See the file "license.terms" for information on usage and
- * redistribution of this file, and for a DISCLAIMER OF ALL 
+ * redistribution of this file, and for a DISCLAIMER OF ALL
  * WARRANTIES.
  */
+
 package com.sun.speech.freetts.cart;
 
 import java.util.logging.Level;
@@ -19,6 +20,7 @@ import com.sun.speech.freetts.Relation;
 import com.sun.speech.freetts.Utterance;
 import com.sun.speech.freetts.UtteranceProcessor;
 
+
 /**
  * Creates a <code>Relation.PHRASE</code> relation, grouping
  * <code>Relation.WORD</code> relations by breaks.
@@ -29,14 +31,14 @@ import com.sun.speech.freetts.UtteranceProcessor;
 public class Phraser implements UtteranceProcessor {
     /** Logger instance. */
     private static final Logger LOGGER =
-        Logger.getLogger(UtteranceProcessor.class.getName());
+            Logger.getLogger(UtteranceProcessor.class.getName());
 
     /**
      * The CART used for this Phrasing UtteranceProcessor.  It is
      * passed into the constructor.
      */
     protected final CART cart;
-    
+
     /**
      * Creates a new Phrasing UtteranceProcessor with the given
      * CART.  The phrasing CART is expected to return "BB" values
@@ -47,7 +49,7 @@ public class Phraser implements UtteranceProcessor {
     public Phraser(CART cart) {
         this.cart = cart;
     }
-    
+
     /**
      * Creates a <code>Relation.PHRASE</code> relation, grouping
      * <code>Relation.WORD</code> relations by breaks.
@@ -63,14 +65,14 @@ public class Phraser implements UtteranceProcessor {
         Relation relation = utterance.createRelation(Relation.PHRASE);
         Item p = null;
         for (Item w = utterance.getRelation(Relation.WORD).getHead();
-			w != null; w = w.getNext()) {
+             w != null; w = w.getNext()) {
             if (p == null) {
                 p = relation.appendItem();
-                p.getFeatures().setString("name","BB");
+                p.getFeatures().setString("name", "BB");
             }
             p.addDaughter(w);
             String results = (String) cart.interpret(w);
-            
+
             if (LOGGER.isLoggable(Level.FINER)) {
                 LOGGER.finer("word: " + w + ", results: " + results);
             }

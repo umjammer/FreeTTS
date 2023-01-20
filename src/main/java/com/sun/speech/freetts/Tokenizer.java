@@ -1,16 +1,18 @@
 /**
  * Portions Copyright 2001 Sun Microsystems, Inc.
- * Portions Copyright 1999-2001 Language Technologies Institute, 
+ * Portions Copyright 1999-2001 Language Technologies Institute,
  * Carnegie Mellon University.
  * All Rights Reserved.  Use is subject to license terms.
- * 
+ * <p>
  * See the file "license.terms" for information on usage and
- * redistribution of this file, and for a DISCLAIMER OF ALL 
+ * redistribution of this file, and for a DISCLAIMER OF ALL
  * WARRANTIES.
  */
+
 package com.sun.speech.freetts;
 
 import java.io.Reader;
+
 
 /**
  * Chops a string or text file into Token instances.
@@ -29,12 +31,12 @@ public interface Tokenizer {
      * @param  reader the input source
      */
     void setInputReader(Reader reader);
-    
-    
+
+
     /**
      * Returns the next token.
      *
-     * @return  the next token if it exists; otherwise null
+     * @return the next token if it exists; otherwise null
      */
     Token getNextToken();
 
@@ -64,7 +66,7 @@ public interface Tokenizer {
     /**
      * Sets the whitespace symbols of this Tokenizer to the given
      * symbols.
-     * 
+     *
      * @param symbols the whitespace symbols
      */
     void setWhitespaceSymbols(String symbols);

@@ -1,17 +1,19 @@
 /**
  * Portions Copyright 2001 Sun Microsystems, Inc.
- * Portions Copyright 1999-2001 Language Technologies Institute, 
+ * Portions Copyright 1999-2001 Language Technologies Institute,
  * Carnegie Mellon University.
  * All Rights Reserved.  Use is subject to license terms.
- * 
+ * <p>
  * See the file "license.terms" for information on usage and
- * redistribution of this file, and for a DISCLAIMER OF ALL 
+ * redistribution of this file, and for a DISCLAIMER OF ALL
  * WARRANTIES.
  */
+
 package com.sun.speech.freetts.lexicon;
 
-import java.util.List;
 import java.io.IOException;
+import java.util.List;
+
 
 /**
  * Provides the phone list for words.  A Lexicon is composed of three
@@ -55,7 +57,7 @@ public interface Lexicon {
      *        the word is not in the lexicon.
      *
      * @return the list of phones for word or null
-     */    
+     */
     public String[] getPhones(String word, String partOfSpeech, boolean useLTS);
 
     /**
@@ -64,7 +66,7 @@ public interface Lexicon {
      *
      * @param word the word to add
      * @param partOfSpeech the part of speech or <code>null</code>
-     * 
+     *
      */
     public void addAddendum(String word, String partOfSpeech, String[] phones);
 
@@ -89,7 +91,7 @@ public interface Lexicon {
      */
     public boolean isSyllableBoundary(List syllablePhones,
                                       String[] wordPhones,
-                                      int currentWordPhone);    
+                                      int currentWordPhone);
 
     /**
      * Loads this lexicon.  The loading of a lexicon need not be done

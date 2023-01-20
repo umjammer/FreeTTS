@@ -1,20 +1,22 @@
 /**
  * Copyright 2001 Sun Microsystems, Inc.
- * 
+ * <p>
  * See the file "license.terms" for information on usage and
- * redistribution of this file, and for a DISCLAIMER OF ALL 
+ * redistribution of this file, and for a DISCLAIMER OF ALL
  * WARRANTIES.
  */
+
 package com.sun.speech.freetts.util;
 
-import java.io.PrintWriter;
-import java.net.URL;
-import java.io.FileInputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
-import java.nio.ByteBuffer;
-import java.io.InputStream;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.PrintWriter;
+import java.net.URL;
+import java.nio.ByteBuffer;
+
 
 /**
  * Provides a set of generic utilities used by freetts.
@@ -37,15 +39,15 @@ public class Utilities {
      * char.
      */
     public static String pad(int padding) {
-	if (padding > 0) {
-	    StringBuffer sb = new StringBuffer(padding);
-	    for (int i = 0; i < padding; i++) {
-		sb.append(' ');
-	    }
-	    return sb.toString();
-	 } else {
-	     return "";
-	 }
+        if (padding > 0) {
+            StringBuffer sb = new StringBuffer(padding);
+            for (int i = 0; i < padding; i++) {
+                sb.append(' ');
+            }
+            return sb.toString();
+        } else {
+            return "";
+        }
     }
 
     /**
@@ -59,14 +61,14 @@ public class Utilities {
      * padded with whitespace or truncated
      */
     public static String pad(String string, int minLength) {
-	String result = string;
-	int pad = minLength - string.length();
-	if (pad > 0) {
-	    result =  string + pad(minLength - string.length());
-	} else if (pad < 0) {
-	    result = string.substring(0, minLength);
-	}
-	return result;
+        String result = string;
+        int pad = minLength - string.length();
+        if (pad > 0) {
+            result = string + pad(minLength - string.length());
+        } else if (pad < 0) {
+            result = string.substring(0, minLength);
+        }
+        return result;
     }
 
     /**
@@ -75,18 +77,18 @@ public class Utilities {
      * @param  fromString  the String to delete characters from
      * @param  charToDelete  the character to delete from the given String
      *
-     * @return  a String with all instances of the specified char deleted
+     * @return a String with all instances of the specified char deleted
      */
     public static String deleteChar(String fromString, char charToDelete) {
-	StringBuffer buffer = new StringBuffer(fromString.length());
-	for (int i = 0; i < fromString.length(); i++) {
-	    if (fromString.charAt(i) != charToDelete) {
-		buffer.append(fromString.charAt(i));
-	    }
-	}
-	return new String(buffer);
+        StringBuffer buffer = new StringBuffer(fromString.length());
+        for (int i = 0; i < fromString.length(); i++) {
+            if (fromString.charAt(i) != charToDelete) {
+                buffer.append(fromString.charAt(i));
+            }
+        }
+        return new String(buffer);
     }
-    
+
     /**
      * Dumps padded text. This is a simple tool for helping dump text 
      * with padding to a Writer.
@@ -96,8 +98,8 @@ public class Utilities {
      * @param string the string to output
      */
     public static void dump(PrintWriter pw, int padding, String string) {
-	pw.print(pad(padding));
-	pw.println(string);
+        pw.print(pad(padding));
+        pw.println(string);
     }
 
     /**
@@ -112,11 +114,11 @@ public class Utilities {
      * @throws IOException if there is trouble creating the stream
      */
     public static InputStream getInputStream(URL url) throws IOException {
-	if (url.getProtocol().equals("file")) {
-	    return new FileInputStream(url.getFile());
-	} else {
-	    return url.openStream();
-	}
+        if (url.getProtocol().equals("file")) {
+            return new FileInputStream(url.getFile());
+        } else {
+            return url.openStream();
+        }
     }
 
     /**
@@ -127,12 +129,12 @@ public class Utilities {
      *
      * @throws IOException if an I/O error occurs
      */
-    public static void outString(DataOutputStream dos, String s) 
-			throws IOException {
-	dos.writeShort((short) s.length());
-	for (int i = 0; i < s.length(); i++) {
-	    dos.writeChar(s.charAt(i));
-	}
+    public static void outString(DataOutputStream dos, String s)
+            throws IOException {
+        dos.writeShort((short) s.length());
+        for (int i = 0; i < s.length(); i++) {
+            dos.writeChar(s.charAt(i));
+        }
     }
 
     /**
@@ -140,17 +142,17 @@ public class Utilities {
      *
      * @param dis the stream
      *
-     * @return  the string 
+     * @return the string
      *
      * @throws IOException if an I/O error occurs
      */
     public static String getString(DataInputStream dis) throws IOException {
-	int size = dis.readShort();
-	char[] charBuffer = new char[size];
-	for (int i = 0; i < size; i++) {
-	    charBuffer[i] = dis.readChar();
-	}
-	return new String(charBuffer, 0, size);
+        int size = dis.readShort();
+        char[] charBuffer = new char[size];
+        for (int i = 0; i < size; i++) {
+            charBuffer[i] = dis.readChar();
+        }
+        return new String(charBuffer, 0, size);
     }
 
     /**
@@ -158,17 +160,17 @@ public class Utilities {
      *
      * @param bb the input byte buffer
      *
-     * @return  the string 
+     * @return the string
      *
      * @throws IOException if an I/O error occurs
      */
     public static String getString(ByteBuffer bb) throws IOException {
-	int size = bb.getShort();
-	char[] charBuffer = new char[size];
-	for (int i = 0; i < size; i++) {
-	    charBuffer[i] = bb.getChar();
-	}
-	return new String(charBuffer, 0, size);
+        int size = bb.getShort();
+        char[] charBuffer = new char[size];
+        for (int i = 0; i < size; i++) {
+            charBuffer[i] = bb.getChar();
+        }
+        return new String(charBuffer, 0, size);
     }
 
 
@@ -185,13 +187,13 @@ public class Utilities {
      *  the property cannot be found
      */
     public static String getProperty(String name, String defaultValue) {
-	String value;
-	try {
-	    value = System.getProperty(name, defaultValue);
-	} catch (SecurityException se) {
-	    value = defaultValue;
-	}
-	return value;
+        String value;
+        try {
+            value = System.getProperty(name, defaultValue);
+        } catch (SecurityException se) {
+            value = defaultValue;
+        }
+        return value;
     }
 
     /**
@@ -199,19 +201,19 @@ public class Utilities {
      *
      * @param name the name of the property
      *
-     * @return  If there is no property with the specified name, or 
+     * @return If there is no property with the specified name, or
      *  if the specified name is empty or null, then false is returned. 
      *  otherwise the boolean value of the property is returned
      *
      */
     public static boolean getBoolean(String name) {
-	boolean value;
-	try {
-	    value = Boolean.getBoolean(name);
-	} catch (SecurityException se) {
-	    value = false;
-	}
-	return value;
+        boolean value;
+        try {
+            value = Boolean.getBoolean(name);
+        } catch (SecurityException se) {
+            value = false;
+        }
+        return value;
     }
 
     /**
@@ -227,13 +229,13 @@ public class Utilities {
      *
      */
     public static Long getLong(String name, long defaultValue) {
-	Long value;
-	try {
-	    value = Long.getLong(name, defaultValue);
-	} catch (SecurityException se) {
-	    value = new Long(defaultValue);
-	}
-	return value;
+        Long value;
+        try {
+            value = Long.getLong(name, defaultValue);
+        } catch (SecurityException se) {
+            value = new Long(defaultValue);
+        }
+        return value;
     }
 
     /**
@@ -249,15 +251,15 @@ public class Utilities {
      *
      */
     public static Integer getInteger(String name, int defaultValue) {
-	Integer value;
-	try {
-	    value = Integer.getInteger(name, defaultValue);
-	} catch (SecurityException se) {
-	    value = new Integer(defaultValue);
-	}
-	return value;
+        Integer value;
+        try {
+            value = Integer.getInteger(name, defaultValue);
+        } catch (SecurityException se) {
+            value = new Integer(defaultValue);
+        }
+        return value;
     }
-    
+
 }
 
   

@@ -1,15 +1,15 @@
 /**
  * Copyright 1998-2001 Sun Microsystems, Inc.
- * 
+ * <p>
  * See the file "license.terms" for information on usage and
- * redistribution of this file, and for a DISCLAIMER OF ALL 
+ * redistribution of this file, and for a DISCLAIMER OF ALL
  * WARRANTIES.
  */
+
 package com.sun.speech.engine;
 
 import java.util.Collection;
 import java.util.Iterator;
-
 import javax.speech.AudioException;
 import javax.speech.AudioManager;
 import javax.speech.Engine;
@@ -22,6 +22,7 @@ import javax.speech.EngineStateError;
 import javax.speech.SpeechEvent;
 import javax.speech.VocabManager;
 
+
 /**
  * Supports the JSAPI 1.0 <code>Engine</code> interface.
  * Actual JSAPI implementations might want to extend or modify this
@@ -31,30 +32,30 @@ abstract public class BaseEngine implements Engine, SpeechEventDispatcher {
     /**
      * A bitmask holding the current state of this <code>Engine</code>.
      */
-    protected long             engineState;
+    protected long engineState;
 
     /**
      * An <code>Object</code> used for synchronizing access to
      * <code>engineState</code>.
      * @see #engineState
      */
-    protected Object           engineStateLock;
+    protected Object engineStateLock;
 
     /**
      * List of <code>EngineListeners</code> registered for
      * <code>EngineEvents</code> on this <code>Engine</code>.
      */
-    protected Collection      engineListeners;
+    protected Collection engineListeners;
 
     /**
      * The <code>AudioManager</code> for this <code>Engine</code>.
      */
-    protected AudioManager     audioManager = null;
+    protected AudioManager audioManager = null;
 
     /**
      * The <code>EngineModeDesc</code> for this <code>Engine</code>.
      */
-    protected EngineModeDesc   engineModeDesc = null;
+    protected EngineModeDesc engineModeDesc = null;
 
     /**
      * The <code>EngineProperties</code> for this <code>Engine</code>.
@@ -87,8 +88,8 @@ abstract public class BaseEngine implements Engine, SpeechEventDispatcher {
         engineStateLock = new Object();
         engineProperties = createEngineProperties();
     }
-    
-    /** 
+
+    /**
      * Returns a or'ed set of flags indicating the current state of
      * this <code>Engine</code>.
      *
@@ -106,8 +107,8 @@ abstract public class BaseEngine implements Engine, SpeechEventDispatcher {
     public long getEngineState() {
         return engineState;
     }
-    
-    /** 
+
+    /**
      * Blocks the calling thread until this <code>Engine</code>
      * is in a specified state.
      *
@@ -130,15 +131,15 @@ abstract public class BaseEngine implements Engine, SpeechEventDispatcher {
      * @throws IllegalArgumentException
      *   if the specified state is unreachable
      */
-    public void waitEngineState(long state) 
-        throws InterruptedException, IllegalArgumentException {
+    public void waitEngineState(long state)
+            throws InterruptedException, IllegalArgumentException {
         synchronized (engineStateLock) {
-	    while (!testEngineState(state))
-	        engineStateLock.wait();
-	}
-    }    
+            while (!testEngineState(state))
+                engineStateLock.wait();
+        }
+    }
 
-    /** 
+    /**
      * Returns <code>true</code> if this state of this
      * <code>Engine</code> matches the specified state.
      *
@@ -147,13 +148,13 @@ abstract public class BaseEngine implements Engine, SpeechEventDispatcher {
      * example the following returns true only if the
      * <code>Synthesizer</code> queue is empty, irrespective
      * of the pause/resume and allocation states.
-     * 
+     *
      * <PRE>
      *    if (synth.testEngineState(Synthesizer.QUEUE_EMPTY)) ...
      * </PRE>
      *
      * <p>The <code>testEngineState</code> method is equivalent to:
-     * 
+     *
      * <PRE>
      *      if ((engine.getEngineState() &amp; state) == state)
      * </PRE>
@@ -168,8 +169,8 @@ abstract public class BaseEngine implements Engine, SpeechEventDispatcher {
      * @throws IllegalArgumentException
      *   if the specified state is unreachable
      */
-    public boolean testEngineState(long state) 
-        throws IllegalArgumentException {
+    public boolean testEngineState(long state)
+            throws IllegalArgumentException {
         return ((getEngineState() & state) == state);
     }
 
@@ -182,18 +183,18 @@ abstract public class BaseEngine implements Engine, SpeechEventDispatcher {
      * @return a length-2 array with old and new state values.
      */
     protected long[] setEngineState(long clear, long set) {
-        long states[] = new long[2];        
+        long states[] = new long[2];
         synchronized (engineStateLock) {
-	    states[0] = engineState;
-	    engineState = engineState & (~clear);
-	    engineState = engineState | set;
-	    states[1] = engineState;
-	    engineStateLock.notifyAll();
-	}        
-	return states;
+            states[0] = engineState;
+            engineState = engineState & (~clear);
+            engineState = engineState | set;
+            states[1] = engineState;
+            engineStateLock.notifyAll();
+        }
+        return states;
     }
 
-    /** 
+    /**
      * Allocates the resources required for this <code>Engine</code> and
      * puts it into the <code>ALLOCATED</code> state.  When this method
      * returns successfully the <code>ALLOCATED</code> bit of this
@@ -210,15 +211,15 @@ abstract public class BaseEngine implements Engine, SpeechEventDispatcher {
      * @throws EngineStateError if this <code>Engine</code> is in the
      *   <code>DEALLOCATING_RESOURCES</code> state
      */
-     public void allocate() throws EngineException, EngineStateError {
-     if (testEngineState(ALLOCATED)) {
+    public void allocate() throws EngineException, EngineStateError {
+        if (testEngineState(ALLOCATED)) {
             return;
         }
 
-	long[] states = setEngineState(CLEAR_ALL_STATE, ALLOCATING_RESOURCES);
+        long[] states = setEngineState(CLEAR_ALL_STATE, ALLOCATING_RESOURCES);
         postEngineAllocatingResources(states[0], states[1]);
 
-        handleAllocate();        
+        handleAllocate();
     }
 
     /**
@@ -231,7 +232,7 @@ abstract public class BaseEngine implements Engine, SpeechEventDispatcher {
      */
     abstract protected void handleAllocate() throws EngineException;
 
-    /** 
+    /**
      * Frees the resources of this <code>Engine</code> that were
      * acquired during allocation and during operation and return this
      * <code>Engine</code> to the <code>DEALLOCATED</code>.  When this
@@ -259,8 +260,8 @@ abstract public class BaseEngine implements Engine, SpeechEventDispatcher {
             return;
         }
 
-	long[] states = setEngineState(CLEAR_ALL_STATE,
-                                       DEALLOCATING_RESOURCES);
+        long[] states = setEngineState(CLEAR_ALL_STATE,
+                DEALLOCATING_RESOURCES);
         postEngineDeallocatingResources(states[0], states[1]);
 
         handleDeallocate();
@@ -269,13 +270,13 @@ abstract public class BaseEngine implements Engine, SpeechEventDispatcher {
     /**
      * Called from the <code>deallocate</code> method.  Override this in
      * subclasses.
-     *  
+     *
      * @throws EngineException if this <code>Engine</code> cannot be
      *   deallocated.
      */
     abstract protected void handleDeallocate() throws EngineException;
 
-    /** 
+    /**
      * Pauses the audio stream for this <code>Engine</code> and put
      * this <code>Engine</code> into the <code>PAUSED</code> state.
      *
@@ -286,13 +287,13 @@ abstract public class BaseEngine implements Engine, SpeechEventDispatcher {
     public void pause() throws EngineStateError {
         synchronized (engineStateLock) {
             checkEngineState(DEALLOCATED | DEALLOCATING_RESOURCES);
-            
+
             if (testEngineState(PAUSED)) {
                 return;
             }
-            
+
             handlePause();
-          
+
             long[] states = setEngineState(RESUMED, PAUSED);
             postEnginePaused(states[0], states[1]);
         }
@@ -303,7 +304,7 @@ abstract public class BaseEngine implements Engine, SpeechEventDispatcher {
      */
     abstract protected void handlePause();
 
-    /** 
+    /**
      * Resumes the audio stream for this <code>Engine</code> and put
      * this <code>Engine</code> into the <code>RESUMED</code> state.
      *
@@ -315,12 +316,12 @@ abstract public class BaseEngine implements Engine, SpeechEventDispatcher {
     public void resume() throws AudioException, EngineStateError {
         synchronized (engineStateLock) {
             checkEngineState(DEALLOCATED | DEALLOCATING_RESOURCES);
-            
+
             if (testEngineState(RESUMED))
                 return;
-            
+
             handleResume();
-            
+
             long[] states = setEngineState(PAUSED, RESUMED);
             postEngineResumed(states[0], states[1]);
         }
@@ -330,7 +331,7 @@ abstract public class BaseEngine implements Engine, SpeechEventDispatcher {
      * Called from the <code>resume</code> method.  Override in subclasses.
      */
     abstract protected void handleResume();
-    
+
     /**
      * Returns an object that provides management of the audio input
      * or output of this <code>Engine</code>.
@@ -338,9 +339,9 @@ abstract public class BaseEngine implements Engine, SpeechEventDispatcher {
      * @return the audio manader for this <code>Engine</code>
      */
     public AudioManager getAudioManager() {
-	if (audioManager == null) {
-	    audioManager = new BaseAudioManager();
-	}
+        if (audioManager == null) {
+            audioManager = new BaseAudioManager();
+        }
         return audioManager;
     }
 
@@ -417,7 +418,7 @@ abstract public class BaseEngine implements Engine, SpeechEventDispatcher {
             engineListeners.remove(listener);
         }
     }
-    
+
     /**
      * Utility function that generates an
      * <code>ENGINE_ALLOCATED</code> event and posts it
@@ -434,13 +435,13 @@ abstract public class BaseEngine implements Engine, SpeechEventDispatcher {
      */
     protected void postEngineAllocated(long oldState, long newState) {
         SpeechEventUtilities.postSpeechEvent(
-            this,
-            new EngineEvent(
                 this,
-                EngineEvent.ENGINE_ALLOCATED,
-                oldState, newState));
+                new EngineEvent(
+                        this,
+                        EngineEvent.ENGINE_ALLOCATED,
+                        oldState, newState));
     }
-    
+
     /**
      * Utility function that sends an <code>ENGINE_ALLOCATED</code>
      * event to all <code>EngineListeners</code> registered with this
@@ -452,16 +453,16 @@ abstract public class BaseEngine implements Engine, SpeechEventDispatcher {
      * @see #dispatchSpeechEvent
      */
     public void fireEngineAllocated(EngineEvent event) {
-	if (engineListeners == null) {
-	    return;
-	}
+        if (engineListeners == null) {
+            return;
+        }
         Iterator iterator = engineListeners.iterator();
         while (iterator.hasNext()) {
             EngineListener el = (EngineListener) iterator.next();
             el.engineAllocated(event);
         }
     }
-    
+
     /**
      * Utility function that generates an
      * <code>ENGINE_ALLOCATING_RESOURCES</code> event and
@@ -479,13 +480,13 @@ abstract public class BaseEngine implements Engine, SpeechEventDispatcher {
     protected void postEngineAllocatingResources(long oldState,
                                                  long newState) {
         SpeechEventUtilities.postSpeechEvent(
-            this,
-            new EngineEvent(
                 this,
-                EngineEvent.ENGINE_ALLOCATING_RESOURCES,
-                oldState, newState));
+                new EngineEvent(
+                        this,
+                        EngineEvent.ENGINE_ALLOCATING_RESOURCES,
+                        oldState, newState));
     }
-    
+
     /**
      * Utility function that sends an
      * <code>ENGINE_ALLOCATING_RESOURCES</code> event to all
@@ -498,16 +499,16 @@ abstract public class BaseEngine implements Engine, SpeechEventDispatcher {
      * @see #dispatchSpeechEvent
      */
     public void fireEngineAllocatingResources(EngineEvent event) {
-	if (engineListeners == null) {
-	    return;
-	}
+        if (engineListeners == null) {
+            return;
+        }
         Iterator iterator = engineListeners.iterator();
         while (iterator.hasNext()) {
             EngineListener el = (EngineListener) iterator.next();
             el.engineAllocatingResources(event);
         }
     }
-    
+
     /**
      * Utility function that generates an
      * <code>ENGINE_DEALLOCATED</code> event and posts it
@@ -523,13 +524,13 @@ abstract public class BaseEngine implements Engine, SpeechEventDispatcher {
      */
     protected void postEngineDeallocated(long oldState, long newState) {
         SpeechEventUtilities.postSpeechEvent(
-            this,
-            new EngineEvent(
                 this,
-                EngineEvent.ENGINE_DEALLOCATED,
-                oldState, newState));
+                new EngineEvent(
+                        this,
+                        EngineEvent.ENGINE_DEALLOCATED,
+                        oldState, newState));
     }
-    
+
     /**
      * Utility function that sends an
      * <code>ENGINE_DEALLOCATED</code> event to all
@@ -542,16 +543,16 @@ abstract public class BaseEngine implements Engine, SpeechEventDispatcher {
      * @see #dispatchSpeechEvent
      */
     public void fireEngineDeallocated(EngineEvent event) {
-	if (engineListeners == null) {
-	    return;
-	}
+        if (engineListeners == null) {
+            return;
+        }
         Iterator iterator = engineListeners.iterator();
         while (iterator.hasNext()) {
             EngineListener el = (EngineListener) iterator.next();
             el.engineDeallocated(event);
         }
     }
-    
+
     /**
      * Utility function that generates
      * <code>ENGINE_DEALLOCATING_RESOURCES</code> event and
@@ -568,13 +569,13 @@ abstract public class BaseEngine implements Engine, SpeechEventDispatcher {
     protected void postEngineDeallocatingResources(long oldState,
                                                    long newState) {
         SpeechEventUtilities.postSpeechEvent(
-            this,
-            new EngineEvent(
                 this,
-                EngineEvent.ENGINE_DEALLOCATING_RESOURCES,
-                oldState, newState));
+                new EngineEvent(
+                        this,
+                        EngineEvent.ENGINE_DEALLOCATING_RESOURCES,
+                        oldState, newState));
     }
-    
+
     /**
      * Utility function that sends a
      * <code>ENGINE_DEALLOCATING_RESOURCES</code> event to all
@@ -587,16 +588,16 @@ abstract public class BaseEngine implements Engine, SpeechEventDispatcher {
      * @see #dispatchSpeechEvent
      */
     public void fireEngineDeallocatingResources(EngineEvent event) {
-	if (engineListeners == null) {
-	    return;
-	}
+        if (engineListeners == null) {
+            return;
+        }
         Iterator iterator = engineListeners.iterator();
         while (iterator.hasNext()) {
             EngineListener el = (EngineListener) iterator.next();
             el.engineDeallocatingResources(event);
         }
     }
-    
+
     /**
      * Utility function that generates an
      * <code>ENGINE_PAUSED</code> event and posts it
@@ -612,13 +613,13 @@ abstract public class BaseEngine implements Engine, SpeechEventDispatcher {
      */
     protected void postEnginePaused(long oldState, long newState) {
         SpeechEventUtilities.postSpeechEvent(
-            this,
-            new EngineEvent(
                 this,
-                EngineEvent.ENGINE_PAUSED,
-                oldState, newState));
+                new EngineEvent(
+                        this,
+                        EngineEvent.ENGINE_PAUSED,
+                        oldState, newState));
     }
-    
+
     /**
      * Utility function that sends an <code>ENGINE_PAUSED</code> event
      * to all
@@ -631,9 +632,9 @@ abstract public class BaseEngine implements Engine, SpeechEventDispatcher {
      * @see #dispatchSpeechEvent
      */
     public void fireEnginePaused(EngineEvent event) {
-	if (engineListeners == null) {
-	    return;
-	}
+        if (engineListeners == null) {
+            return;
+        }
         Iterator iterator = engineListeners.iterator();
         while (iterator.hasNext()) {
             EngineListener el = (EngineListener) iterator.next();
@@ -655,13 +656,13 @@ abstract public class BaseEngine implements Engine, SpeechEventDispatcher {
      */
     protected void postEngineResumed(long oldState, long newState) {
         SpeechEventUtilities.postSpeechEvent(
-            this,
-            new EngineEvent(
                 this,
-                EngineEvent.ENGINE_RESUMED,
-                oldState, newState));
+                new EngineEvent(
+                        this,
+                        EngineEvent.ENGINE_RESUMED,
+                        oldState, newState));
     }
-    
+
     /**
      * Utility function that sends an <code>ENGINE_RESUMED</code> event
      * to all
@@ -674,9 +675,9 @@ abstract public class BaseEngine implements Engine, SpeechEventDispatcher {
      * @see #dispatchSpeechEvent
      */
     public void fireEngineResumed(EngineEvent event) {
-	if (engineListeners == null) {
-	    return;
-	}
+        if (engineListeners == null) {
+            return;
+        }
         Iterator iterator = engineListeners.iterator();
         while (iterator.hasNext()) {
             EngineListener el = (EngineListener) iterator.next();
@@ -706,9 +707,9 @@ abstract public class BaseEngine implements Engine, SpeechEventDispatcher {
         long currentState = getEngineState();
         if ((currentState & state) != 0) {
             throw new EngineStateError
-		("Invalid EngineState: expected=(" 
-		 + stateToString(state) + ") current state=("
-		 + stateToString(currentState) + ")");
+                    ("Invalid EngineState: expected=("
+                            + stateToString(state) + ") current state=("
+                            + stateToString(currentState) + ")");
         }
     }
 
@@ -723,7 +724,7 @@ abstract public class BaseEngine implements Engine, SpeechEventDispatcher {
      *   states set in <code>state</code>
      */
     protected String stateToString(long state) {
-	StringBuffer buf = new StringBuffer();
+        StringBuffer buf = new StringBuffer();
         if ((state & Engine.DEALLOCATED) != 0)
             buf.append(" DEALLOCATED ");
         if ((state & Engine.ALLOCATING_RESOURCES) != 0)
@@ -738,7 +739,7 @@ abstract public class BaseEngine implements Engine, SpeechEventDispatcher {
             buf.append(" RESUMED ");
         return buf.toString();
     }
-    
+
     /**
      * Dispatches a <code>SpeechEvent</code>.
      * The dispatcher should notify all <code>EngineListeners</code>
@@ -756,27 +757,27 @@ abstract public class BaseEngine implements Engine, SpeechEventDispatcher {
      */
     public void dispatchSpeechEvent(SpeechEvent event) {
         switch (event.getId()) {
-            case EngineEvent.ENGINE_ALLOCATED:
-                fireEngineAllocated((EngineEvent) event);
-                break;
-            case EngineEvent.ENGINE_ALLOCATING_RESOURCES:
-                fireEngineAllocatingResources((EngineEvent) event);
-                break;
-            case EngineEvent.ENGINE_DEALLOCATED:
-                fireEngineDeallocated((EngineEvent) event);
-                break;
-            case EngineEvent.ENGINE_DEALLOCATING_RESOURCES:
-                fireEngineDeallocatingResources((EngineEvent) event);
-                break;
-            //case EngineEvent.ENGINE_ERROR:
-            //fireEngineError((EngineErrorEvent) event);
-            //break;
-            case EngineEvent.ENGINE_PAUSED:
-                fireEnginePaused((EngineEvent) event);
-                break;
-            case EngineEvent.ENGINE_RESUMED:
-                fireEngineResumed((EngineEvent) event);
-                break;
+        case EngineEvent.ENGINE_ALLOCATED:
+            fireEngineAllocated((EngineEvent) event);
+            break;
+        case EngineEvent.ENGINE_ALLOCATING_RESOURCES:
+            fireEngineAllocatingResources((EngineEvent) event);
+            break;
+        case EngineEvent.ENGINE_DEALLOCATED:
+            fireEngineDeallocated((EngineEvent) event);
+            break;
+        case EngineEvent.ENGINE_DEALLOCATING_RESOURCES:
+            fireEngineDeallocatingResources((EngineEvent) event);
+            break;
+        //case EngineEvent.ENGINE_ERROR:
+        //fireEngineError((EngineErrorEvent) event);
+        //break;
+        case EngineEvent.ENGINE_PAUSED:
+            fireEnginePaused((EngineEvent) event);
+            break;
+        case EngineEvent.ENGINE_RESUMED:
+            fireEngineResumed((EngineEvent) event);
+            break;
         }
     }
 
@@ -786,7 +787,7 @@ abstract public class BaseEngine implements Engine, SpeechEventDispatcher {
      * @return the engine name and mode.
      */
     public String toString() {
-        return getEngineModeDesc().getEngineName() + 
-            ":" + getEngineModeDesc().getModeName();
+        return getEngineModeDesc().getEngineName() +
+                ":" + getEngineModeDesc().getModeName();
     }
 }

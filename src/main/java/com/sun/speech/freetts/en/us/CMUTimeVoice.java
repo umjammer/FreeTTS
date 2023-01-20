@@ -1,13 +1,14 @@
 /**
  * Portions Copyright 2001 Sun Microsystems, Inc.
- * Portions Copyright 1999-2001 Language Technologies Institute, 
+ * Portions Copyright 1999-2001 Language Technologies Institute,
  * Carnegie Mellon University.
  * All Rights Reserved.  Use is subject to license terms.
- * 
+ * <p>
  * See the file "license.terms" for information on usage and
- * redistribution of this file, and for a DISCLAIMER OF ALL 
+ * redistribution of this file, and for a DISCLAIMER OF ALL
  * WARRANTIES.
  */
+
 package com.sun.speech.freetts.en.us;
 
 import java.io.IOException;
@@ -19,6 +20,7 @@ import com.sun.speech.freetts.Gender;
 import com.sun.speech.freetts.ProcessException;
 import com.sun.speech.freetts.Utterance;
 import com.sun.speech.freetts.UtteranceProcessor;
+
 
 /**
  * Defines limited domain synthesis voice that specializes
@@ -45,9 +47,9 @@ public class CMUTimeVoice extends CMUClusterUnitVoice {
      * for this voice.
      */
     public CMUTimeVoice(String name, Gender gender, Age age,
-            String description, Locale locale, String domain,
-            String organization, CMULexicon lexicon, URL database) {
-	super(name, gender, age, description, locale,
+                        String description, Locale locale, String domain,
+                        String organization, CMULexicon lexicon, URL database) {
+        super(name, gender, age, description, locale,
                 domain, organization, lexicon, database);
     }
 
@@ -59,9 +61,9 @@ public class CMUTimeVoice extends CMUClusterUnitVoice {
      * a vowel, the typical post lexical processing will change its
      * pronunciation from "dh ax" to "dh iy".  We don't want this
      * in this voice.
-     * 
+     *
      * @return the post lexical analyzer in use by this voice
-     * 
+     *
      * @throws IOException if an IO error occurs while getting
      *     processor
      */
@@ -70,17 +72,17 @@ public class CMUTimeVoice extends CMUClusterUnitVoice {
          */
         return new UtteranceProcessor() {
             public void processUtterance(Utterance utterance)
-                throws ProcessException {
+                    throws ProcessException {
             }
         };
     }
-    
+
     /**
      * Converts this object to a string
-     * 
+     *
      * @return a string representation of this object
      */
     public String toString() {
-	return "CMUTimeVoice";
+        return "CMUTimeVoice";
     }
 }

@@ -1,19 +1,20 @@
 /**
  * Copyright 1998-2001 Sun Microsystems, Inc.
- * 
+ * <p>
  * See the file "license.terms" for information on usage and
- * redistribution of this file, and for a DISCLAIMER OF ALL 
+ * redistribution of this file, and for a DISCLAIMER OF ALL
  * WARRANTIES.
  */
+
 package com.sun.speech.engine;
 
-import javax.speech.SpeechEvent;
-
 import java.awt.AWTEvent;
+import java.awt.Component;
 import java.awt.EventQueue;
 import java.awt.Toolkit;
-import java.awt.Component;
 import java.security.AccessControlException;
+import javax.speech.SpeechEvent;
+
 
 /**
  * Utilities to help with dispatch JSAPI 1.0 events on the event
@@ -31,7 +32,7 @@ public class SpeechEventUtilities {
      * synchronizing SpeechEvents with the AWT EventQueue or not.
      */
     protected static boolean awtRunning = false;
-    
+
     /**
      * The AWT EventQueue.  This is lazily created in postSpeechEvent to
      * delay the need to initialize the Toolkit until it is necessary.
@@ -69,46 +70,46 @@ public class SpeechEventUtilities {
      * @return {@code true} if we are running in an AWT event queue
      */
     static protected boolean isAWTRunning() {
-         
+
         if (awtRunning) {
             return true;
         }
- 
-	try {
-	    ThreadGroup rootGroup;
-	    ThreadGroup parent;
-	    ThreadGroup g = Thread.currentThread().getThreadGroup();
-	    rootGroup = g;
-	    parent = rootGroup.getParent();
-	    while (parent != null) {
-		rootGroup = parent;
-		parent = parent.getParent();
-	    }
 
-	    int activeCount = rootGroup.activeCount();
-	    Thread[] threads = new Thread[activeCount];
-	    rootGroup.enumerate(threads,true);
-	    for (int i = 0; i < threads.length; i++) {
-		if (threads[i] != null) {
-		    String name = threads[i].getName();
-		    if (name.startsWith("AWT-EventQueue")) {
-			awtRunning = true;
-			return true;
-		    }
-		}
-	    }
-	} catch (AccessControlException ace) {
-	    // if we receive an access control exception then
-	    // it is likely that we are running in an applet
-	    // in which case AWT is running. 
-	    // I'm not sure if this is always true, perhaps
-	    // there is another way to tell if we are running in an
-	    // applet.
+        try {
+            ThreadGroup rootGroup;
+            ThreadGroup parent;
+            ThreadGroup g = Thread.currentThread().getThreadGroup();
+            rootGroup = g;
+            parent = rootGroup.getParent();
+            while (parent != null) {
+                rootGroup = parent;
+                parent = parent.getParent();
+            }
 
-	    return true;
-	}
+            int activeCount = rootGroup.activeCount();
+            Thread[] threads = new Thread[activeCount];
+            rootGroup.enumerate(threads, true);
+            for (int i = 0; i < threads.length; i++) {
+                if (threads[i] != null) {
+                    String name = threads[i].getName();
+                    if (name.startsWith("AWT-EventQueue")) {
+                        awtRunning = true;
+                        return true;
+                    }
+                }
+            }
+        } catch (AccessControlException ace) {
+            // if we receive an access control exception then
+            // it is likely that we are running in an applet
+            // in which case AWT is running.
+            // I'm not sure if this is always true, perhaps
+            // there is another way to tell if we are running in an
+            // applet.
 
-        return false;        
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -129,7 +130,7 @@ public class SpeechEventUtilities {
      * @param event the SpeechEvent to post
      */
     static public void postSpeechEvent(SpeechEventDispatcher dispatcher,
-                                       SpeechEvent           event) {
+                                       SpeechEvent event) {
         postSpeechEvent(dispatcher, event, waitUntilDispatched);
     }
 
@@ -153,9 +154,9 @@ public class SpeechEventUtilities {
      * event have been dispatched
      */
     static public void postSpeechEvent(
-        SpeechEventDispatcher dispatcher,
-        SpeechEvent           event,
-        boolean               waitUntilDispatched) {
+            SpeechEventDispatcher dispatcher,
+            SpeechEvent event,
+            boolean waitUntilDispatched) {
 
         /* Only use the AWT EventQueue if AWT is running.  If it isn't
          * running, then just call the dispatcher directly.  A more formal
@@ -172,7 +173,7 @@ public class SpeechEventUtilities {
             if (speechAWTEventTarget == null) {
                 speechAWTEventTarget = new SpeechAWTEventTarget();
                 systemEventQueue =
-                    Toolkit.getDefaultToolkit().getSystemEventQueue();
+                        Toolkit.getDefaultToolkit().getSystemEventQueue();
             }
 
             /* Post the event to the AWT EventQueue.  When AWT dispatches
@@ -181,12 +182,12 @@ public class SpeechEventUtilities {
              */
             if (waitUntilDispatched) {
                 Object lock = new Object();
-                synchronized(lock) {
+                synchronized (lock) {
                     systemEventQueue.postEvent(
-                        new SpeechAWTEvent(speechAWTEventTarget,
-                                           dispatcher,
-                                           event,
-                                           lock));
+                            new SpeechAWTEvent(speechAWTEventTarget,
+                                    dispatcher,
+                                    event,
+                                    lock));
                     try {
                         lock.wait();
                     } catch (InterruptedException e) {
@@ -194,9 +195,9 @@ public class SpeechEventUtilities {
                 }
             } else {
                 systemEventQueue.postEvent(
-                    new SpeechAWTEvent(speechAWTEventTarget,
-                                       dispatcher,
-                                       event));
+                        new SpeechAWTEvent(speechAWTEventTarget,
+                                dispatcher,
+                                event));
             }
         } else {
             dispatcher.dispatchSpeechEvent(event);
@@ -214,12 +215,13 @@ public class SpeechEventUtilities {
             super();
             enableEvents(SpeechAWTEvent.EVENT_ID);
         }
+
         protected void processEvent(AWTEvent event) {
             if (event instanceof SpeechAWTEvent) {
                 SpeechAWTEvent sae = (SpeechAWTEvent) event;
                 sae.dispatcher.dispatchSpeechEvent(sae.event);
                 if (sae.lock != null) {
-                    synchronized(sae.lock) {
+                    synchronized (sae.lock) {
                         sae.lock.notify();
                     }
                 }
@@ -238,15 +240,17 @@ public class SpeechEventUtilities {
         SpeechEventDispatcher dispatcher = null;
         SpeechEvent event = null;
         Object lock = null;
-        SpeechAWTEvent(SpeechAWTEventTarget  target,
+
+        SpeechAWTEvent(SpeechAWTEventTarget target,
                        SpeechEventDispatcher dispatcher,
-                       SpeechEvent           event) {
-            this(target,dispatcher,event,null);
+                       SpeechEvent event) {
+            this(target, dispatcher, event, null);
         }
-        SpeechAWTEvent(SpeechAWTEventTarget  target,
+
+        SpeechAWTEvent(SpeechAWTEventTarget target,
                        SpeechEventDispatcher dispatcher,
-                       SpeechEvent           event,
-                       Object                lock) {
+                       SpeechEvent event,
+                       Object lock) {
             super(target, EVENT_ID);
             this.dispatcher = dispatcher;
             this.event = event;

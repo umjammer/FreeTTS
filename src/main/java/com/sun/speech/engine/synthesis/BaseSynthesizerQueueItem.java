@@ -1,16 +1,16 @@
 /**
  * Copyright 1998-2001 Sun Microsystems, Inc.
- * 
+ * <p>
  * See the file "license.terms" for information on usage and
- * redistribution of this file, and for a DISCLAIMER OF ALL 
+ * redistribution of this file, and for a DISCLAIMER OF ALL
  * WARRANTIES.
  */
+
 package com.sun.speech.engine.synthesis;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.Iterator;
-
 import javax.speech.SpeechEvent;
 import javax.speech.synthesis.JSMLException;
 import javax.speech.synthesis.Speakable;
@@ -18,17 +18,17 @@ import javax.speech.synthesis.SpeakableEvent;
 import javax.speech.synthesis.SpeakableListener;
 import javax.speech.synthesis.SynthesizerQueueItem;
 
-import org.w3c.dom.Document;
-
 import com.sun.speech.engine.SpeechEventDispatcher;
 import com.sun.speech.engine.SpeechEventUtilities;
+import org.w3c.dom.Document;
+
 
 /**
  * Extends the JSAPI 1.0 <code>SynthesizerQueueItem</code> with handling
  * for JSML, generation of engine-specific text, and other features.
  */
 public class BaseSynthesizerQueueItem extends SynthesizerQueueItem
-    implements SpeechEventDispatcher {
+        implements SpeechEventDispatcher {
     private volatile boolean done = false;
     private volatile boolean cancelled = false;
 
@@ -36,7 +36,7 @@ public class BaseSynthesizerQueueItem extends SynthesizerQueueItem
      * The object containing the DOM of the parsed JSML.
      */
     private Document document = null;
-    
+
     /**
      * Global count of queue items used for debug.
      */
@@ -47,7 +47,7 @@ public class BaseSynthesizerQueueItem extends SynthesizerQueueItem
      * Count for this item used for debug.
      */
     protected int thisItemNumber = 0;
-  
+
 
     /**
      * <code>Synthesizer</code> that has queued this item.
@@ -73,9 +73,9 @@ public class BaseSynthesizerQueueItem extends SynthesizerQueueItem
      * @throws JSMLException if the <code>source</code> contains JSML errors
      */
     protected void setData(BaseSynthesizer synth,
-                           Speakable source, 
+                           Speakable source,
                            SpeakableListener listener)
-        throws JSMLException {
+            throws JSMLException {
         this.synth = synth;
         this.source = source;
         this.text = source.getJSMLText();
@@ -98,10 +98,10 @@ public class BaseSynthesizerQueueItem extends SynthesizerQueueItem
      * @throws JSMLException if the <code>source</code> contains JSML errors
      */
     protected void setData(BaseSynthesizer synth,
-                           String source, 
+                           String source,
                            boolean plainText,
                            SpeakableListener listener)
-        throws JSMLException {
+            throws JSMLException {
         this.synth = synth;
         this.source = source;
         this.text = source;
@@ -115,7 +115,7 @@ public class BaseSynthesizerQueueItem extends SynthesizerQueueItem
 
     /**
      * Sets queue item data with a <code>URL</code> source.
-     * 
+     *
      * @param synth the synthesizer
      * @param source the <code>URL</code> containing JSML text
      * @param listener the <code>SpeakableListener</code> to be
@@ -125,9 +125,9 @@ public class BaseSynthesizerQueueItem extends SynthesizerQueueItem
      * @throws IOException if there are problems working with the URL.
      */
     protected void setData(BaseSynthesizer synth,
-                           URL source, 
+                           URL source,
                            SpeakableListener listener)
-        throws JSMLException, IOException {
+            throws JSMLException, IOException {
         this.synth = synth;
         this.source = source;
         this.text = null;
@@ -148,12 +148,12 @@ public class BaseSynthesizerQueueItem extends SynthesizerQueueItem
 
     /**
      * determines if this queue item has been canceled
-     * 
+     *
      * @return <code> true </code> if this item has been canceled; 
      *   otherwise <code> false </code>
      */
     protected synchronized boolean isCancelled() {
-	return cancelled;
+        return cancelled;
     }
 
 
@@ -163,7 +163,7 @@ public class BaseSynthesizerQueueItem extends SynthesizerQueueItem
      * @return true if it has been processed
      */
     public synchronized boolean isCompleted() {
-	return done;
+        return done;
     }
 
     /**
@@ -173,41 +173,41 @@ public class BaseSynthesizerQueueItem extends SynthesizerQueueItem
      * the item was canceled or an error occurred.
      */
     public synchronized boolean waitCompleted() {
-	while  (!isCompleted()) {
-	    try {
-		wait();
-	    } catch (InterruptedException ie) {
-		System.err.println(
-			"FreeTTSSynthesizerQueueItem.Wait interrupted");
-		return false;
-	    }
-	}
-	return !isCancelled();
+        while (!isCompleted()) {
+            try {
+                wait();
+            } catch (InterruptedException ie) {
+                System.err.println(
+                        "FreeTTSSynthesizerQueueItem.Wait interrupted");
+                return false;
+            }
+        }
+        return !isCancelled();
     }
 
     /**
      * indicate that this item has been canceled
      */
     public synchronized void cancelled() {
-	postSpeakableCancelled();
-	notifyAll();
+        postSpeakableCancelled();
+        notifyAll();
     }
 
     /**
      * indicate that this item has been completed
      */
     public synchronized void completed() {
-	postSpeakableEnded();
-	notifyAll();
+        postSpeakableEnded();
+        notifyAll();
     }
 
     /**
      * indicate that this item has been started
      */
     public void started() {
-	postSpeakableStarted();
+        postSpeakableStarted();
     }
-    
+
     /**
      * Gets the item number for debug purposes only.  Each queue item
      * is given a unique ID.
@@ -217,7 +217,7 @@ public class BaseSynthesizerQueueItem extends SynthesizerQueueItem
     public int getItemNumber() {
         return thisItemNumber;
     }
-    
+
     /**
      * Utility function that generates a
      * <code>MARKER_REACHED</code> event and posts it
@@ -235,10 +235,10 @@ public class BaseSynthesizerQueueItem extends SynthesizerQueueItem
      */
     public void postMarkerReached(String text, int markerType) {
         SpeechEventUtilities.postSpeechEvent(
-            this,
-            new SpeakableEvent(source,
-                               SpeakableEvent.MARKER_REACHED,
-                               text, markerType));
+                this,
+                new SpeakableEvent(source,
+                        SpeakableEvent.MARKER_REACHED,
+                        text, markerType));
     }
 
     /**
@@ -253,7 +253,7 @@ public class BaseSynthesizerQueueItem extends SynthesizerQueueItem
         if (listener != null) {
             listener.markerReached(event);
         }
-        
+
 
         if (synth.speakableListeners != null) {
             Iterator iterator = synth.speakableListeners.iterator();
@@ -276,23 +276,23 @@ public class BaseSynthesizerQueueItem extends SynthesizerQueueItem
      * @see #dispatchSpeechEvent
      */
     public void postSpeakableCancelled() {
-	boolean shouldPost;
+        boolean shouldPost;
 
-    // The JSAPI docs say that once a canceled event is sent, no
-    // others will be. This makes sure that a canceled will never be
-    // sent twice. This deals with the race that can occur when an
-    // item that is playing is canceled.
+        // The JSAPI docs say that once a canceled event is sent, no
+        // others will be. This makes sure that a canceled will never be
+        // sent twice. This deals with the race that can occur when an
+        // item that is playing is canceled.
 
-	synchronized(this) {
-	    shouldPost = !done;
-	    done = true;
-	    cancelled = true;
-	}
-	if (shouldPost) {
-	    SpeechEventUtilities.postSpeechEvent(
-		this,
-		new SpeakableEvent(source, SpeakableEvent.SPEAKABLE_CANCELLED));
-	}
+        synchronized (this) {
+            shouldPost = !done;
+            done = true;
+            cancelled = true;
+        }
+        if (shouldPost) {
+            SpeechEventUtilities.postSpeechEvent(
+                    this,
+                    new SpeakableEvent(source, SpeakableEvent.SPEAKABLE_CANCELLED));
+        }
     }
 
     /**
@@ -307,7 +307,7 @@ public class BaseSynthesizerQueueItem extends SynthesizerQueueItem
         if (listener != null) {
             listener.speakableCancelled(event);
         }
-        
+
 
         if (synth.speakableListeners != null) {
             Iterator iterator = synth.speakableListeners.iterator();
@@ -330,21 +330,21 @@ public class BaseSynthesizerQueueItem extends SynthesizerQueueItem
      * @see #dispatchSpeechEvent
      */
     public void postSpeakableEnded() {
-	boolean shouldPost;
+        boolean shouldPost;
 
-    // The JSAPI docs say that once a canceled event is sent, no
-    // others will be. This makes sure that a canceled will never be
-    // sent twice. This deals with the race that can occur when an
-    // item that is playing is canceled.
-	synchronized(this) {
-	    shouldPost = !done;
+        // The JSAPI docs say that once a canceled event is sent, no
+        // others will be. This makes sure that a canceled will never be
+        // sent twice. This deals with the race that can occur when an
+        // item that is playing is canceled.
+        synchronized (this) {
+            shouldPost = !done;
             done = true;
-	}
-	if (shouldPost) {
-	    SpeechEventUtilities.postSpeechEvent(
-		this,
-		new SpeakableEvent(source, SpeakableEvent.SPEAKABLE_ENDED));
-	}
+        }
+        if (shouldPost) {
+            SpeechEventUtilities.postSpeechEvent(
+                    this,
+                    new SpeakableEvent(source, SpeakableEvent.SPEAKABLE_ENDED));
+        }
     }
 
 
@@ -360,7 +360,7 @@ public class BaseSynthesizerQueueItem extends SynthesizerQueueItem
         if (listener != null) {
             listener.speakableEnded(event);
         }
-        
+
 
         if (synth.speakableListeners != null) {
             Iterator iterator = synth.speakableListeners.iterator();
@@ -384,8 +384,8 @@ public class BaseSynthesizerQueueItem extends SynthesizerQueueItem
      */
     public void postSpeakablePaused() {
         SpeechEventUtilities.postSpeechEvent(
-            this,
-            new SpeakableEvent(source, SpeakableEvent.SPEAKABLE_PAUSED));
+                this,
+                new SpeakableEvent(source, SpeakableEvent.SPEAKABLE_PAUSED));
     }
 
     /**
@@ -400,7 +400,7 @@ public class BaseSynthesizerQueueItem extends SynthesizerQueueItem
         if (listener != null) {
             listener.speakablePaused(event);
         }
-        
+
 
         if (synth.speakableListeners != null) {
             Iterator iterator = synth.speakableListeners.iterator();
@@ -424,8 +424,8 @@ public class BaseSynthesizerQueueItem extends SynthesizerQueueItem
      */
     public void postSpeakableResumed() {
         SpeechEventUtilities.postSpeechEvent(
-            this,
-            new SpeakableEvent(source, SpeakableEvent.SPEAKABLE_RESUMED));
+                this,
+                new SpeakableEvent(source, SpeakableEvent.SPEAKABLE_RESUMED));
     }
 
     /**
@@ -440,13 +440,13 @@ public class BaseSynthesizerQueueItem extends SynthesizerQueueItem
         if (listener != null) {
             listener.speakableResumed(event);
         }
-        
+
 
         if (synth.speakableListeners != null) {
             Iterator iterator = synth.speakableListeners.iterator();
             while (iterator.hasNext()) {
                 SpeakableListener sl =
-                    (SpeakableListener) iterator.next();
+                        (SpeakableListener) iterator.next();
                 sl.speakableResumed(event);
             }
         }
@@ -465,8 +465,8 @@ public class BaseSynthesizerQueueItem extends SynthesizerQueueItem
      */
     public void postSpeakableStarted() {
         SpeechEventUtilities.postSpeechEvent(
-            this,
-            new SpeakableEvent(source, SpeakableEvent.SPEAKABLE_STARTED));
+                this,
+                new SpeakableEvent(source, SpeakableEvent.SPEAKABLE_STARTED));
     }
 
     /**
@@ -481,7 +481,7 @@ public class BaseSynthesizerQueueItem extends SynthesizerQueueItem
         if (listener != null) {
             listener.speakableStarted(event);
         }
-        
+
 
         if (synth.speakableListeners != null) {
             Iterator iterator = synth.speakableListeners.iterator();
@@ -505,8 +505,8 @@ public class BaseSynthesizerQueueItem extends SynthesizerQueueItem
      */
     public void postTopOfQueue() {
         SpeechEventUtilities.postSpeechEvent(
-            this,
-            new SpeakableEvent(source, SpeakableEvent.TOP_OF_QUEUE));
+                this,
+                new SpeakableEvent(source, SpeakableEvent.TOP_OF_QUEUE));
     }
 
     /**
@@ -521,7 +521,7 @@ public class BaseSynthesizerQueueItem extends SynthesizerQueueItem
         if (listener != null) {
             listener.topOfQueue(event);
         }
-        
+
 
         if (synth.speakableListeners != null) {
             Iterator iterator = synth.speakableListeners.iterator();
@@ -548,9 +548,9 @@ public class BaseSynthesizerQueueItem extends SynthesizerQueueItem
      */
     public void postWordStarted(String text, int wordStart, int wordEnd) {
         SpeechEventUtilities.postSpeechEvent(
-            this,
-            new SpeakableEvent(source, SpeakableEvent.WORD_STARTED,
-                               text, wordStart, wordEnd));
+                this,
+                new SpeakableEvent(source, SpeakableEvent.WORD_STARTED,
+                        text, wordStart, wordEnd));
     }
 
     /**
@@ -565,7 +565,7 @@ public class BaseSynthesizerQueueItem extends SynthesizerQueueItem
         if (listener != null) {
             listener.wordStarted(event);
         }
-        
+
 
         if (synth.speakableListeners != null) {
             Iterator iterator = synth.speakableListeners.iterator();
@@ -595,30 +595,30 @@ public class BaseSynthesizerQueueItem extends SynthesizerQueueItem
      */
     public void dispatchSpeechEvent(SpeechEvent event) {
         switch (event.getId()) {
-            case SpeakableEvent.MARKER_REACHED:
-                fireMarkerReached((SpeakableEvent) event);
-                break;
-            case SpeakableEvent.SPEAKABLE_CANCELLED:
-                fireSpeakableCancelled((SpeakableEvent) event);
-                break;
-            case SpeakableEvent.SPEAKABLE_ENDED:
-                fireSpeakableEnded((SpeakableEvent) event);
-                break;
-            case SpeakableEvent.SPEAKABLE_PAUSED:
-                fireSpeakablePaused((SpeakableEvent) event);
-                break;
-            case SpeakableEvent.SPEAKABLE_RESUMED:
-                fireSpeakableResumed((SpeakableEvent) event);
-                break;
-            case SpeakableEvent.SPEAKABLE_STARTED:
-                fireSpeakableStarted((SpeakableEvent) event);
-                break;
-            case SpeakableEvent.TOP_OF_QUEUE:
-                fireTopOfQueue((SpeakableEvent) event);
-                break;
-            case SpeakableEvent.WORD_STARTED:
-                fireWordStarted((SpeakableEvent) event);
-                break;
+        case SpeakableEvent.MARKER_REACHED:
+            fireMarkerReached((SpeakableEvent) event);
+            break;
+        case SpeakableEvent.SPEAKABLE_CANCELLED:
+            fireSpeakableCancelled((SpeakableEvent) event);
+            break;
+        case SpeakableEvent.SPEAKABLE_ENDED:
+            fireSpeakableEnded((SpeakableEvent) event);
+            break;
+        case SpeakableEvent.SPEAKABLE_PAUSED:
+            fireSpeakablePaused((SpeakableEvent) event);
+            break;
+        case SpeakableEvent.SPEAKABLE_RESUMED:
+            fireSpeakableResumed((SpeakableEvent) event);
+            break;
+        case SpeakableEvent.SPEAKABLE_STARTED:
+            fireSpeakableStarted((SpeakableEvent) event);
+            break;
+        case SpeakableEvent.TOP_OF_QUEUE:
+            fireTopOfQueue((SpeakableEvent) event);
+            break;
+        case SpeakableEvent.WORD_STARTED:
+            fireWordStarted((SpeakableEvent) event);
+            break;
         }
     }
 }

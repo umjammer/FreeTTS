@@ -1,15 +1,16 @@
 /**
  * Copyright 2001 Sun Microsystems, Inc.
- * 
+ * <p>
  * See the file "license.terms" for information on usage and
- * redistribution of this file, and for a DISCLAIMER OF ALL 
+ * redistribution of this file, and for a DISCLAIMER OF ALL
  * WARRANTIES.
  */
+
 package com.sun.speech.freetts.audio;
 
 import java.io.IOException;
-
 import javax.sound.sampled.AudioFormat;
+
 
 /**
  *  Provides an  interface to the audio system for use by freetts.
@@ -17,7 +18,7 @@ import javax.sound.sampled.AudioFormat;
  *  Implementations of this AudioPlayer interface will format the data
  *  based upon the current audio format (as set by
  *  <code>setAudioFormat</code>) and output the data. 
- *  
+ *
  *  <p>
  *  The AudioPlayer
  *  interface provides a set of potential synchronization points to
@@ -39,7 +40,7 @@ import javax.sound.sampled.AudioFormat;
  *  which can be called from other threads.
  */
 public interface AudioPlayer {
-    
+
     /**
      * Sets the audio format to use for the next set of outputs. Since
      * an audio player can be shared by a number of voices, and since
@@ -49,7 +50,7 @@ public interface AudioPlayer {
      *
      * @param format the audio format
      */
-    void setAudioFormat(AudioFormat format) ;
+    void setAudioFormat(AudioFormat format);
 
     /**
      * Retrieves the audio format for this player
@@ -83,7 +84,7 @@ public interface AudioPlayer {
      * @return <code>true</code> if the audio played to completion;
      *     otherwise <code> false </code> if the audio was stopped
      */
-    boolean drain(); 
+    boolean drain();
 
 
     /**
@@ -107,7 +108,7 @@ public interface AudioPlayer {
      * @exception IOException
      *            if an error occurs while closing the output
      */
-    boolean end() throws IOException; 
+    boolean end() throws IOException;
 
     /**
      * Cancels all queued output. All 'write' calls until the next
@@ -146,7 +147,7 @@ public interface AudioPlayer {
      *
      * @return the amount of audio in milliseconds
      */
-    long getTime(); 
+    long getTime();
 
     /**
      * Resets the audio clock

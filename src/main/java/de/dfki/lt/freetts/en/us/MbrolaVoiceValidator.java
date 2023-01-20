@@ -2,7 +2,7 @@
  * Copyright 2002 DFKI GmbH.
  * Portions Copyright 2002 Sun Microsystems, Inc.
  * All Rights Reserved.  Use is subject to license terms.
- *
+ * <p>
  * See the file "license.terms" for information on usage and
  * redistribution of this file, and for a DISCLAIMER OF ALL
  * WARRANTIES.
@@ -10,16 +10,17 @@
 
 package de.dfki.lt.freetts.en.us;
 
-import com.sun.speech.freetts.Validator;
+import java.io.File;
+
 import com.sun.speech.freetts.ValidationException;
+import com.sun.speech.freetts.Validator;
 import com.sun.speech.freetts.util.Utilities;
 
-import java.io.File;
 
 /**
  * Shows this MbrolaVoice is valid (or usable). It tests for 
  * the following:
- * 
+ *
  * <ol>
  * <li> Check that the "mbrola.base" System property is defined,
  *      and that directory exists.
@@ -49,17 +50,17 @@ public class MbrolaVoiceValidator implements Validator {
 
         if (mbrolaBase == null || mbrolaBase.length() == 0) {
             throw new ValidationException
-                ("System property \"mbrola.base\" is undefined. " +
-                 "You might need to set the MBROLA_DIR environment variable.");
+                    ("System property \"mbrola.base\" is undefined. " +
+                            "You might need to set the MBROLA_DIR environment variable.");
         }
         if (!mbrolaBinary.exists()) {
             throw new ValidationException
-                ("No MBROLA binary at: " + mbrolaVoice.getMbrolaBinary());
+                    ("No MBROLA binary at: " + mbrolaVoice.getMbrolaBinary());
         }
         if (!mbrolaVoiceDB.exists()) {
             throw new ValidationException
-                ("No voice database for " + mbrolaVoice.getName() + 
-                 " at: " + mbrolaVoice.getDatabase());
+                    ("No voice database for " + mbrolaVoice.getName() +
+                            " at: " + mbrolaVoice.getDatabase());
         }
     }
 

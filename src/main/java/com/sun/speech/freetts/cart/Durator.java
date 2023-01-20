@@ -1,13 +1,14 @@
 /**
  * Portions Copyright 2001 Sun Microsystems, Inc.
- * Portions Copyright 1999-2001 Language Technologies Institute, 
+ * Portions Copyright 1999-2001 Language Technologies Institute,
  * Carnegie Mellon University.
  * All Rights Reserved.  Use is subject to license terms.
- * 
+ * <p>
  * See the file "license.terms" for information on usage and
- * redistribution of this file, and for a DISCLAIMER OF ALL 
+ * redistribution of this file, and for a DISCLAIMER OF ALL
  * WARRANTIES.
  */
+
 package com.sun.speech.freetts.cart;
 
 import com.sun.speech.freetts.Item;
@@ -20,15 +21,16 @@ import com.sun.speech.freetts.Relation;
 import com.sun.speech.freetts.Utterance;
 import com.sun.speech.freetts.UtteranceProcessor;
 
+
 /**
  * Determines duration timing for <code>Relation.SEGMENT</code> relations in an
  * utterance. Annotates the <code>Relation.SEGMENT</code> relation with an "end"
  * time feature.
- * 
+ *
  * <p>
  * [[[TODO: The mean words-per-minute rate should become part of the CART data.
  * For now, it is passed into the constructor.]]]
- * 
+ *
  * @see Relation#SEGMENT
  */
 public class Durator implements UtteranceProcessor {
@@ -51,7 +53,7 @@ public class Durator implements UtteranceProcessor {
     /**
      * Creates a new duration UtteranceProcessor with the given CART and phone
      * durations.
-     * 
+     *
      * @param cart
      *            contains zscore duration data
      * @param durations
@@ -68,10 +70,10 @@ public class Durator implements UtteranceProcessor {
      * a zscore for each phone, which specifies the number of standard
      * deviations from the mean. This is coupled with a phone durations table
      * that returns the mean and standard deviation for phones.
-     * 
+     *
      * @param utterance
      *            the utterance to process
-     * 
+     *
      * @throws ProcessException
      *             if a problem is encountered during the processing of the
      *             utterance
@@ -105,7 +107,7 @@ public class Durator implements UtteranceProcessor {
 
             dur = localDurationStretch
                     * ((zdur * durStat.getStandardDeviation()) + durStat
-                            .getMean());
+                    .getMean());
             end += dur;
             segment.getFeatures().setFloat("end", end);
         }

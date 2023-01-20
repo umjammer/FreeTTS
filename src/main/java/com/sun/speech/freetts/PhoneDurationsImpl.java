@@ -1,13 +1,14 @@
 /**
  * Portions Copyright 2001 Sun Microsystems, Inc.
- * Portions Copyright 1999-2001 Language Technologies Institute, 
+ * Portions Copyright 1999-2001 Language Technologies Institute,
  * Carnegie Mellon University.
  * All Rights Reserved.  Use is subject to license terms.
- * 
+ * <p>
  * See the file "license.terms" for information on usage and
- * redistribution of this file, and for a DISCLAIMER OF ALL 
+ * redistribution of this file, and for a DISCLAIMER OF ALL
  * WARRANTIES.
  */
+
 package com.sun.speech.freetts;
 
 import java.io.BufferedReader;
@@ -16,6 +17,7 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.Map;
 import java.util.StringTokenizer;
+
 
 /**
  * Maintains set of PhoneDuration instances read in from a file.  The
@@ -39,31 +41,31 @@ public class PhoneDurationsImpl implements PhoneDurations {
      * The set of PhoneDuration instances indexed by phone.
      */
     private Map<String, PhoneDuration> phoneDurations;
-    
+
     /**
      * Creates a new PhoneDurationsImpl by reading from the given URL.
      *
      * @param url the input source
      *
      * @throws IOException if an error occurs
-     */ 
+     */
     public PhoneDurationsImpl(URL url) throws IOException {
         BufferedReader reader;
         String line;
 
-	phoneDurations = new java.util.HashMap<String, PhoneDuration>();
-	reader = new BufferedReader(new
-		InputStreamReader(url.openStream()));
-	line = reader.readLine();
-	while (line != null) {
-	    if (!line.startsWith("***")) {
-		parseAndAdd(line);
-	    }
-	    line = reader.readLine();
-	}
-	reader.close();
+        phoneDurations = new java.util.HashMap<String, PhoneDuration>();
+        reader = new BufferedReader(new
+                InputStreamReader(url.openStream()));
+        line = reader.readLine();
+        while (line != null) {
+            if (!line.startsWith("***")) {
+                parseAndAdd(line);
+            }
+            line = reader.readLine();
+        }
+        reader.close();
     }
-    
+
     /**
      * Creates a word from the given input line and adds it to the
      * map.
@@ -71,11 +73,11 @@ public class PhoneDurationsImpl implements PhoneDurations {
      * @param line the input line
      */
     private void parseAndAdd(String line) {
-        StringTokenizer tokenizer = new StringTokenizer(line," ");
+        StringTokenizer tokenizer = new StringTokenizer(line, " ");
         String phone = tokenizer.nextToken();
         float mean = Float.parseFloat(tokenizer.nextToken());
         float stddev = Float.parseFloat(tokenizer.nextToken());
-        phoneDurations.put(phone, new PhoneDuration(mean,stddev));
+        phoneDurations.put(phone, new PhoneDuration(mean, stddev));
     }
 
     /**

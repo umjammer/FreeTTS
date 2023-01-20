@@ -1,12 +1,13 @@
 package com.sun.speech.freetts.en.us.cmu_time_awb;
 
+import java.util.Locale;
+
+import com.sun.speech.freetts.Age;
+import com.sun.speech.freetts.Gender;
+import com.sun.speech.freetts.Voice;
+import com.sun.speech.freetts.VoiceDirectory;
 import com.sun.speech.freetts.en.us.CMUClusterUnitVoice;
 import com.sun.speech.freetts.en.us.CMULexicon;
-import com.sun.speech.freetts.VoiceDirectory;
-import com.sun.speech.freetts.Voice;
-import com.sun.speech.freetts.Gender;
-import com.sun.speech.freetts.Age;
-import java.util.Locale;
 
 
 /**

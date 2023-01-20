@@ -1,20 +1,20 @@
 /**
  * Copyright 1998-2001 Sun Microsystems, Inc.
- * 
+ * <p>
  * See the file "license.terms" for information on usage and
- * redistribution of this file, and for a DISCLAIMER OF ALL 
+ * redistribution of this file, and for a DISCLAIMER OF ALL
  * WARRANTIES.
  */
+
 package com.sun.speech.engine.synthesis;
 
 import java.beans.PropertyVetoException;
-
 import javax.speech.SpeechError;
-
-import javax.speech.synthesis.Voice;
 import javax.speech.synthesis.SynthesizerProperties;
+import javax.speech.synthesis.Voice;
 
 import com.sun.speech.engine.BaseEngineProperties;
+
 
 /**
  * Supports the JSAPI 1.0 <code>SynthesizerProperties</code> 
@@ -29,7 +29,7 @@ import com.sun.speech.engine.BaseEngineProperties;
  * </UL>
  */
 public class BaseSynthesizerProperties extends BaseEngineProperties
-    implements SynthesizerProperties {
+        implements SynthesizerProperties {
 
     /**
      * The default voice.
@@ -55,27 +55,27 @@ public class BaseSynthesizerProperties extends BaseEngineProperties
      * The default volume.
      */
     protected float defaultVolume;
-    
+
     /**
      * The current voice.
      */
     protected Voice currentVoice;
-    
+
     /**
      * The current pitch.
      */
     protected float currentPitch;
-    
+
     /**
      * The current pitch range.
      */
     protected float currentPitchRange;
-    
+
     /**
      * The current speaking rate.
      */
     protected float currentSpeakingRate;
-    
+
     /**
      * The current volume.
      */
@@ -91,7 +91,7 @@ public class BaseSynthesizerProperties extends BaseEngineProperties
         this.defaultSpeakingRate = 0.0f;
         this.defaultVolume = 0.0f;
     }
-    
+
     /**
      * Creates a new <code>BaseSynthesizerProperties</code> with the
      * given default values.
@@ -108,22 +108,22 @@ public class BaseSynthesizerProperties extends BaseEngineProperties
                                      float defaultSpeakingRate,
                                      float defaultVolume) {
         if (defaultVoice != null) {
-            this.defaultVoice = (Voice)(defaultVoice.clone());
+            this.defaultVoice = (Voice) (defaultVoice.clone());
         } else {
             this.defaultVoice = null;
         }
-        
+
         this.defaultPitch = defaultPitch;
         this.defaultPitchRange = defaultPitchRange;
         this.defaultSpeakingRate = defaultSpeakingRate;
         this.defaultVolume = defaultVolume;
 
         if (defaultVoice != null) {
-            currentVoice = (Voice)(defaultVoice.clone());
+            currentVoice = (Voice) (defaultVoice.clone());
         } else {
             currentVoice = null;
         }
-    
+
         currentPitch = defaultPitch;
         currentPitchRange = defaultPitchRange;
         currentSpeakingRate = defaultSpeakingRate;
@@ -153,7 +153,7 @@ public class BaseSynthesizerProperties extends BaseEngineProperties
      * @see #setVoice
      */
     public Voice getVoice() {
-        return (Voice)(currentVoice.clone());
+        return (Voice) (currentVoice.clone());
     }
 
     /**
@@ -167,10 +167,10 @@ public class BaseSynthesizerProperties extends BaseEngineProperties
      *   the given value
      */
     public void setVoice(Voice voice)
-        throws PropertyVetoException {
+            throws PropertyVetoException {
         // [[[TODO: Need to check that the voice is legal.]]]
         Voice oldVoice = currentVoice;
-        currentVoice = (Voice)(voice.clone());
+        currentVoice = (Voice) (voice.clone());
         postPropertyChangeEvent("Voice", oldVoice, voice);
     }
 
@@ -196,7 +196,7 @@ public class BaseSynthesizerProperties extends BaseEngineProperties
      *   set to the given value       
      */
     public void setPitch(float hertz)
-        throws PropertyVetoException {
+            throws PropertyVetoException {
         float oldPitch = currentPitch;
         currentPitch = hertz;
         postPropertyChangeEvent("Pitch", oldPitch, hertz);
@@ -225,7 +225,7 @@ public class BaseSynthesizerProperties extends BaseEngineProperties
      *   to the given value
      */
     public void setPitchRange(float hertz)
-        throws PropertyVetoException {
+            throws PropertyVetoException {
         float oldRange = currentPitchRange;
         currentPitchRange = hertz;
         postPropertyChangeEvent("PitchRange", oldRange, hertz);
@@ -253,7 +253,7 @@ public class BaseSynthesizerProperties extends BaseEngineProperties
      * @see #getSpeakingRate
      */
     public void setSpeakingRate(float wpm)
-        throws PropertyVetoException {
+            throws PropertyVetoException {
         float oldRate = currentSpeakingRate;
         currentSpeakingRate = wpm;
 
@@ -284,12 +284,12 @@ public class BaseSynthesizerProperties extends BaseEngineProperties
      *   set to the given value
      */
     public void setVolume(float volume)
-        throws PropertyVetoException {
+            throws PropertyVetoException {
         if (volume > 1.0f)
             volume = 1.0f;
         else if (volume < 0.0f)
             volume = 0.0f;
-    
+
         float oldVolume = currentVolume;
         currentVolume = volume;
 

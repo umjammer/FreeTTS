@@ -1,7 +1,7 @@
 /**
  * Copyright 2002 DFKI GmbH.
  * All Rights Reserved.  Use is subject to license terms.
- *
+ * <p>
  * See the file "license.terms" for information on usage and
  * redistribution of this file, and for a DISCLAIMER OF ALL
  * WARRANTIES.
@@ -14,6 +14,7 @@ import com.sun.speech.freetts.ProcessException;
 import com.sun.speech.freetts.Relation;
 import com.sun.speech.freetts.Utterance;
 import com.sun.speech.freetts.UtteranceProcessor;
+
 
 /**
  * Utterance processor converting phoneme timing and f0-time targets
@@ -35,12 +36,12 @@ public class ParametersToMbrolaConverter implements UtteranceProcessor {
      *         processing of the utterance
      */
     public void processUtterance(Utterance utterance) throws ProcessException {
-	Relation segmentRelation = utterance.getRelation(Relation.SEGMENT);
+        Relation segmentRelation = utterance.getRelation(Relation.SEGMENT);
         Relation targetRelation = utterance.getRelation(Relation.TARGET);
 
         Item segment = segmentRelation.getHead();
         Item target = null;
-	if (targetRelation != null) target = targetRelation.getHead();
+        if (targetRelation != null) target = targetRelation.getHead();
         float prevEnd = 0f;
         while (segment != null) {
             // String name = segment.getFeatures().getString("name");
@@ -51,7 +52,7 @@ public class ParametersToMbrolaConverter implements UtteranceProcessor {
             int dur = (int) ((end - prevEnd) * 1000);
             StringBuffer targetStringBuffer = new StringBuffer();
             while (target != null &&
-                   target.getFeatures().getFloat("pos") <= end) {
+                    target.getFeatures().getFloat("pos") <= end) {
                 float pos = target.getFeatures().getFloat("pos");
                 // time axis as percentage of segment duration:
                 int percentage = ((int) ((pos - prevEnd) * 1000)) * 100 / dur;
@@ -66,7 +67,7 @@ public class ParametersToMbrolaConverter implements UtteranceProcessor {
             // System.err.println(name + " " + dur + targetStringBuffer);
             segment.getFeatures().setInt("mbr_dur", dur);
             segment.getFeatures().setString("mbr_targets",
-                                            targetStringBuffer.toString().trim());
+                    targetStringBuffer.toString().trim());
             prevEnd = end;
             segment = segment.getNext();
         }

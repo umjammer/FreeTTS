@@ -1,13 +1,14 @@
 /**
  * Portions Copyright 2001 Sun Microsystems, Inc.
- * Portions Copyright 1999-2001 Language Technologies Institute, 
+ * Portions Copyright 1999-2001 Language Technologies Institute,
  * Carnegie Mellon University.
  * All Rights Reserved.  Use is subject to license terms.
- * 
+ * <p>
  * See the file "license.terms" for information on usage and
- * redistribution of this file, and for a DISCLAIMER OF ALL 
+ * redistribution of this file, and for a DISCLAIMER OF ALL
  * WARRANTIES.
  */
+
 package com.sun.speech.freetts.lexicon;
 
 import java.io.BufferedInputStream;
@@ -37,6 +38,7 @@ import java.util.StringTokenizer;
 
 import com.sun.speech.freetts.util.BulkTimer;
 import com.sun.speech.freetts.util.Utilities;
+
 
 /**
  * Provides an implementation of a Lexicon.
@@ -88,14 +90,14 @@ abstract public class LexiconImpl implements Lexicon {
      * startup time.
      */
     protected boolean tokenizeOnLoad = false;
-       
+
     /**
      * If true, the phone string is replaced with the phone array in
      * the hashmap when the phone array is first looked up.  The side effects
      * Set by cmufilelex.tokenize=lookup.
      */
     protected boolean tokenizeOnLookup = false;
- 
+
     /**
      * Magic number for binary Lexicon files.
      */
@@ -150,14 +152,13 @@ abstract public class LexiconImpl implements Lexicon {
      * own addenda.
      */
     private static Map loadedCompiledLexicons;
-    
 
-    
+
     /**
      * Loaded State of the lexicon
      */
     private boolean loaded = false;
-    
+
     /**
      * Type of lexicon to load
      */
@@ -177,8 +178,8 @@ abstract public class LexiconImpl implements Lexicon {
      * Use the new IO package?
      */
     private boolean useNewIO =
-	Utilities.getProperty("com.sun.speech.freetts.useNewIO",
-		"true").equals("true");
+            Utilities.getProperty("com.sun.speech.freetts.useNewIO",
+                    "true").equals("true");
 
     /**
      * Create a new LexiconImpl by reading from the given URLS.
@@ -189,12 +190,12 @@ abstract public class LexiconImpl implements Lexicon {
      *   be found in the compiled form or the addenda
      * @param binary if <code>true</code>, the input streams are binary;
      *   otherwise, they are text.
-     */ 
+     */
     public LexiconImpl(URL compiledURL, URL addendaURL,
                        URL letterToSoundURL,
-		       boolean binary) {
-	this();
-	setLexiconParameters(compiledURL, addendaURL, letterToSoundURL, binary);
+                       boolean binary) {
+        this();
+        setLexiconParameters(compiledURL, addendaURL, letterToSoundURL, binary);
     }
 
     /**
@@ -204,10 +205,10 @@ abstract public class LexiconImpl implements Lexicon {
         // Find out when to convert the phone string into an array.
         //
         String tokenize =
-	    Utilities.getProperty("com.sun.speech.freetts.lexicon.LexTokenize",
-                               "never");
-	tokenizeOnLoad = tokenize.equals("load");
-	tokenizeOnLookup = tokenize.equals("lookup");
+                Utilities.getProperty("com.sun.speech.freetts.lexicon.LexTokenize",
+                        "never");
+        tokenizeOnLoad = tokenize.equals("load");
+        tokenizeOnLookup = tokenize.equals("lookup");
     }
 
     /**
@@ -217,15 +218,15 @@ abstract public class LexiconImpl implements Lexicon {
      * @param letterToSoundURL a URL pointing to the LetterToSound to use
      * @param binary if <code>true</code>, the input streams are binary;
      *   otherwise, they are text.
-     */ 
+     */
     protected void setLexiconParameters(URL compiledURL,
                                         URL addendaURL,
                                         URL letterToSoundURL,
                                         boolean binary) {
-	this.compiledURL = compiledURL;
-	this.addendaURL = addendaURL;
+        this.compiledURL = compiledURL;
+        this.addendaURL = addendaURL;
         this.letterToSoundURL = letterToSoundURL;
-	this.binary = binary;
+        this.binary = binary;
     }
 
     /**
@@ -234,7 +235,7 @@ abstract public class LexiconImpl implements Lexicon {
      * @return <code>true</code> if the lexicon is loaded
      */
     public boolean isLoaded() {
-	return loaded;
+        return loaded;
     }
 
     /**
@@ -243,71 +244,71 @@ abstract public class LexiconImpl implements Lexicon {
      * @throws IOException if errors occur during loading
      */
     public void load() throws IOException {
-	BulkTimer.LOAD.start("Lexicon");
+        BulkTimer.LOAD.start("Lexicon");
 
-	if (compiledURL == null) {
-	    throw new IOException("Can't load lexicon");
-	}
+        if (compiledURL == null) {
+            throw new IOException("Can't load lexicon");
+        }
 
-	if (addendaURL == null) {
-	    throw new IOException("Can't load lexicon addenda " );
-	}
+        if (addendaURL == null) {
+            throw new IOException("Can't load lexicon addenda ");
+        }
 
-	if (loadedCompiledLexicons == null) {
-	    loadedCompiledLexicons = new HashMap();
-	}
-	if (!loadedCompiledLexicons.containsKey(compiledURL)) {
-		InputStream compiledIS = Utilities.getInputStream(compiledURL);
-		if (compiledIS == null) {
-		    throw new IOException("Can't load lexicon from " + compiledURL);
-		}
-		Map newCompiled = createLexicon(compiledIS, binary, 65000);
-        loadedCompiledLexicons.put(compiledURL, newCompiled);
-    	compiledIS.close();
-	}
-	compiled = Collections.unmodifiableMap((Map)loadedCompiledLexicons.get(compiledURL));
+        if (loadedCompiledLexicons == null) {
+            loadedCompiledLexicons = new HashMap();
+        }
+        if (!loadedCompiledLexicons.containsKey(compiledURL)) {
+            InputStream compiledIS = Utilities.getInputStream(compiledURL);
+            if (compiledIS == null) {
+                throw new IOException("Can't load lexicon from " + compiledURL);
+            }
+            Map newCompiled = createLexicon(compiledIS, binary, 65000);
+            loadedCompiledLexicons.put(compiledURL, newCompiled);
+            compiledIS.close();
+        }
+        compiled = Collections.unmodifiableMap((Map) loadedCompiledLexicons.get(compiledURL));
 
-	InputStream addendaIS = Utilities.getInputStream(addendaURL);
-	if (addendaIS == null) {
-	    throw new IOException("Can't load lexicon addenda from " 
-		    + addendaURL);
-	}
+        InputStream addendaIS = Utilities.getInputStream(addendaURL);
+        if (addendaIS == null) {
+            throw new IOException("Can't load lexicon addenda from "
+                    + addendaURL);
+        }
 
-	// [[[TODO: what is the best way to derive the estimated sizes?]]]
+        // [[[TODO: what is the best way to derive the estimated sizes?]]]
         //
         addenda = createLexicon(addendaIS, binary, 50);
-	addendaIS.close();
+        addendaIS.close();
 
         /* Load the user-defined addenda and override any existing
          * entries in the system addenda.
          */
         String userAddenda = Utilities.getProperty(
-            "com.sun.speech.freetts.lexicon.userAddenda", null);
+                "com.sun.speech.freetts.lexicon.userAddenda", null);
         if (userAddenda != null) {
             try {
                 URL userAddendaURL = new URL(userAddenda);
                 InputStream userAddendaIS = Utilities.getInputStream(
-                    userAddendaURL);
+                        userAddendaURL);
                 if (userAddendaIS == null) {
                     throw new IOException("Can't load user addenda from "
-                                          + userAddenda);
+                            + userAddenda);
                 }
                 Map tmpAddenda = createLexicon(userAddendaIS, false, 50);
                 userAddendaIS.close();
                 for (Iterator keys = tmpAddenda.keySet().iterator();
-                     keys.hasNext();) {
+                     keys.hasNext(); ) {
                     Object key = keys.next();
                     addenda.put(key, tmpAddenda.get(key));
                 }
             } catch (MalformedURLException e) {
                 throw new IOException("User addenda URL is malformed: " +
-                                      userAddenda);
+                        userAddenda);
             }
         }
-        
-	loaded = true;
-	BulkTimer.LOAD.stop("Lexicon");
-	letterToSound = new LetterToSoundImpl(letterToSoundURL, binary);
+
+        loaded = true;
+        BulkTimer.LOAD.stop("Lexicon");
+        letterToSound = new LetterToSoundImpl(letterToSoundURL, binary);
     }
 
     /**
@@ -321,21 +322,21 @@ abstract public class LexiconImpl implements Lexicon {
      * @throws IOException if errors are encountered while reading the data
      */
     protected Map createLexicon(InputStream is,
-                                boolean binary, 
-                                int estimatedSize) 
-        throws IOException {
-	if (binary) {
-	    if (useNewIO && is instanceof FileInputStream) {
-		FileInputStream fis = (FileInputStream) is;
-		return loadMappedBinaryLexicon(fis, estimatedSize);
-	    } else {
-		DataInputStream dis = new DataInputStream(
-			new BufferedInputStream(is));
-		return loadBinaryLexicon(dis, estimatedSize);
-	    }
-	}  else {
-	    return loadTextLexicon(is, estimatedSize);
-	}
+                                boolean binary,
+                                int estimatedSize)
+            throws IOException {
+        if (binary) {
+            if (useNewIO && is instanceof FileInputStream) {
+                FileInputStream fis = (FileInputStream) is;
+                return loadMappedBinaryLexicon(fis, estimatedSize);
+            } else {
+                DataInputStream dis = new DataInputStream(
+                        new BufferedInputStream(is));
+                return loadBinaryLexicon(dis, estimatedSize);
+            }
+        } else {
+            return loadTextLexicon(is, estimatedSize);
+        }
     }
 
     /**
@@ -347,12 +348,12 @@ abstract public class LexiconImpl implements Lexicon {
      *
      * @throws IOException if errors are encountered while reading the data
      */
-    protected Map loadTextLexicon(InputStream is, int estimatedSize) 
-	throws IOException {
+    protected Map loadTextLexicon(InputStream is, int estimatedSize)
+            throws IOException {
         Map lexicon = new LinkedHashMap(estimatedSize * 4 / 3);
         BufferedReader reader = new BufferedReader(new InputStreamReader(is));
         String line;
-        
+
         line = reader.readLine();
         while (line != null) {
             if (!line.startsWith("***")) {
@@ -362,7 +363,7 @@ abstract public class LexiconImpl implements Lexicon {
         }
         return lexicon;
     }
-    
+
     /**
      * Creates a word from the given input line and add it to the lexicon.
      *
@@ -370,9 +371,9 @@ abstract public class LexiconImpl implements Lexicon {
      * @param line the input text
      */
     protected void parseAndAdd(Map lexicon, String line) {
-        StringTokenizer tokenizer = new StringTokenizer(line,"\t");
+        StringTokenizer tokenizer = new StringTokenizer(line, "\t");
         String phones = null;
-        
+
         String wordAndPos = tokenizer.nextToken();
         String pos = wordAndPos.substring(wordAndPos.length() - 1);
         if (!partsOfSpeech.contains(pos)) {
@@ -381,15 +382,15 @@ abstract public class LexiconImpl implements Lexicon {
         if (tokenizer.hasMoreTokens()) {
             phones = tokenizer.nextToken();
         }
-	if ((phones != null) && (tokenizeOnLoad)) {
-	    lexicon.put(wordAndPos, getPhones(phones));
+        if ((phones != null) && (tokenizeOnLoad)) {
+            lexicon.put(wordAndPos, getPhones(phones));
         } else if (phones == null) {
             lexicon.put(wordAndPos, NO_PHONES);
         } else {
             lexicon.put(wordAndPos, phones);
         }
     }
-    
+
     /**
      * Gets the phone list for a given word.  If a phone list cannot
      * be found, returns <code>null</code>.  The format is lexicon
@@ -402,7 +403,7 @@ abstract public class LexiconImpl implements Lexicon {
      * @return the list of phones for word or <code>null</code>
      */
     public String[] getPhones(String word, String partOfSpeech) {
-    	return getPhones(word, partOfSpeech, true);
+        return getPhones(word, partOfSpeech, true);
     }
 
     /**
@@ -417,27 +418,27 @@ abstract public class LexiconImpl implements Lexicon {
      *        the word is not in the lexicon.
      *
      * @return the list of phones for word or null
-     */    
+     */
     public String[] getPhones
-			(String word, String partOfSpeech, boolean useLTS){
-    	String[] phones = null;
- 	phones = getPhones(addenda, word, partOfSpeech);
-    	if (phones == null) {
-    	    phones = getPhones(compiled, word, partOfSpeech);
-    	}
-    	if(useLTS){
+    (String word, String partOfSpeech, boolean useLTS) {
+        String[] phones = null;
+        phones = getPhones(addenda, word, partOfSpeech);
+        if (phones == null) {
+            phones = getPhones(compiled, word, partOfSpeech);
+        }
+        if (useLTS) {
             if (phones == null && letterToSound != null) {
                 phones = letterToSound.getPhones(word, partOfSpeech);
             }
-    	}
-    	if(phones != null){
-    	String[] copy = new String[phones.length];
-    	System.arraycopy(phones, 0, copy, 0, phones.length);
+        }
+        if (phones != null) {
+            String[] copy = new String[phones.length];
+            System.arraycopy(phones, 0, copy, 0, phones.length);
             return copy;
-    	}
-    	else return null;
-    	
+        } else return null;
+
     }
+
     /**
      * Gets a phone list for a word from a given lexicon.  If a phone
      * list cannot be found, returns <code>null</code>.  The format is 
@@ -455,13 +456,13 @@ abstract public class LexiconImpl implements Lexicon {
                                  String partOfSpeech) {
         String[] phones;
         partOfSpeech = fixPartOfSpeech(partOfSpeech);
-        phones = getPhones(lexicon, word+partOfSpeech);
+        phones = getPhones(lexicon, word + partOfSpeech);
         for (int i = 0;
              (i < partsOfSpeech.size()) && (phones == null);
              i++) {
             if (!partOfSpeech.equals((String) partsOfSpeech.get(i))) {
                 phones = getPhones(lexicon,
-                                   word + (String) partsOfSpeech.get(i));
+                        word + (String) partsOfSpeech.get(i));
             }
         }
         return phones;
@@ -493,8 +494,8 @@ abstract public class LexiconImpl implements Lexicon {
             return null;
         }
     }
-    
-    /** 
+
+    /**
      * Turns the phone <code>String</code> into a <code>String[]</code>,
      * using " " as the delimiter.
      *
@@ -509,15 +510,15 @@ abstract public class LexiconImpl implements Lexicon {
             phoneList.add(tokenizer.nextToken());
         }
         return (String[]) phoneList.toArray(new String[0]);
-    } 
-    
+    }
+
     /**
      * Adds a word to the addenda.
      *
      * @param word the word to find
      * @param partOfSpeech the part of speech
      * @param phones the phones for the word
-     * 
+     *
      */
     public void addAddendum(String word,
                             String partOfSpeech,
@@ -527,7 +528,7 @@ abstract public class LexiconImpl implements Lexicon {
             partsOfSpeech.add(pos);
         }
         addenda.put(word + pos, phones);
-    }   
+    }
 
     /**
      * Removes a word from the addenda.
@@ -536,7 +537,7 @@ abstract public class LexiconImpl implements Lexicon {
      * @param partOfSpeech the part of speech
      */
     public void removeAddendum(String word, String partOfSpeech) {
-        addenda.remove(word + fixPartOfSpeech(partOfSpeech));        
+        addenda.remove(word + fixPartOfSpeech(partOfSpeech));
     }
 
     /**
@@ -547,12 +548,12 @@ abstract public class LexiconImpl implements Lexicon {
      *
      * @throws IOException if errors occur during writing
      */
-    private void outString(DataOutputStream dos, String s) 
-			throws IOException {
-	dos.writeByte((byte) s.length());
-	for (int i = 0; i < s.length(); i++) {
-	    dos.writeChar(s.charAt(i));
-	}
+    private void outString(DataOutputStream dos, String s)
+            throws IOException {
+        dos.writeByte((byte) s.length());
+        for (int i = 0; i < s.length(); i++) {
+            dos.writeChar(s.charAt(i));
+        }
     }
 
     /**
@@ -565,11 +566,11 @@ abstract public class LexiconImpl implements Lexicon {
      * @throws IOException if errors occur during reading
      */
     private String getString(DataInputStream dis) throws IOException {
-	int size = dis.readByte();
-	for (int i = 0; i < size; i++) {
-	    charBuffer[i] = dis.readChar();
-	}
-	return new String(charBuffer, 0, size);
+        int size = dis.readByte();
+        for (int i = 0; i < size; i++) {
+            charBuffer[i] = dis.readChar();
+        }
+        return new String(charBuffer, 0, size);
     }
 
     /**
@@ -582,17 +583,17 @@ abstract public class LexiconImpl implements Lexicon {
      * @throws IOException if errors occur during reading
      */
     private String getString(ByteBuffer bb) throws IOException {
-	int size = bb.get();
-	for (int i = 0; i < size; i++) {
-	    charBuffer[i] = bb.getChar();
-	}
-	return new String(charBuffer, 0, size);
+        int size = bb.get();
+        for (int i = 0; i < size; i++) {
+            charBuffer[i] = bb.getChar();
+        }
+        return new String(charBuffer, 0, size);
     }
 
 
     /**
      * Dumps a binary form of the database.  This method is not thread-safe.
-     * 
+     *
      * <p>Binary format is:
      * <pre>
      * MAGIC
@@ -618,42 +619,42 @@ abstract public class LexiconImpl implements Lexicon {
      * @param path the path to dump the file to
      */
     private void dumpBinaryLexicon(Map lexicon, String path) {
-	try {
-	    FileOutputStream fos = new FileOutputStream(path);
-	    DataOutputStream dos = new DataOutputStream(new
-		    BufferedOutputStream(fos));
-	    List phonemeList = findPhonemes(lexicon);
+        try {
+            FileOutputStream fos = new FileOutputStream(path);
+            DataOutputStream dos = new DataOutputStream(new
+                    BufferedOutputStream(fos));
+            List phonemeList = findPhonemes(lexicon);
 
-	    dos.writeInt(MAGIC);
-	    dos.writeInt(VERSION);
-	    dos.writeInt(phonemeList.size());
+            dos.writeInt(MAGIC);
+            dos.writeInt(VERSION);
+            dos.writeInt(phonemeList.size());
 
-	    for (int i = 0; i < phonemeList.size(); i++) {
-		outString(dos, (String) phonemeList.get(i));
-	    }
+            for (int i = 0; i < phonemeList.size(); i++) {
+                outString(dos, (String) phonemeList.get(i));
+            }
 
-	    dos.writeInt(lexicon.keySet().size());
-	    for (Iterator i = lexicon.keySet().iterator(); i.hasNext(); ) {
-		String key = (String) i.next();
-		outString(dos, key);
-		String[] phonemes = getPhones(lexicon, key);
-		dos.writeByte((byte) phonemes.length);
-		for (int index = 0; index < phonemes.length; index++) {
-		    int phonemeIndex = phonemeList.indexOf(phonemes[index]);
-		    if (phonemeIndex == -1) {
-			throw new Error("Can't find phoneme index");
-		    }
-		    dos.writeByte((byte) phonemeIndex);
-		}
-	    }
-	    dos.close();
-	} catch (FileNotFoundException fe) {
-	    throw new Error("Can't dump binary database " +
-		    fe.getMessage());
-	} catch (IOException ioe) {
-	    throw new Error("Can't write binary database " +
-		    ioe.getMessage());
-	}
+            dos.writeInt(lexicon.keySet().size());
+            for (Iterator i = lexicon.keySet().iterator(); i.hasNext(); ) {
+                String key = (String) i.next();
+                outString(dos, key);
+                String[] phonemes = getPhones(lexicon, key);
+                dos.writeByte((byte) phonemes.length);
+                for (int index = 0; index < phonemes.length; index++) {
+                    int phonemeIndex = phonemeList.indexOf(phonemes[index]);
+                    if (phonemeIndex == -1) {
+                        throw new Error("Can't find phoneme index");
+                    }
+                    dos.writeByte((byte) phonemeIndex);
+                }
+            }
+            dos.close();
+        } catch (FileNotFoundException fe) {
+            throw new Error("Can't dump binary database " +
+                    fe.getMessage());
+        } catch (IOException ioe) {
+            throw new Error("Can't write binary database " +
+                    ioe.getMessage());
+        }
     }
 
     /**
@@ -667,56 +668,56 @@ abstract public class LexiconImpl implements Lexicon {
      *
      * @throws IOException if an IO error occurs
      */
-    private Map loadMappedBinaryLexicon(FileInputStream is, int estimatedSize) 
-	throws IOException {
-	FileChannel fc = is.getChannel();
+    private Map loadMappedBinaryLexicon(FileInputStream is, int estimatedSize)
+            throws IOException {
+        FileChannel fc = is.getChannel();
 
-	MappedByteBuffer bb = fc.map(FileChannel.MapMode.READ_ONLY, 
-		0, (int) fc.size());
-	bb.load();
-	int size = 0;
-	int numEntries = 0;
-	List phonemeList = new ArrayList();
+        MappedByteBuffer bb = fc.map(FileChannel.MapMode.READ_ONLY,
+                0, (int) fc.size());
+        bb.load();
+        int size = 0;
+        int numEntries = 0;
+        List phonemeList = new ArrayList();
 
-	// we get better performance for some reason if we
-	// just ignore estimated size
+        // we get better performance for some reason if we
+        // just ignore estimated size
         //
-	// Map lexicon = new HashMap();
+        // Map lexicon = new HashMap();
         Map lexicon = new LinkedHashMap(estimatedSize * 4 / 3);
 
-	if (bb.getInt() != MAGIC) {
-	    throw new Error("bad magic number in lexicon");
-	}
+        if (bb.getInt() != MAGIC) {
+            throw new Error("bad magic number in lexicon");
+        }
 
-	if (bb.getInt() != VERSION) {
-	    throw new Error("bad version number in lexicon");
-	}
+        if (bb.getInt() != VERSION) {
+            throw new Error("bad version number in lexicon");
+        }
 
-	size = bb.getInt();
-	for (int i = 0; i < size; i++) {
-	    String phoneme = getString(bb);
-	    phonemeList.add(phoneme);
-	}
-	numEntries = bb.getInt();
+        size = bb.getInt();
+        for (int i = 0; i < size; i++) {
+            String phoneme = getString(bb);
+            phonemeList.add(phoneme);
+        }
+        numEntries = bb.getInt();
 
-	for (int i = 0; i < numEntries; i++) {
-	    String wordAndPos = getString(bb);
-	    String pos = Character.toString(
-		    wordAndPos.charAt(wordAndPos.length() - 1));
-	    if (!partsOfSpeech.contains(pos)) {
-		partsOfSpeech.add(pos);
-	    }
+        for (int i = 0; i < numEntries; i++) {
+            String wordAndPos = getString(bb);
+            String pos = Character.toString(
+                    wordAndPos.charAt(wordAndPos.length() - 1));
+            if (!partsOfSpeech.contains(pos)) {
+                partsOfSpeech.add(pos);
+            }
 
-	    int numPhonemes = bb.get();
-	    String[] phonemes = new String[numPhonemes];
+            int numPhonemes = bb.get();
+            String[] phonemes = new String[numPhonemes];
 
-	    for (int j = 0; j < numPhonemes; j++) {
-		phonemes[j] = (String) phonemeList.get(bb.get());
-	    }
-	    lexicon.put(wordAndPos, phonemes);
-	}
-	fc.close();
-	return lexicon;
+            for (int j = 0; j < numPhonemes; j++) {
+                phonemes[j] = (String) phonemeList.get(bb.get());
+            }
+            lexicon.put(wordAndPos, phonemes);
+        }
+        fc.close();
+        return lexicon;
     }
 
     /**
@@ -730,52 +731,52 @@ abstract public class LexiconImpl implements Lexicon {
      *
      * @throws IOException if an IO error occurs
      */
-    private Map loadBinaryLexicon(InputStream is, int estimatedSize) 
-	throws IOException {
-	DataInputStream dis = new DataInputStream(new
-		BufferedInputStream(is));
-	int size = 0;
-	int numEntries = 0;
-	List phonemeList = new ArrayList();
+    private Map loadBinaryLexicon(InputStream is, int estimatedSize)
+            throws IOException {
+        DataInputStream dis = new DataInputStream(new
+                BufferedInputStream(is));
+        int size = 0;
+        int numEntries = 0;
+        List phonemeList = new ArrayList();
 
-	// we get better performance for some reason if we
-	// just ignore estimated size
+        // we get better performance for some reason if we
+        // just ignore estimated size
         //
         Map lexicon = new LinkedHashMap();
 
-	if (dis.readInt() != MAGIC) {
-	    throw new Error("bad magic number in lexicon");
-	}
+        if (dis.readInt() != MAGIC) {
+            throw new Error("bad magic number in lexicon");
+        }
 
-	if (dis.readInt() != VERSION) {
-	    throw new Error("bad version number in lexicon");
-	}
+        if (dis.readInt() != VERSION) {
+            throw new Error("bad version number in lexicon");
+        }
 
-	size = dis.readInt();
-	for (int i = 0; i < size; i++) {
-	    String phoneme = getString(dis);
-	    phonemeList.add(phoneme);
-	}
-	numEntries = dis.readInt();
+        size = dis.readInt();
+        for (int i = 0; i < size; i++) {
+            String phoneme = getString(dis);
+            phonemeList.add(phoneme);
+        }
+        numEntries = dis.readInt();
 
-	for (int i = 0; i < numEntries; i++) {
-	    String wordAndPos = getString(dis);
-	    String pos = Character.toString(
-		    wordAndPos.charAt(wordAndPos.length() - 1));
-	    if (!partsOfSpeech.contains(pos)) {
-		partsOfSpeech.add(pos);
-	    }
+        for (int i = 0; i < numEntries; i++) {
+            String wordAndPos = getString(dis);
+            String pos = Character.toString(
+                    wordAndPos.charAt(wordAndPos.length() - 1));
+            if (!partsOfSpeech.contains(pos)) {
+                partsOfSpeech.add(pos);
+            }
 
-	    int numPhonemes = dis.readByte();
-	    String[] phonemes = new String[numPhonemes];
+            int numPhonemes = dis.readByte();
+            String[] phonemes = new String[numPhonemes];
 
-	    for (int j = 0; j < numPhonemes; j++) {
-		phonemes[j] = (String) phonemeList.get(dis.readByte());
-	    }
-	    lexicon.put(wordAndPos, phonemes);
-	}
-	dis.close();
-	return lexicon;
+            for (int j = 0; j < numPhonemes; j++) {
+                phonemes[j] = (String) phonemeList.get(dis.readByte());
+            }
+            lexicon.put(wordAndPos, phonemes);
+        }
+        dis.close();
+        return lexicon;
     }
 
     /**
@@ -788,7 +789,7 @@ abstract public class LexiconImpl implements Lexicon {
     public void dumpBinary(String path) {
         String compiledPath = path + "_compiled.bin";
         String addendaPath = path + "_addenda.bin";
-        
+
         dumpBinaryLexicon(compiled, compiledPath);
         dumpBinaryLexicon(addenda, addendaPath);
     }
@@ -801,17 +802,17 @@ abstract public class LexiconImpl implements Lexicon {
      * @return list the unique set of phonemes
      */
     private List findPhonemes(Map lexicon) {
-	List phonemeList = new ArrayList();
-	for (Iterator i = lexicon.keySet().iterator(); i.hasNext(); ) {
-	    String key = (String) i.next();
-	    String[] phonemes = getPhones(lexicon, key);
-	    for (int index = 0; index < phonemes.length; index++) {
-		if (!phonemeList.contains(phonemes[index])) {
-		    phonemeList.add(phonemes[index]);
-		}
-	    }
-	}
-	return phonemeList;
+        List phonemeList = new ArrayList();
+        for (Iterator i = lexicon.keySet().iterator(); i.hasNext(); ) {
+            String key = (String) i.next();
+            String[] phonemes = getPhones(lexicon, key);
+            for (int index = 0; index < phonemes.length; index++) {
+                if (!phonemeList.contains(phonemes[index])) {
+                    phonemeList.add(phonemes[index]);
+                }
+            }
+        }
+        return phonemeList;
     }
 
 
@@ -824,8 +825,8 @@ abstract public class LexiconImpl implements Lexicon {
      * @return true if lexicons are identical
      */
     public boolean compare(LexiconImpl other) {
-	return compare(addenda, other.addenda) && 
-	      compare(compiled, other.compiled);
+        return compare(addenda, other.addenda) &&
+                compare(compiled, other.compiled);
     }
 
     /**
@@ -837,29 +838,29 @@ abstract public class LexiconImpl implements Lexicon {
      * @return true if they are identical
      */
     private boolean compare(Map lex, Map other) {
-	for (Iterator i = lex.keySet().iterator(); i.hasNext(); ) {
-	    String key = (String) i.next();
-	    String[] thisPhonemes = getPhones(lex, key);
-	    String[] otherPhonemes = getPhones(other, key);
-	    if (thisPhonemes == null) {
-		System.out.println(key + " not found in this.");
-		return false;
-	    } else if (otherPhonemes == null) {
-		System.out.println(key + " not found in other.");
-		return false;
-	    } else if (thisPhonemes.length == otherPhonemes.length) {
-		for (int j = 0; j < thisPhonemes.length; j++) {
-		    if (!thisPhonemes[j].equals(otherPhonemes[j])) {
-			return false;
-		    }
-		}
-	    } else {
-		return false;
-	    }
-	}
-	return true;
+        for (Iterator i = lex.keySet().iterator(); i.hasNext(); ) {
+            String key = (String) i.next();
+            String[] thisPhonemes = getPhones(lex, key);
+            String[] otherPhonemes = getPhones(other, key);
+            if (thisPhonemes == null) {
+                System.out.println(key + " not found in this.");
+                return false;
+            } else if (otherPhonemes == null) {
+                System.out.println(key + " not found in other.");
+                return false;
+            } else if (thisPhonemes.length == otherPhonemes.length) {
+                for (int j = 0; j < thisPhonemes.length; j++) {
+                    if (!thisPhonemes[j].equals(otherPhonemes[j])) {
+                        return false;
+                    }
+                }
+            } else {
+                return false;
+            }
+        }
+        return true;
     }
- 
+
     /**
      * Fixes the part of speech if it is <code>null</code>.  The
      * default representation of a <code>null</code> part of speech

@@ -1,16 +1,16 @@
 /**
  * Copyright 2003 Sun Microsystems, Inc.
- * 
+ * <p>
  * See the file "license.terms" for information on usage and
- * redistribution of this file, and for a DISCLAIMER OF ALL 
+ * redistribution of this file, and for a DISCLAIMER OF ALL
  * WARRANTIES.
  */
 
 package com.sun.speech.freetts.jsapi;
+
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
-
 import javax.speech.Engine;
 import javax.speech.EngineCreate;
 import javax.speech.EngineException;
@@ -18,13 +18,14 @@ import javax.speech.synthesis.SynthesizerModeDesc;
 
 import com.sun.speech.freetts.ValidationException;
 
+
 /**
  * Represents a SynthesizerModeDesc for the
  * FreeTTSSynthesizer. A FreeTTSSynthesizerModeDesc adds 
  * an audio player to the standard mode items.
  */
-public class FreeTTSSynthesizerModeDesc extends SynthesizerModeDesc 
-implements EngineCreate {
+public class FreeTTSSynthesizerModeDesc extends SynthesizerModeDesc
+        implements EngineCreate {
 
     /**
      * Creates a fully-specified descriptor.
@@ -34,8 +35,8 @@ implements EngineCreate {
      * @param modeName   the name of the mode
      * @param locale  the locale associated with this mode
      */
-    public FreeTTSSynthesizerModeDesc( String engineName, String modeName,
-	    Locale locale) {
+    public FreeTTSSynthesizerModeDesc(String engineName, String modeName,
+                                      Locale locale) {
         super(engineName, modeName, locale, Boolean.FALSE, null);
     }
 
@@ -60,12 +61,12 @@ implements EngineCreate {
             }
         }
         javax.speech.synthesis.Voice[] validVoices =
-            new javax.speech.synthesis.Voice[count];
+                new javax.speech.synthesis.Voice[count];
         voiceList.toArray(validVoices);
-        
+
         return validVoices;
     }
-    
+
     /**
      * Returns true if this is a valid FreeTTSSynthesizerModeDesc.
      * It is valid if it contains at least one valid Voice.
@@ -90,14 +91,14 @@ implements EngineCreate {
         }
         if (invalidCount == voices.length) {
             throw new ValidationException
-                (validationMessage + getModeName() + " has no valid voices.");
+                    (validationMessage + getModeName() + " has no valid voices.");
         }
     }
 
     /**
      * Constructs a FreeTTSSynthesizer with the properties of this mode
      * descriptor.
-     * 
+     *
      * @return a synthesizer that mathes the mode
      *
      * @throws IllegalArgumentException  if the properties of this
@@ -107,7 +108,7 @@ implements EngineCreate {
      * 		permission to use the speech engine
      */
     public Engine createEngine()
-        throws IllegalArgumentException, EngineException, SecurityException {
+            throws IllegalArgumentException, EngineException, SecurityException {
         FreeTTSSynthesizer s = new FreeTTSSynthesizer(this);
         return s;
     }

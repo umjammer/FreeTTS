@@ -1,26 +1,22 @@
 /**
  * Copyright 2001 Sun Microsystems, Inc.
- * 
+ * <p>
  * See the file "license.terms" for information on usage and
- * redistribution of this file, and for a DISCLAIMER OF ALL 
+ * redistribution of this file, and for a DISCLAIMER OF ALL
  * WARRANTIES.
  */
+
 package com.sun.speech.engine.synthesis.text;
 
-import javax.speech.Engine;
-import javax.speech.synthesis.Speakable;
-import javax.speech.synthesis.SpeakableEvent;
-
-import com.sun.speech.engine.synthesis.BaseSynthesizer;
-import com.sun.speech.engine.synthesis.BaseSynthesizerQueueItem;
-
 import java.net.URL;
-import java.io.IOException;
+import javax.speech.synthesis.Speakable;
 
+import com.sun.speech.engine.synthesis.BaseSynthesizerQueueItem;
 import org.w3c.dom.Document;
-import org.w3c.dom.Node;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 import org.w3c.dom.Text;
+
 
 /**
  * Represents an object on the speech output queue of a
@@ -29,81 +25,81 @@ import org.w3c.dom.Text;
 public class TextSynthesizerQueueItem extends BaseSynthesizerQueueItem {
     static public final String JSML = "jsml";
     static public final String[] JSML_ATTRIBUTES = {
-        "lang", "mark"
+            "lang", "mark"
     };
 
     static public final String DIV = "div";
     static public final String[] DIV_ATTRIBUTES = {
-        "type", "mark"
+            "type", "mark"
     };
-    
+
     static public final String VOICE = "voice";
     static public final String[] VOICE_ATTRIBUTES = {
-        "voice", "gender", "age", "variant", "name", "mark"
+            "voice", "gender", "age", "variant", "name", "mark"
     };
-    
+
     static public final String SAYAS = "sayas";
     static public final String[] SAYAS_ATTRIBUTES = {
-        "class", "mark"
+            "class", "mark"
     };
 
     static public final String PHONEME = "phoneme";
     static public final String[] PHONEME_ATTRIBUTES = {
-        "original", "mark"
+            "original", "mark"
     };
 
     static public final String EMPHASIS = "emphasis";
     static public final String[] EMPHASIS_ATTRIBUTES = {
-        "level", "mark"
+            "level", "mark"
     };
 
     static public final String BREAK = "break";
     static public final String[] BREAK_ATTRIBUTES = {
-        "size", "time", "mark"
+            "size", "time", "mark"
     };
 
     static public final String PROSODY = "prosody";
     static public final String[] PROSODY_ATTRIBUTES = {
-        "rate", "volume", "pitch", "range", "mark"
+            "rate", "volume", "pitch", "range", "mark"
     };
 
     static public final String MARKER = "marker";
     static public final String[] MARKER_ATTRIBUTES = {
-        "mark"
+            "mark"
     };
-    
+
     static public final String ENGINE = "engine";
     static public final String[] ENGINE_ATTRIBUTES = {
-        "name", "data", "mark"
+            "name", "data", "mark"
     };
 
     static public final String[] ELEMENTS = {
-        JSML,
-        DIV,
-        VOICE,
-        SAYAS,
-        PHONEME,
-        EMPHASIS,
-        BREAK,
-        PROSODY,
-        MARKER,
-        ENGINE
+            JSML,
+            DIV,
+            VOICE,
+            SAYAS,
+            PHONEME,
+            EMPHASIS,
+            BREAK,
+            PROSODY,
+            MARKER,
+            ENGINE
     };
 
     static public final String[][] ELEMENT_ATTRIBUTES = {
-        JSML_ATTRIBUTES,
-        DIV_ATTRIBUTES,
-        VOICE_ATTRIBUTES,
-        SAYAS_ATTRIBUTES,
-        PHONEME_ATTRIBUTES,
-        EMPHASIS_ATTRIBUTES,
-        BREAK_ATTRIBUTES,
-        PROSODY_ATTRIBUTES,
-        MARKER_ATTRIBUTES,
-        ENGINE_ATTRIBUTES
+            JSML_ATTRIBUTES,
+            DIV_ATTRIBUTES,
+            VOICE_ATTRIBUTES,
+            SAYAS_ATTRIBUTES,
+            PHONEME_ATTRIBUTES,
+            EMPHASIS_ATTRIBUTES,
+            BREAK_ATTRIBUTES,
+            PROSODY_ATTRIBUTES,
+            MARKER_ATTRIBUTES,
+            ENGINE_ATTRIBUTES
     };
 
-    
+
     /*
      * Commands to be encoded in the text.
      */
@@ -113,7 +109,7 @@ public class TextSynthesizerQueueItem extends BaseSynthesizerQueueItem {
     static public final String DATA_SUFFIX = "]";
     static public final String ELEMENT_START = "start";
     static public final String ELEMENT_END = "end";
-    
+
     /**
      * Class constructor.
      */
@@ -172,71 +168,71 @@ public class TextSynthesizerQueueItem extends BaseSynthesizerQueueItem {
      */
     protected StringBuffer processNode(Node n, StringBuffer buf) {
         StringBuffer endText = null;
-        
+
         int type = n.getNodeType();
         switch (type) {
-            case Node.ATTRIBUTE_NODE:
-                 break;
-                 
-            case Node.DOCUMENT_NODE:
-                break;
-                
-            case Node.ELEMENT_NODE:
-                endText = processElement((Element) n, buf);
-                break;
-                
-            case Node.TEXT_NODE:
-                buf.append(((Text) n).getData());
-                break;
+        case Node.ATTRIBUTE_NODE:
+            break;
 
-            // Pass processing instructions (e.g., <?blah?>
-            // right on to the synthesizer.  These types of things
-            // probably should not be used.  Instead the 'engine'
-            // element is probably the best thing to do.
-            //
-            case Node.PROCESSING_INSTRUCTION_NODE:
-                break;
-                
-            // The document type had better be JSML.
-            //
-            case Node.DOCUMENT_TYPE_NODE:
-                break;
+        case Node.DOCUMENT_NODE:
+            break;
 
-            // I think NOTATION nodes are only DTD's.
-            //
-            case Node.NOTATION_NODE:
-                break;
+        case Node.ELEMENT_NODE:
+            endText = processElement((Element) n, buf);
+            break;
 
-            // Should not get COMMENTS because the JSMLParser
-            // ignores them.
-            //
-            case Node.COMMENT_NODE:
-                break;
+        case Node.TEXT_NODE:
+            buf.append(((Text) n).getData());
+            break;
 
-            // Should not get CDATA because the JSMLParser is
-            // coalescing.
-            //    
-            case Node.CDATA_SECTION_NODE:
-                break;
+        // Pass processing instructions (e.g., <?blah?>
+        // right on to the synthesizer.  These types of things
+        // probably should not be used.  Instead the 'engine'
+        // element is probably the best thing to do.
+        //
+        case Node.PROCESSING_INSTRUCTION_NODE:
+            break;
 
-            // Should not get ENTITY related notes because
-            // entities are expanded by the JSMLParser
-            //
-            case Node.ENTITY_NODE:
-            case Node.ENTITY_REFERENCE_NODE:
-                break;
+        // The document type had better be JSML.
+        //
+        case Node.DOCUMENT_TYPE_NODE:
+            break;
 
-            // Should not get DOCUMENT_FRAGMENT nodes because I
-            // [[[WDW]]] think they are only created via the API's
-            // and cannot be defined via content.
-            //
-            case Node.DOCUMENT_FRAGMENT_NODE:
-                break;
+        // I think NOTATION nodes are only DTD's.
+        //
+        case Node.NOTATION_NODE:
+            break;
 
-            default:
-                break;
+        // Should not get COMMENTS because the JSMLParser
+        // ignores them.
+        //
+        case Node.COMMENT_NODE:
+            break;
+
+        // Should not get CDATA because the JSMLParser is
+        // coalescing.
+        //
+        case Node.CDATA_SECTION_NODE:
+            break;
+
+        // Should not get ENTITY related notes because
+        // entities are expanded by the JSMLParser
+        //
+        case Node.ENTITY_NODE:
+        case Node.ENTITY_REFERENCE_NODE:
+            break;
+
+        // Should not get DOCUMENT_FRAGMENT nodes because I
+        // [[[WDW]]] think they are only created via the API's
+        // and cannot be defined via content.
+        //
+        case Node.DOCUMENT_FRAGMENT_NODE:
+            break;
+
+        default:
+            break;
         }
-        
+
         return endText;
     }
 
@@ -253,12 +249,12 @@ public class TextSynthesizerQueueItem extends BaseSynthesizerQueueItem {
     protected StringBuffer processElement(Element element, StringBuffer buf) {
         StringBuffer endText;
         StringBuffer attributeText = null;
-        
+
         String elementName = element.getTagName();
         for (int i = 0; i < ELEMENTS.length; i++) {
             if (ELEMENTS[i].equals(elementName)) {
                 attributeText = processAttributes(
-                    element, ELEMENT_ATTRIBUTES[i]);
+                        element, ELEMENT_ATTRIBUTES[i]);
                 break;
             }
         }
@@ -270,7 +266,7 @@ public class TextSynthesizerQueueItem extends BaseSynthesizerQueueItem {
         buf.append(COMMAND_SUFFIX);
 
         endText = new StringBuffer(
-            COMMAND_PREFIX + elementName + " " + ELEMENT_END);
+                COMMAND_PREFIX + elementName + " " + ELEMENT_END);
         if (attributeText != null) {
             endText.append(attributeText);
         }
@@ -296,12 +292,12 @@ public class TextSynthesizerQueueItem extends BaseSynthesizerQueueItem {
             if (element.hasAttribute(attributes[i])) {
                 String data = element.getAttribute(attributes[i]);
                 attributeText.append(
-                    DATA_PREFIX + attributes[i] + "=" + data + DATA_SUFFIX);
+                        DATA_PREFIX + attributes[i] + "=" + data + DATA_SUFFIX);
             }
         }
         return attributeText;
     }
-       
+
     /**
      * Gets the text form of this queue item.
      *
@@ -309,12 +305,12 @@ public class TextSynthesizerQueueItem extends BaseSynthesizerQueueItem {
      */
     public String getEngineText() {
         if (isPlainText()) {
-	    return text;
+            return text;
         } else {
             StringBuffer textBuffer = new StringBuffer();
             Document document = getDocument();
             linearize(document, textBuffer);
-            return(textBuffer.toString());
+            return (textBuffer.toString());
         }
     }
 }

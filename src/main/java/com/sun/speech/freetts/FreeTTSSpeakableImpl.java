@@ -1,17 +1,20 @@
 /**
  * Portions Copyright 2001 Sun Microsystems, Inc.
- * Portions Copyright 1999-2001 Language Technologies Institute, 
+ * Portions Copyright 1999-2001 Language Technologies Institute,
  * Carnegie Mellon University.
  * All Rights Reserved.  Use is subject to license terms.
- * 
+ * <p>
  * See the file "license.terms" for information on usage and
- * redistribution of this file, and for a DISCLAIMER OF ALL 
+ * redistribution of this file, and for a DISCLAIMER OF ALL
  * WARRANTIES.
  */
+
 package com.sun.speech.freetts;
 
-import org.w3c.dom.Document;
 import java.io.InputStream;
+
+import org.w3c.dom.Document;
+
 
 /**
  * Minimal implementation of a FreeTTSSpeakable
@@ -29,7 +32,7 @@ public class FreeTTSSpeakableImpl implements FreeTTSSpeakable {
      * @param text the text to be spoken
      */
     public FreeTTSSpeakableImpl(String text) {
-	this.text = text;
+        this.text = text;
     }
 
     /**
@@ -38,7 +41,7 @@ public class FreeTTSSpeakableImpl implements FreeTTSSpeakable {
      * @param doc the doc to be spoken
      */
     public FreeTTSSpeakableImpl(Document doc) {
-	this.doc = doc;
+        this.doc = doc;
     }
 
     /**
@@ -47,7 +50,7 @@ public class FreeTTSSpeakableImpl implements FreeTTSSpeakable {
      * @param is the doc to be spoken
      */
     public FreeTTSSpeakableImpl(InputStream is) {
-	this.inputStream = is;
+        this.inputStream = is;
     }
 
     /**
@@ -60,17 +63,17 @@ public class FreeTTSSpeakableImpl implements FreeTTSSpeakable {
      * Indicates that this speakable has been completed.
      */
     public synchronized void completed() {
-	completed = true;
-	notifyAll();
+        completed = true;
+        notifyAll();
     }
 
     /**
      * Indicates that this speakable has been cancelled.
      */
     public synchronized void cancelled() {
-	completed = true;
-	cancelled = true;
-	notifyAll();
+        completed = true;
+        cancelled = true;
+        notifyAll();
     }
 
     /**
@@ -80,7 +83,7 @@ public class FreeTTSSpeakableImpl implements FreeTTSSpeakable {
      * @return true if it has been processed
      */
     public synchronized boolean isCompleted() {
-	return completed;
+        return completed;
     }
 
     /**
@@ -90,25 +93,25 @@ public class FreeTTSSpeakableImpl implements FreeTTSSpeakable {
      *   the speakable  was cancelled or an error occurred.
      */
     public synchronized boolean waitCompleted() {
-	while  (!completed) {
-	    try {
-		wait();
-	    } catch (InterruptedException ie) {
-		System.err.println( "FreeTTSSpeakableImpl:Wait interrupted");
-		return false;
-	    }
-	}
-	return !cancelled;
+        while (!completed) {
+            try {
+                wait();
+            } catch (InterruptedException ie) {
+                System.err.println("FreeTTSSpeakableImpl:Wait interrupted");
+                return false;
+            }
+        }
+        return !cancelled;
     }
 
-   /**
-    * Returns <code>true</code> if the item contains plain text
-    * (not Java Speech Markup Language text).
-    *
-    * @return true if the item contains plain text
-    */
+    /**
+     * Returns <code>true</code> if the item contains plain text
+     * (not Java Speech Markup Language text).
+     *
+     * @return true if the item contains plain text
+     */
     public boolean isPlainText() {
-	return text != null;
+        return text != null;
     }
 
     /**
@@ -117,7 +120,7 @@ public class FreeTTSSpeakableImpl implements FreeTTSSpeakable {
      * @return the Playable text
      */
     public String getText() {
-	return text;
+        return text;
     }
 
     /**
@@ -126,16 +129,16 @@ public class FreeTTSSpeakableImpl implements FreeTTSSpeakable {
      * @return the DOM document for this object.
      */
     public Document getDocument() {
-	return doc;
+        return doc;
     }
 
-   /**
-    * Returns <code>true</code> if the item is an input stream.
-    *
-    * @return true if the item is an input stream
-    */
+    /**
+     * Returns <code>true</code> if the item is an input stream.
+     *
+     * @return true if the item is an input stream
+     */
     public boolean isStream() {
-	return inputStream  != null;
+        return inputStream != null;
     }
 
     /**
@@ -144,7 +147,7 @@ public class FreeTTSSpeakableImpl implements FreeTTSSpeakable {
      * @return the input stream
      */
     public InputStream getInputStream() {
-	return inputStream ;
+        return inputStream;
     }
 
     /**
@@ -154,6 +157,6 @@ public class FreeTTSSpeakableImpl implements FreeTTSSpeakable {
      * @return true if the item is a document
      */
     public boolean isDocument() {
-	return doc != null;
+        return doc != null;
     }
 }

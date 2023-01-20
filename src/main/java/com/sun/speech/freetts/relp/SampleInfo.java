@@ -1,20 +1,22 @@
 /**
  * Portions Copyright 2001 Sun Microsystems, Inc.
- * Portions Copyright 1999-2001 Language Technologies Institute, 
+ * Portions Copyright 1999-2001 Language Technologies Institute,
  * Carnegie Mellon University.
  * All Rights Reserved.  Use is subject to license terms.
- * 
+ * <p>
  * See the file "license.terms" for information on usage and
- * redistribution of this file, and for a DISCLAIMER OF ALL 
+ * redistribution of this file, and for a DISCLAIMER OF ALL
  * WARRANTIES.
  */
+
 package com.sun.speech.freetts.relp;
 
 
-import java.nio.ByteBuffer;
-import java.io.IOException;
-import java.io.DataOutputStream;
 import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.nio.ByteBuffer;
+
 
 /**
  * Describes global sample parameters. A sample info is generally added
@@ -42,14 +44,14 @@ public class SampleInfo {
      * @param coeffRange the range of coefficients
      */
     public SampleInfo(int sampleRate, int numberOfChannels,
-	    int residualFold, float coeffMin, 
-	    float coeffRange, float postEmphasis) {
-	this.sampleRate = sampleRate;
-	this.numberOfChannels = numberOfChannels;
-	this.residualFold = residualFold;
-	this.coeffMin = coeffMin;
-	this.coeffRange = coeffRange;
-	this.postEmphasis = postEmphasis;
+                      int residualFold, float coeffMin,
+                      float coeffRange, float postEmphasis) {
+        this.sampleRate = sampleRate;
+        this.numberOfChannels = numberOfChannels;
+        this.residualFold = residualFold;
+        this.coeffMin = coeffMin;
+        this.coeffRange = coeffRange;
+        this.postEmphasis = postEmphasis;
     }
 
     /**
@@ -60,12 +62,12 @@ public class SampleInfo {
      * @throws IOException if an input error occurs
      */
     public SampleInfo(ByteBuffer bb) throws IOException {
-	numberOfChannels = bb.getInt();
-	sampleRate = bb.getInt();
-	coeffMin = bb.getFloat();
-	coeffRange = bb.getFloat();
-	postEmphasis = bb.getFloat();
-	residualFold = bb.getInt();
+        numberOfChannels = bb.getInt();
+        sampleRate = bb.getInt();
+        coeffMin = bb.getFloat();
+        coeffRange = bb.getFloat();
+        postEmphasis = bb.getFloat();
+        residualFold = bb.getInt();
     }
 
     /**
@@ -76,12 +78,12 @@ public class SampleInfo {
      * @throws IOException if an input error occurs
      */
     public SampleInfo(DataInputStream is) throws IOException {
-	numberOfChannels = is.readInt();
-	sampleRate = is.readInt();
-	coeffMin = is.readFloat();
-	coeffRange = is.readFloat();
-	postEmphasis = is.readFloat();
-	residualFold = is.readInt();
+        numberOfChannels = is.readInt();
+        sampleRate = is.readInt();
+        coeffMin = is.readFloat();
+        coeffRange = is.readFloat();
+        postEmphasis = is.readFloat();
+        residualFold = is.readInt();
     }
 
     /**
@@ -90,16 +92,16 @@ public class SampleInfo {
      * @return the sample rate
      */
     public final int getSampleRate() {
-	return sampleRate;
+        return sampleRate;
     }
-    
+
     /**
      * Returns the number of channels.
      *
      * @return the number of channels.
      */
     public final int getNumberOfChannels() {
-	return numberOfChannels;
+        return numberOfChannels;
     }
 
     /**
@@ -108,16 +110,16 @@ public class SampleInfo {
      * @return the residual fold
      */
     public final int getResidualFold() {
-	return residualFold;
+        return residualFold;
     }
-    
+
     /**
      * Returns the minimum for linear predictive coding.
      *
      * @return the minimum for linear predictive coding.
      */
     public final float getCoeffMin() {
-	return coeffMin;
+        return coeffMin;
     }
 
     /**
@@ -126,7 +128,7 @@ public class SampleInfo {
      * @return the range for linear predictive coding.
      */
     public final float getCoeffRange() {
-	return coeffRange;
+        return coeffRange;
     }
 
     /**
@@ -135,25 +137,25 @@ public class SampleInfo {
      * @return the post emphasis
      */
     public final float getPostEmphasis() {
-	return postEmphasis;
+        return postEmphasis;
     }
 
-    
+
     /**
      * Dump a binary form of the sample rate
      * to the given output stream
      *
      * @param os the output stream
-     * 
+     *
      * @throws IOException if an error occurs
      */
     public void dumpBinary(DataOutputStream os) throws IOException {
-	os.writeInt(numberOfChannels);
-	os.writeInt(sampleRate);
-	os.writeFloat(coeffMin);
-	os.writeFloat(coeffRange);
-	os.writeFloat(postEmphasis);
-	os.writeInt(residualFold);
+        os.writeInt(numberOfChannels);
+        os.writeInt(sampleRate);
+        os.writeFloat(coeffMin);
+        os.writeFloat(coeffRange);
+        os.writeFloat(postEmphasis);
+        os.writeInt(residualFold);
     }
 }
 

@@ -1,20 +1,22 @@
 /**
  * Portions Copyright 2001 Sun Microsystems, Inc.
- * Portions Copyright 1999-2001 Language Technologies Institute, 
+ * Portions Copyright 1999-2001 Language Technologies Institute,
  * Carnegie Mellon University.
  * All Rights Reserved.  Use is subject to license terms.
- * 
+ * <p>
  * See the file "license.terms" for information on usage and
- * redistribution of this file, and for a DISCLAIMER OF ALL 
+ * redistribution of this file, and for a DISCLAIMER OF ALL
  * WARRANTIES.
  */
-package com.sun.speech.freetts.diphone;
-import com.sun.speech.freetts.relp.Sample;
 
-import java.nio.ByteBuffer;
-import java.io.IOException;
+package com.sun.speech.freetts.diphone;
+
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.IOException;
+import java.nio.ByteBuffer;
+
+import com.sun.speech.freetts.relp.Sample;
 
 
 /**
@@ -25,7 +27,7 @@ import java.io.DataOutputStream;
 public class Diphone {
     protected final static int MAGIC = 0xFACE0FF;
     protected final static int ALIAS_MAGIC = 0xBABAF00;
-    protected final static int NAME_LENGTH = 8; 
+    protected final static int NAME_LENGTH = 8;
     private String name;
     private int midPoint;
     private Sample[] samples;
@@ -40,18 +42,18 @@ public class Diphone {
      * @param midPoint the index of the sample midpoint
      */
     public Diphone(String name, Sample[] samples, int midPoint) {
-	this.name = name;
-	this.midPoint = midPoint;
-	this.samples = samples;
-	this.unitSizePart1 = 0;
-	this.unitSizePart2 = 0;
+        this.name = name;
+        this.midPoint = midPoint;
+        this.samples = samples;
+        this.unitSizePart1 = 0;
+        this.unitSizePart2 = 0;
 
-	for (int i = 0; i < midPoint; i++) {
-	    unitSizePart1 += samples[i].getResidualSize();
-	}
-	for (int i = midPoint; i < samples.length; i++) {
-	    unitSizePart2 += samples[i].getResidualSize();
-	}
+        for (int i = 0; i < midPoint; i++) {
+            unitSizePart1 += samples[i].getResidualSize();
+        }
+        for (int i = midPoint; i < samples.length; i++) {
+            unitSizePart2 += samples[i].getResidualSize();
+        }
     }
 
     /**
@@ -59,8 +61,7 @@ public class Diphone {
      * variables except for the name
      * @param name the name of the diphone 
      */
-    protected Diphone(String name)
-    {
+    protected Diphone(String name) {
         this.name = name;
         this.midPoint = 0;
         this.samples = null;
@@ -74,7 +75,7 @@ public class Diphone {
      * @return the samples associated with this diphone
      */
     public Sample[] getSamples() {
-	return samples;
+        return samples;
     }
 
     /**
@@ -85,7 +86,7 @@ public class Diphone {
      * @return the desired sample
      */
     public Sample getSamples(int which) {
-	return samples[which];
+        return samples[which];
     }
 
     /**
@@ -94,9 +95,9 @@ public class Diphone {
      * @return the name of the diphone
      */
     public String getName() {
-	return name;
+        return name;
     }
-    
+
 
     /**
      * Returns the midpoint index. the midpoint index is the sample
@@ -105,9 +106,9 @@ public class Diphone {
      * @return the midpoint index.
      */
     public int getMidPoint() {
-	return midPoint;
+        return midPoint;
     }
-    
+
     /**
      * Returns the midpoint index. the midpoint index is the sample
      * that divides the diphone into the first and second parts.
@@ -115,7 +116,7 @@ public class Diphone {
      * @return the midpoint index.
      */
     public int getPbPositionMillis() {
-	return getMidPoint();
+        return getMidPoint();
     }
 
     /**
@@ -127,23 +128,23 @@ public class Diphone {
      *
      * @return the sample nearest to the given index in the given
      * 		part
-     */ 
+     */
     public Sample nearestSample(float uIndex, int unitPart) {
-	int i, iSize = 0, nSize;
-	// loop through all the Samples in this Diphone
-	int start = (unitPart == 1) ? 0 : midPoint;
-	int end = (unitPart == 1) ? midPoint : samples.length;
-	
-	for (i = start; i < end; i++) {
-	    nSize = iSize + samples[i].getResidualSize();
+        int i, iSize = 0, nSize;
+        // loop through all the Samples in this Diphone
+        int start = (unitPart == 1) ? 0 : midPoint;
+        int end = (unitPart == 1) ? midPoint : samples.length;
 
-	    if (Math.abs(uIndex - (float) iSize) <
-		Math.abs(uIndex - (float) nSize)) {
-		return samples[i];
-	    }
-	    iSize = nSize;
-	}
-	return samples[end-1];
+        for (i = start; i < end; i++) {
+            nSize = iSize + samples[i].getResidualSize();
+
+            if (Math.abs(uIndex - (float) iSize) <
+                    Math.abs(uIndex - (float) nSize)) {
+                return samples[i];
+            }
+            iSize = nSize;
+        }
+        return samples[end - 1];
     }
 
     /**
@@ -155,22 +156,22 @@ public class Diphone {
      * @return the number of residuals in the specified part
      */
     public int getUnitSize(int unitPart) {
-	if (unitPart == 1) {
-	    return unitSizePart1;
-	} else {
-	    return unitSizePart2;
-	}
+        if (unitPart == 1) {
+            return unitSizePart1;
+        } else {
+            return unitSizePart2;
+        }
     }
 
     /**
      * dumps out this Diphone.
      */
     public void dump() {
-	System.out.println("Diphone: " + name);
-	System.out.println("    MP : " + midPoint);
-	for (int i = 0; i < samples.length; i++) {
-	    samples[i].dump();
-	}
+        System.out.println("Diphone: " + name);
+        System.out.println("    MP : " + midPoint);
+        for (int i = 0; i < samples.length; i++) {
+            samples[i].dump();
+        }
     }
 
     /**
@@ -181,18 +182,18 @@ public class Diphone {
      * @throws IOException if IO error occurs
      */
     public void dumpBinary(ByteBuffer bb) throws IOException {
-	char[] nameArray = (name + "        ").toCharArray();
+        char[] nameArray = (name + "        ").toCharArray();
 
-	bb.putInt(MAGIC);
-	for (int i = 0; i < NAME_LENGTH; i++) {
-	    bb.putChar(nameArray[i]);
-	}
-	bb.putInt(midPoint);
-	bb.putInt(samples.length);
+        bb.putInt(MAGIC);
+        for (int i = 0; i < NAME_LENGTH; i++) {
+            bb.putChar(nameArray[i]);
+        }
+        bb.putInt(midPoint);
+        bb.putInt(samples.length);
 
-	for (int i = 0; i < samples.length; i++) {
-	    samples[i].dumpBinary(bb);
-	}
+        for (int i = 0; i < samples.length; i++) {
+            samples[i].dumpBinary(bb);
+        }
     }
 
     /**
@@ -203,18 +204,18 @@ public class Diphone {
      * @throws IOException if IO error occurs
      */
     public void dumpBinary(DataOutputStream os) throws IOException {
-	char[] nameArray = (name + "        ").toCharArray();
+        char[] nameArray = (name + "        ").toCharArray();
 
-	os.writeInt(MAGIC);
-	for (int i = 0; i < NAME_LENGTH; i++) {
-	    os.writeChar(nameArray[i]);
-	}
-	os.writeInt(midPoint);
-	os.writeInt(samples.length);
+        os.writeInt(MAGIC);
+        for (int i = 0; i < NAME_LENGTH; i++) {
+            os.writeChar(nameArray[i]);
+        }
+        os.writeInt(midPoint);
+        os.writeInt(samples.length);
 
-	for (int i = 0; i < samples.length; i++) {
-	    samples[i].dumpBinary(os);
-	}
+        for (int i = 0; i < samples.length; i++) {
+            samples[i].dumpBinary(os);
+        }
     }
 
     /**
@@ -227,24 +228,24 @@ public class Diphone {
      * 		<code>false</code> 
      */
     boolean compare(Diphone other) {
-	if (!name.equals(other.getName())) {
-	    return false;
-	}
+        if (!name.equals(other.getName())) {
+            return false;
+        }
 
-	if (midPoint != other.getMidPoint()) {
-	    return false;
-	}
+        if (midPoint != other.getMidPoint()) {
+            return false;
+        }
 
-	if (samples.length != other.getSamples().length) {
-	    return false;
-	}
+        if (samples.length != other.getSamples().length) {
+            return false;
+        }
 
-	for (int i = 0; i < samples.length; i++) {
-	    if (!samples[i].compare(other.getSamples(i))) {
-		return false;
-	    }
-	}
-	return true;
+        for (int i = 0; i < samples.length; i++) {
+            if (!samples[i].compare(other.getSamples(i))) {
+                return false;
+            }
+        }
+        return true;
     }
 
     /**
@@ -257,48 +258,48 @@ public class Diphone {
      * @throws IOException if IO error occurs
      */
     public static Diphone loadBinary(ByteBuffer bb) throws IOException {
-	StringBuffer sb = new StringBuffer();
-	int midPoint;
-	int numSamples;
-	Sample[] samples;
+        StringBuffer sb = new StringBuffer();
+        int midPoint;
+        int numSamples;
+        Sample[] samples;
 
-	int magic = bb.getInt();
-    if (magic == ALIAS_MAGIC) {
+        int magic = bb.getInt();
+        if (magic == ALIAS_MAGIC) {
+            for (int i = 0; i < NAME_LENGTH; i++) {
+                char c = bb.getChar();
+                if (!Character.isWhitespace(c)) {
+                    sb.append(c);
+                }
+            }
+            String name = sb.toString().trim();
+            sb.setLength(0);
+            for (int i = 0; i < NAME_LENGTH; i++) {
+                char c = bb.getChar();
+                if (!Character.isWhitespace(c)) {
+                    sb.append(c);
+                }
+            }
+            String origName = sb.toString().trim();
+            return new AliasDiphone(name, origName);
+        } else if (magic != MAGIC) {
+            throw new Error("Bad magic number in diphone");
+        }
+
         for (int i = 0; i < NAME_LENGTH; i++) {
             char c = bb.getChar();
             if (!Character.isWhitespace(c)) {
                 sb.append(c);
             }
         }
-        String name = sb.toString().trim();
-        sb.setLength(0);
-        for (int i = 0; i < NAME_LENGTH; i++) {
-            char c = bb.getChar();
-            if (!Character.isWhitespace(c)) {
-                sb.append(c);
-            }
+
+        midPoint = bb.getInt();
+        numSamples = bb.getInt();
+
+        samples = new Sample[numSamples];
+        for (int i = 0; i < numSamples; i++) {
+            samples[i] = Sample.loadBinary(bb);
         }
-        String origName = sb.toString().trim();
-        return new AliasDiphone(name, origName);
-    } else if (magic != MAGIC) {
-	    throw new Error("Bad magic number in diphone");
-	}
-
-	for (int i = 0; i < NAME_LENGTH; i++) {
-	    char c = bb.getChar();
-	    if (!Character.isWhitespace(c)) {
-	        sb.append(c);
-	    }
-	}
-
-	midPoint = bb.getInt();
-	numSamples = bb.getInt();
-
-	samples = new Sample[numSamples];
-	for (int i = 0; i < numSamples; i++) {
-	    samples[i] = Sample.loadBinary(bb);
-	}
-	return new Diphone(sb.toString().trim(), samples, midPoint);
+        return new Diphone(sb.toString().trim(), samples, midPoint);
     }
 
     /**
@@ -311,48 +312,48 @@ public class Diphone {
      * @throws IOException if IO error occurs
      */
     public static Diphone loadBinary(DataInputStream dis) throws IOException {
-	StringBuffer sb = new StringBuffer();
-	int midPoint;
-	int numSamples;
-	Sample[] samples;
+        StringBuffer sb = new StringBuffer();
+        int midPoint;
+        int numSamples;
+        Sample[] samples;
 
-    int magic = dis.readInt(); 
-    if (magic == ALIAS_MAGIC) {
+        int magic = dis.readInt();
+        if (magic == ALIAS_MAGIC) {
+            for (int i = 0; i < NAME_LENGTH; i++) {
+                char c = dis.readChar();
+                if (!Character.isWhitespace(c)) {
+                    sb.append(c);
+                }
+            }
+            String name = sb.toString().trim();
+            sb.setLength(0);
+            for (int i = 0; i < NAME_LENGTH; i++) {
+                char c = dis.readChar();
+                if (!Character.isWhitespace(c)) {
+                    sb.append(c);
+                }
+            }
+            String origName = sb.toString().trim();
+            return new AliasDiphone(name, origName);
+        } else if (magic != MAGIC) {
+            throw new Error("Bad magic number in diphone");
+        }
+
         for (int i = 0; i < NAME_LENGTH; i++) {
             char c = dis.readChar();
             if (!Character.isWhitespace(c)) {
                 sb.append(c);
             }
         }
-        String name = sb.toString().trim();
-        sb.setLength(0);
-        for (int i = 0; i < NAME_LENGTH; i++) {
-            char c = dis.readChar();
-            if (!Character.isWhitespace(c)) {
-                sb.append(c);
-            }
+
+        midPoint = dis.readInt();
+        numSamples = dis.readInt();
+
+        samples = new Sample[numSamples];
+        for (int i = 0; i < numSamples; i++) {
+            samples[i] = Sample.loadBinary(dis);
         }
-        String origName = sb.toString().trim();
-        return new AliasDiphone(name, origName);
-    } else if (magic != MAGIC) {
-	    throw new Error("Bad magic number in diphone");
-	}
-
-	for (int i = 0; i < NAME_LENGTH; i++) {
-	    char c = dis.readChar();
-	    if (!Character.isWhitespace(c)) {
-	        sb.append(c);
-	    }
-	}
-
-	midPoint = dis.readInt();
-	numSamples = dis.readInt();
-
-	samples = new Sample[numSamples];
-	for (int i = 0; i < numSamples; i++) {
-	    samples[i] = Sample.loadBinary(dis);
-	}
-	return new Diphone(sb.toString().trim(), samples, midPoint);
+        return new Diphone(sb.toString().trim(), samples, midPoint);
     }
 }
 

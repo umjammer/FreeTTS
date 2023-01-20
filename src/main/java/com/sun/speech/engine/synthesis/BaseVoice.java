@@ -1,13 +1,15 @@
 /**
  * Copyright 1998-2001 Sun Microsystems, Inc.
- * 
+ * <p>
  * See the file "license.terms" for information on usage and
- * redistribution of this file, and for a DISCLAIMER OF ALL 
+ * redistribution of this file, and for a DISCLAIMER OF ALL
  * WARRANTIES.
  */
+
 package com.sun.speech.engine.synthesis;
 
 import javax.speech.synthesis.Voice;
+
 
 /**
  * Extends the JSAPI 1.0 <code>Voice</code> class to encapsulate
@@ -53,7 +55,7 @@ public class BaseVoice extends Voice {
      * @param speakingRate the speaking rate in words per minute
      * @param volume the volume expressed between 0.0 and 1.0,
      *   inclusive
-     */ 
+     */
     public BaseVoice(String id,
                      String name,
                      int gender,
@@ -63,7 +65,7 @@ public class BaseVoice extends Voice {
                      float pitchRange,
                      float speakingRate,
                      float volume) {
-        super(name, gender, age, style);   
+        super(name, gender, age, style);
         this.voiceId = id;
         defaultPitch = pitch;
         defaultPitchRange = pitchRange;
@@ -99,7 +101,7 @@ public class BaseVoice extends Voice {
      * @return the pitch
      */
     public float getPitch() {
-	return defaultPitch;
+        return defaultPitch;
     }
 
     /**
@@ -107,7 +109,7 @@ public class BaseVoice extends Voice {
      * @return the pitch range
      */
     public float getPitchRange() {
-	return defaultPitchRange;
+        return defaultPitchRange;
     }
 
     /**
@@ -115,7 +117,7 @@ public class BaseVoice extends Voice {
      * @return the speaking rate
      */
     public float getSpeakingRate() {
-	return defaultSpeakingRate;
+        return defaultSpeakingRate;
     }
 
     /**
@@ -123,7 +125,7 @@ public class BaseVoice extends Voice {
      * @return the volume
      */
     public float getVolume() {
-	return defaultVolume;
+        return defaultVolume;
     }
 
     /**

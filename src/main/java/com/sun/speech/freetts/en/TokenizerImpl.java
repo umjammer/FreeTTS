@@ -1,19 +1,21 @@
 /**
  * Portions Copyright 2001 Sun Microsystems, Inc.
- * Portions Copyright 1999-2001 Language Technologies Institute, 
+ * Portions Copyright 1999-2001 Language Technologies Institute,
  * Carnegie Mellon University.
  * All Rights Reserved.  Use is subject to license terms.
- * 
+ * <p>
  * See the file "license.terms" for information on usage and
- * redistribution of this file, and for a DISCLAIMER OF ALL 
+ * redistribution of this file, and for a DISCLAIMER OF ALL
  * WARRANTIES.
  */
+
 package com.sun.speech.freetts.en;
+
+import java.io.IOException;
+import java.io.Reader;
 
 import com.sun.speech.freetts.Token;
 import com.sun.speech.freetts.Tokenizer;
-import java.io.Reader;
-import java.io.IOException;
 
 
 /**
@@ -21,27 +23,27 @@ import java.io.IOException;
  * characters into a set of tokens.
  */
 public class TokenizerImpl implements Tokenizer {
-        
+
     /** A constant indicating that the end of the stream has been read. */
     public static final int EOF = -1;
-    
+
     /** A string containing the default whitespace characters. */
     public static final String DEFAULT_WHITESPACE_SYMBOLS = " \t\n\r";
-    
+
     /** A string containing the default single characters. */
     public static final String DEFAULT_SINGLE_CHAR_SYMBOLS = "(){}[]";
-    
+
     /** A string containing the default pre-punctuation characters. */
     public static final String DEFAULT_PREPUNCTUATION_SYMBOLS = "\"'`({[";
-    
+
     /** A string containing the default post-punctuation characters. */
-    public static final String DEFAULT_POSTPUNCTUATION_SYMBOLS 
-	= "\"'`.,:;!?(){}[]";
+    public static final String DEFAULT_POSTPUNCTUATION_SYMBOLS
+            = "\"'`.,:;!?(){}[]";
 
 
     /** The line number. */
     private int lineNumber;
-    
+
     /** The input text (from the Utterance) to tokenize. */
     private String inputText;
 
@@ -53,14 +55,14 @@ public class TokenizerImpl implements Tokenizer {
 
     /** The current character, whether its from the file or the input text. */
     private int currentChar;
-    
+
     /**
      * The current char position for the input text (not the file)
      * this is called "file_pos" in flite
      */
     private int currentPosition;
-    
-    
+
+
     /** The delimiting symbols of this tokenizer. */
     private String whitespaceSymbols = DEFAULT_WHITESPACE_SYMBOLS;
     private String singleCharSymbols = DEFAULT_SINGLE_CHAR_SYMBOLS;
@@ -69,14 +71,14 @@ public class TokenizerImpl implements Tokenizer {
 
     /** The error description. */
     private String errorDescription;
-    
+
     /** A place to store the current token. */
     private Token token;
     private Token lastToken;
 
     /** For timing. */
 //    private long duration = 0;
-        
+
 
     /**
      * Constructs a Tokenizer.
@@ -92,7 +94,7 @@ public class TokenizerImpl implements Tokenizer {
      * @param string the string to tokenize
      */
     public TokenizerImpl(String string) {
-	setInputText(string);
+        setInputText(string);
     }
 
     /**
@@ -102,7 +104,7 @@ public class TokenizerImpl implements Tokenizer {
      * @param file where to read the input from
      */
     public TokenizerImpl(Reader file) {
-	setInputReader(file);
+        setInputReader(file);
     }
 
 
@@ -112,9 +114,9 @@ public class TokenizerImpl implements Tokenizer {
      * @param symbols the whitespace symbols
      */
     public void setWhitespaceSymbols(String symbols) {
-	whitespaceSymbols = symbols;
+        whitespaceSymbols = symbols;
     }
-        
+
 
     /**
      * Sets the single character symbols of this Tokenizer to the given
@@ -123,9 +125,9 @@ public class TokenizerImpl implements Tokenizer {
      * @param symbols the single character symbols
      */
     public void setSingleCharSymbols(String symbols) {
-	singleCharSymbols = symbols;
+        singleCharSymbols = symbols;
     }
-        
+
 
     /**
      * Sets the prepunctuation symbols of this Tokenizer to the given
@@ -134,9 +136,9 @@ public class TokenizerImpl implements Tokenizer {
      * @param symbols the prepunctuation symbols
      */
     public void setPrepunctuationSymbols(String symbols) {
-	prepunctuationSymbols = symbols;
+        prepunctuationSymbols = symbols;
     }
-        
+
 
     /**
      * Sets the postpunctuation symbols of this Tokenizer to the given
@@ -145,9 +147,9 @@ public class TokenizerImpl implements Tokenizer {
      * @param symbols the postpunctuation symbols
      */
     public void setPostpunctuationSymbols(String symbols) {
-	postpunctuationSymbols = symbols;
+        postpunctuationSymbols = symbols;
     }
-    
+
 
     /**
      * Sets the text to tokenize. 
@@ -155,12 +157,12 @@ public class TokenizerImpl implements Tokenizer {
      * @param  inputString  the string to tokenize
      */
     public void setInputText(String inputString) {
-	inputText = inputString;
-	currentPosition = 0;
-	
-	if (inputText != null) {
-	    getNextChar();
-	}
+        inputText = inputString;
+        currentPosition = 0;
+
+        if (inputText != null) {
+            getNextChar();
+        }
     }
 
     /**
@@ -169,15 +171,15 @@ public class TokenizerImpl implements Tokenizer {
      * @param  reader the input source
      */
     public void setInputReader(Reader reader) {
-	this.reader = reader;
-	getNextChar();
+        this.reader = reader;
+        getNextChar();
     }
-    
+
 
     /**
      * Returns the next token.
      *
-     * @return  the next token if it exists,
+     * @return the next token if it exists,
      *          <code>null</code> if no more tokens
      */
     public Token getNextToken() {
@@ -209,7 +211,7 @@ public class TokenizerImpl implements Tokenizer {
 
         return token;
     }
-    
+
 
     /**
      * Returns <code>true</code> if there are more tokens,
@@ -219,10 +221,10 @@ public class TokenizerImpl implements Tokenizer {
      *         <code>false</code> otherwise
      */
     public boolean hasMoreTokens() {
-	int nextChar = currentChar;
-	return (nextChar != EOF);
+        int nextChar = currentChar;
+        return (nextChar != EOF);
     }
-    
+
 
     /**
      * Advances the currentPosition pointer by 1 (if not exceeding
@@ -259,7 +261,7 @@ public class TokenizerImpl implements Tokenizer {
         }
         return currentChar;
     }
-    
+
 
     /**
      * Starting from the current position of the input text,
@@ -269,13 +271,13 @@ public class TokenizerImpl implements Tokenizer {
      * @param  charClass  the type of characters to look for
      * @param  buffer  the place to append characters of type charClass
      *
-     * @return  a string of characters starting from the current position
+     * @return a string of characters starting from the current position
      *          of the input text, until it encounters a character not
      *          in the string charClass
      *
      */
     private String getTokenOfCharClass(String charClass) {
-	return getTokenByCharClass(charClass, true);
+        return getTokenByCharClass(charClass, true);
     }
 
     /**
@@ -287,14 +289,14 @@ public class TokenizerImpl implements Tokenizer {
      *
      * @param  endingCharClass  the type of characters to look for
      *
-     * @return  a string of characters from the current position until
+     * @return a string of characters from the current position until
      *          it encounters characters in endingCharClass
      *
      */
     private String getTokenNotOfCharClass(String endingCharClass) {
-	return getTokenByCharClass(endingCharClass, false);
+        return getTokenByCharClass(endingCharClass, false);
     }
-    
+
     /**
      * Provides a `compressed' method from getTokenOfCharClass() and 
      * getTokenNotOfCharClass().
@@ -310,11 +312,11 @@ public class TokenizerImpl implements Tokenizer {
      * @param  containThisCharClass  determines if you want characters
      *                in charClass in the returned string or not
      *
-     * @return  a string of characters from the current position until
+     * @return a string of characters from the current position until
      *          it encounters characters in endingCharClass
      */
-    private String getTokenByCharClass(String charClass, 
-                                       boolean containThisCharClass) {	
+    private String getTokenByCharClass(String charClass,
+                                       boolean containThisCharClass) {
         final StringBuilder buffer = new StringBuilder();
 
         // if we want the returned string to contain chars in charClass, then
@@ -348,7 +350,7 @@ public class TokenizerImpl implements Tokenizer {
 
         while (position > 0
                 && postpunctuationSymbols.indexOf((int) tokenWord
-                        .charAt(position)) != -1) {
+                .charAt(position)) != -1) {
             position--;
         }
 
@@ -370,7 +372,7 @@ public class TokenizerImpl implements Tokenizer {
      * 		<code>false</code> otherwise
      */
     public boolean hasErrors() {
-	return errorDescription != null;
+        return errorDescription != null;
     }
 
     /**
@@ -381,7 +383,7 @@ public class TokenizerImpl implements Tokenizer {
      * @return a description of the last error that occurred.
      */
     public String getErrorDescription() {
-	return errorDescription;
+        return errorDescription;
     }
 
     /**
@@ -419,8 +421,8 @@ public class TokenizerImpl implements Tokenizer {
                     Character.isUpperCase(token.getWord().charAt(0))
                     &&
                     /* last word isn't an abbreviation */
-                    !(Character.isUpperCase(lastWord.charAt(lastWordLength - 1)) 
-                        || (lastWordLength < 4
+                    !(Character.isUpperCase(lastWord.charAt(lastWordLength - 1))
+                            || (lastWordLength < 4
                             && Character.isUpperCase(lastWord.charAt(0))))) {
                 return true;
             }

@@ -1,13 +1,14 @@
 /**
  * Portions Copyright 2001 Sun Microsystems, Inc.
- * Portions Copyright 1999-2001 Language Technologies Institute, 
+ * Portions Copyright 1999-2001 Language Technologies Institute,
  * Carnegie Mellon University.
  * All Rights Reserved.  Use is subject to license terms.
- * 
+ * <p>
  * See the file "license.terms" for information on usage and
- * redistribution of this file, and for a DISCLAIMER OF ALL 
+ * redistribution of this file, and for a DISCLAIMER OF ALL
  * WARRANTIES.
  */
+
 package com.sun.speech.freetts.en.us;
 
 import java.io.IOException;
@@ -18,12 +19,13 @@ import com.sun.speech.freetts.VoiceManager;
 import com.sun.speech.freetts.lexicon.LexiconImpl;
 import com.sun.speech.freetts.util.BulkTimer;
 
+
 /**
  * Provides a CMU lexicon-specific implementation of a Lexicon that is
  * stored in a text file.
  */
 public class CMULexicon extends LexiconImpl {
-    
+
     /**
      * Vowels
      */
@@ -58,9 +60,9 @@ public class CMULexicon extends LexiconImpl {
      *
      */
     public CMULexicon(URL compiledURL,
-                       URL addendaURL,
-                       URL  letterToSoundURL,
-		       boolean binary) {
+                      URL addendaURL,
+                      URL letterToSoundURL,
+                      boolean binary) {
         setLexiconParameters(compiledURL, addendaURL, letterToSoundURL, binary);
     }
 
@@ -68,7 +70,7 @@ public class CMULexicon extends LexiconImpl {
      * Creates the default CMU Lexicon which is a binary lexicon
      */
     public CMULexicon() {
-	this("cmulex");
+        this("cmulex");
     }
 
     /**
@@ -89,10 +91,10 @@ public class CMULexicon extends LexiconImpl {
                 "/com/sun/speech/freetts/en/us/" + basename + "_lts." + type);
         URL compiledURL = classLoader.getResource(
                 "/com/sun/speech/freetts/en/us/" + basename
-                + "_compiled." + type);
+                        + "_compiled." + type);
         URL addendaURL = classLoader.getResource(
                 "/com/sun/speech/freetts/en/us/" + basename
-                + "_addenda." + type);
+                        + "_addenda." + type);
 
         /* Just another try with possibly a different class loader
          * if the above didn't work.
@@ -104,24 +106,12 @@ public class CMULexicon extends LexiconImpl {
             addendaURL = cls.getResource(basename + "_addenda." + type);
             if (letterToSoundURL == null) {
                 System.err.println(
-                    "CMULexicon: Oh no! Couldn't find lexicon data for '" + basename + "' of type '" + type + "'!");
+                        "CMULexicon: Oh no! Couldn't find lexicon data for '" + basename + "' of type '" + type + "'!");
             }
         }
-        
-	setLexiconParameters(compiledURL, addendaURL,
+
+        setLexiconParameters(compiledURL, addendaURL,
                 letterToSoundURL, useBinaryIO);
-    }
-    
-    /**
-     * Get the CMULexicon.
-     *
-     * @param useBinaryIO if true use binary IO to load DB
-     *
-     * @throws IOException if problems occurred while reading the data
-     */ 
-    static public CMULexicon getInstance( boolean useBinaryIO) 
-						throws IOException {
-	return getInstance("cmulex", useBinaryIO);
     }
 
     /**
@@ -130,15 +120,27 @@ public class CMULexicon extends LexiconImpl {
      * @param useBinaryIO if true use binary IO to load DB
      *
      * @throws IOException if problems occurred while reading the data
-     */ 
-    static public CMULexicon getInstance(String basename, boolean useBinaryIO) 
-						throws IOException {
-	CMULexicon lexicon = new CMULexicon(basename, useBinaryIO);
-	lexicon.load();
+     */
+    static public CMULexicon getInstance(boolean useBinaryIO)
+            throws IOException {
+        return getInstance("cmulex", useBinaryIO);
+    }
+
+    /**
+     * Get the CMULexicon.
+     *
+     * @param useBinaryIO if true use binary IO to load DB
+     *
+     * @throws IOException if problems occurred while reading the data
+     */
+    static public CMULexicon getInstance(String basename, boolean useBinaryIO)
+            throws IOException {
+        CMULexicon lexicon = new CMULexicon(basename, useBinaryIO);
+        lexicon.load();
         return lexicon;
     }
 
-        
+
     /**
      * Determines if the currentPhone represents a new syllable
      * boundary.
@@ -168,7 +170,7 @@ public class CMULexicon extends LexiconImpl {
         } else {
             int p, n, nn;
             p = getSonority(
-                (String) syllablePhones.get(syllablePhones.size() - 1));
+                    (String) syllablePhones.get(syllablePhones.size() - 1));
             n = getSonority(wordPhones[currentWordPhone]);
             nn = getSonority(wordPhones[currentWordPhone + 1]);
             if ((p <= n) && (n <= nn)) {
@@ -178,7 +180,7 @@ public class CMULexicon extends LexiconImpl {
             }
         }
     }
-    
+
     /**
      * Determines if the given phone represents a silent phone.
      *
@@ -209,7 +211,7 @@ public class CMULexicon extends LexiconImpl {
         }
         return false;
     }
-    
+
     /**
      * Determines if there is a vowel in given list of phones.
      *
@@ -226,7 +228,7 @@ public class CMULexicon extends LexiconImpl {
         }
         return false;
     }
-    
+
     /**
      * Determines if the given phone is a vowel
      *
@@ -236,29 +238,29 @@ public class CMULexicon extends LexiconImpl {
      *		otherwise <code>false</code>. 
      */
     static protected boolean isVowel(String phone) {
-        return VOWELS.indexOf(phone.substring(0,1)) != -1;
+        return VOWELS.indexOf(phone.substring(0, 1)) != -1;
     }
 
     /**
      * Determines the sonority for the given phone.
-     * 
+     *
      * @param phone the phone of interest
-     * 
+     *
      * @return an integer that classifies phone transitions
      */
     static protected int getSonority(String phone) {
         if (isVowel(phone) || isSilence(phone)) {
             return 5;
-        } else if (GLIDES_LIQUIDS.indexOf(phone.substring(0,1)) != -1) {
-            return 4; 
-        } else if (NASALS.indexOf(phone.substring(0,1)) != -1) {
+        } else if (GLIDES_LIQUIDS.indexOf(phone.substring(0, 1)) != -1) {
+            return 4;
+        } else if (NASALS.indexOf(phone.substring(0, 1)) != -1) {
             return 3;
-        } else if (VOICED_OBSTRUENTS.indexOf(phone.substring(0,1)) != -1) {
+        } else if (VOICED_OBSTRUENTS.indexOf(phone.substring(0, 1)) != -1) {
             return 2;
         } else {
             return 1;
         }
-    }    
+    }
 
     /**
      * Provides test code for the CMULexicon.
@@ -277,74 +279,74 @@ public class CMULexicon extends LexiconImpl {
      * </pre>
      */
     public static void main(String[] args) {
-	LexiconImpl lex, lex2;
-	boolean showTimes = false;
+        LexiconImpl lex, lex2;
+        boolean showTimes = false;
         String srcPath = ".";
         String destPath = ".";
-	String baseName = "cmulex";
+        String baseName = "cmulex";
 
-	try {
-	    if (args.length > 0) {
-		BulkTimer.LOAD.start();
-		for (int i = 0 ; i < args.length; i++) {
+        try {
+            if (args.length > 0) {
+                BulkTimer.LOAD.start();
+                for (int i = 0; i < args.length; i++) {
                     if (args[i].equals("-src")) {
                         srcPath = args[++i];
                     } else if (args[i].equals("-dest")) {
                         destPath = args[++i];
-		    } else if (args[i].equals("-name")
-                               && i < args.length - 1) {
-			baseName = args[++i];
-		    } else if (args[i].equals("-generate_binary")) {
+                    } else if (args[i].equals("-name")
+                            && i < args.length - 1) {
+                        baseName = args[++i];
+                    } else if (args[i].equals("-generate_binary")) {
 
-			 System.out.println("Loading " + baseName);
-                         String path = "file:" + srcPath + "/" + baseName;
-                         lex = new CMULexicon(
-                             new URL(path + "_compiled.txt"),
-                             new URL(path + "_addenda.txt"),
-                             new URL(path + "_lts.txt"),
-                             false);
-			 BulkTimer.LOAD.start("load_text");
-                         lex.load();
-			 BulkTimer.LOAD.stop("load_text");
+                        System.out.println("Loading " + baseName);
+                        String path = "file:" + srcPath + "/" + baseName;
+                        lex = new CMULexicon(
+                                new URL(path + "_compiled.txt"),
+                                new URL(path + "_addenda.txt"),
+                                new URL(path + "_lts.txt"),
+                                false);
+                        BulkTimer.LOAD.start("load_text");
+                        lex.load();
+                        BulkTimer.LOAD.stop("load_text");
 
-			 System.out.println("Dumping " + baseName);
-			 BulkTimer.LOAD.start("dump_text");
-			 lex.dumpBinary(destPath + "/" + baseName);
-			 BulkTimer.LOAD.stop("dump_text");
+                        System.out.println("Dumping " + baseName);
+                        BulkTimer.LOAD.start("dump_text");
+                        lex.dumpBinary(destPath + "/" + baseName);
+                        BulkTimer.LOAD.stop("dump_text");
 
-		    } else if (args[i].equals("-compare")) {
+                    } else if (args[i].equals("-compare")) {
 
-			BulkTimer.LOAD.start("load_text");
-			lex = CMULexicon.getInstance(baseName, false);
-			BulkTimer.LOAD.stop("load_text");
+                        BulkTimer.LOAD.start("load_text");
+                        lex = CMULexicon.getInstance(baseName, false);
+                        BulkTimer.LOAD.stop("load_text");
 
-			BulkTimer.LOAD.start("load_binary");
-			lex2 = CMULexicon.getInstance(baseName, true);
-			BulkTimer.LOAD.stop("load_binary");
+                        BulkTimer.LOAD.start("load_binary");
+                        lex2 = CMULexicon.getInstance(baseName, true);
+                        BulkTimer.LOAD.stop("load_binary");
 
-			BulkTimer.LOAD.start("compare");
-			lex.compare(lex2);
-			BulkTimer.LOAD.stop("compare");
-		    } else if (args[i].equals("-showtimes")) {
-			showTimes = true;
-		    } else {
-			System.out.println("Unknown option " + args[i]);
-		    }
-		}
-		BulkTimer.LOAD.stop();
-		if (showTimes) {
-		    BulkTimer.LOAD.show("CMULexicon loading and dumping");
-		}
-	    } else {
-		System.out.println("Options: ");
-		System.out.println("    -src path");
-		System.out.println("    -dest path");
-		System.out.println("    -compare");
-		System.out.println("    -generate_binary");
-		System.out.println("    -showtimes");
-	    }
-	} catch (IOException ioe) {
-	    System.err.println(ioe);
-	}
+                        BulkTimer.LOAD.start("compare");
+                        lex.compare(lex2);
+                        BulkTimer.LOAD.stop("compare");
+                    } else if (args[i].equals("-showtimes")) {
+                        showTimes = true;
+                    } else {
+                        System.out.println("Unknown option " + args[i]);
+                    }
+                }
+                BulkTimer.LOAD.stop();
+                if (showTimes) {
+                    BulkTimer.LOAD.show("CMULexicon loading and dumping");
+                }
+            } else {
+                System.out.println("Options: ");
+                System.out.println("    -src path");
+                System.out.println("    -dest path");
+                System.out.println("    -compare");
+                System.out.println("    -generate_binary");
+                System.out.println("    -showtimes");
+            }
+        } catch (IOException ioe) {
+            System.err.println(ioe);
+        }
     }
 }

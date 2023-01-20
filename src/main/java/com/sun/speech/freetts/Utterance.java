@@ -1,13 +1,14 @@
 /**
  * Portions Copyright 2001 Sun Microsystems, Inc.
- * Portions Copyright 1999-2001 Language Technologies Institute, 
+ * Portions Copyright 1999-2001 Language Technologies Institute,
  * Carnegie Mellon University.
  * All Rights Reserved.  Use is subject to license terms.
- * 
+ * <p>
  * See the file "license.terms" for information on usage and
- * redistribution of this file, and for a DISCLAIMER OF ALL 
+ * redistribution of this file, and for a DISCLAIMER OF ALL
  * WARRANTIES.
  */
+
 package com.sun.speech.freetts;
 
 import java.io.PrintWriter;
@@ -15,6 +16,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import com.sun.speech.freetts.util.SegmentRelationUtils;
+
 
 /**
  * Holds all the data for an utterance to be spoken.
@@ -33,8 +35,8 @@ public class Utterance implements FeatureSet, Serializable {
     private Voice voice;
     private FeatureSet features;
     private FeatureSet relations;
-    private boolean first;	// first in a connected series
-    private boolean last;	// last in a connected series
+    private boolean first;    // first in a connected series
+    private boolean last;    // last in a connected series
     private FreeTTSSpeakable speakable;
 
     /**
@@ -43,9 +45,9 @@ public class Utterance implements FeatureSet, Serializable {
      * @param voice the voice associated with the utterance
      */
     public Utterance(Voice voice) {
-	this.voice = voice;
-	features = new FeatureSetImpl();
-	relations = new FeatureSetImpl();
+        this.voice = voice;
+        features = new FeatureSetImpl();
+        relations = new FeatureSetImpl();
     }
 
     /**
@@ -55,8 +57,8 @@ public class Utterance implements FeatureSet, Serializable {
      * @param tokenList the list of tokens for this utterance
      */
     public Utterance(Voice voice, List<Token> tokenList) {
-	this(voice);
-	setTokenList(tokenList);
+        this(voice);
+        setTokenList(tokenList);
     }
 
     /**
@@ -65,7 +67,7 @@ public class Utterance implements FeatureSet, Serializable {
      * @param speakable the speakable item for this utterance
      */
     public void setSpeakable(FreeTTSSpeakable speakable) {
-	this.speakable = speakable;
+        this.speakable = speakable;
     }
 
     /**
@@ -74,7 +76,7 @@ public class Utterance implements FeatureSet, Serializable {
      * @return the queue item
      */
     public FreeTTSSpeakable getSpeakable() {
-	return speakable;
+        return speakable;
     }
 
     /**
@@ -86,9 +88,9 @@ public class Utterance implements FeatureSet, Serializable {
      * @return the newly created relation
      */
     public Relation createRelation(String name) {
-	Relation relation = new Relation(name, this);
-	relations.setObject(name, relation);
-	return relation;
+        Relation relation = new Relation(name, this);
+        relations.setObject(name, relation);
+        return relation;
     }
 
 
@@ -100,7 +102,7 @@ public class Utterance implements FeatureSet, Serializable {
      * @return the relation or null if the relation is not found
      */
     public Relation getRelation(String name) {
-	return (Relation) relations.getObject(name);
+        return (Relation) relations.getObject(name);
     }
 
     /**
@@ -110,7 +112,7 @@ public class Utterance implements FeatureSet, Serializable {
      * @param name the name of the relation of interest.
      */
     public boolean hasRelation(String name) {
-	return relations.isPresent(name);
+        return relations.isPresent(name);
     }
 
     /**
@@ -119,7 +121,7 @@ public class Utterance implements FeatureSet, Serializable {
      * @return the voice associated with this utterance.
      */
     public Voice getVoice() {
-	return voice;
+        return voice;
     }
 
     /**
@@ -131,14 +133,14 @@ public class Utterance implements FeatureSet, Serializable {
      * @param justRelations if true don't print voice features
      */
     public void dump(PrintWriter output, int pad, String title,
-	    	boolean justRelations) {
-	output.println(" ============ " + title + " ========== ");
-	if (!justRelations) {
-	    voice.dump(output, pad + 4, "Voice");
-	    features.dump(output, pad + 4, "Features");
-	}
-	relations.dump(output, pad + 4, "Relations");
-	output.flush();
+                     boolean justRelations) {
+        output.println(" ============ " + title + " ========== ");
+        if (!justRelations) {
+            voice.dump(output, pad + 4, "Voice");
+            features.dump(output, pad + 4, "Features");
+        }
+        relations.dump(output, pad + 4, "Relations");
+        output.flush();
     }
 
     /**
@@ -149,7 +151,7 @@ public class Utterance implements FeatureSet, Serializable {
      * @param title the title to print when dumping out the utterance
      */
     public void dump(PrintWriter output, int pad, String title) {
-	dump(output, pad, title, false);
+        dump(output, pad, title, false);
     }
 
     /**
@@ -159,7 +161,7 @@ public class Utterance implements FeatureSet, Serializable {
      * @param title the title to print when dumping out the utterance
      */
     public void dump(PrintWriter output, String title) {
-	dump(output, 0, title, false);
+        dump(output, 0, title, false);
     }
 
     /**
@@ -168,7 +170,7 @@ public class Utterance implements FeatureSet, Serializable {
      * @param title the title to print when dumping out the utterance
      */
     public void dump(String title) {
-	dump(new PrintWriter(System.out), 0, title, false);
+        dump(new PrintWriter(System.out), 0, title, false);
     }
 
     /**
@@ -176,7 +178,7 @@ public class Utterance implements FeatureSet, Serializable {
      * @param title the title to print when dumping out the utterance
      */
     public void dumpRelations(String title) {
-	dump(new PrintWriter(System.out), 0, title, true);
+        dump(new PrintWriter(System.out), 0, title, true);
     }
 
     /**
@@ -188,11 +190,11 @@ public class Utterance implements FeatureSet, Serializable {
      * @return true if the named feature is present
      */
     public boolean isPresent(String name) {
-	if (!features.isPresent(name)) {
-	    return getVoice().getFeatures().isPresent(name);
-	} else {
-	    return true;
-	}
+        if (!features.isPresent(name)) {
+            return getVoice().getFeatures().isPresent(name);
+        } else {
+            return true;
+        }
     }
 
     /**
@@ -201,7 +203,7 @@ public class Utterance implements FeatureSet, Serializable {
      * @param name the name of the feature of interest
      */
     public void remove(String name) {
-	features.remove(name);
+        features.remove(name);
     }
 
     /**
@@ -218,11 +220,11 @@ public class Utterance implements FeatureSet, Serializable {
      *   String
      */
     public String getString(String name) {
-	if (!features.isPresent(name)) {
-	    return getVoice().getFeatures().getString(name);
-	} else {
-	    return features.getString(name);
-	}
+        if (!features.isPresent(name)) {
+            return getVoice().getFeatures().getString(name);
+        } else {
+            return features.getString(name);
+        }
     }
 
     /**
@@ -239,11 +241,11 @@ public class Utterance implements FeatureSet, Serializable {
      *   int
      */
     public int getInt(String name) {
-	if (!features.isPresent(name)) {
-	    return getVoice().getFeatures().getInt(name);
-	} else {
-	    return features.getInt(name);
-	}
+        if (!features.isPresent(name)) {
+            return getVoice().getFeatures().getInt(name);
+        } else {
+            return features.getInt(name);
+        }
     }
 
     /**
@@ -260,11 +262,11 @@ public class Utterance implements FeatureSet, Serializable {
      *   float
      */
     public float getFloat(String name) {
-	if (!features.isPresent(name)) {
-	    return getVoice().getFeatures().getFloat(name);
-	} else {
-	    return features.getFloat(name);
-	}
+        if (!features.isPresent(name)) {
+            return getVoice().getFeatures().getFloat(name);
+        } else {
+            return features.getFloat(name);
+        }
     }
 
     /**
@@ -278,11 +280,11 @@ public class Utterance implements FeatureSet, Serializable {
      *   is not found
      */
     public Object getObject(String name) {
-	if (!features.isPresent(name)) {
-	    return getVoice().getFeatures().getObject(name);
-	} else {
-	    return features.getObject(name);
-	}
+        if (!features.isPresent(name)) {
+            return getVoice().getFeatures().getObject(name);
+        } else {
+            return features.getObject(name);
+        }
     }
 
     /**
@@ -292,7 +294,7 @@ public class Utterance implements FeatureSet, Serializable {
      * @param value the value of the feature
      */
     public void setInt(String name, int value) {
-	features.setInt(name, value);
+        features.setInt(name, value);
     }
 
     /**
@@ -302,7 +304,7 @@ public class Utterance implements FeatureSet, Serializable {
      * @param value the value of the feature
      */
     public void setFloat(String name, float value) {
-	features.setFloat(name, value);
+        features.setFloat(name, value);
     }
 
     /**
@@ -312,7 +314,7 @@ public class Utterance implements FeatureSet, Serializable {
      * @param value the value of the feature
      */
     public void setString(String name, String value) {
-	features.setString(name, value);
+        features.setString(name, value);
     }
 
     /**
@@ -322,7 +324,7 @@ public class Utterance implements FeatureSet, Serializable {
      * @param value the value of the feature
      */
     public void setObject(String name, Object value) {
-	features.setObject(name, value);
+        features.setObject(name, value);
     }
 
     /**
@@ -336,14 +338,14 @@ public class Utterance implements FeatureSet, Serializable {
      *   given relation is not present in the Utterance
      */
     public Item getItem(String relation, float time) {
-        
+
         Relation segmentRelation = null;
-        
+
         if ((segmentRelation = getRelation(Relation.SEGMENT)) == null) {
             throw new IllegalStateException
-                ("Utterance has no Segment relation");
+                    ("Utterance has no Segment relation");
         }
-        
+
         String pathName = null;
 
         if (relation.equals(Relation.SEGMENT)) {
@@ -355,20 +357,20 @@ public class Utterance implements FeatureSet, Serializable {
         } else if (relation.equals(Relation.WORD)) {
             pathName = "R:SylStructure.parent.parent.R:Word";
         } else if (relation.equals(Relation.TOKEN)) {
-	     pathName = "R:SylStructure.parent.parent.R:Token.parent";
+            pathName = "R:SylStructure.parent.parent.R:Token.parent";
         } else if (relation.equals(Relation.PHRASE)) {
             pathName = "R:SylStructure.parent.parent.R:Phrase.parent";
         } else {
             throw new IllegalArgumentException
-                ("Utterance.getItem(): relation cannot be " + relation);
+                    ("Utterance.getItem(): relation cannot be " + relation);
         }
-        
+
         PathExtractor path = new PathExtractorImpl(pathName, false);
-	 
+
         // get the Item in the Segment Relation with the given time
         Item segmentItem = SegmentRelationUtils.getItem
-            (segmentRelation, time);
-        
+                (segmentRelation, time);
+
         if (relation.equals(Relation.SEGMENT)) {
             return segmentItem;
         } else if (segmentItem != null) {
@@ -387,14 +389,14 @@ public class Utterance implements FeatureSet, Serializable {
      * @return the duration of this Utterance in seconds
      */
     public float getDuration() {
-	float duration = -1;
-	if ((duration = getLastFloat(Relation.SEGMENT, "end")) == -1) {
-	    if ((duration = getLastFloat(Relation.TARGET, "pos")) == -1) {
-		throw new IllegalStateException
-		    ("Utterance: Error finding duration");
-	    }
-	}
-	return duration;
+        float duration = -1;
+        if ((duration = getLastFloat(Relation.SEGMENT, "end")) == -1) {
+            if ((duration = getLastFloat(Relation.TARGET, "pos")) == -1) {
+                throw new IllegalStateException
+                        ("Utterance: Error finding duration");
+            }
+        }
+        return duration;
     }
 
     /**
@@ -405,21 +407,21 @@ public class Utterance implements FeatureSet, Serializable {
      * or -1 otherwise
      */
     private float getLastFloat(String relationName, String feature) {
-	float duration = -1;
-	Relation relation;
-	if ((relation = getRelation(relationName)) != null) {
-	    Item lastItem = relation.getTail();
-	    if (lastItem != null) {
-		duration = lastItem.getFeatures().getFloat(feature);
-	    }
-	}
-	return duration;
+        float duration = -1;
+        Relation relation;
+        if ((relation = getRelation(relationName)) != null) {
+            Item lastItem = relation.getTail();
+            if (lastItem != null) {
+                duration = lastItem.getFeatures().getFloat(feature);
+            }
+        }
+        return duration;
     }
 
 
     /**
      * Sets the input text for this utterance
-     * 
+     *
      * @param tokenList the set of tokens for this utterance
      *
      */
@@ -453,12 +455,12 @@ public class Utterance implements FeatureSet, Serializable {
                 FeatureSet featureSet = item.getFeatures();
                 featureSet.setString("name", tokenWord);
                 featureSet.setString("whitespace", token.getWhitespace());
-                featureSet.setString("prepunctuation", 
+                featureSet.setString("prepunctuation",
                         token.getPrepunctuation());
                 featureSet.setString("punc", token.getPostpunctuation());
-                featureSet.setString("file_pos", 
+                featureSet.setString("file_pos",
                         String.valueOf(token.getPosition()));
-                featureSet.setString("line_number", 
+                featureSet.setString("line_number",
                         String.valueOf(token.getLineNumber()));
 
             }
@@ -473,7 +475,7 @@ public class Utterance implements FeatureSet, Serializable {
      *     connected utterances.
      */
     public boolean isFirst() {
-	return first;
+        return first;
     }
 
     /**
@@ -482,7 +484,7 @@ public class Utterance implements FeatureSet, Serializable {
      * @param first if true, the item is the first in a series
      */
     public void setFirst(boolean first) {
-	this.first = first;
+        this.first = first;
     }
 
     /**
@@ -493,7 +495,7 @@ public class Utterance implements FeatureSet, Serializable {
      *     connected utterances.
      */
     public boolean isLast() {
-	return last;
+        return last;
     }
 
     /**
@@ -502,6 +504,6 @@ public class Utterance implements FeatureSet, Serializable {
      * @param last if true, the item is the last in a series
      */
     public void setLast(boolean last) {
-	this.last = last;
+        this.last = last;
     }
 }

@@ -1,22 +1,23 @@
 /**
  * Copyright 2001 Sun Microsystems, Inc.
- * 
+ * <p>
  * See the file "license.terms" for information on usage and
- * redistribution of this file, and for a DISCLAIMER OF ALL 
+ * redistribution of this file, and for a DISCLAIMER OF ALL
  * WARRANTIES.
  */
+
 package com.sun.speech.freetts.audio;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
-
 import javax.sound.sampled.AudioFileFormat;
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 
 import com.sun.speech.freetts.util.Utilities;
+
 
 /**
  * Streams audio to multiple files as 8-bit samples, one per utterance. 
@@ -27,7 +28,7 @@ import com.sun.speech.freetts.util.Utilities;
 public class MultiFile8BitAudioPlayer implements AudioPlayer {
     // 8-bit unsigned little-endian mono audio
     private AudioFormat currentFormat = new AudioFormat
-    (8000, 8, 1, false, false);
+            (8000, 8, 1, false, false);
 
     private int fileCount = 0;
     private String baseName;
@@ -45,10 +46,10 @@ public class MultiFile8BitAudioPlayer implements AudioPlayer {
      */
     public MultiFile8BitAudioPlayer() {
         this(Utilities.getProperty(
-                 "com.sun.speech.freetts.AudioPlayer.baseName", "freetts"),
-             AudioFileFormat.Type.WAVE);
+                        "com.sun.speech.freetts.AudioPlayer.baseName", "freetts"),
+                AudioFileFormat.Type.WAVE);
     }
-    
+
     /**
      * Constructs a MultiFile8BitAudioPlayer 
      *
@@ -56,10 +57,10 @@ public class MultiFile8BitAudioPlayer implements AudioPlayer {
      * @param type the type of audio output
      *
      */
-    public MultiFile8BitAudioPlayer(String baseName, 
+    public MultiFile8BitAudioPlayer(String baseName,
                                     AudioFileFormat.Type type) {
-	this.baseName = baseName;
-	this.outputType = type;
+        this.baseName = baseName;
+        this.outputType = type;
     }
 
 
@@ -81,7 +82,7 @@ public class MultiFile8BitAudioPlayer implements AudioPlayer {
      * @return format the audio format
      */
     public AudioFormat getAudioFormat() {
-	return currentFormat;
+        return currentFormat;
     }
 
 
@@ -96,7 +97,7 @@ public class MultiFile8BitAudioPlayer implements AudioPlayer {
      */
     public synchronized void resume() {
     }
-	
+
     /**
      * Starts the first sample timer
      */
@@ -130,8 +131,8 @@ public class MultiFile8BitAudioPlayer implements AudioPlayer {
      * @return the current volume (between 0 and 1)
      */
     public float getVolume() {
-	return 1.0f;
-    }	      
+        return 1.0f;
+    }
 
     /**
      * Sets the current volume.
@@ -139,7 +140,7 @@ public class MultiFile8BitAudioPlayer implements AudioPlayer {
      * @param volume  the current volume (between 0 and 1)
      */
     public void setVolume(float volume) {
-    }	      
+    }
 
 
     /**
@@ -149,30 +150,30 @@ public class MultiFile8BitAudioPlayer implements AudioPlayer {
      * @param size the size of data between now and the end
      */
     public void begin(int size) {
-	outputData = new byte[size/2];
-	curIndex = 0;
+        outputData = new byte[size / 2];
+        curIndex = 0;
     }
 
     /**
      * {@inheritDoc}
      */
     public boolean end() throws IOException {
-	ByteArrayInputStream bais = new ByteArrayInputStream(outputData);
-	AudioInputStream ais = new AudioInputStream
-            (bais, currentFormat, 
-             outputData.length/currentFormat.getFrameSize());
-	String name = baseName;
-	name = name + fileCount;
-	name = name + "." + outputType.getExtension();
-	File file = new File(name);
-	try {
-	    AudioSystem.write(ais, outputType, file);
+        ByteArrayInputStream bais = new ByteArrayInputStream(outputData);
+        AudioInputStream ais = new AudioInputStream
+                (bais, currentFormat,
+                        outputData.length / currentFormat.getFrameSize());
+        String name = baseName;
+        name = name + fileCount;
+        name = name + "." + outputType.getExtension();
+        File file = new File(name);
+        try {
+            AudioSystem.write(ais, outputType, file);
             System.out.println("Wrote synthesized speech to " + name);
-	} catch (IllegalArgumentException iae) {
-	    throw new IOException("Can't write audio type " + outputType, iae);
-	}
-	fileCount++;
-	return true;
+        } catch (IllegalArgumentException iae) {
+            throw new IOException("Can't write audio type " + outputType, iae);
+        }
+        fileCount++;
+        return true;
     }
 
 
@@ -182,8 +183,8 @@ public class MultiFile8BitAudioPlayer implements AudioPlayer {
      * @return true if the audio played to completion, false if
      *   the audio was stopped
      */
-    public boolean drain()  {
-	return true;
+    public boolean drain() {
+        return true;
     }
 
     /**
@@ -191,8 +192,8 @@ public class MultiFile8BitAudioPlayer implements AudioPlayer {
      *
      * @return the amount of audio in milliseconds
      */
-    public synchronized long getTime()  {
-	return -1L;
+    public synchronized long getTime() {
+        return -1L;
     }
 
 
@@ -201,9 +202,8 @@ public class MultiFile8BitAudioPlayer implements AudioPlayer {
      */
     public synchronized void resetTime() {
     }
-    
 
-    
+
     /**
      * Writes the given bytes to the audio stream
      *
@@ -213,10 +213,10 @@ public class MultiFile8BitAudioPlayer implements AudioPlayer {
      *       	<code> false </code>if the write was cancelled.
      */
     public boolean write(byte[] audioData) {
-	return write(audioData, 0, audioData.length);
+        return write(audioData, 0, audioData.length);
     }
 
-    
+
     /**
      * Writes the given bytes to the audio stream
      *
@@ -230,9 +230,9 @@ public class MultiFile8BitAudioPlayer implements AudioPlayer {
     public boolean write(byte[] bytes, int offset, int size) {
         bytes = convert16To8Bits(bytes);
         size /= 2;
-	System.arraycopy(bytes, offset, outputData, curIndex, size);
-	curIndex += size;
-	return true;
+        System.arraycopy(bytes, offset, outputData, curIndex, size);
+        curIndex += size;
+        return true;
     }
 
 
@@ -245,7 +245,7 @@ public class MultiFile8BitAudioPlayer implements AudioPlayer {
      * @return unsigned 8-bit audio data
      */
     private static byte[] convert16To8Bits(byte[] samples16Bit) {
-        byte[] samples8Bit = new byte[samples16Bit.length/2];
+        byte[] samples8Bit = new byte[samples16Bit.length / 2];
         for (int i = 0, j = 0; i < samples16Bit.length; i += 2, j++) {
             int sample = (0x000000FF & samples16Bit[i]);
             samples8Bit[j] = (byte) (sample + 128);
@@ -260,7 +260,7 @@ public class MultiFile8BitAudioPlayer implements AudioPlayer {
      * @return the name of the audio player
      */
     public String toString() {
-	return "MultiFile8BitAudioPlayer";
+        return "MultiFile8BitAudioPlayer";
     }
 
     /**

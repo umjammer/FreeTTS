@@ -1,17 +1,17 @@
 /**
  * Copyright 1998-2001 Sun Microsystems, Inc.
- * 
+ * <p>
  * See the file "license.terms" for information on usage and
- * redistribution of this file, and for a DISCLAIMER OF ALL 
+ * redistribution of this file, and for a DISCLAIMER OF ALL
  * WARRANTIES.
  */
+
 package com.sun.speech.engine.synthesis;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringReader;
 import java.net.URL;
-
 import javax.speech.synthesis.JSMLException;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -20,6 +20,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
+
 
 /**
  * Parses a JSML 0.6 document and returns a DOM.
@@ -33,7 +34,7 @@ public class JSMLParser {
      * The DOM.
      */
     Document document;
-    
+
     /**
      * Creates a new JSMLParser for the given JSML
      * text.  Parses the text immediately and return any errors.
@@ -50,17 +51,17 @@ public class JSMLParser {
      * @throws JSMLException if the JSML text contains errors
      */
     public JSMLParser(String jsmlText, boolean validate)
-        throws JSMLException {
+            throws JSMLException {
 
         // Handle case where text does not include a root element
         //
-        if (!(jsmlText.substring(0,2).equals("<?"))) {
+        if (!(jsmlText.substring(0, 2).equals("<?"))) {
             jsmlText = "<jsml>\n" + jsmlText + "</jsml>\n";
         }
 
         try {
             document = parse(new InputSource(new StringReader(jsmlText)),
-                             validate);
+                    validate);
         } catch (IOException e) {
             throw new JSMLException("JSMLParser: " + e.getMessage());
         }
@@ -82,8 +83,8 @@ public class JSMLParser {
      * @throws JSMLException if the JSML text contains errors
      * @throws IOException if problems encountered with URL
      */
-    public JSMLParser(URL jsmlSource, boolean validate) 
-        throws JSMLException, IOException {
+    public JSMLParser(URL jsmlSource, boolean validate)
+            throws JSMLException, IOException {
         final InputStream in = jsmlSource.openStream();
         final InputSource source = new InputSource(in);
         document = parse(source, validate);
@@ -107,14 +108,14 @@ public class JSMLParser {
      *         error creating the document builder.
      */
     private DocumentBuilder getDocumentBuilder(boolean validate)
-        throws JSMLException {
+            throws JSMLException {
         if (validate && (validatingDocumentBuilder != null)) {
             return validatingDocumentBuilder;
         } else if (!validate && (nonvalidatingDocumentBuilder != null)) {
             return nonvalidatingDocumentBuilder;
         }
         final DocumentBuilderFactory dbf =
-            DocumentBuilderFactory.newInstance();
+                DocumentBuilderFactory.newInstance();
 
         dbf.setValidating(validate);
         dbf.setIgnoringComments(true);
@@ -132,7 +133,7 @@ public class JSMLParser {
             return db;
         } catch (ParserConfigurationException e) {
             throw new JSMLException(
-                "JSMLParser: " + e.getMessage());
+                    "JSMLParser: " + e.getMessage());
         }
     }
 
@@ -147,7 +148,7 @@ public class JSMLParser {
      * @throws IOException if problems encountered with <code>source</code>
      */
     protected Document parse(InputSource source, boolean validate)
-        throws JSMLException, IOException {
+            throws JSMLException, IOException {
         final DocumentBuilder db = getDocumentBuilder(validate);
         final Document doc;
         try {

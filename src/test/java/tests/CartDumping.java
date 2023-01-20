@@ -17,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * JUnit tests Tests to dump cart trees into dot files
- * 
+ *
  * @version 1.0
  */
 public class CartDumping {

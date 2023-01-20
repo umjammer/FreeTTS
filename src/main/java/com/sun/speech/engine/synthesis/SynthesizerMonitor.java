@@ -1,16 +1,16 @@
 /**
  * Copyright 1998-2001 Sun Microsystems, Inc.
- * 
+ * <p>
  * See the file "license.terms" for information on usage and
- * redistribution of this file, and for a DISCLAIMER OF ALL 
+ * redistribution of this file, and for a DISCLAIMER OF ALL
  * WARRANTIES.
  */
+
 package com.sun.speech.engine.synthesis;
 
 import java.awt.Component;
 import java.awt.GridLayout;
 import java.util.Enumeration;
-
 import javax.speech.EngineEvent;
 import javax.speech.EngineListener;
 import javax.speech.synthesis.Synthesizer;
@@ -21,6 +21,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import com.sun.speech.engine.EngineMonitor;
+
 
 /**
  * Simple GUI that monitors events and state changes of an
@@ -73,8 +74,8 @@ public class SynthesizerMonitor extends EngineMonitor {
             statePanel = (JPanel) super.getStatePanel();
             JPanel queueStatePanel = new JPanel();
             queueStatePanel.setBorder(
-                BorderFactory.createTitledBorder("Synthesizer State:"));
-            queueStatePanel.setLayout(new GridLayout(4,1));        
+                    BorderFactory.createTitledBorder("Synthesizer State:"));
+            queueStatePanel.setLayout(new GridLayout(4, 1));
             queueEmptyLabel = new JLabel("QUEUE_EMPTY");
             queueNotEmptyLabel = new JLabel("QUEUE_NOT_EMPTY");
             queueSizeLabel = new JLabel("Queue Size: XXX");
@@ -92,13 +93,13 @@ public class SynthesizerMonitor extends EngineMonitor {
         super.updateGUIComponents();
         if (statePanel != null) {
             queueEmptyLabel.setEnabled(
-                engine.testEngineState(Synthesizer.QUEUE_EMPTY));
+                    engine.testEngineState(Synthesizer.QUEUE_EMPTY));
             queueNotEmptyLabel.setEnabled(
-                engine.testEngineState(Synthesizer.QUEUE_NOT_EMPTY));
+                    engine.testEngineState(Synthesizer.QUEUE_NOT_EMPTY));
 
-	    Synthesizer synth = (Synthesizer) engine;
-	    int queueSize = countElements(synth.enumerateQueue());
-	    queueSizeLabel.setText("Queue Size: " + queueSize + "  ");
+            Synthesizer synth = (Synthesizer) engine;
+            int queueSize = countElements(synth.enumerateQueue());
+            queueSizeLabel.setText("Queue Size: " + queueSize + "  ");
         }
     }
 
@@ -110,26 +111,26 @@ public class SynthesizerMonitor extends EngineMonitor {
      * @return the number of elements in the enumeration
      */
     private int countElements(Enumeration e) {
-	int count = 0;
-	while (e.hasMoreElements()) {
-	    e.nextElement();
-	    count++;
-	}
-	return count;
+        int count = 0;
+        while (e.hasMoreElements()) {
+            e.nextElement();
+            count++;
+        }
+        return count;
     }
-    
+
     // Inherited javadoc.
     //
     protected String engineStateString(long state) {
         StringBuffer buf = new StringBuffer();
 
-        appendBuffer(buf,super.engineStateString(state));
-        
+        appendBuffer(buf, super.engineStateString(state));
+
         if ((state & Synthesizer.QUEUE_EMPTY) != 0)
             appendBuffer(buf, "QUEUE_EMPTY");
         if ((state & Synthesizer.QUEUE_NOT_EMPTY) != 0)
             appendBuffer(buf, "QUEUE_NOT_EMPTY");
-        
+
         return buf.toString();
     }
 
@@ -138,18 +139,20 @@ public class SynthesizerMonitor extends EngineMonitor {
     protected void handleEvent(EngineEvent e) {
         super.handleEvent(e);
     }
-    
+
     /**
      * Handles engine events from the engine.  Extended to include
      * <code>SynthesizerEvents</code>.
      */
     class SynthesizerMonitorEngineListener
-        extends EngineMonitorEngineListener implements SynthesizerListener {
+            extends EngineMonitorEngineListener implements SynthesizerListener {
         public SynthesizerMonitorEngineListener() {
         }
+
         public void queueEmptied(SynthesizerEvent e) {
             handleEvent(e);
         }
+
         public void queueUpdated(SynthesizerEvent e) {
             handleEvent(e);
         }

@@ -1,15 +1,15 @@
 /**
  * Portions Copyright 2001 Sun Microsystems, Inc.
- * Portions Copyright 1999-2001 Language Technologies Institute, 
+ * Portions Copyright 1999-2001 Language Technologies Institute,
  * Carnegie Mellon University.
  * All Rights Reserved.  Use is subject to license terms.
- * 
+ * <p>
  * See the file "license.terms" for information on usage and
- * redistribution of this file, and for a DISCLAIMER OF ALL 
+ * redistribution of this file, and for a DISCLAIMER OF ALL
  * WARRANTIES.
  */
-package com.sun.speech.freetts.en.us;
 
+package com.sun.speech.freetts.en.us;
 
 
 /**
@@ -42,17 +42,17 @@ public class USEnglish {
     public static final String RX_DEFAULT_US_EN_INT = "-?[0-9]+";
     /** default double regular expression pattern */
     public static final String RX_DEFAULT_US_EN_DOUBLE =
-	"-?(([0-9]+\\.[0-9]*)|([0-9]+)|(\\.[0-9]+))([eE][---+]?[0-9]+)?";
+            "-?(([0-9]+\\.[0-9]*)|([0-9]+)|(\\.[0-9]+))([eE][---+]?[0-9]+)?";
     /** default integer with commas  regular expression pattern */
     public static final String RX_DEFAULT_US_EN_COMMAINT =
-	"[0-9][0-9]?[0-9]?,([0-9][0-9][0-9],)*[0-9][0-9][0-9](\\.[0-9]+)?";
+            "[0-9][0-9]?[0-9]?,([0-9][0-9][0-9],)*[0-9][0-9][0-9](\\.[0-9]+)?";
     /** default digits regular expression pattern */
     public static final String RX_DEFAULT_US_EN_DIGITS = "[0-9][0-9]*";
     /** default dotted abbreviation  regular expression pattern */
     public static final String RX_DEFAULT_US_EN_DOTTED_ABBREV = "([A-Za-z]\\.)*[A-Za-z]";
     /** default ordinal number regular expression pattern */
     public static final String RX_DEFAULT_US_EN_ORDINAL_NUMBER =
-	"[0-9][0-9,]*(th|TH|st|ST|nd|ND|rd|RD)";
+            "[0-9][0-9,]*(th|TH|st|ST|nd|ND|rd|RD)";
     /** default has-vowel regular expression */
     public static final String RX_DEFAULT_HAS_VOWEL = ".*[aeiouAEIOU].*";
     /** default US money regular expression */
@@ -67,22 +67,22 @@ public class USEnglish {
     public static final String RX_DEFAULT_NUMBER_TIME = "((0[0-2])|(1[0-9])):([0-5][0-9])";
     /** default Roman numerals regular expression */
     public static final String RX_DEFAULT_ROMAN_NUMBER =
-	"(II?I?|IV|VI?I?I?|IX|X[VIX]*)";
+            "(II?I?|IV|VI?I?I?|IX|X[VIX]*)";
     /** default drst "Dr. St" regular expression */
     public static final String RX_DEFAULT_DRST = "([dD][Rr]|[Ss][Tt])";
     /** default numess */
     public static final String RX_DEFAULT_NUMESS = "[0-9]+s";
     /** default 7-digit phone number */
     public static final String RX_DEFAULT_SEVEN_DIGIT_PHONE_NUMBER =
-	"[0-9][0-9][0-9]-[0-9][0-9][0-9][0-9]";
+            "[0-9][0-9][0-9]-[0-9][0-9][0-9][0-9]";
     /** default 4-digit number */
     public static final String RX_DEFAULT_FOUR_DIGIT =
-	"[0-9][0-9][0-9][0-9]";
+            "[0-9][0-9][0-9][0-9]";
     /** default 3-digit number */
     public static final String RX_DEFAULT_THREE_DIGIT =
-	"[0-9][0-9][0-9]";
-    
-    
+            "[0-9][0-9][0-9]";
+
+
     /** whitespace regular expression pattern */
     public static String RX_WHITESPACE = RX_DEFAULT_US_EN_WHITESPACE;
     /** letter  regular expression pattern */
@@ -131,7 +131,7 @@ public class USEnglish {
     public static final String RX_FOUR_DIGIT = RX_DEFAULT_FOUR_DIGIT;
     /** 3-digit number */
     public static final String RX_THREE_DIGIT = RX_DEFAULT_THREE_DIGIT;
-    
+
 
     // the following symbols are from lang/usenglish/us_text.c
 
@@ -148,6 +148,7 @@ public class USEnglish {
     /**
      * Not constructable
      */
-    private USEnglish() {}
+    private USEnglish() {
+    }
 }
 

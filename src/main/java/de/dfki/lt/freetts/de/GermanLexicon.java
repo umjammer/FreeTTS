@@ -1,14 +1,15 @@
 /**
  * Portions Copyright 2004 DFKI GmbH.
  * Portions Copyright 2001 Sun Microsystems, Inc.
- * Portions Copyright 1999-2001 Language Technologies Institute, 
+ * Portions Copyright 1999-2001 Language Technologies Institute,
  * Carnegie Mellon University.
  * All Rights Reserved.  Use is subject to license terms.
- * 
+ * <p>
  * See the file "license.terms" for information on usage and
- * redistribution of this file, and for a DISCLAIMER OF ALL 
+ * redistribution of this file, and for a DISCLAIMER OF ALL
  * WARRANTIES.
  */
+
 package de.dfki.lt.freetts.de;
 
 import java.io.IOException;
@@ -19,12 +20,13 @@ import com.sun.speech.freetts.VoiceManager;
 import com.sun.speech.freetts.lexicon.LexiconImpl;
 import com.sun.speech.freetts.util.BulkTimer;
 
+
 /**
  * Provides a CMU lexicon-specific implementation of a Lexicon that is
  * stored in a text file.
  */
 public class GermanLexicon extends LexiconImpl {
-    
+
 
     /**
      * Creates a GermanLexicon based upon the given compiled and addenda
@@ -40,9 +42,9 @@ public class GermanLexicon extends LexiconImpl {
      *
      */
     public GermanLexicon(URL compiledURL,
-                       URL addendaURL,
-                       URL  letterToSoundURL,
-		       boolean binary) {
+                         URL addendaURL,
+                         URL letterToSoundURL,
+                         boolean binary) {
         setLexiconParameters(compiledURL, addendaURL, letterToSoundURL, binary);
     }
 
@@ -50,7 +52,7 @@ public class GermanLexicon extends LexiconImpl {
      * Creates the default CMU Lexicon which is a binary lexicon
      */
     public GermanLexicon() {
-	this("germanlex");
+        this("germanlex");
     }
 
     /**
@@ -71,10 +73,10 @@ public class GermanLexicon extends LexiconImpl {
                 "de/dfki/lt/freetts/de/" + basename + "_lts." + type);
         URL compiledURL = classLoader.getResource(
                 "de/dfki/lt/freetts/de/" + basename
-                + "_compiled." + type);
+                        + "_compiled." + type);
         URL addendaURL = classLoader.getResource(
                 "de/dfki/lt/freetts/de/" + basename
-                + "_addenda." + type);
+                        + "_addenda." + type);
 
         /* Just another try with possibly a different class loader
          * if the above didn't work.
@@ -86,24 +88,12 @@ public class GermanLexicon extends LexiconImpl {
             addendaURL = cls.getResource(basename + "_addenda." + type);
             if (letterToSoundURL == null) {
                 System.err.println(
-                    "GermanLexicon: Oh no!  Couldn't find lexicon data!");
+                        "GermanLexicon: Oh no!  Couldn't find lexicon data!");
             }
         }
-        
-	setLexiconParameters(compiledURL, addendaURL,
+
+        setLexiconParameters(compiledURL, addendaURL,
                 letterToSoundURL, useBinaryIO);
-    }
-    
-    /**
-     * Get the GermanLexicon.
-     *
-     * @param useBinaryIO if true use binary IO to load DB
-     *
-     * @throws IOException if problems occurred while reading the data
-     */ 
-    static public GermanLexicon getInstance( boolean useBinaryIO) 
-						throws IOException {
-	return getInstance("dummylex", useBinaryIO);
     }
 
     /**
@@ -112,11 +102,23 @@ public class GermanLexicon extends LexiconImpl {
      * @param useBinaryIO if true use binary IO to load DB
      *
      * @throws IOException if problems occurred while reading the data
-     */ 
-    static public GermanLexicon getInstance( String basename, boolean useBinaryIO) 
-						throws IOException {
-	GermanLexicon lexicon = new GermanLexicon(basename, useBinaryIO);
-	lexicon.load();
+     */
+    static public GermanLexicon getInstance(boolean useBinaryIO)
+            throws IOException {
+        return getInstance("dummylex", useBinaryIO);
+    }
+
+    /**
+     * Get the GermanLexicon.
+     *
+     * @param useBinaryIO if true use binary IO to load DB
+     *
+     * @throws IOException if problems occurred while reading the data
+     */
+    static public GermanLexicon getInstance(String basename, boolean useBinaryIO)
+            throws IOException {
+        GermanLexicon lexicon = new GermanLexicon(basename, useBinaryIO);
+        lexicon.load();
         return lexicon;
     }
 
@@ -154,74 +156,74 @@ public class GermanLexicon extends LexiconImpl {
      * </pre>
      */
     public static void main(String[] args) {
-	LexiconImpl lex, lex2;
-	boolean showTimes = false;
+        LexiconImpl lex, lex2;
+        boolean showTimes = false;
         String srcPath = ".";
         String destPath = ".";
-	String baseName = "germanlex";
+        String baseName = "germanlex";
 
-	try {
-	    if (args.length > 0) {
-		BulkTimer.LOAD.start();
-		for (int i = 0 ; i < args.length; i++) {
+        try {
+            if (args.length > 0) {
+                BulkTimer.LOAD.start();
+                for (int i = 0; i < args.length; i++) {
                     if (args[i].equals("-src")) {
                         srcPath = args[++i];
                     } else if (args[i].equals("-dest")) {
                         destPath = args[++i];
-		    } else if (args[i].equals("-name")
-                               && i < args.length - 1) {
-			baseName = args[++i];
-		    } else if (args[i].equals("-generate_binary")) {
+                    } else if (args[i].equals("-name")
+                            && i < args.length - 1) {
+                        baseName = args[++i];
+                    } else if (args[i].equals("-generate_binary")) {
 
-			 System.out.println("Loading " + baseName);
-                         String path = "file:" + srcPath + "/" + baseName;
-                         lex = new GermanLexicon(
-                             new URL(path + "_compiled.txt"),
-                             new URL(path + "_addenda.txt"),
-                             new URL(path + "_lts.txt"),
-                             false);
-			 BulkTimer.LOAD.start("load_text");
-                         lex.load();
-			 BulkTimer.LOAD.stop("load_text");
+                        System.out.println("Loading " + baseName);
+                        String path = "file:" + srcPath + "/" + baseName;
+                        lex = new GermanLexicon(
+                                new URL(path + "_compiled.txt"),
+                                new URL(path + "_addenda.txt"),
+                                new URL(path + "_lts.txt"),
+                                false);
+                        BulkTimer.LOAD.start("load_text");
+                        lex.load();
+                        BulkTimer.LOAD.stop("load_text");
 
-			 System.out.println("Dumping " + baseName);
-			 BulkTimer.LOAD.start("dump_text");
-			 lex.dumpBinary(destPath + "/" + baseName);
-			 BulkTimer.LOAD.stop("dump_text");
+                        System.out.println("Dumping " + baseName);
+                        BulkTimer.LOAD.start("dump_text");
+                        lex.dumpBinary(destPath + "/" + baseName);
+                        BulkTimer.LOAD.stop("dump_text");
 
-		    } else if (args[i].equals("-compare")) {
+                    } else if (args[i].equals("-compare")) {
 
-			BulkTimer.LOAD.start("load_text");
-			lex = GermanLexicon.getInstance(baseName, false);
-			BulkTimer.LOAD.stop("load_text");
+                        BulkTimer.LOAD.start("load_text");
+                        lex = GermanLexicon.getInstance(baseName, false);
+                        BulkTimer.LOAD.stop("load_text");
 
-			BulkTimer.LOAD.start("load_binary");
-			lex2 = GermanLexicon.getInstance(baseName, true);
-			BulkTimer.LOAD.stop("load_binary");
+                        BulkTimer.LOAD.start("load_binary");
+                        lex2 = GermanLexicon.getInstance(baseName, true);
+                        BulkTimer.LOAD.stop("load_binary");
 
-			BulkTimer.LOAD.start("compare");
-			lex.compare(lex2);
-			BulkTimer.LOAD.stop("compare");
-		    } else if (args[i].equals("-showtimes")) {
-			showTimes = true;
-		    } else {
-			System.out.println("Unknown option " + args[i]);
-		    }
-		}
-		BulkTimer.LOAD.stop();
-		if (showTimes) {
-		    BulkTimer.LOAD.show("GermanLexicon loading and dumping");
-		}
-	    } else {
-		System.out.println("Options: ");
-		System.out.println("    -src path");
-		System.out.println("    -dest path");
-		System.out.println("    -compare");
-		System.out.println("    -generate_binary");
-		System.out.println("    -showtimes");
-	    }
-	} catch (IOException ioe) {
-	    System.err.println(ioe);
-	}
+                        BulkTimer.LOAD.start("compare");
+                        lex.compare(lex2);
+                        BulkTimer.LOAD.stop("compare");
+                    } else if (args[i].equals("-showtimes")) {
+                        showTimes = true;
+                    } else {
+                        System.out.println("Unknown option " + args[i]);
+                    }
+                }
+                BulkTimer.LOAD.stop();
+                if (showTimes) {
+                    BulkTimer.LOAD.show("GermanLexicon loading and dumping");
+                }
+            } else {
+                System.out.println("Options: ");
+                System.out.println("    -src path");
+                System.out.println("    -dest path");
+                System.out.println("    -compare");
+                System.out.println("    -generate_binary");
+                System.out.println("    -showtimes");
+            }
+        } catch (IOException ioe) {
+            System.err.println(ioe);
+        }
     }
 }

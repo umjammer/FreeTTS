@@ -1,22 +1,23 @@
 /**
  * Copyright 2001 Sun Microsystems, Inc.
- * 
+ * <p>
  * See the file "license.terms" for information on usage and
- * redistribution of this file, and for a DISCLAIMER OF ALL 
+ * redistribution of this file, and for a DISCLAIMER OF ALL
  * WARRANTIES.
  */
+
 package com.sun.speech.freetts.audio;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
-
 import javax.sound.sampled.AudioFileFormat;
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 
 import com.sun.speech.freetts.util.Utilities;
+
 
 /**
  * Streams audio to multiple files, one per utterance. 
@@ -40,9 +41,9 @@ public class MultiFileAudioPlayer implements AudioPlayer {
      */
     public MultiFileAudioPlayer() {
         this(Utilities.getProperty(
-                 "com.sun.speech.freetts.AudioPlayer.baseName", "freetts"),
-             AudioFileFormat.Type.WAVE);
-    }       
+                        "com.sun.speech.freetts.AudioPlayer.baseName", "freetts"),
+                AudioFileFormat.Type.WAVE);
+    }
 
     /**
      * Constructs a MultiFileAudioPlayer 
@@ -52,8 +53,8 @@ public class MultiFileAudioPlayer implements AudioPlayer {
      *
      */
     public MultiFileAudioPlayer(String baseName, AudioFileFormat.Type type) {
-	this.baseName = baseName;
-	this.outputType = type;
+        this.baseName = baseName;
+        this.outputType = type;
     }
 
     /**
@@ -65,7 +66,7 @@ public class MultiFileAudioPlayer implements AudioPlayer {
      *     the given format
      */
     public synchronized void setAudioFormat(AudioFormat format) {
-	currentFormat = format;
+        currentFormat = format;
     }
 
 
@@ -75,7 +76,7 @@ public class MultiFileAudioPlayer implements AudioPlayer {
      * @return format the audio format
      */
     public AudioFormat getAudioFormat() {
-	return currentFormat;
+        return currentFormat;
     }
 
 
@@ -90,7 +91,7 @@ public class MultiFileAudioPlayer implements AudioPlayer {
      */
     public synchronized void resume() {
     }
-	
+
     /**
      * Starts the first sample timer
      */
@@ -124,8 +125,8 @@ public class MultiFileAudioPlayer implements AudioPlayer {
      * @return the current volume (between 0 and 1)
      */
     public float getVolume() {
-	return 1.0f;
-    }	      
+        return 1.0f;
+    }
 
     /**
      * Sets the current volume.
@@ -133,9 +134,7 @@ public class MultiFileAudioPlayer implements AudioPlayer {
      * @param volume  the current volume (between 0 and 1)
      */
     public void setVolume(float volume) {
-    }	      
-
-
+    }
 
 
     /**
@@ -145,29 +144,29 @@ public class MultiFileAudioPlayer implements AudioPlayer {
      * @param size the size of data between now and the end
      */
     public void begin(int size) {
-	outputData = new byte[size];
-	curIndex = 0;
+        outputData = new byte[size];
+        curIndex = 0;
     }
 
     /**
      * {@inheritDoc}
      */
-    public boolean  end() throws IOException {
-	ByteArrayInputStream bais = new ByteArrayInputStream(outputData);
-	AudioInputStream ais = new AudioInputStream(bais,
-		currentFormat, outputData.length/currentFormat.getFrameSize());
-	String name = baseName;
-	name = name + fileCount;
-	name = name + "." + outputType.getExtension();
-	File file = new File(name);
-	try {
-	    AudioSystem.write(ais, outputType, file);
+    public boolean end() throws IOException {
+        ByteArrayInputStream bais = new ByteArrayInputStream(outputData);
+        AudioInputStream ais = new AudioInputStream(bais,
+                currentFormat, outputData.length / currentFormat.getFrameSize());
+        String name = baseName;
+        name = name + fileCount;
+        name = name + "." + outputType.getExtension();
+        File file = new File(name);
+        try {
+            AudioSystem.write(ais, outputType, file);
             System.out.println("Wrote synthesized speech to " + name);
-	} catch (IllegalArgumentException iae) {
-	    throw new IOException("Can't write audio type " + outputType, iae);
-	}
-	fileCount++;
-	return true;
+        } catch (IllegalArgumentException iae) {
+            throw new IOException("Can't write audio type " + outputType, iae);
+        }
+        fileCount++;
+        return true;
     }
 
     /**
@@ -176,8 +175,8 @@ public class MultiFileAudioPlayer implements AudioPlayer {
      * @return true if the audio played to completion, false if
      *   the audio was stopped
      */
-    public boolean drain()  {
-	return true;
+    public boolean drain() {
+        return true;
     }
 
     /**
@@ -185,8 +184,8 @@ public class MultiFileAudioPlayer implements AudioPlayer {
      *
      * @return the amount of audio in milliseconds
      */
-    public synchronized long getTime()  {
-	return -1L;
+    public synchronized long getTime() {
+        return -1L;
     }
 
 
@@ -195,9 +194,8 @@ public class MultiFileAudioPlayer implements AudioPlayer {
      */
     public synchronized void resetTime() {
     }
-    
 
-    
+
     /**
      * Writes the given bytes to the audio stream
      *
@@ -207,9 +205,9 @@ public class MultiFileAudioPlayer implements AudioPlayer {
      *       	<code> false </code>if the write was cancelled.
      */
     public boolean write(byte[] audioData) {
-	return write(audioData, 0, audioData.length);
+        return write(audioData, 0, audioData.length);
     }
-    
+
     /**
      * Writes the given bytes to the audio stream
      *
@@ -221,9 +219,9 @@ public class MultiFileAudioPlayer implements AudioPlayer {
      *       	<code> false </code>if the write was cancelled.
      */
     public boolean write(byte[] bytes, int offset, int size) {
-	System.arraycopy(bytes, offset, outputData, curIndex, size);
-	curIndex += size;
-	return true;
+        System.arraycopy(bytes, offset, outputData, curIndex, size);
+        curIndex += size;
+        return true;
     }
 
     /**
@@ -232,7 +230,7 @@ public class MultiFileAudioPlayer implements AudioPlayer {
      * @return the name of the audio player
      */
     public String toString() {
-	return "FileAudioPlayer";
+        return "FileAudioPlayer";
     }
 
 

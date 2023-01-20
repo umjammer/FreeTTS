@@ -1,7 +1,7 @@
 /**
  * Copyright 2002 DFKI GmbH.
  * All Rights Reserved.  Use is subject to license terms.
- *
+ * <p>
  * See the file "license.terms" for information on usage and
  * redistribution of this file, and for a DISCLAIMER OF ALL
  * WARRANTIES.
@@ -21,6 +21,7 @@ import com.sun.speech.freetts.Utterance;
 import com.sun.speech.freetts.UtteranceProcessor;
 import com.sun.speech.freetts.util.Utilities;
 
+
 /**
  * Calls external MBROLA binary to synthesise the utterance.
  */
@@ -38,8 +39,8 @@ public class MbrolaCaller implements UtteranceProcessor {
     public MbrolaCaller(String[] cmd) {
         this.cmd = cmd;
         closeDelay = Utilities.getLong
-	        ("de.dfki.lt.freetts.mbrola.MbrolaCaller.closeDelay",
-	                100L).longValue();
+                ("de.dfki.lt.freetts.mbrola.MbrolaCaller.closeDelay",
+                        100L).longValue();
     }
 
     /**
@@ -52,12 +53,12 @@ public class MbrolaCaller implements UtteranceProcessor {
      */
     public void processUtterance(Utterance utterance) throws ProcessException {
         // Go through Segment relation and print values into Mbrola
-	Relation segmentRelation = utterance.getRelation(Relation.SEGMENT);
+        Relation segmentRelation = utterance.getRelation(Relation.SEGMENT);
         Item segment = segmentRelation.getHead();
 
-	if (segment == null) {
-	    return;
-	}
+        if (segment == null) {
+            return;
+        }
 
         // Open Mbrola
         Process process;
@@ -69,7 +70,7 @@ public class MbrolaCaller implements UtteranceProcessor {
         }
         PrintWriter toMbrola = new PrintWriter(process.getOutputStream());
         BufferedInputStream fromMbrola =
-            new BufferedInputStream(process.getInputStream());
+                new BufferedInputStream(process.getInputStream());
 
         while (segment != null) {
             String name = segment.getFeatures().getString("name");
@@ -109,10 +110,10 @@ public class MbrolaCaller implements UtteranceProcessor {
             }
         }
         toMbrola.close();
-      
+
         // reading the audio output
         byte[] buffer = new byte[1024];
-        
+
         // In order to avoid resizing a large array, we save the audio data
         // in the chunks in which we read it.
 

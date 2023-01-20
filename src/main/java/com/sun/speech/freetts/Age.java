@@ -1,10 +1,11 @@
 /**
  * Copyright 2001 Sun Microsystems, Inc.
- *
+ * <p>
  * See the file "license.terms" for information on usage and
  * redistribution of this file, and for a DISCLAIMER OF ALL
  * WARRANTIES.
  */
+
 package com.sun.speech.freetts;
 
 /**
@@ -24,14 +25,18 @@ public class Age implements Comparable<Age> {
     // Assign an ordinal to this age
     private final int ordinal = nextOrdinal++;
 
-    private Age(String name) {this.name = name;}
+    private Age(String name) {
+        this.name = name;
+    }
 
     /**
      * Provide a human readable string that describes the age.
      *
      * @return the name of the age
      */
-    public String toString() {return name;}
+    public String toString() {
+        return name;
+    }
 
     /**
      * Compare two ages.  CHILD is less than TEENAGER, and so on.  If
