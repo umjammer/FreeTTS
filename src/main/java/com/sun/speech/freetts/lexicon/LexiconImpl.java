@@ -30,7 +30,6 @@ import java.nio.channels.FileChannel;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -141,7 +140,7 @@ abstract public class LexiconImpl implements Lexicon {
     /**
      * Parts of Speech.
      */
-    private ArrayList partsOfSpeech = new ArrayList();
+    private ArrayList partsOfSpeech = new ArrayList<>();
 
     /**
      * A static directory of compiledURL URL objects and associated
@@ -172,7 +171,7 @@ abstract public class LexiconImpl implements Lexicon {
     /**
      * Temporary place holder.
      */
-    private char charBuffer[] = new char[128];
+    private char[] charBuffer = new char[128];
 
     /**
      * Use the new IO package?
@@ -255,7 +254,7 @@ abstract public class LexiconImpl implements Lexicon {
         }
 
         if (loadedCompiledLexicons == null) {
-            loadedCompiledLexicons = new HashMap();
+            loadedCompiledLexicons = new HashMap<>();
         }
         if (!loadedCompiledLexicons.containsKey(compiledURL)) {
             InputStream compiledIS = Utilities.getInputStream(compiledURL);
@@ -295,9 +294,7 @@ abstract public class LexiconImpl implements Lexicon {
                 }
                 Map tmpAddenda = createLexicon(userAddendaIS, false, 50);
                 userAddendaIS.close();
-                for (Iterator keys = tmpAddenda.keySet().iterator();
-                     keys.hasNext(); ) {
-                    Object key = keys.next();
+                for (Object key : tmpAddenda.keySet()) {
                     addenda.put(key, tmpAddenda.get(key));
                 }
             } catch (MalformedURLException e) {
@@ -400,7 +397,7 @@ abstract public class LexiconImpl implements Lexicon {
      * @param word the word to find
      * @param partOfSpeech the part of speech
      *
-     * @return the list of phones for word or <code>null</code>
+     * @return the array of phones for word or <code>null</code>
      */
     public String[] getPhones(String word, String partOfSpeech) {
         return getPhones(word, partOfSpeech, true);
@@ -417,7 +414,7 @@ abstract public class LexiconImpl implements Lexicon {
      * @param useLTS whether to use the letter-to-sound rules when
      *        the word is not in the lexicon.
      *
-     * @return the list of phones for word or null
+     * @return the array of phones for word or null
      */
     public String[] getPhones
     (String word, String partOfSpeech, boolean useLTS) {
@@ -449,7 +446,7 @@ abstract public class LexiconImpl implements Lexicon {
      * @param word the word to find
      * @param partOfSpeech the part of speech
      *
-     * @return the list of phones for word or <code>null</code>
+     * @return the array of phones for word or <code>null</code>
      */
     protected String[] getPhones(Map lexicon,
                                  String word,
@@ -460,9 +457,9 @@ abstract public class LexiconImpl implements Lexicon {
         for (int i = 0;
              (i < partsOfSpeech.size()) && (phones == null);
              i++) {
-            if (!partOfSpeech.equals((String) partsOfSpeech.get(i))) {
+            if (!partOfSpeech.equals(partsOfSpeech.get(i))) {
                 phones = getPhones(lexicon,
-                        word + (String) partsOfSpeech.get(i));
+                        word + partsOfSpeech.get(i));
             }
         }
         return phones;
@@ -476,7 +473,7 @@ abstract public class LexiconImpl implements Lexicon {
      * @param wordAndPartOfSpeech word and part of speech concatenated
      *   together
      *
-     * @return the list of phones for word or <code>null</code>
+     * @return the array of phones for word or <code>null</code>
      */
     protected String[] getPhones(Map lexicon,
                                  String wordAndPartOfSpeech) {
@@ -504,7 +501,7 @@ abstract public class LexiconImpl implements Lexicon {
      * @return the phones split into an array
      */
     protected String[] getPhones(String phones) {
-        ArrayList phoneList = new ArrayList();
+        ArrayList phoneList = new ArrayList<>();
         StringTokenizer tokenizer = new StringTokenizer(phones, " ");
         while (tokenizer.hasMoreTokens()) {
             phoneList.add(tokenizer.nextToken());
@@ -629,18 +626,18 @@ abstract public class LexiconImpl implements Lexicon {
             dos.writeInt(VERSION);
             dos.writeInt(phonemeList.size());
 
-            for (int i = 0; i < phonemeList.size(); i++) {
-                outString(dos, (String) phonemeList.get(i));
+            for (Object value : phonemeList) {
+                outString(dos, (String) value);
             }
 
             dos.writeInt(lexicon.keySet().size());
-            for (Iterator i = lexicon.keySet().iterator(); i.hasNext(); ) {
-                String key = (String) i.next();
+            for (Object o : lexicon.keySet()) {
+                String key = (String) o;
                 outString(dos, key);
                 String[] phonemes = getPhones(lexicon, key);
                 dos.writeByte((byte) phonemes.length);
-                for (int index = 0; index < phonemes.length; index++) {
-                    int phonemeIndex = phonemeList.indexOf(phonemes[index]);
+                for (String phoneme : phonemes) {
+                    int phonemeIndex = phonemeList.indexOf(phoneme);
                     if (phonemeIndex == -1) {
                         throw new Error("Can't find phoneme index");
                     }
@@ -677,12 +674,12 @@ abstract public class LexiconImpl implements Lexicon {
         bb.load();
         int size = 0;
         int numEntries = 0;
-        List phonemeList = new ArrayList();
+        List phonemeList = new ArrayList<>();
 
         // we get better performance for some reason if we
         // just ignore estimated size
         //
-        // Map lexicon = new HashMap();
+        // Map lexicon = new HashMap<>();
         Map lexicon = new LinkedHashMap(estimatedSize * 4 / 3);
 
         if (bb.getInt() != MAGIC) {
@@ -737,7 +734,7 @@ abstract public class LexiconImpl implements Lexicon {
                 BufferedInputStream(is));
         int size = 0;
         int numEntries = 0;
-        List phonemeList = new ArrayList();
+        List phonemeList = new ArrayList<>();
 
         // we get better performance for some reason if we
         // just ignore estimated size
@@ -802,13 +799,13 @@ abstract public class LexiconImpl implements Lexicon {
      * @return list the unique set of phonemes
      */
     private List findPhonemes(Map lexicon) {
-        List phonemeList = new ArrayList();
-        for (Iterator i = lexicon.keySet().iterator(); i.hasNext(); ) {
-            String key = (String) i.next();
+        List phonemeList = new ArrayList<>();
+        for (Object o : lexicon.keySet()) {
+            String key = (String) o;
             String[] phonemes = getPhones(lexicon, key);
-            for (int index = 0; index < phonemes.length; index++) {
-                if (!phonemeList.contains(phonemes[index])) {
-                    phonemeList.add(phonemes[index]);
+            for (String phoneme : phonemes) {
+                if (!phonemeList.contains(phoneme)) {
+                    phonemeList.add(phoneme);
                 }
             }
         }
@@ -838,8 +835,8 @@ abstract public class LexiconImpl implements Lexicon {
      * @return true if they are identical
      */
     private boolean compare(Map lex, Map other) {
-        for (Iterator i = lex.keySet().iterator(); i.hasNext(); ) {
-            String key = (String) i.next();
+        for (Object o : lex.keySet()) {
+            String key = (String) o;
             String[] thisPhonemes = getPhones(lex, key);
             String[] otherPhonemes = getPhones(other, key);
             if (thisPhonemes == null) {

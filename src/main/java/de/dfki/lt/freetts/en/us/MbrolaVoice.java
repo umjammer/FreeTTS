@@ -109,8 +109,8 @@ public class MbrolaVoice extends CMUVoice {
                         getDatabase(), "-", "-.raw"};
 
         if (false) {
-            for (int i = 0; i < cmd.length; i++) {
-                System.out.println(cmd[i]);
+            for (String s : cmd) {
+                System.out.println(s);
             }
         }
 
@@ -134,13 +134,13 @@ public class MbrolaVoice extends CMUVoice {
     public String getMbrolaBinary() {
         // In windows environments, executables typically end with exe, so
         // we add this suffix if we are running under windows.
-        StringBuffer executable = new StringBuffer();
+        StringBuilder executable = new StringBuilder();
         executable.append("mbrola");
         String os = System.getProperty("os.name");
-        if (os.indexOf("Windows") >= 0) {
+        if (os.contains("Windows")) {
             executable.append(".exe");
         }
-        return getMbrolaBase() + File.separator + executable.toString();
+        return getMbrolaBase() + File.separator + executable;
     }
 
     /**

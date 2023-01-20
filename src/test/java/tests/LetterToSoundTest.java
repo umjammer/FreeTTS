@@ -70,7 +70,7 @@ public class LetterToSoundTest {
         int i;
         String flite_phones;
         String[] lts_phone_array;
-        StringBuffer lts_phones;
+        StringBuilder lts_phones;
         String line;
         try {
             while ((line = reader.readLine()) != null) {
@@ -82,7 +82,7 @@ public class LetterToSoundTest {
                 flite_phones = line.substring(i + 1);
                 lts_phone_array = lts.getPhones(word, null);
                 assertNotNull(lts_phone_array, "Phones returned for " + word + " is not null: ");
-                lts_phones = new StringBuffer("(");
+                lts_phones = new StringBuilder("(");
                 for (i = 0; i < lts_phone_array.length; i++) {
                     if (i != 0) {
                         lts_phones.append(" ");

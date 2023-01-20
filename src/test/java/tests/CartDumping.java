@@ -1,6 +1,5 @@
 package tests;
 
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.file.Files;
@@ -54,10 +53,10 @@ public class CartDumping {
         // If installed, call it as "dot -O -Tpdf *.dot" from the console to generate pdfs.
         //
 
-        numbersCart.dumpDot(new PrintWriter(new FileOutputStream("tmp/dotfiles/numbersCart.dot")));
-        phrasingCart.dumpDot(new PrintWriter(new FileOutputStream("tmp/dotfiles/phrasingCart.dot")));
-        accentCart.dumpDot(new PrintWriter(new FileOutputStream("tmp/dotfiles/accentCart.dot")));
-        toneCart.dumpDot(new PrintWriter(new FileOutputStream("tmp/dotfiles/toneCart.dot")));
-        durzCart.dumpDot(new PrintWriter(new FileOutputStream("tmp/dotfiles/durzCart.dot")));
+        numbersCart.dumpDot(new PrintWriter(Files.newOutputStream(Paths.get("tmp/dotfiles/numbersCart.dot"))));
+        phrasingCart.dumpDot(new PrintWriter(Files.newOutputStream(Paths.get("tmp/dotfiles/phrasingCart.dot"))));
+        accentCart.dumpDot(new PrintWriter(Files.newOutputStream(Paths.get("tmp/dotfiles/accentCart.dot"))));
+        toneCart.dumpDot(new PrintWriter(Files.newOutputStream(Paths.get("tmp/dotfiles/toneCart.dot"))));
+        durzCart.dumpDot(new PrintWriter(Files.newOutputStream(Paths.get("tmp/dotfiles/durzCart.dot"))));
     }
 }

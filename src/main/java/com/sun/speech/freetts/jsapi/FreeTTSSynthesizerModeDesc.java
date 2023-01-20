@@ -47,11 +47,11 @@ public class FreeTTSSynthesizerModeDesc extends SynthesizerModeDesc
      *    return an array of size 0
      */
     public javax.speech.synthesis.Voice[] getVoices() {
-        List voiceList = new LinkedList();
+        List< javax.speech.synthesis.Voice> voiceList = new LinkedList<>();
         javax.speech.synthesis.Voice[] voices = super.getVoices();
         int count = 0;
-        for (int i = 0; i < voices.length; i++) {
-            FreeTTSVoice freettsVoice = (FreeTTSVoice) voices[i];
+        for (javax.speech.synthesis.Voice voice : voices) {
+            FreeTTSVoice freettsVoice = (FreeTTSVoice) voice;
             try {
                 freettsVoice.validate();
                 voiceList.add(freettsVoice);
@@ -80,9 +80,9 @@ public class FreeTTSSynthesizerModeDesc extends SynthesizerModeDesc
         int invalidCount = 0;
         StringBuilder validationMessage = new StringBuilder();
 
-        for (int i = 0; i < voices.length; i++) {
+        for (javax.speech.synthesis.Voice voice : voices) {
             try {
-                ((FreeTTSVoice) voices[i]).validate();
+                ((FreeTTSVoice) voice).validate();
             } catch (ValidationException ve) {
                 invalidCount++;
                 validationMessage.append(ve.getMessage());

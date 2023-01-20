@@ -8,6 +8,8 @@
 
 package com.sun.speech.freetts.jsapi;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 import java.util.Vector;
 import javax.speech.EngineCentral;
@@ -20,16 +22,15 @@ import com.sun.speech.freetts.Voice;
 
 /**
  * Supports the EngineCentral JSAPI 1.0 interface for the
- * FreeTTSSynthesizer.  To use a FreeTTSSynthesizer, you should place 
+ * FreeTTSSynthesizer.  To use a FreeTTSSynthesizer, you should place
  * a line into the speech.properties file as so:
  *
  * <pre>
  * FreeTTSSynthEngineCentral=com.sun.speech.freetts.jsapi.FreeTTSEngineCentral
  * </pre>
- *
  */
-
 public class FreeTTSEngineCentral implements EngineCentral {
+
     private static final String ENGINE_NAME = "FreeTTS Synthesizer";
 
     /**
@@ -41,7 +42,7 @@ public class FreeTTSEngineCentral implements EngineCentral {
     }
 
     /**
-     * Returns a list containing references to all matching 
+     * Returns a list containing references to all matching
      * synthesizers.  The mapping of FreeTTS VoiceDirectories and
      * Voices to JSAPI Synthesizers and Voices is as follows:
      *
@@ -71,12 +72,12 @@ public class FreeTTSEngineCentral implements EngineCentral {
      * the name of the FreeTTS Voice (e.g. "kevin" "kevin16").
      * </ul>
      *
-     * @param require  an engine mode that describes the desired
-     * 			synthesizer
-     *
+     * @param require an engine mode that describes the desired
+     *                synthesizer
      * @return an engineList containing matching engines, or null if
-     *		no matching engines are found
+     * no matching engines are found
      */
+    @SuppressWarnings("unchecked")
     public EngineList createEngineList(EngineModeDesc require) {
         EngineList el = new EngineList();
 
@@ -86,23 +87,22 @@ public class FreeTTSEngineCentral implements EngineCentral {
         com.sun.speech.freetts.Voice[] voices = voiceManager.getVoices();
 
         // We want to get all combinations of domains and locales
-        Vector domainLocaleVector = new Vector();
-        for (int i = 0; i < voices.length; i++) {
+        List<DomainLocale> domainLocaleVector = new ArrayList<>();
+        for (Voice value : voices) {
             DomainLocale dl =
-                    new DomainLocale(voices[i].getDomain(), voices[i].getLocale());
+                    new DomainLocale(value.getDomain(), value.getLocale());
             DomainLocale dlentry = (DomainLocale)
                     getItem(domainLocaleVector, dl);
             if (dlentry == null) {
                 domainLocaleVector.add(dl);
                 dlentry = dl;
             }
-            dlentry.addVoice(voices[i]);
+            dlentry.addVoice(value);
         }
 
         // build list of SynthesizerModeDesc's for each domain/locale
         // combination
-        for (int i = 0; i < domainLocaleVector.size(); i++) {
-            DomainLocale dl = (DomainLocale) domainLocaleVector.get(i);
+        for (DomainLocale dl : domainLocaleVector) {
 
             FreeTTSSynthesizerModeDesc desc = new
                     FreeTTSSynthesizerModeDesc("FreeTTS "
@@ -111,15 +111,15 @@ public class FreeTTSEngineCentral implements EngineCentral {
 
             // iterate through the voices in a different order
             voices = dl.getVoices();
-            for (int j = 0; j < voices.length; j++) {
-                FreeTTSVoice jsapiVoice = new FreeTTSVoice(voices[j], null);
+            for (Voice voice : voices) {
+                FreeTTSVoice jsapiVoice = new FreeTTSVoice(voice, null);
                 desc.addVoice(jsapiVoice);
             }
 
             if (require == null || desc.match(require)) {
                 try {
                     desc.validate();
-                    el.addElement(desc);
+                    el.add(desc);
                 } catch (ValidationException ve) {
                     System.err.println(ve.getMessage());
                 }
@@ -137,20 +137,18 @@ public class FreeTTSEngineCentral implements EngineCentral {
      * Warning: linear search
      *
      * @param vector the vector to search
-     * @param o the object to look for using vector.get(i).equals(o)
-     *
+     * @param o      the object to look for using vector.get(i).equals(o)
      * @return the item if it exists in the vector, else null
      */
-    private Object getItem(Vector vector, Object o) {
-        for (int i = 0; i < vector.size(); i++) {
-            if (vector.get(i).equals(o)) {
-                return vector.get(i);
+    private Object getItem(List<?> vector, Object o) {
+        for (Object value : vector) {
+            if (value.equals(o)) {
+                return value;
             }
         }
         return null;
     }
 }
-
 
 /**
  * Used to be able to generate a list of voices based on unique
@@ -170,7 +168,7 @@ class DomainLocale {
     public DomainLocale(String domain, Locale locale) {
         this.domain = domain;
         this.locale = locale;
-        this.voices = new Vector<Voice>();
+        this.voices = new Vector<>();
     }
 
     /**
@@ -178,7 +176,6 @@ class DomainLocale {
      * The voices are NOT compared.
      *
      * @param o, the object to compare to
-     *
      * @return true if the domain and locale are both equal, else
      * false
      */
@@ -192,6 +189,7 @@ class DomainLocale {
 
     /**
      * Gets the domain.
+     *
      * @return the domain
      */
     public String getDomain() {
@@ -200,6 +198,7 @@ class DomainLocale {
 
     /**
      * Gets the locale.
+     *
      * @return the locale
      */
     public Locale getLocale() {
@@ -224,6 +223,6 @@ class DomainLocale {
     public com.sun.speech.freetts.Voice[] getVoices() {
         com.sun.speech.freetts.Voice[] voiceArray =
                 new com.sun.speech.freetts.Voice[voices.size()];
-        return (com.sun.speech.freetts.Voice[]) voices.toArray(voiceArray);
+        return voices.toArray(voiceArray);
     }
 }

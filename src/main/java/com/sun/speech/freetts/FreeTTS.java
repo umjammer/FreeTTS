@@ -12,12 +12,13 @@
 package com.sun.speech.freetts;
 
 import java.io.BufferedReader;
-import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.logging.ConsoleHandler;
 import java.util.logging.Handler;
 import java.util.logging.Level;
@@ -123,9 +124,9 @@ public class FreeTTS {
         AudioFileFormat.Type[] types = AudioSystem.getAudioFileTypes();
         String extension = getExtension(file);
 
-        for (int i = 0; i < types.length; i++) {
-            if (types[i].getExtension().equals(extension)) {
-                return types[i];
+        for (AudioFileFormat.Type type : types) {
+            if (type.getExtension().equals(extension)) {
+                return type;
             }
         }
         return null;
@@ -286,7 +287,7 @@ public class FreeTTS {
     public boolean fileToSpeech(String filePath) {
         boolean ok = false;
         try {
-            InputStream is = new FileInputStream(filePath);
+            InputStream is = Files.newInputStream(Paths.get(filePath));
             ok = streamToSpeech(is);
         } catch (IOException ioe) {
             System.err.println("Can't read data from " + filePath);
@@ -430,8 +431,8 @@ public class FreeTTS {
     private static void dumpAudioTypes() {
         AudioFileFormat.Type[] types = AudioSystem.getAudioFileTypes();
 
-        for (int i = 0; i < types.length; i++) {
-            System.out.println(types[i].getExtension());
+        for (AudioFileFormat.Type type : types) {
+            System.out.println(type.getExtension());
         }
     }
 
@@ -477,95 +478,115 @@ public class FreeTTS {
         }
         FreeTTS freetts = new FreeTTS(voice);
 
+        label:
         for (int i = 0; i < args.length; i++) {
-            if (args[i].equals("-metrics")) {
+            switch (args[i]) {
+            case "-metrics":
                 voice.setMetrics(true);
-            } else if (args[i].equals("-detailedMetrics")) {
+                break;
+            case "-detailedMetrics":
                 voice.setDetailedMetrics(true);
-            } else if (args[i].equals("-silent")) {
+                break;
+            case "-silent":
                 freetts.setSilentMode(true);
-            } else if (args[i].equals("-streaming")) {
+                break;
+            case "-streaming":
                 freetts.setStreamingAudio(true);
-            } else if (args[i].equals("-verbose")) {
+                break;
+            case "-verbose":
                 Handler handler = new ConsoleHandler();
                 handler.setLevel(Level.ALL);
                 Logger.getLogger("com.sun").addHandler(handler);
                 Logger.getLogger("com.sun").setLevel(Level.ALL);
-            } else if (args[i].equals("-dumpUtterance")) {
+                break;
+            case "-dumpUtterance":
                 voice.setDumpUtterance(true);
-            } else if (args[i].equals("-dumpAudioTypes")) {
+                break;
+            case "-dumpAudioTypes":
                 dumpAudioTypes = true;
-            } else if (args[i].equals("-dumpRelations")) {
+                break;
+            case "-dumpRelations":
                 voice.setDumpRelations(true);
-            } else if (args[i].equals("-dumpASCII")) {
+                break;
+            case "-dumpASCII":
                 if (++i < args.length) {
                     voice.setWaveDumpFile(args[i]);
                 } else {
                     usage(voices);
                 }
-            } else if (args[i].equals("-dumpAudio")) {
+                break;
+            case "-dumpAudio":
                 if (++i < args.length) {
                     freetts.setAudioFile(args[i]);
                 } else {
                     usage(voices);
                 }
-            } else if (args[i].equals("-dumpMultiAudio")) {
+                break;
+            case "-dumpMultiAudio":
                 if (++i < args.length) {
                     freetts.setAudioFile(args[i]);
                     freetts.setMultiAudio(true);
                 } else {
                     usage(voices);
                 }
-            } else if (args[i].equals("-version")) {
+                break;
+            case "-version":
                 System.out.println(VERSION);
-            } else if (args[i].equals("-voice")) {
+                break;
+            case "-voice":
                 // do nothing here, just skip the voice name
                 i++;
-            } else if (args[i].equals("-help")) {
+                break;
+            case "-help":
                 usage(voices);
                 System.exit(0);
-            } else if (args[i].equals("-voiceInfo")) {
+            case "-voiceInfo":
                 System.out.println(VoiceManager.getInstance().getVoiceInfo());
                 System.exit(0);
-            } else if (args[i].equals("-text")) {
+            case "-text":
                 freetts.setInputMode(InputMode.TEXT);
                 // add the rest of the args as text
-                StringBuffer sb = new StringBuffer();
+                StringBuilder sb = new StringBuilder();
                 for (int j = i + 1; j < args.length; j++) {
                     sb.append(args[j]);
                     sb.append(" ");
                 }
                 text = sb.toString();
-                break;
-            } else if (args[i].equals("-file")) {
+                break label;
+            case "-file":
                 if (++i < args.length) {
                     inFile = args[i];
                     freetts.setInputMode(InputMode.FILE);
                 } else {
                     usage(voices);
                 }
-            } else if (args[i].equals("-lines")) {
+                break;
+            case "-lines":
                 if (++i < args.length) {
                     inFile = args[i];
                     freetts.setInputMode(InputMode.LINES);
                 } else {
                     usage(voices);
                 }
-            } else if (args[i].equals("-url")) {
+                break;
+            case "-url":
                 if (++i < args.length) {
                     inFile = args[i];
                     freetts.setInputMode(InputMode.URL);
                 } else {
                     usage(voices);
                 }
-            } else if (args[i].equals("-run")) {
+                break;
+            case "-run":
                 if (++i < args.length) {
                     voice.setRunTitle(args[i]);
                 } else {
                     usage(voices);
                 }
-            } else {
+                break;
+            default:
                 System.out.println("Unknown option:" + args[i]);
+                break;
             }
         }
 
@@ -588,9 +609,9 @@ public class FreeTTS {
         }
 
         if (freetts.getVoice().isMetrics() && !freetts.getSilentMode()) {
-            // [[[ TODO: get first byte timer times back in ]]]
-            // freetts.getFirstByteTimer().showTimes();
-            // freetts.getFirstSoundTimer().showTimes();
+            // TODO get first byte timer times back in
+//            freetts.getFirstByteTimer().showTimes();
+//            freetts.getFirstSoundTimer().showTimes();
         }
 
         freetts.shutdown();

@@ -10,9 +10,9 @@ package com.sun.speech.engine;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.EventObject;
-import java.util.Iterator;
 import javax.speech.EngineProperties;
 import javax.speech.SpeechError;
 import javax.speech.SpeechEvent;
@@ -29,13 +29,13 @@ public abstract class BaseEngineProperties
      * List of <code>PropertyChangeListeners</code> registered for
      * <code>PropertyChangeEvents</code> on this object.
      */
-    protected Collection propertyChangeListeners;
+    protected Collection<PropertyChangeListener> propertyChangeListeners;
 
     /**
      * Class constructor.
      */
     protected BaseEngineProperties() {
-        propertyChangeListeners = new java.util.ArrayList();
+        propertyChangeListeners = new ArrayList<>();
     }
 
     /**
@@ -123,8 +123,8 @@ public abstract class BaseEngineProperties
                                            float newValue) {
         EventObject e = new PropertyChangeEvent(this,
                 propName,
-                new Float(oldValue),
-                new Float(newValue));
+                oldValue,
+                newValue);
         SpeechEvent se = new SpeechEventWrapper(e);
         SpeechEventUtilities.postSpeechEvent(this, se);
     }
@@ -148,8 +148,8 @@ public abstract class BaseEngineProperties
                                            int newValue) {
         EventObject e = new PropertyChangeEvent(this,
                 propName,
-                new Integer(oldValue),
-                new Integer(newValue));
+                oldValue,
+                newValue);
         SpeechEvent se = new SpeechEventWrapper(e);
         SpeechEventUtilities.postSpeechEvent(this, se);
     }
@@ -173,8 +173,8 @@ public abstract class BaseEngineProperties
                                            boolean newValue) {
         EventObject e = new PropertyChangeEvent(this,
                 propName,
-                new Boolean(oldValue),
-                new Boolean(newValue));
+                oldValue,
+                newValue);
         SpeechEvent se = new SpeechEventWrapper(e);
         SpeechEventUtilities.postSpeechEvent(this, se);
     }
@@ -193,10 +193,9 @@ public abstract class BaseEngineProperties
         if (propertyChangeListeners == null) {
             return;
         }
-        Iterator iterator = propertyChangeListeners.iterator();
-        while (iterator.hasNext()) {
+        for (Object propertyChangeListener : propertyChangeListeners) {
             PropertyChangeListener pl =
-                    (PropertyChangeListener) iterator.next();
+                    (PropertyChangeListener) propertyChangeListener;
             pl.propertyChange(event);
         }
     }

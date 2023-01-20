@@ -205,7 +205,7 @@ public class PathExtractorImpl implements PathExtractor {
      * of an array path traversal enums and associated strings
      */
     private Object[] compile(String path) {
-        List list = new ArrayList();
+        List list = new ArrayList<>();
 
         if (path == null) {
             return list.toArray();
@@ -235,13 +235,9 @@ public class PathExtractorImpl implements PathExtractor {
         return pathAndFeature;
     }
 
-
-    // TODO: add these to the interface should we support binary
-    // files
-    /*
-    public void writeBinary();
-    public void readBinary();
-    */
+    // TODO: add these to the interface should we support binary files
+//    public void writeBinary();
+//    public void readBinary();
 }
 
 
@@ -249,7 +245,7 @@ public class PathExtractorImpl implements PathExtractor {
  * An enumerated type associated with path operations.
  */
 class OpEnum {
-    static private Map map = new HashMap();
+    static private Map map = new HashMap<>();
 
     public final static OpEnum NEXT = new OpEnum("n");
     public final static OpEnum PREV = new OpEnum("p");

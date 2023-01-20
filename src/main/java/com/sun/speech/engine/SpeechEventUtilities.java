@@ -89,9 +89,9 @@ public class SpeechEventUtilities {
             int activeCount = rootGroup.activeCount();
             Thread[] threads = new Thread[activeCount];
             rootGroup.enumerate(threads, true);
-            for (int i = 0; i < threads.length; i++) {
-                if (threads[i] != null) {
-                    String name = threads[i].getName();
+            for (Thread thread : threads) {
+                if (thread != null) {
+                    String name = thread.getName();
                     if (name.startsWith("AWT-EventQueue")) {
                         awtRunning = true;
                         return true;

@@ -92,7 +92,7 @@ public class Durator implements UtteranceProcessor {
         //
         for (Item segment = utterance.getRelation(Relation.SEGMENT).getHead(); segment != null; segment = segment
                 .getNext()) {
-            zdur = ((Float) cart.interpret(segment)).floatValue();
+            zdur = (Float) cart.interpret(segment);
             durStat = durations.getPhoneDuration(segment.getFeatures()
                     .getString("name"));
 

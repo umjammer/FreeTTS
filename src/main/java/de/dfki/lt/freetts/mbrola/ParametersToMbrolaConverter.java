@@ -50,7 +50,7 @@ public class ParametersToMbrolaConverter implements UtteranceProcessor {
             float end = segment.getFeatures().getFloat("end");
             // Individual duration of segment, in milliseconds:
             int dur = (int) ((end - prevEnd) * 1000);
-            StringBuffer targetStringBuffer = new StringBuffer();
+            StringBuilder targetStringBuffer = new StringBuilder();
             while (target != null &&
                     target.getFeatures().getFloat("pos") <= end) {
                 float pos = target.getFeatures().getFloat("pos");

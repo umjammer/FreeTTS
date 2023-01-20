@@ -11,7 +11,6 @@ package de.dfki.lt.freetts.mbrola;
 
 import java.io.IOException;
 import java.nio.ByteOrder;
-import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -96,8 +95,8 @@ public class MbrolaAudioOutput implements UtteranceProcessor {
             throw new ProcessException(e.getMessage(), e);
         }
 
-        for (Iterator it = audioData.iterator(); it.hasNext(); ) {
-            byte[] bytes = (byte[]) it.next();
+        for (Object audioDatum : audioData) {
+            byte[] bytes = (byte[]) audioDatum;
             try {
                 if (!audioPlayer.write(bytes)) {
                     throw new ProcessException

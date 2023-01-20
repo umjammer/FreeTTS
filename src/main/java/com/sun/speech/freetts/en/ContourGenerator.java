@@ -78,7 +78,7 @@ public class ContourGenerator implements UtteranceProcessor {
         this.modelMean = modelMean;
         this.modelStddev = modelStddev;
 
-        List termsList = new ArrayList();
+        List<F0ModelTerm> termsList = new ArrayList<>();
 
         String line;
         BufferedReader reader = new BufferedReader(
@@ -90,7 +90,7 @@ public class ContourGenerator implements UtteranceProcessor {
             }
             line = reader.readLine();
         }
-        terms = (F0ModelTerm[]) termsList.toArray(terms);
+        terms = termsList.toArray(terms);
         reader.close();
     }
 
@@ -146,7 +146,7 @@ public class ContourGenerator implements UtteranceProcessor {
                 Float val = (Float) endPath.findFeature(syllable);
                 // assert val != null;
                 // don't mind null ptr exception
-                addTargetPoint(target, val.floatValue(),
+                addTargetPoint(target, val,
                         mapF0((interceptor.start + lend) / 2.0f,
                                 localMean, localStddev));
                 addTargetPoint(target, vowelMid(syllable),
@@ -155,7 +155,7 @@ public class ContourGenerator implements UtteranceProcessor {
                 if (isPreBreak(syllable)) {
                     Float eval = (Float) lastDaughterEndPath.findFeature(
                             syllable);
-                    addTargetPoint(target, eval.floatValue(),
+                    addTargetPoint(target, eval,
                             mapF0(interceptor.end, localMean, localStddev));
                 }
             }
@@ -171,7 +171,7 @@ public class ContourGenerator implements UtteranceProcessor {
                 newItem.getFeatures().setFloat(
                         "f0", first.getFeatures().getFloat("f0"));
             }
-            Item last = (Item) target.getTail();
+            Item last = target.getTail();
             Item lastSegment
                     = utterance.getRelation(Relation.SEGMENT).getTail();
             float segEnd = 0.0f;
@@ -228,7 +228,7 @@ public class ContourGenerator implements UtteranceProcessor {
      *
      * @return the time point mid way in vowel in this syllable
      */
-    private final float vowelMid(Item syllable) {
+    private float vowelMid(Item syllable) {
         Voice voice = syllable.getUtterance().getVoice();
         Item firstSeg = syllable.getItemAs(
                 Relation.SYLLABLE_STRUCTURE).getDaughter();
@@ -240,7 +240,7 @@ public class ContourGenerator implements UtteranceProcessor {
             // it can be understood.
             if ("+".equals(voice.getPhoneFeature(segment.toString(), "vc"))) {
                 val = (segment.getFeatures().getFloat("end") +
-                        ((Float) vowelMidPath.findFeature(segment)).floatValue()) / 2.0f;
+                        (Float) vowelMidPath.findFeature(segment)) / 2.0f;
                 return val;
             }
         }
@@ -249,7 +249,7 @@ public class ContourGenerator implements UtteranceProcessor {
             val = 0.0f;
         } else {
             val = (firstSeg.getFeatures().getFloat("end") +
-                    ((Float) vowelMidPath.findFeature(firstSeg)).floatValue())
+                    (Float) vowelMidPath.findFeature(firstSeg))
                     / 2.0f;
         }
 
@@ -284,7 +284,7 @@ public class ContourGenerator implements UtteranceProcessor {
      * @return <code>true</code> if this syllable is following a
      * 	break; otherwise <code>false</code>.
      */
-    private final boolean isPostBreak(Item syllable) {
+    private boolean isPostBreak(Item syllable) {
         return ((syllable.getPrevious() == null) ||
                 "pau".equals(postBreakPath.findFeature(syllable)));
     }
@@ -297,7 +297,7 @@ public class ContourGenerator implements UtteranceProcessor {
      * @return <code>true</code> if this syllable is before a
      * 	break; otherwise <code>false</code>.
      */
-    private final boolean isPreBreak(Item syllable) {
+    private boolean isPreBreak(Item syllable) {
         return ((syllable.getNext() == null) ||
                 "pau".equals(preBreakPath.findFeature(syllable)));
     }
@@ -309,7 +309,7 @@ public class ContourGenerator implements UtteranceProcessor {
      *
      * @return the mapped value
      */
-    private final float mapF0(float val, float mean, float stddev) {
+    private float mapF0(float val, float mean, float stddev) {
         return ((((val - modelMean) / modelStddev) * stddev) + mean);
     }
 
@@ -319,7 +319,7 @@ public class ContourGenerator implements UtteranceProcessor {
      * @param list resulting F0ModelTerm is added to this list
      * @param line the string to parse
      */
-    protected void parseAndAdd(List list, String line) {
+    protected void parseAndAdd(List<F0ModelTerm> list, String line) {
         try {
             StringTokenizer tokenizer = new StringTokenizer(line, " ");
             String feature = tokenizer.nextToken();
@@ -424,8 +424,8 @@ class Interceptor {
      * @return the string representation of the object
      */
     public String toString() {
-        return Float.toString(start) + " " +
-                Float.toString(mid) + " " +
-                Float.toString(end);
+        return start + " " +
+                mid + " " +
+                end;
     }
 }

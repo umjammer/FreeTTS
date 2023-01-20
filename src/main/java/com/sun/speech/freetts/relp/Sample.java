@@ -183,8 +183,8 @@ public class Sample {
      */
     public void dumpBinary(ByteBuffer bb) throws IOException {
         bb.putInt(frameData.length);
-        for (int i = 0; i < frameData.length; i++) {
-            bb.putShort(frameData[i]);
+        for (short frameDatum : frameData) {
+            bb.putShort(frameDatum);
         }
         bb.putInt(residualData.length);
         bb.put(residualData);
@@ -199,12 +199,12 @@ public class Sample {
      */
     public void dumpBinary(DataOutputStream os) throws IOException {
         os.writeInt(frameData.length);
-        for (int i = 0; i < frameData.length; i++) {
-            os.writeShort(frameData[i]);
+        for (short frameDatum : frameData) {
+            os.writeShort(frameDatum);
         }
         os.writeInt(residualData.length);
-        for (int i = 0; i < residualData.length; i++) {
-            os.writeByte(residualData[i]);
+        for (byte residualDatum : residualData) {
+            os.writeByte(residualDatum);
         }
     }
 

@@ -43,7 +43,7 @@ public class SynthesizerSelector {
         EngineList list = Central.availableSynthesizers(null);
         Enumeration e = list.elements();
         while (e.hasMoreElements()) {
-            synths.add(((SynthesizerModeDesc) e.nextElement()));
+            synths.add(e.nextElement());
             synthNames.add(
                     ((SynthesizerModeDesc)
                             synths.get(synths.size() - 1)).getEngineName());

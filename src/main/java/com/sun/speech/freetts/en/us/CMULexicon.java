@@ -100,7 +100,7 @@ public class CMULexicon extends LexiconImpl {
          * if the above didn't work.
          */
         if (letterToSoundURL == null) {
-            Class cls = CMULexicon.class;
+            Class<CMULexicon> cls = CMULexicon.class;
             letterToSoundURL = cls.getResource(basename + "_lts." + type);
             compiledURL = cls.getResource(basename + "_compiled." + type);
             addendaURL = cls.getResource(basename + "_addenda." + type);
@@ -140,7 +140,6 @@ public class CMULexicon extends LexiconImpl {
         return lexicon;
     }
 
-
     /**
      * Determines if the currentPhone represents a new syllable
      * boundary.
@@ -152,7 +151,7 @@ public class CMULexicon extends LexiconImpl {
      * @return <code>true</code> if the word phone in question is on a
      *     syllable boundary; otherwise <code>false</code>.
      */
-    public boolean isSyllableBoundary(List syllablePhones,
+    public boolean isSyllableBoundary(List<String> syllablePhones,
                                       String[] wordPhones,
                                       int currentWordPhone) {
         if (currentWordPhone >= wordPhones.length) {
@@ -168,16 +167,10 @@ public class CMULexicon extends LexiconImpl {
         } else if (currentWordPhone == (wordPhones.length - 1)) {
             return false;
         } else {
-            int p, n, nn;
-            p = getSonority(
-                    (String) syllablePhones.get(syllablePhones.size() - 1));
-            n = getSonority(wordPhones[currentWordPhone]);
-            nn = getSonority(wordPhones[currentWordPhone + 1]);
-            if ((p <= n) && (n <= nn)) {
-                return true;
-            } else {
-                return false;
-            }
+            int p = getSonority(syllablePhones.get(syllablePhones.size() - 1));
+            int n = getSonority(wordPhones[currentWordPhone]);
+            int nn = getSonority(wordPhones[currentWordPhone + 1]);
+            return (p <= n) && (n <= nn);
         }
     }
 
@@ -220,9 +213,9 @@ public class CMULexicon extends LexiconImpl {
      * @return <code>true</code> if a vowel is found; 
      *		otherwise <code>false</code>. 
      */
-    static protected boolean hasVowel(List phones) {
-        for (int i = 0; i < phones.size(); i++) {
-            if (isVowel((String) phones.get(i))) {
+    static protected boolean hasVowel(List<String> phones) {
+        for (String phone : phones) {
+            if (isVowel(phone)) {
                 return true;
             }
         }
@@ -238,7 +231,7 @@ public class CMULexicon extends LexiconImpl {
      *		otherwise <code>false</code>. 
      */
     static protected boolean isVowel(String phone) {
-        return VOWELS.indexOf(phone.substring(0, 1)) != -1;
+        return VOWELS.contains(phone.substring(0, 1));
     }
 
     /**
@@ -251,11 +244,11 @@ public class CMULexicon extends LexiconImpl {
     static protected int getSonority(String phone) {
         if (isVowel(phone) || isSilence(phone)) {
             return 5;
-        } else if (GLIDES_LIQUIDS.indexOf(phone.substring(0, 1)) != -1) {
+        } else if (GLIDES_LIQUIDS.contains(phone.substring(0, 1))) {
             return 4;
-        } else if (NASALS.indexOf(phone.substring(0, 1)) != -1) {
+        } else if (NASALS.contains(phone.substring(0, 1))) {
             return 3;
-        } else if (VOICED_OBSTRUENTS.indexOf(phone.substring(0, 1)) != -1) {
+        } else if (VOICED_OBSTRUENTS.contains(phone.substring(0, 1))) {
             return 2;
         } else {
             return 1;
@@ -346,7 +339,7 @@ public class CMULexicon extends LexiconImpl {
                 System.out.println("    -showtimes");
             }
         } catch (IOException ioe) {
-            System.err.println(ioe);
+            ioe.printStackTrace();
         }
     }
 }

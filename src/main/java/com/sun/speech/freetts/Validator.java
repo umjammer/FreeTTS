@@ -20,7 +20,7 @@ public interface Validator {
     /**
      * Validates a certain condition.
      *
-     * @throws a ValidationException if the condition is invalid.
+     * @throws ValidationException if the condition is invalid.
      */
-    public void validate() throws ValidationException;
+    void validate() throws ValidationException;
 }

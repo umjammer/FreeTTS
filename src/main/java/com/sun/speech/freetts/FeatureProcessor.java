@@ -24,6 +24,6 @@ public interface FeatureProcessor {
      * @throws ProcessException if an exception occurred during the
      *   processing
      */
-    public String process(Item item) throws ProcessException;
+    String process(Item item) throws ProcessException;
 }
 

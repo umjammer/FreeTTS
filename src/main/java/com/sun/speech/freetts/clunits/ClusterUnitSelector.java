@@ -255,7 +255,7 @@ public class ClusterUnitSelector implements UtteranceProcessor {
      * @return a string with all single quotes removed
      */
     private String stripQuotes(String s) {
-        StringBuffer sb = new StringBuffer(s.length());
+        StringBuilder sb = new StringBuilder(s.length());
         for (int i = 0; i < s.length(); i++) {
             char c = s.charAt(i);
             if (c != '\'') {
@@ -437,7 +437,7 @@ public class ClusterUnitSelector implements UtteranceProcessor {
          * Try to add paths to the given point.
          *
          * @param point the point to add the paths to
-         * @param paths the path
+         * @param path the path
          */
         void addPaths(ViterbiPoint point, ViterbiPath path) {
             ViterbiPath nextPath;
@@ -562,17 +562,17 @@ public class ClusterUnitSelector implements UtteranceProcessor {
             ViterbiCandidate gt;
 
             all = null;
-            for (int i = 0; i < clist.length; i++) {
+            for (int j : clist) {
                 p = new ViterbiCandidate();
                 p.next = all; // link them reversely: the first in clist will be at the end of the queue
                 p.item = item; // The item is the same for all these candidates in the queue.
                 p.score = 0;
                 // remember the absolute unit index:
-                p.setInt(clunitDB.getUnitIndex(unitType, clist[i]));
+                p.setInt(clunitDB.getUnitIndex(unitType, j));
                 all = p;
                 // this is OK
                 if (LOGGER.isLoggable(Level.FINE)) {
-                    LOGGER.fine("    gc adding " + clist[i]);
+                    LOGGER.fine("    gc adding " + j);
                 }
             }
 
@@ -647,7 +647,7 @@ public class ClusterUnitSelector implements UtteranceProcessor {
          * the features "unit_prev_move" and "unit_this_move".
          *
          * @param path the previous path, or null if this candidate starts a new path
-         * @param candiate the candidate to add to the path
+         * @param candidate the candidate to add to the path
          *
          * @return a new path, consisting of this candidate appended to the previous path, and
          * with the cumulative (penalty) score calculated.
@@ -675,12 +675,10 @@ public class ClusterUnitSelector implements UtteranceProcessor {
                 if (clunitDB.getOptimalCoupling() == 1) {
                     Cost oCost = getOptimalCouple(u0, u1);
                     if (oCost.u0Move != -1) {
-                        newPath.setFeature("unit_prev_move", new
-                                Integer(oCost.u0Move));
+                        newPath.setFeature("unit_prev_move", oCost.u0Move);
                     }
                     if (oCost.u1Move != -1) {
-                        newPath.setFeature("unit_this_move", new
-                                Integer(oCost.u1Move));
+                        newPath.setFeature("unit_this_move", oCost.u1Move);
                     }
                     cost = oCost.cost;
                 } else if (clunitDB.getOptimalCoupling() == 2) {
@@ -990,7 +988,7 @@ public class ClusterUnitSelector implements UtteranceProcessor {
          */
         void setInt(int ival) {
             this.ival = ival;
-            set(new Integer(ival));
+            set(ival);
         }
 
         /**

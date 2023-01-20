@@ -6,7 +6,6 @@ import java.util.Locale;
 
 import com.sun.speech.freetts.Age;
 import com.sun.speech.freetts.Gender;
-import com.sun.speech.freetts.Item;
 import com.sun.speech.freetts.UtteranceProcessor;
 import com.sun.speech.freetts.clunits.ClusterUnitSelector;
 import de.dfki.lt.freetts.ClusterUnitNamer;
@@ -52,30 +51,27 @@ public class CMUArcticVoice extends CMUClusterUnitVoice {
      *                     processor
      */
     public UtteranceProcessor getUnitSelector() throws IOException {
-        ClusterUnitNamer unitNamer = new ClusterUnitNamer() {
-            public void setUnitName(Item seg) {
-                String VOWELS = "aeiou";
-                String cname = null;
+        ClusterUnitNamer unitNamer = seg -> {
+            String VOWELS = "aeiou";
+            String cname = null;
 
-                String segName = seg.getFeatures().getString("name");
+            String segName = seg.getFeatures().getString("name");
 
-                /*
-                 * If we have a vowel, then the unit name is the segment name
-                 * plus a 0 or 1, depending upon the stress of the parent.
-                 * Otherwise, the unit name is the segment name plus "coda" or
-                 * "onset" based upon the seg_onsetcoda feature processor.
-                 */
-                if (segName.equals("pau")) {
-                    cname = segName;
-                } else if (VOWELS.indexOf(segName.charAt(0)) >= 0) {
-                    cname = segName + seg.findFeature("R:SylStructure.parent.stress");
-                } else {
-                    cname = segName + seg.findFeature("seg_onsetcoda");
-                }
-
-                seg.getFeatures().setString("clunit_name", cname);
+            /*
+             * If we have a vowel, then the unit name is the segment name
+             * plus a 0 or 1, depending upon the stress of the parent.
+             * Otherwise, the unit name is the segment name plus "coda" or
+             * "onset" based upon the seg_onsetcoda feature processor.
+             */
+            if (segName.equals("pau")) {
+                cname = segName;
+            } else if (VOWELS.indexOf(segName.charAt(0)) >= 0) {
+                cname = segName + seg.findFeature("R:SylStructure.parent.stress");
+            } else {
+                cname = segName + seg.findFeature("seg_onsetcoda");
             }
 
+            seg.getFeatures().setString("clunit_name", cname);
         };
         return new ClusterUnitSelector(getDatabase(), unitNamer);
     }

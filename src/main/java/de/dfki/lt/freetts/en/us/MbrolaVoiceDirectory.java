@@ -53,12 +53,12 @@ public class MbrolaVoiceDirectory extends VoiceDirectory {
             List validVoices = new java.util.ArrayList();
             int count = 0;
 
-            for (int i = 0; i < voices.length; i++) {
+            for (Voice voice : voices) {
                 MbrolaVoiceValidator validator =
-                        new MbrolaVoiceValidator((MbrolaVoice) voices[i]);
+                        new MbrolaVoiceValidator((MbrolaVoice) voice);
                 try {
                     validator.validate();
-                    validVoices.add(voices[i]);
+                    validVoices.add(voice);
                     count++;
                 } catch (ValidationException ve) {
                     // does nothing if the voice is not found 
@@ -89,7 +89,7 @@ public class MbrolaVoiceDirectory extends VoiceDirectory {
      * Prints out the MBROLA voices.
      */
     public static void main(String[] args) {
-        System.out.println((new MbrolaVoiceDirectory()).toString());
+        System.out.println((new MbrolaVoiceDirectory()));
     }
 }
 

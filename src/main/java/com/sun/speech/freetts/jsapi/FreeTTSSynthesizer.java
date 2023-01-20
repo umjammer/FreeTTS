@@ -11,7 +11,6 @@ package com.sun.speech.freetts.jsapi;
 import java.beans.PropertyVetoException;
 import java.io.IOException;
 import java.util.Enumeration;
-import java.util.Iterator;
 import java.util.Vector;
 import java.util.logging.Logger;
 import javax.speech.EngineException;
@@ -74,7 +73,7 @@ public class FreeTTSSynthesizer extends BaseSynthesizer {
      * @throws EngineException if an allocation error occurs
      */
     protected void handleAllocate() throws EngineException {
-        long states[];
+        long[] states;
         boolean ok = false;
         FreeTTSSynthesizerModeDesc desc = (FreeTTSSynthesizerModeDesc)
                 getEngineModeDesc();
@@ -184,7 +183,7 @@ public class FreeTTSSynthesizer extends BaseSynthesizer {
      * @throws EngineStateError if the engine was not in the proper
      * 				state
      */
-    public Enumeration enumerateQueue() throws EngineStateError {
+    public Enumeration<?> enumerateQueue() throws EngineStateError {
         checkEngineState(DEALLOCATED | DEALLOCATING_RESOURCES);
         return outputHandler.enumerateQueue();
     }
@@ -356,11 +355,11 @@ public class FreeTTSSynthesizer extends BaseSynthesizer {
                 // and use that.  If no match, just ignore it.
                 FreeTTSSynthesizerModeDesc desc =
                         (FreeTTSSynthesizerModeDesc) getEngineModeDesc();
-                javax.speech.synthesis.Voice voices[] = desc.getVoices();
-                for (int i = 0; i < voices.length; i++) {
-                    if (voices[i].match(voice)) {
+                javax.speech.synthesis.Voice[] voices = desc.getVoices();
+                for (javax.speech.synthesis.Voice value : voices) {
+                    if (value.match(voice)) {
                         try {
-                            if (setCurrentVoice((FreeTTSVoice) voices[i])) {
+                            if (setCurrentVoice((FreeTTSVoice) value)) {
                                 try {
                                     super.setVoice(voice);
                                     break;
@@ -491,13 +490,13 @@ public class FreeTTSSynthesizer extends BaseSynthesizer {
          *
          * @see BaseSynthesizerQueueItem
          */
-        protected Vector queue;
+        protected final Vector<FreeTTSSynthesizerQueueItem> queue;
 
         /**
          * Create a new OutputHandler for the given Synthesizer.
          */
         public OutputHandler() {
-            queue = new Vector();
+            queue = new Vector<>();
         }
 
         /**
@@ -515,7 +514,7 @@ public class FreeTTSSynthesizer extends BaseSynthesizer {
          *
          * @return the enumeration queue
          */
-        public Enumeration enumerateQueue() {
+        public Enumeration<?> enumerateQueue() {
             synchronized (queue) {
                 return queue.elements();
             }
@@ -574,18 +573,17 @@ public class FreeTTSSynthesizer extends BaseSynthesizer {
         /**
          * Cancel all items in the queue
          */
+        @SuppressWarnings("unchecked")
         protected void cancelAllItems() {
-            FreeTTSSynthesizerQueueItem item = null;
-            Vector copy;
+            Vector<FreeTTSSynthesizerQueueItem> copy;
 
             synchronized (queue) {
                 audio.cancel();
-                copy = (Vector) queue.clone();
+                copy = (Vector<FreeTTSSynthesizerQueueItem>) queue.clone();
                 queue.clear();
                 queueDrained();
             }
-            for (Iterator i = copy.iterator(); i.hasNext(); ) {
-                item = (FreeTTSSynthesizerQueueItem) i.next();
+            for (FreeTTSSynthesizerQueueItem item : copy) {
                 // item.postSpeakableCancelled();
                 item.cancelled();
             }

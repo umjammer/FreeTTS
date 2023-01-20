@@ -44,7 +44,7 @@ public class TextSynthesizer extends BaseSynthesizer {
      * Starts the output thread.
      */
     protected void handleAllocate() {
-        long states[];
+        long[] states;
         synchronized (engineStateLock) {
             long newState = ALLOCATED | RESUMED;
             newState |= (outputHandler.isQueueEmpty()
@@ -171,7 +171,7 @@ public class TextSynthesizer extends BaseSynthesizer {
          *
          * @see BaseSynthesizerQueueItem
          */
-        protected Vector queue;
+        protected final Vector queue;
 
         /**
          * The current item to speak.
@@ -204,7 +204,7 @@ public class TextSynthesizer extends BaseSynthesizer {
         /**
          * Object on which accesses to the command must synchronize.
          */
-        protected Object commandLock = new Object();
+        protected final Object commandLock = new Object();
 
         /**
          * Class constructor.
@@ -312,34 +312,34 @@ public class TextSynthesizer extends BaseSynthesizer {
          * @param source the item to cancel
          */
         protected void cancelItem(Object source) {
-//              synchronized(currentItemLock) {
-//                  if (currentItem.getSource() == source) {
-//                      cancelItem();
-//                  } else {
-//                      boolean queueEmptied;
-//                      synchronized(queue) {
-//                          for (int i = 0; i < queue.size(); i++) {
-//                              BaseSynthesizerQueueItem item =
-//                                  (BaseSynthesizerQueueItem)(queue.elementAt(i));
-//                              if (item.getSource() == source) {
-//                                  item.postSpeakableCancelled();
-//                                  queue.removeElementAt(i);
-//                              }
-//                          }
-//                          queueEmptied = queue.size() == 0;
-//                          queue.notifyAll();
-//                      }
-//                      if (queueEmptied) {
-//                          long[] states = setEngineState(QUEUE_NOT_EMPTY,
-//                                                         QUEUE_EMPTY);
-//                          postQueueEmptied(states[0], states[1]);
-//                      } else { 
-//                          long[] states = setEngineState(QUEUE_NOT_EMPTY,
-//                                                         QUEUE_NOT_EMPTY);
-//                          postQueueUpdated(false, states[0], states[1]);
-//                      }
-//                  }
-//              }
+//            synchronized (currentItemLock) {
+//                if (currentItem.getSource() == source) {
+//                    cancelItem();
+//                } else {
+//                    boolean queueEmptied;
+//                    synchronized (queue) {
+//                        for (int i = 0; i < queue.size(); i++) {
+//                            BaseSynthesizerQueueItem item =
+//                                    (BaseSynthesizerQueueItem) (queue.elementAt(i));
+//                            if (item.getSource() == source) {
+//                                item.postSpeakableCancelled();
+//                                queue.removeElementAt(i);
+//                            }
+//                        }
+//                        queueEmptied = queue.size() == 0;
+//                        queue.notifyAll();
+//                    }
+//                    if (queueEmptied) {
+//                        long[] states = setEngineState(QUEUE_NOT_EMPTY,
+//                                QUEUE_EMPTY);
+//                        postQueueEmptied(states[0], states[1]);
+//                    } else {
+//                        long[] states = setEngineState(QUEUE_NOT_EMPTY,
+//                                QUEUE_NOT_EMPTY);
+//                        postQueueUpdated(false, states[0], states[1]);
+//                    }
+//                }
+//            }
         }
 
         /**
@@ -563,8 +563,8 @@ public class TextSynthesizer extends BaseSynthesizer {
          * @return <code>true</code> if the next thing in line is a command
          */
         protected boolean isCommand(String engineText, int index) {
-            if (!engineText.substring(index, index + 1).equals(
-                    TextSynthesizerQueueItem.COMMAND_PREFIX)) {
+            if (!engineText.startsWith(
+                    TextSynthesizerQueueItem.COMMAND_PREFIX, index)) {
                 return false;
             }
 

@@ -11,9 +11,9 @@ package com.sun.speech.engine.synthesis;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Enumeration;
-import java.util.Iterator;
 import javax.speech.EngineListener;
 import javax.speech.EngineStateError;
 import javax.speech.SpeechEvent;
@@ -63,7 +63,7 @@ abstract public class BaseSynthesizer extends BaseEngine
      */
     public BaseSynthesizer(SynthesizerModeDesc mode) {
         super(mode);
-        speakableListeners = new java.util.ArrayList();
+        speakableListeners = new ArrayList<>();
         voiceList = new VoiceList(mode);
     }
 
@@ -166,12 +166,12 @@ abstract public class BaseSynthesizer extends BaseEngine
      *   in the given bit pattern.
      */
     protected String stateToString(long state) {
-        StringBuffer buf = new StringBuffer();
+        StringBuilder buf = new StringBuilder();
         if ((state & Synthesizer.QUEUE_EMPTY) != 0)
             buf.append(" QUEUE_EMPTY ");
         if ((state & Synthesizer.QUEUE_NOT_EMPTY) != 0)
             buf.append(" QUEUE_NOT_EMPTY ");
-        return super.stateToString(state) + buf.toString();
+        return super.stateToString(state) + buf;
     }
 
     /**
@@ -217,7 +217,7 @@ abstract public class BaseSynthesizer extends BaseEngine
      *   if this <code>Synthesizer</code> in the <code>DEALLOCATED</code> or 
      *   <code>DEALLOCATING_RESOURCES</code> states
      */
-    abstract public Enumeration enumerateQueue() throws EngineStateError;
+    abstract public Enumeration<?> enumerateQueue() throws EngineStateError;
 
     /**
      * Cancels the item at the top of the queue.
@@ -375,9 +375,8 @@ abstract public class BaseSynthesizer extends BaseEngine
         if (engineListeners == null) {
             return;
         }
-        Iterator iterator = engineListeners.iterator();
-        while (iterator.hasNext()) {
-            EngineListener el = (EngineListener) iterator.next();
+        for (Object engineListener : engineListeners) {
+            EngineListener el = (EngineListener) engineListener;
             if (el instanceof SynthesizerListener) {
                 SynthesizerListener sl = (SynthesizerListener) el;
                 sl.queueUpdated(event);
@@ -419,9 +418,8 @@ abstract public class BaseSynthesizer extends BaseEngine
         if (engineListeners == null) {
             return;
         }
-        Iterator iterator = engineListeners.iterator();
-        while (iterator.hasNext()) {
-            EngineListener el = (EngineListener) iterator.next();
+        for (Object engineListener : engineListeners) {
+            EngineListener el = (EngineListener) engineListener;
             if (el instanceof SynthesizerListener) {
                 SynthesizerListener sl = (SynthesizerListener) el;
                 sl.queueEmptied(event);

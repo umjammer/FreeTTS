@@ -391,13 +391,17 @@ public class FreeTTSTime extends FreeTTS {
         String voiceName = null;
 
         for (int i = 0; i < args.length; i++) {
-            if (args[i].equals("-metrics")) {
+            switch (args[i]) {
+            case "-metrics":
                 setMetrics = true;
-            } else if (args[i].equals("-detailedMetrics")) {
+                break;
+            case "-detailedMetrics":
                 setDetailedMetrics = true;
-            } else if (args[i].equals("-silent")) {
+                break;
+            case "-silent":
                 setSilentMode = true;
-            } else if (args[i].equals("-period")) {
+                break;
+            case "-period":
                 if (++i < args.length) {
                     try {
                         delay = Integer.parseInt(args[i]);
@@ -406,24 +410,31 @@ public class FreeTTSTime extends FreeTTS {
                         usage();
                     }
                 }
-            } else if (args[i].equals("-verbose")) {
+                break;
+            case "-verbose":
                 setVerbose = true;
-            } else if (args[i].equals("-dumpUtterance")) {
+                break;
+            case "-dumpUtterance":
                 setDumpUtterance = true;
-            } else if (args[i].equals("-dumpRelations")) {
+                break;
+            case "-dumpRelations":
                 setDumpRelations = true;
-            } else if (args[i].equals("-clockMode")) {
+                break;
+            case "-clockMode":
                 iterations = Integer.MAX_VALUE;
                 delay = 300;
-            } else if (args[i].equals("-timeTest")) {
+                break;
+            case "-timeTest":
                 iterations = 100;
-            } else if (args[i].equals("-dumpAudio")) {
+                break;
+            case "-dumpAudio":
                 if (++i < args.length) {
                     audioFile = args[i];
                 } else {
                     usage();
                 }
-            } else if (args[i].equals("-iter")) {
+                break;
+            case "-iter":
                 if (++i < args.length) {
                     try {
                         iterations = Integer.parseInt(args[i]);
@@ -434,37 +445,45 @@ public class FreeTTSTime extends FreeTTS {
                 } else {
                     usage();
                 }
-            } else if (args[i].equals("-dumpASCII")) {
+                break;
+            case "-dumpASCII":
                 if (++i < args.length) {
                     waveDumpFile = args[i];
                 } else {
                     usage();
                 }
-            } else if (args[i].equals("-version")) {
+                break;
+            case "-version":
                 System.out.println(VERSION);
-            } else if (args[i].equals("-help")) {
+                break;
+            case "-help":
                 usage();
-            } else if (args[i].equals("-time")) {
+                break;
+            case "-time":
                 setInputMode = true;
                 if (++i < args.length) {
                     time = args[i];
                 } else {
                     usage();
                 }
-            } else if (args[i].equals("-run")) {
+                break;
+            case "-run":
                 if (++i < args.length) {
                     runTitle = args[i];
                 } else {
                     usage();
                 }
-            } else if (args[i].equals("-voice")) {
+                break;
+            case "-voice":
                 if (++i < args.length) {
                     voiceName = args[i];
                 } else {
                     usage();
                 }
-            } else {
+                break;
+            default:
                 System.out.println("Unknown option:" + args[i]);
+                break;
             }
         }
 

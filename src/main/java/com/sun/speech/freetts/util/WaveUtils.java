@@ -47,10 +47,10 @@ public class WaveUtils {
      *
      * @return 8-bit ulaw sample, normalized
      */
-    public static final byte shortToUlaw(short sampleData) {
+    public static byte shortToUlaw(short sampleData) {
         int sign, exponent, mantissa;
         int ulawByte;
-        int sample = (int) sampleData;
+        int sample = sampleData;
 
         sign = (sample >> 8) & 0x80; // set aside the sign
         if (sign != 0) {             // get the magnitude
@@ -92,7 +92,7 @@ public class WaveUtils {
      *
      * @return signed 16 bit linear sample
      */
-    public static final short ulawToShort(short uByte) {
+    public static short ulawToShort(short uByte) {
         int sign, exponent, mantissa;
         int sample;
         int ulawByte = uByte;
@@ -117,7 +117,7 @@ public class WaveUtils {
      *
      * @return the short value
      */
-    public static final short bytesToShort(byte hiByte, byte loByte) {
+    public static short bytesToShort(byte hiByte, byte loByte) {
         int result = (0x000000FF & hiByte);
         result = result << 8;
         result |= (0x000000FF & loByte);

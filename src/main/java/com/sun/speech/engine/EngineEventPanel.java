@@ -10,8 +10,6 @@ package com.sun.speech.engine;
 
 import java.awt.BorderLayout;
 import java.awt.Point;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JPanel;
@@ -52,11 +50,7 @@ public class EngineEventPanel extends JPanel {
 
         clearButton = new JButton("Clear");
         clearButton.setMnemonic('C');
-        clearButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent evt) {
-                clearText();
-            }
-        });
+        clearButton.addActionListener(evt -> clearText());
 
         textArea = new JTextArea();
         scroller = new JScrollPane(textArea);

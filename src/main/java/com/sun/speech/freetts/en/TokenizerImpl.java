@@ -50,8 +50,8 @@ public class TokenizerImpl implements Tokenizer {
     /** The file to read input text from, if using file mode. */
     private Reader reader;
 
-    /** The token position - doesn't seem really necessary at this point. */
-    // private int tokenPosition = 0;
+//    /** The token position - doesn't seem really necessary at this point. */
+//    private int tokenPosition = 0;
 
     /** The current character, whether its from the file or the input text. */
     private int currentChar;
@@ -76,16 +76,14 @@ public class TokenizerImpl implements Tokenizer {
     private Token token;
     private Token lastToken;
 
-    /** For timing. */
+//    /** For timing. */
 //    private long duration = 0;
-
 
     /**
      * Constructs a Tokenizer.
      */
     public TokenizerImpl() {
     }
-
 
     /**
      * Creates a tokenizer that will return tokens from
@@ -248,7 +246,7 @@ public class TokenizerImpl implements Tokenizer {
             }
         } else if (inputText != null) {
             if (currentPosition < inputText.length()) {
-                currentChar = (int) inputText.charAt(currentPosition);
+                currentChar = inputText.charAt(currentPosition);
             } else {
                 currentChar = EOF;
             }
@@ -269,7 +267,6 @@ public class TokenizerImpl implements Tokenizer {
      * and not of type singleCharSymbols.
      *
      * @param  charClass  the type of characters to look for
-     * @param  buffer  the place to append characters of type charClass
      *
      * @return a string of characters starting from the current position
      *          of the input text, until it encounters a character not
@@ -317,7 +314,7 @@ public class TokenizerImpl implements Tokenizer {
      */
     private String getTokenByCharClass(String charClass,
                                        boolean containThisCharClass) {
-        final StringBuilder buffer = new StringBuilder();
+        StringBuilder buffer = new StringBuilder();
 
         // if we want the returned string to contain chars in charClass, then
         // containThisCharClass is TRUE and
@@ -343,13 +340,13 @@ public class TokenizerImpl implements Tokenizer {
         if (token == null) {
             return;
         }
-        final String tokenWord = token.getWord();
+        String tokenWord = token.getWord();
 
         int tokenLength = tokenWord.length();
         int position = tokenLength - 1;
 
         while (position > 0
-                && postpunctuationSymbols.indexOf((int) tokenWord
+                && postpunctuationSymbols.indexOf(tokenWord
                 .charAt(position)) != -1) {
             position--;
         }

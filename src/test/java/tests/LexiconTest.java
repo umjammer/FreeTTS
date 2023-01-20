@@ -43,9 +43,9 @@ public class LexiconTest {
         try {
             lex = CMULexicon.getInstance(true);
             assertNotNull(lex, "Lexicon Created");
-            final InputStream in =
+            InputStream in =
                     LexiconTest.class.getResourceAsStream("LEX.txt");
-            final Reader inputReader = new InputStreamReader(in);
+            Reader inputReader = new InputStreamReader(in);
             reader = new BufferedReader(inputReader);
             assertNotNull(reader, "Data File opened");
         } catch (Exception e) {
@@ -71,7 +71,7 @@ public class LexiconTest {
         int i;
         String flite_phones;
         String[] lex_phone_array;
-        StringBuffer lex_phones;
+        StringBuilder lex_phones;
         String line;
         lex_phone_array = lex.getPhones("dirk", null);
         for (String s : lex_phone_array) {
@@ -91,7 +91,7 @@ public class LexiconTest {
                 lex_phone_array = lex.getPhones(word, pos);
                 assertNotNull(lex_phone_array, "Phones returned for " + word + pos
                         + " is not null: ");
-                lex_phones = new StringBuffer("(");
+                lex_phones = new StringBuilder("(");
                 for (i = 0; i < lex_phone_array.length; i++) {
                     if (i != 0) {
                         lex_phones.append(" ");

@@ -169,8 +169,8 @@ public class Diphone {
     public void dump() {
         System.out.println("Diphone: " + name);
         System.out.println("    MP : " + midPoint);
-        for (int i = 0; i < samples.length; i++) {
-            samples[i].dump();
+        for (Sample sample : samples) {
+            sample.dump();
         }
     }
 
@@ -191,8 +191,8 @@ public class Diphone {
         bb.putInt(midPoint);
         bb.putInt(samples.length);
 
-        for (int i = 0; i < samples.length; i++) {
-            samples[i].dumpBinary(bb);
+        for (Sample sample : samples) {
+            sample.dumpBinary(bb);
         }
     }
 
@@ -213,8 +213,8 @@ public class Diphone {
         os.writeInt(midPoint);
         os.writeInt(samples.length);
 
-        for (int i = 0; i < samples.length; i++) {
-            samples[i].dumpBinary(os);
+        for (Sample sample : samples) {
+            sample.dumpBinary(os);
         }
     }
 
@@ -258,7 +258,7 @@ public class Diphone {
      * @throws IOException if IO error occurs
      */
     public static Diphone loadBinary(ByteBuffer bb) throws IOException {
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         int midPoint;
         int numSamples;
         Sample[] samples;
@@ -312,7 +312,7 @@ public class Diphone {
      * @throws IOException if IO error occurs
      */
     public static Diphone loadBinary(DataInputStream dis) throws IOException {
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         int midPoint;
         int numSamples;
         Sample[] samples;

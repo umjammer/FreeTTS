@@ -189,11 +189,9 @@ public class Timer {
         double avgTime = 0.0;
         double overallPercent = 0;
 
-	/*
-	if (curTime == 0) {
-	    return;
-	}
-	*/
+//        if (curTime == 0) {
+//            return;
+//        }
 
         if (count == 0) {
             return;

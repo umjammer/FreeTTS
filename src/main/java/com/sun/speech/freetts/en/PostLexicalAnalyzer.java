@@ -67,10 +67,8 @@ public class PostLexicalAnalyzer implements UtteranceProcessor {
 
                 String pname = item.getPrevious().toString();
 
-                if (("fa".indexOf(
-                        voice.getPhoneFeature(pname, "ctype")) != -1) &&
-                        ("dbg".indexOf(
-                                voice.getPhoneFeature(pname, "cplace")) == -1)) {
+                if (("fa".contains(voice.getPhoneFeature(pname, "ctype"))) &&
+                        (!"dbg".contains(voice.getPhoneFeature(pname, "cplace")))) {
                     prependSchwa(item);
                 } else if (voice.getPhoneFeature(pname, "cvox").equals("-")) {
                     item.getFeatures().setString("name", "s");

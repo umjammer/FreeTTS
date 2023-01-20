@@ -40,12 +40,8 @@ public class FreeTTSVoice extends BaseVoice {
             try {
                 Class<?> clazz = Class.forName(validatorName);
                 validator = (Validator) clazz.newInstance();
-            } catch (ClassNotFoundException cnfe) {
+            } catch (ClassNotFoundException | InstantiationException | IllegalAccessException cnfe) {
                 cnfe.printStackTrace();
-            } catch (IllegalAccessException iae) {
-                iae.printStackTrace();
-            } catch (InstantiationException ie) {
-                ie.printStackTrace();
             }
         } else {
             validator = null;

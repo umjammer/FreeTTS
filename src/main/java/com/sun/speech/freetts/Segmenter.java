@@ -102,7 +102,7 @@ public class Segmenter implements UtteranceProcessor {
                     sylItem = syl.appendItem();
                     sssyl = ssword.addDaughter(sylItem);
                     stress = NO_STRESS;
-                    syllableList = new ArrayList();
+                    syllableList = new ArrayList<>();
                 }
                 segItem = seg.appendItem();
                 if (isStressed(phones[j])) {

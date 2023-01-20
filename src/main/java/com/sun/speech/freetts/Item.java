@@ -1,4 +1,4 @@
-/**
+/*
  * Portions Copyright 2001-2003 Sun Microsystems, Inc.
  * Portions Copyright 1999-2001 Language Technologies Institute,
  * Carnegie Mellon University.
@@ -193,17 +193,14 @@ public class Item implements Dumpable {
         return n.parent;
     }
 
-
-    /**
-     * Sets the parent of this item.
-     *
-     * @param parent the parent of this item
-     */
-    /*
-    private void setParent(Item parent) {
-	this.parent = parent;
-    }
-    */
+//    /**
+//     * Sets the parent of this item.
+//     *
+//     * @param parent the parent of this item
+//     */
+//    private void setParent(Item parent) {
+//        this.parent = parent;
+//    }
 
     /**
      * Returns the utterance associated with this item.
@@ -230,7 +227,7 @@ public class Item implements Dumpable {
      * @param pad the leading whitspace
      */
     public void dump(PrintWriter out, int pad, String title) {
-        String itemName = title + ":" + toString();
+        String itemName = title + ":" + this;
         getFeatures().dump(out, pad, itemName);
         if (hasDaughters()) {
             Item daughter = getDaughter();
@@ -295,7 +292,7 @@ public class Item implements Dumpable {
                     results = fp.process(item);
                 } catch (ProcessException pe) {
                     System.err.println("Trouble while processing " +
-                            fp.toString());
+                            fp);
                 }
             } else {
                 results = item.getFeatures().getObject(feature);
@@ -342,32 +339,43 @@ public class Item implements Dumpable {
 
         while (pitem != null && tok.hasMoreTokens()) {
             String token = tok.nextToken();
-            if (token.equals("n")) {
+            switch (token) {
+            case "n":
                 pitem = pitem.getNext();
-            } else if (token.equals("p")) {
+                break;
+            case "p":
                 pitem = pitem.getPrevious();
-            } else if (token.equals("nn")) {
+                break;
+            case "nn":
                 pitem = pitem.getNext();
                 if (pitem != null) {
                     pitem = pitem.getNext();
                 }
-            } else if (token.equals("pp")) {
+                break;
+            case "pp":
                 pitem = pitem.getPrevious();
                 if (pitem != null) {
                     pitem = pitem.getPrevious();
                 }
-            } else if (token.equals("parent")) {
+                break;
+            case "parent":
                 pitem = pitem.getParent();
-            } else if (token.equals("daughter") || token.equals("daughter1")) {
+                break;
+            case "daughter":
+            case "daughter1":
                 pitem = pitem.getDaughter();
-            } else if (token.equals("daughtern")) {
+                break;
+            case "daughtern":
                 pitem = pitem.getLastDaughter();
-            } else if (token.equals("R")) {
+                break;
+            case "R":
                 String relationName = tok.nextToken();
                 pitem = pitem.getSharedContents().getItemRelation(relationName);
-            } else {
+                break;
+            default:
                 System.out.println("findItem: bad feature " + token +
                         " in " + path);
+                break;
             }
         }
         return pitem;

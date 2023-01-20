@@ -43,8 +43,8 @@ public class VoiceList {
         Voice[] v = desc.getVoices();
 
         if (v != null) {
-            for (int i = 0; i < v.length; i++) {
-                addVoice((BaseVoice) (v[i]));
+            for (Voice voice : v) {
+                addVoice((BaseVoice) voice);
             }
         }
     }
@@ -83,8 +83,8 @@ public class VoiceList {
      * @see BaseVoice#getId
      */
     public BaseVoice getVoiceById(String id) {
-        for (int i = 0; i < voiceList.size(); i++) {
-            BaseVoice bv = (BaseVoice) (voiceList.get(i));
+        for (Object o : voiceList) {
+            BaseVoice bv = (BaseVoice) o;
             if (bv.getId().equals(id)) {
                 return bv;
             }
@@ -114,7 +114,7 @@ public class VoiceList {
         // Build a list of indicies of all matching voices.
         // If variant is <= 0 return with first match
         //
-        int indexes[] = new int[voiceList.size()];
+        int[] indexes = new int[voiceList.size()];
         int count = 0;
 
         for (int i = 0; i < voiceList.size(); i++) {

@@ -259,7 +259,7 @@ public class TextSynthesizerQueueItem extends BaseSynthesizerQueueItem {
             }
         }
 
-        buf.append(COMMAND_PREFIX + elementName + " " + ELEMENT_START);
+        buf.append(COMMAND_PREFIX).append(elementName).append(" ").append(ELEMENT_START);
         if (attributeText != null) {
             buf.append(attributeText);
         }
@@ -288,11 +288,11 @@ public class TextSynthesizerQueueItem extends BaseSynthesizerQueueItem {
     protected StringBuffer processAttributes(Element element,
                                              String[] attributes) {
         StringBuffer attributeText = new StringBuffer();
-        for (int i = 0; i < attributes.length; i++) {
-            if (element.hasAttribute(attributes[i])) {
-                String data = element.getAttribute(attributes[i]);
+        for (String attribute : attributes) {
+            if (element.hasAttribute(attribute)) {
+                String data = element.getAttribute(attribute);
                 attributeText.append(
-                        DATA_PREFIX + attributes[i] + "=" + data + DATA_SUFFIX);
+                        DATA_PREFIX + attribute + "=" + data + DATA_SUFFIX);
             }
         }
         return attributeText;

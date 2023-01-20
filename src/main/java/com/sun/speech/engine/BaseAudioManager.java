@@ -8,6 +8,7 @@
 
 package com.sun.speech.engine;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import javax.speech.AudioListener;
 import javax.speech.AudioManager;
@@ -23,13 +24,13 @@ public class BaseAudioManager implements AudioManager {
      * List of <code>AudioListeners</code> registered for
      * <code>AudioEvents</code> on this object.
      */
-    protected Collection listeners;
+    protected Collection<AudioListener> listeners;
 
     /**
      * Class constructor.
      */
     public BaseAudioManager() {
-        listeners = new java.util.ArrayList();
+        listeners = new ArrayList<>();
     }
 
     /**

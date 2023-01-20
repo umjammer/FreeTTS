@@ -67,7 +67,7 @@ public class PartOfSpeechImpl implements PartOfSpeech {
         BufferedReader reader;
         String line;
 
-        partOfSpeechMap = new HashMap();
+        partOfSpeechMap = new HashMap<>();
         this.defaultPartOfSpeech = defaultPartOfSpeech;
         reader = new BufferedReader(new
                 InputStreamReader(url.openStream()));

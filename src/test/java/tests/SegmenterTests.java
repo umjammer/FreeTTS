@@ -172,11 +172,11 @@ public class SegmenterTests {
         l = l.getNext();
     }
 
-    /**
-     * Main entry point for this test suite.
-     *
-     * @param args the command line arguments.
-     */
+//    /**
+//     * Main entry point for this test suite.
+//     *
+//     * @param args the command line arguments.
+//     */
 //    public static void main(String[] args) {
 //        // String inputText = "for score and seven years ago";
 //        String inputText = "january first two thousand and one";

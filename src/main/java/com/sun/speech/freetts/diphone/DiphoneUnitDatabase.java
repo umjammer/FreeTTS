@@ -28,7 +28,6 @@ import java.nio.ByteBuffer;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.NoSuchElementException;
@@ -108,8 +107,8 @@ public class DiphoneUnitDatabase {
     private float lpcRange;
     private int lineCount = 0;
     private Diphone defaultDiphone;
-    private Map diphoneMap = null;
-    private Map diphoneIndex;
+    private Map<String, Object> diphoneMap;
+    private Map<String, Integer> diphoneIndex;
     private SampleInfo sampleInfo;
 
     private boolean useNewIO =
@@ -149,7 +148,7 @@ public class DiphoneUnitDatabase {
         // the default settings but setting
         // com.sun.speech.freetts.diphone.UnitDatabase.cacheType=demand
         //if (!useIndexing || useCache) {
-        diphoneMap = new LinkedHashMap();
+        diphoneMap = new LinkedHashMap<>();
         //}
         InputStream is = Utilities.getInputStream(url);
 
@@ -223,7 +222,6 @@ public class DiphoneUnitDatabase {
             reader.close();
         } catch (IOException e) {
             throw new Error(e.getMessage() + " at line " + lineCount);
-        } finally {
         }
     }
 
@@ -238,26 +236,36 @@ public class DiphoneUnitDatabase {
         try {
             StringTokenizer tokenizer = new StringTokenizer(line, " ");
             String tag = tokenizer.nextToken();
-            if (tag.equals("NAME")) {
+            switch (tag) {
+            case "NAME":
                 name = tokenizer.nextToken();
-            } else if (tag.equals("SAMPLE_RATE")) {
+                break;
+            case "SAMPLE_RATE":
                 sampleRate = Integer.parseInt(tokenizer.nextToken());
-            } else if (tag.equals("NUM_CHANNELS")) {
+                break;
+            case "NUM_CHANNELS":
                 numChannels = Integer.parseInt(tokenizer.nextToken());
-            } else if (tag.equals("LPC_MIN")) {
+                break;
+            case "LPC_MIN":
                 lpcMin = Float.parseFloat(tokenizer.nextToken());
-            } else if (tag.equals("COEFF_MIN")) {
+                break;
+            case "COEFF_MIN":
                 lpcMin = Float.parseFloat(tokenizer.nextToken());
-            } else if (tag.equals("COEFF_RANGE")) {
+                break;
+            case "COEFF_RANGE":
                 lpcRange = Float.parseFloat(tokenizer.nextToken());
-            } else if (tag.equals("LPC_RANGE")) {
+                break;
+            case "LPC_RANGE":
                 lpcRange = Float.parseFloat(tokenizer.nextToken());
-            } else if (tag.equals("ALIAS")) {
+                break;
+            case "ALIAS": {
                 String name = tokenizer.nextToken();
                 String origName = tokenizer.nextToken();
                 AliasDiphone diphone = new AliasDiphone(name, origName);
                 add(diphone);
-            } else if (tag.equals("DIPHONE")) {
+                break;
+            }
+            case "DIPHONE": {
                 String name = tokenizer.nextToken();
                 int start = Integer.parseInt(tokenizer.nextToken());
                 int mid = Integer.parseInt(tokenizer.nextToken());
@@ -280,7 +288,9 @@ public class DiphoneUnitDatabase {
                 }
                 Diphone diphone = new Diphone(name, samples, midPoint);
                 add(diphone);
-            } else {
+                break;
+            }
+            default:
                 throw new Error("Unsupported tag " + tag);
             }
         } catch (NoSuchElementException nse) {
@@ -405,7 +415,7 @@ public class DiphoneUnitDatabase {
         Diphone diphone = null;
 
         if (useSoftCache) {
-            Reference ref = (Reference) diphoneMap.get(name);
+            Reference<?> ref = (Reference<?>) diphoneMap.get(name);
             if (ref != null) {
                 diphone = (Diphone) ref.get();
                 if (diphone == null) {
@@ -430,7 +440,7 @@ public class DiphoneUnitDatabase {
             return;
         }
         if (useSoftCache) {
-            diphoneMap.put(diphoneName, new WeakReference(diphone));
+            diphoneMap.put(diphoneName, new WeakReference<>(diphone));
         } else {
             diphoneMap.put(diphoneName, diphone);
         }
@@ -443,8 +453,8 @@ public class DiphoneUnitDatabase {
         int empty = 0;
         int full = 0;
         System.out.println("Entries: " + diphoneMap.size());
-        for (Iterator i = diphoneMap.values().iterator(); i.hasNext(); ) {
-            Reference ref = (Reference) i.next();
+        for (Object o : diphoneMap.values()) {
+            Reference<?> ref = (Reference<?>) o;
             if (ref.get() == null) {
                 empty++;
             } else {
@@ -473,8 +483,8 @@ public class DiphoneUnitDatabase {
         System.out.println("lpcMin      " + lpcMin);
         System.out.println("lpcRange    " + lpcRange);
 
-        for (Iterator i = diphoneMap.values().iterator(); i.hasNext(); ) {
-            Diphone diphone = (Diphone) i.next();
+        for (Object o : diphoneMap.values()) {
+            Diphone diphone = (Diphone) o;
             diphone.dump();
         }
     }
@@ -488,7 +498,6 @@ public class DiphoneUnitDatabase {
         try {
             FileOutputStream fos = new FileOutputStream(path);
             DataOutputStream os = new DataOutputStream(fos);
-            int written;
 
             os.writeInt(MAGIC);
             os.writeInt(VERSION);
@@ -498,8 +507,8 @@ public class DiphoneUnitDatabase {
             os.writeFloat(lpcRange);
             os.writeInt(diphoneMap.size());
 
-            for (Iterator i = diphoneMap.values().iterator(); i.hasNext(); ) {
-                Diphone diphone = (Diphone) i.next();
+            for (Object o : diphoneMap.values()) {
+                Diphone diphone = (Diphone) o;
                 diphone.dumpBinary(os);
             }
             os.flush();
@@ -533,9 +542,8 @@ public class DiphoneUnitDatabase {
             dos.writeInt(INDEX_MAGIC);
             dos.writeInt(diphoneIndex.keySet().size());
 
-            for (Iterator i = diphoneIndex.keySet().iterator(); i.hasNext(); ) {
-                String key = (String) i.next();
-                int pos = ((Integer) diphoneIndex.get(key)).intValue();
+            for (String key : diphoneIndex.keySet()) {
+                int pos = diphoneIndex.get(key);
                 dos.writeUTF(key);
                 dos.writeInt(pos);
             }
@@ -557,7 +565,7 @@ public class DiphoneUnitDatabase {
      */
     private void loadBinaryIndex(URL url) {
 
-        diphoneIndex = new HashMap();
+        diphoneIndex = new HashMap<>();
 
         try {
             InputStream is = Utilities.getInputStream(url);
@@ -572,7 +580,7 @@ public class DiphoneUnitDatabase {
             for (int i = 0; i < size; i++) {
                 String diphoneName = dis.readUTF();
                 int pos = dis.readInt();
-                diphoneIndex.put(diphoneName, new Integer(pos));
+                diphoneIndex.put(diphoneName, pos);
             }
             dis.close();
 
@@ -595,7 +603,7 @@ public class DiphoneUnitDatabase {
     private int getIndex(String diphone) {
         Integer index = (Integer) diphoneIndex.get(diphone);
         if (index != null) {
-            int idx = index.intValue();
+            int idx = index;
             if (defaultIndex == -1) {
                 defaultIndex = idx;
             }
@@ -733,12 +741,12 @@ public class DiphoneUnitDatabase {
         loadDatabaseHeader(bb);
         size = bb.getInt();
 
-        diphoneIndex = new HashMap();
+        diphoneIndex = new HashMap<>();
         for (int i = 0; i < size; i++) {
             int pos = bb.position();
             Diphone diphone = Diphone.loadBinary(bb);
             add(diphone);
-            diphoneIndex.put(diphone.getName(), new Integer(pos));
+            diphoneIndex.put(diphone.getName(), pos);
         }
     }
 
@@ -770,9 +778,9 @@ public class DiphoneUnitDatabase {
             return false;
         }
 
-        for (Iterator i = diphoneMap.values().iterator(); i.hasNext(); ) {
-            Diphone diphone = (Diphone) i.next();
-            Diphone otherDiphone = (Diphone) other.getUnit(diphone.getName());
+        for (Object o : diphoneMap.values()) {
+            Diphone diphone = (Diphone) o;
+            Diphone otherDiphone = other.getUnit(diphone.getName());
             if (!diphone.compare(otherDiphone)) {
                 System.out.println("Diphones differ:");
                 System.out.println("THis:");
@@ -828,11 +836,14 @@ public class DiphoneUnitDatabase {
                 BulkTimer timer = BulkTimer.LOAD;
                 timer.start();
                 for (int i = 0; i < args.length; i++) {
-                    if (args[i].equals("-src")) {
+                    switch (args[i]) {
+                    case "-src":
                         srcPath = args[++i];
-                    } else if (args[i].equals("-dest")) {
+                        break;
+                    case "-dest":
                         destPath = args[++i];
-                    } else if (args[i].equals("-generate_binary")) {
+                        break;
+                    case "-generate_binary": {
                         String name = "diphone_units.txt";
                         if (i + 1 < args.length) {
                             String nameArg = args[++i];
@@ -878,7 +889,9 @@ public class DiphoneUnitDatabase {
                         timer.start("dump index");
                         budb.dumpBinaryIndex(destPath + "/" + indexName);
                         timer.stop("dump index");
-                    } else if (args[i].equals("-compare")) {
+                        break;
+                    }
+                    case "-compare": {
 
                         timer.start("load_text");
                         DiphoneUnitDatabase udb = new DiphoneUnitDatabase(
@@ -898,10 +911,14 @@ public class DiphoneUnitDatabase {
                             System.out.println("other compare different");
                         }
                         timer.stop("compare");
-                    } else if (args[i].equals("-showtimes")) {
+                        break;
+                    }
+                    case "-showtimes":
                         showTimes = true;
-                    } else {
+                        break;
+                    default:
                         System.out.println("Unknown option " + args[i]);
+                        break;
                     }
                 }
                 timer.stop();
@@ -917,7 +934,7 @@ public class DiphoneUnitDatabase {
                 System.out.println("    -showTimes");
             }
         } catch (IOException ioe) {
-            System.err.println(ioe);
+            ioe.printStackTrace();
         }
     }
 }

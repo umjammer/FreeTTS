@@ -26,7 +26,7 @@ public interface LetterToSound {
      * @param word the word to get the phone list for
      * @param partOfSpeech the part of speech or <code>null</code>
      *
-     * @return the list of phones for word or <code>null</code>
+     * @return the array of phones for word or <code>null</code>
      */
     String[] getPhones(String word, String partOfSpeech);
 }

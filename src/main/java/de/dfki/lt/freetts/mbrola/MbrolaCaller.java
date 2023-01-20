@@ -12,6 +12,7 @@ package de.dfki.lt.freetts.mbrola;
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Arrays;
 import java.util.List;
 
 import com.sun.speech.freetts.Item;
@@ -28,7 +29,7 @@ import com.sun.speech.freetts.util.Utilities;
 public class MbrolaCaller implements UtteranceProcessor {
 
     private String[] cmd;
-    private long closeDelay = 0l;
+    private long closeDelay = 0L;
 
     /**
      * Create an Mbrola caller which will call an external MBROLA binary
@@ -40,7 +41,7 @@ public class MbrolaCaller implements UtteranceProcessor {
         this.cmd = cmd;
         closeDelay = Utilities.getLong
                 ("de.dfki.lt.freetts.mbrola.MbrolaCaller.closeDelay",
-                        100L).longValue();
+                        100L);
     }
 
     /**
@@ -65,7 +66,7 @@ public class MbrolaCaller implements UtteranceProcessor {
         try {
             process = Runtime.getRuntime().exec(cmd);
         } catch (Exception e) {
-            throw new ProcessException("Cannot start mbrola program: " + cmd,
+            throw new ProcessException("Cannot start mbrola program: " + Arrays.toString(cmd),
                     e);
         }
         PrintWriter toMbrola = new PrintWriter(process.getOutputStream());
@@ -103,7 +104,7 @@ public class MbrolaCaller implements UtteranceProcessor {
         // de.dfki.lt.freetts.mbrola.MbrolaCaller.closeDelay,
         //
 
-        if (closeDelay > 0l) {
+        if (closeDelay > 0L) {
             try {
                 Thread.sleep(closeDelay);
             } catch (InterruptedException ie) {

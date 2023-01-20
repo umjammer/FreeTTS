@@ -9,8 +9,9 @@
 package com.sun.speech.freetts.audio;
 
 import java.io.BufferedOutputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import javax.sound.sampled.AudioFormat;
 
 import com.sun.speech.freetts.util.Utilities;
@@ -45,7 +46,7 @@ public class RawFileAudioPlayer implements AudioPlayer {
      */
     public RawFileAudioPlayer(String path) throws IOException {
         this.path = path;
-        os = new BufferedOutputStream(new FileOutputStream(path));
+        os = new BufferedOutputStream(Files.newOutputStream(Paths.get(path)));
     }
 
 

@@ -348,19 +348,26 @@ public class Utterance implements FeatureSet, Serializable {
 
         String pathName = null;
 
-        if (relation.equals(Relation.SEGMENT)) {
+        switch (relation) {
+        case Relation.SEGMENT:
             // do nothing
-        } else if (relation.equals(Relation.SYLLABLE)) {
+            break;
+        case Relation.SYLLABLE:
             pathName = "R:SylStructure.parent.R:Syllable";
-        } else if (relation.equals(Relation.SYLLABLE_STRUCTURE)) {
+            break;
+        case Relation.SYLLABLE_STRUCTURE:
             pathName = "R:SylStructure.parent.parent";
-        } else if (relation.equals(Relation.WORD)) {
+            break;
+        case Relation.WORD:
             pathName = "R:SylStructure.parent.parent.R:Word";
-        } else if (relation.equals(Relation.TOKEN)) {
+            break;
+        case Relation.TOKEN:
             pathName = "R:SylStructure.parent.parent.R:Token.parent";
-        } else if (relation.equals(Relation.PHRASE)) {
+            break;
+        case Relation.PHRASE:
             pathName = "R:SylStructure.parent.parent.R:Phrase.parent";
-        } else {
+            break;
+        default:
             throw new IllegalArgumentException
                     ("Utterance.getItem(): relation cannot be " + relation);
         }

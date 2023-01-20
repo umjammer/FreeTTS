@@ -61,7 +61,7 @@ public class PhoneSetImpl implements PhoneSet {
         BufferedReader reader;
         String line;
 
-        phonesetMap = new HashMap();
+        phonesetMap = new HashMap<>();
         reader = new BufferedReader(new
                 InputStreamReader(url.openStream()));
         line = reader.readLine();

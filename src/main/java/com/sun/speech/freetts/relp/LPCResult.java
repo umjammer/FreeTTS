@@ -57,7 +57,7 @@ public class LPCResult {
 
     private final static int MAX_SAMPLE_SIZE =
             Utilities.getInteger("com.sun.speech.freetts.LpcResult.maxSamples",
-                    1024).intValue();
+                    1024);
 
     /**
      * Given a residual, maps it using WaveUtils.ulawToShort() to a float.
@@ -66,9 +66,9 @@ public class LPCResult {
 
     static {
         for (short i = 0; i < residualToFloatMap.length; i++) {
-            residualToFloatMap[i] = (float) WaveUtils.ulawToShort(i);
+            residualToFloatMap[i] = WaveUtils.ulawToShort(i);
         }
-        residualToFloatMap[128] = (float) WaveUtils.ulawToShort((short) 255);
+        residualToFloatMap[128] = WaveUtils.ulawToShort((short) 255);
     }
 
 
@@ -379,7 +379,7 @@ public class LPCResult {
      *
      * @return the high eight bits
      */
-    private final static byte hibyte(int val) {
+    private static byte hibyte(int val) {
         return (byte) (val >>> 8);
     }
 
@@ -391,7 +391,7 @@ public class LPCResult {
      *
      * @return the low eight bits
      */
-    private final static byte lobyte(int val) {
+    private static byte lobyte(int val) {
         return (byte) (val & 0x000000FF);
     }
 
@@ -470,8 +470,8 @@ public class LPCResult {
                 } while (lpcCoeffs != lpcCoefficients);
 
                 int sample = (int) (ob + (pp * POST_EMPHASIS));
-                samples[s++] = (byte) hibyte(sample);
-                samples[s++] = (byte) lobyte(sample);
+                samples[s++] = hibyte(sample);
+                samples[s++] = lobyte(sample);
 
 
                 outBuffer.value = pp = ob;
@@ -613,8 +613,8 @@ public class LPCResult {
         for (i = 0; i < getNumberOfFrames(); i++) {
             // for each frame, print all elements
             short[] frame = getFrame(i);
-            for (int j = 0; j < frame.length; j++) {
-                pw.print((((int) frame[j]) + 32768) + "\n");
+            for (short value : frame) {
+                pw.print((((int) value) + 32768) + "\n");
             }
         }
         pw.print("\nSizes: ");

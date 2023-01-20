@@ -17,8 +17,6 @@ import java.util.Locale;
 
 import com.sun.speech.freetts.Age;
 import com.sun.speech.freetts.Gender;
-import com.sun.speech.freetts.ProcessException;
-import com.sun.speech.freetts.Utterance;
 import com.sun.speech.freetts.UtteranceProcessor;
 
 
@@ -70,10 +68,7 @@ public class CMUTimeVoice extends CMUClusterUnitVoice {
     protected UtteranceProcessor getPostLexicalAnalyzer() throws IOException {
         /* Do nothing
          */
-        return new UtteranceProcessor() {
-            public void processUtterance(Utterance utterance)
-                    throws ProcessException {
-            }
+        return utterance -> {
         };
     }
 

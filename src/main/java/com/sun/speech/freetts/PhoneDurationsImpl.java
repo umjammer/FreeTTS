@@ -53,7 +53,7 @@ public class PhoneDurationsImpl implements PhoneDurations {
         BufferedReader reader;
         String line;
 
-        phoneDurations = new java.util.HashMap<String, PhoneDuration>();
+        phoneDurations = new java.util.HashMap<>();
         reader = new BufferedReader(new
                 InputStreamReader(url.openStream()));
         line = reader.readLine();

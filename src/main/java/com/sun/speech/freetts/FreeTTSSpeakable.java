@@ -24,17 +24,17 @@ public interface FreeTTSSpeakable {
     /**
      * Indicates that this speakable has been started.
      */
-    public void started();
+    void started();
 
     /**
      * Indicates that this speakable has been completed.
      */
-    public void completed();
+    void completed();
 
     /**
      * Indicates that this speakable has been cancelled.
      */
-    public void cancelled();
+    void cancelled();
 
     /**
      * Returns <code>true</code> if this queue item has been 
@@ -42,7 +42,7 @@ public interface FreeTTSSpeakable {
      *
      * @return true if it has been processed
      */
-    public boolean isCompleted();
+    boolean isCompleted();
 
     /**
      * Waits for this speakable item to be completed.
@@ -50,7 +50,7 @@ public interface FreeTTSSpeakable {
      * @return true if the item was completed successfully, false if
      *   the speakable was cancelled or an error occurred.
      */
-    public boolean waitCompleted();
+    boolean waitCompleted();
 
     /**
      * Returns <code>true</code> if the item contains plain text
@@ -58,14 +58,14 @@ public interface FreeTTSSpeakable {
      *
      * @return true if the item contains plain text
      */
-    public boolean isPlainText();
+    boolean isPlainText();
 
     /**
      * Returns <code>true</code> if the item is an input stream.
      *
      * @return true if the item is an input stream
      */
-    public boolean isStream();
+    boolean isStream();
 
     /**
      * Returns <code>true</code> if the item is a JSML document
@@ -73,26 +73,26 @@ public interface FreeTTSSpeakable {
      *
      * @return true if the item is a document
      */
-    public boolean isDocument();
+    boolean isDocument();
 
     /**
      * Returns the text corresponding to this Playable.
      *
      * @return the Playable text
      */
-    public String getText();
+    String getText();
 
     /**
      * Gets the DOM document for this object.
      *
      * @return the DOM document for this object
      */
-    public Document getDocument();
+    Document getDocument();
 
     /**
      * Gets the input stream
      *
      * @return the input stream
      */
-    public InputStream getInputStream();
+    InputStream getInputStream();
 }

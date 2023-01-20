@@ -54,7 +54,7 @@ public class SingleFileAudioPlayer implements AudioPlayer {
         this.baseName = baseName + "." + type.getExtension();
         this.outputType = type;
 
-        outputList = new Vector<InputStream>();
+        outputList = new Vector<>();
     }
 
     /**

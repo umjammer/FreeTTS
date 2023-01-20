@@ -101,8 +101,8 @@ public class SampleSet {
     public void dumpBinary(DataOutputStream os) throws IOException {
         sampleInfo.dumpBinary(os);
         os.writeInt(samples.length);
-        for (int i = 0; i < samples.length; i++) {
-            samples[i].dumpBinary(os);
+        for (Sample sample : samples) {
+            sample.dumpBinary(os);
         }
     }
 

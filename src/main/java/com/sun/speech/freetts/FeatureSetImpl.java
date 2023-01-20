@@ -15,7 +15,6 @@ import java.io.PrintWriter;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,14 +26,15 @@ import com.sun.speech.freetts.util.Utilities;
  * Implementation of the FeatureSet interface.
  */
 public class FeatureSetImpl implements FeatureSet {
-    private final Map featureMap;
+
+    private final Map<String, Object> featureMap;
     static DecimalFormat formatter;
 
     /**
      * Creates a new empty feature set
      */
     public FeatureSetImpl() {
-        featureMap = new LinkedHashMap();
+        featureMap = new LinkedHashMap<>();
     }
 
     /**
@@ -84,7 +84,7 @@ public class FeatureSetImpl implements FeatureSet {
      * @throws ClassCastException if the associated value is not an int.
      */
     public int getInt(String name) {
-        return ((Integer) getObject(name)).intValue();
+        return (Integer) getObject(name);
     }
 
     /**
@@ -99,7 +99,7 @@ public class FeatureSetImpl implements FeatureSet {
      *   float
      */
     public float getFloat(String name) {
-        return ((Float) getObject(name)).floatValue();
+        return (Float) getObject(name);
     }
 
     /**
@@ -121,7 +121,7 @@ public class FeatureSetImpl implements FeatureSet {
      * @param value the value of the feature
      */
     public void setInt(String name, int value) {
-        setObject(name, new Integer(value));
+        setObject(name, value);
     }
 
     /**
@@ -131,7 +131,7 @@ public class FeatureSetImpl implements FeatureSet {
      * @param value the value of the feature
      */
     public void setFloat(String name, float value) {
-        setObject(name, new Float(value));
+        setObject(name, value);
     }
 
     /**
@@ -176,7 +176,7 @@ public class FeatureSetImpl implements FeatureSet {
      */
     public void dump(PrintWriter output, int pad, String title,
                      boolean showName) {
-        List keys = new ArrayList(featureMap.keySet());
+        List<String> keys = new ArrayList<String>(featureMap.keySet());
 
         if (formatter == null) {
             formatter = new DecimalFormat("########0.000000");
@@ -185,8 +185,7 @@ public class FeatureSetImpl implements FeatureSet {
         Collections.reverse(keys);  // to match flite
 
         Utilities.dump(output, pad, title);
-        for (Iterator i = keys.iterator(); i.hasNext(); ) {
-            String key = (String) i.next();
+        for (String key : keys) {
 
             if (!showName && key.equals("name")) {
                 continue;

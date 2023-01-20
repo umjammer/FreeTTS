@@ -154,7 +154,7 @@ public class EngineMonitor {
      */
     protected void handleEvent(EngineEvent e) {
         if (eventPanel != null) {
-            eventPanel.addText(new Date().toString() + ": "
+            eventPanel.addText(new Date() + ": "
                     + e.toString()
                     + "\n");
             eventPanel.addText("   Old state: "

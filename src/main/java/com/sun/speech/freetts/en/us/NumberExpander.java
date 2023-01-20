@@ -165,7 +165,7 @@ public class NumberExpander {
             // numberString is "2X", "3X", ...
             String enty = digit2enty[numberString.charAt(0) - '0'];
             wordRelation.addWord(enty);
-            expandDigits(numberString.substring(1, numberString.length()),
+            expandDigits(numberString.substring(1),
                     wordRelation);
         }
     }
@@ -276,7 +276,7 @@ public class NumberExpander {
     private static void expandNumberAt(String numberString,
                                        int startIndex,
                                        WordRelation wordRelation) {
-        expandNumber(numberString.substring(startIndex, numberString.length()),
+        expandNumber(numberString.substring(startIndex),
                 wordRelation);
     }
 
@@ -330,12 +330,16 @@ public class NumberExpander {
                 ordinal = findMatchInArray(lastNumber, digit2enty, ord2enty);
             }
 
-            if (lastNumber.equals("hundred")) {
+            switch (lastNumber) {
+            case "hundred":
                 ordinal = "hundredth";
-            } else if (lastNumber.equals("thousand")) {
+                break;
+            case "thousand":
                 ordinal = "thousandth";
-            } else if (lastNumber.equals("billion")) {
+                break;
+            case "billion":
                 ordinal = "billionth";
+                break;
             }
 
             // if there was an ordinal, set the last element of the list

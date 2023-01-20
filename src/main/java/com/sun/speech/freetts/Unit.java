@@ -26,14 +26,14 @@ public interface Unit {
      *
      * @return the name of this Unit
      */
-    public String getName();
+    String getName();
 
     /**
      * Returns the size of this unit.
      *
      * @return the size of this unit
      */
-    public int getSize();
+    int getSize();
 
     /**
      * Retrieves the nearest sample.
@@ -42,11 +42,11 @@ public interface Unit {
      *
      * @return the nearest Sample
      */
-    public Sample getNearestSample(float index);
+    Sample getNearestSample(float index);
 
 
     /**
      * Dumps this unit.
      */
-    public void dump();
+    void dump();
 }

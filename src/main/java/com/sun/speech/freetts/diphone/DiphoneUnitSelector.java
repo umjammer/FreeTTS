@@ -142,7 +142,7 @@ public class DiphoneUnitSelector implements UtteranceProcessor {
                                 String diphoneName,
                                 int targetEnd,
                                 int unitPart) {
-        Diphone diphone = (Diphone) diphoneDatabase.getUnit(diphoneName);
+        Diphone diphone = diphoneDatabase.getUnit(diphoneName);
         if (diphone == null) {
             System.err.println
                     ("FreeTTS: unit database failed to find entry for: " +

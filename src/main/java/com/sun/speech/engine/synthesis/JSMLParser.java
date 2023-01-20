@@ -55,7 +55,7 @@ public class JSMLParser {
 
         // Handle case where text does not include a root element
         //
-        if (!(jsmlText.substring(0, 2).equals("<?"))) {
+        if (!(jsmlText.startsWith("<?"))) {
             jsmlText = "<jsml>\n" + jsmlText + "</jsml>\n";
         }
 
@@ -85,8 +85,8 @@ public class JSMLParser {
      */
     public JSMLParser(URL jsmlSource, boolean validate)
             throws JSMLException, IOException {
-        final InputStream in = jsmlSource.openStream();
-        final InputSource source = new InputSource(in);
+        InputStream in = jsmlSource.openStream();
+        InputSource source = new InputSource(in);
         document = parse(source, validate);
     }
 
@@ -114,7 +114,7 @@ public class JSMLParser {
         } else if (!validate && (nonvalidatingDocumentBuilder != null)) {
             return nonvalidatingDocumentBuilder;
         }
-        final DocumentBuilderFactory dbf =
+        DocumentBuilderFactory dbf =
                 DocumentBuilderFactory.newInstance();
 
         dbf.setValidating(validate);
@@ -149,8 +149,8 @@ public class JSMLParser {
      */
     protected Document parse(InputSource source, boolean validate)
             throws JSMLException, IOException {
-        final DocumentBuilder db = getDocumentBuilder(validate);
-        final Document doc;
+        DocumentBuilder db = getDocumentBuilder(validate);
+        Document doc;
         try {
             doc = db.parse(source);
         } catch (SAXException e) {

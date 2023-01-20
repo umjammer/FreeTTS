@@ -25,6 +25,6 @@ public interface SpeechEventDispatcher {
      *
      * @param event the event to dispactch
      */
-    public void dispatchSpeechEvent(SpeechEvent event);
+    void dispatchSpeechEvent(SpeechEvent event);
 }
 

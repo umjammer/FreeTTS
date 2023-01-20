@@ -27,7 +27,6 @@ import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
@@ -70,12 +69,12 @@ public class ClusterUnitDatabase {
     private int[] joinWeights;
     private int joinWeightShift;
 
-    private Map cartMap = new HashMap();
+    private Map<String, CART> cartMap = new HashMap<>();
     private CART defaultCart = null;
 
-    private transient List unitList;
+    private transient List<DatabaseClusterUnit> unitList;
     private transient int lineCount;
-    private transient List unitTypesList;
+    private transient List<UnitType> unitTypesList;
 
     private final static int MAGIC = 0xf0cacc1a;
     private final static int VERSION = 0x1000;
@@ -84,7 +83,7 @@ public class ClusterUnitDatabase {
     /**
      * Creates the UnitDatabase from the given input stream.
      *
-     * @param is the input stream to read the database from
+     * @param url is the input stream to read the database from
      * @param isBinary the input stream is a binary stream
      *
      * @throws IOException if there is trouble opening the DB
@@ -275,10 +274,10 @@ public class ClusterUnitDatabase {
      */
     boolean isUnitTypeEqual(int unitA, int unitB) {
         return units[unitA].type == units[unitB].type;
-        // String nameA = units[unitA].getName();
-        // String nameB = units[unitB].getName();
-        // int lastUnderscore = nameA.lastIndexOf('_');
-        // return nameA.regionMatches(0, nameB, 0, lastUnderscore + 1);
+//        String nameA = units[unitA].getName();
+//        String nameB = units[unitB].getName();
+//        int lastUnderscore = nameA.lastIndexOf('_');
+//        return nameA.regionMatches(0, nameB, 0, lastUnderscore + 1);
     }
 
     /**
@@ -324,7 +323,7 @@ public class ClusterUnitDatabase {
     /**
      * Looks up the unit with the given index.
      *
-     * @param index the index of the unit to look for
+     * @param which the index of the unit to look for
      *
      * @return the unit 
      */
@@ -335,7 +334,7 @@ public class ClusterUnitDatabase {
     /**
      * Looks up the origin info for the unit with the given index.
      *
-     * @param index the index of the unit to look for
+     * @param which the index of the unit to look for
      *
      * @return the origin info for the unit, or null if none is available 
      */
@@ -430,8 +429,8 @@ public class ClusterUnitDatabase {
         String line;
 
 
-        unitList = new ArrayList();
-        unitTypesList = new ArrayList();
+        unitList = new ArrayList<>();
+        unitTypesList = new ArrayList<>();
 
         if (is == null) {
             throw new Error("Can't load cluster db file.");
@@ -449,17 +448,14 @@ public class ClusterUnitDatabase {
             }
             reader.close();
 
-            units = new DatabaseClusterUnit[unitList.size()];
-            units = (DatabaseClusterUnit[]) unitList.toArray(units);
+            units = unitList.toArray(new DatabaseClusterUnit[0]);
             unitList = null;
 
-            unitTypes = new UnitType[unitTypesList.size()];
-            unitTypes = (UnitType[]) unitTypesList.toArray(unitTypes);
+            unitTypes = unitTypesList.toArray(new UnitType[0]);
             unitTypesList = null;
 
         } catch (IOException e) {
             throw new Error(e.getMessage() + " at line " + lineCount);
-        } finally {
         }
     }
 
@@ -476,15 +472,20 @@ public class ClusterUnitDatabase {
         try {
             StringTokenizer tokenizer = new StringTokenizer(line, " ");
             String tag = tokenizer.nextToken();
-            if (tag.equals("CONTINUITY_WEIGHT")) {
+            switch (tag) {
+            case "CONTINUITY_WEIGHT":
                 continuityWeight = Integer.parseInt(tokenizer.nextToken());
-            } else if (tag.equals("OPTIMAL_COUPLING")) {
+                break;
+            case "OPTIMAL_COUPLING":
                 optimalCoupling = Integer.parseInt(tokenizer.nextToken());
-            } else if (tag.equals("EXTEND_SELECTIONS")) {
+                break;
+            case "EXTEND_SELECTIONS":
                 extendSelections = Integer.parseInt(tokenizer.nextToken());
-            } else if (tag.equals("JOIN_METHOD")) {
+                break;
+            case "JOIN_METHOD":
                 joinMethod = Integer.parseInt(tokenizer.nextToken());
-            } else if (tag.equals("JOIN_WEIGHTS")) {
+                break;
+            case "JOIN_WEIGHTS":
                 int numWeights = Integer.parseInt(tokenizer.nextToken());
                 joinWeights = new int[numWeights];
                 for (int i = 0; i < numWeights; i++) {
@@ -493,14 +494,17 @@ public class ClusterUnitDatabase {
 
                 joinWeightShift = calcJoinWeightShift(joinWeights);
 
-            } else if (tag.equals("STS")) {
+                break;
+            case "STS": {
                 String name = tokenizer.nextToken();
                 if (name.equals("STS")) {
                     sts = new SampleSet(tokenizer, reader);
                 } else {
                     mcep = new SampleSet(tokenizer, reader);
                 }
-            } else if (tag.equals("UNITS")) {
+                break;
+            }
+            case "UNITS": {
                 int type = Integer.parseInt(tokenizer.nextToken());
                 int phone = Integer.parseInt(tokenizer.nextToken());
                 int start = Integer.parseInt(tokenizer.nextToken());
@@ -511,7 +515,9 @@ public class ClusterUnitDatabase {
                         = new DatabaseClusterUnit(type, phone, start,
                         end, prev, next);
                 unitList.add(unit);
-            } else if (tag.equals("CART")) {
+                break;
+            }
+            case "CART": {
                 String name = tokenizer.nextToken();
                 int nodes = Integer.parseInt(tokenizer.nextToken());
                 CART cart = new CARTImpl(reader, nodes);
@@ -520,13 +526,17 @@ public class ClusterUnitDatabase {
                 if (defaultCart == null) {
                     defaultCart = cart;
                 }
-            } else if (tag.equals("UNIT_TYPE")) {
+                break;
+            }
+            case "UNIT_TYPE": {
                 String name = tokenizer.nextToken();
                 int start = Integer.parseInt(tokenizer.nextToken());
                 int count = Integer.parseInt(tokenizer.nextToken());
                 UnitType unitType = new UnitType(name, start, count);
                 unitTypesList.add(unitType);
-            } else {
+                break;
+            }
+            default:
                 throw new Error("Unsupported tag " + tag + " in db line `" + line + "'");
             }
         } catch (NoSuchElementException nse) {
@@ -605,7 +615,7 @@ public class ClusterUnitDatabase {
         mcep = new SampleSet(bb);
 
         int numCarts = bb.getInt();
-        cartMap = new HashMap();
+        cartMap = new HashMap<>();
         for (int i = 0; i < numCarts; i++) {
             String name = Utilities.getString(bb);
             CART cart = CARTImpl.loadBinary(bb);
@@ -660,7 +670,7 @@ public class ClusterUnitDatabase {
         mcep = new SampleSet(is);
 
         int numCarts = is.readInt();
-        cartMap = new HashMap();
+        cartMap = new HashMap<>();
         for (int i = 0; i < numCarts; i++) {
             String name = Utilities.getString(is);
             CART cart = CARTImpl.loadBinary(is);
@@ -697,8 +707,8 @@ public class ClusterUnitDatabase {
             try {
                 unitOrigins[index] = new UnitOriginInfo();
                 unitOrigins[index].originFile = tokens[1];
-                unitOrigins[index].originStart = Float.valueOf(tokens[2]).floatValue();
-                unitOrigins[index].originEnd = Float.valueOf(tokens[4]).floatValue();
+                unitOrigins[index].originStart = Float.parseFloat(tokens[2]);
+                unitOrigins[index].originEnd = Float.parseFloat(tokens[4]);
             } catch (NumberFormatException nfe) {
             }
         }
@@ -725,26 +735,25 @@ public class ClusterUnitDatabase {
             os.writeInt(joinMethod);
             os.writeInt(joinWeightShift);
             os.writeInt(joinWeights.length);
-            for (int i = 0; i < joinWeights.length; i++) {
-                os.writeInt(joinWeights[i]);
+            for (int joinWeight : joinWeights) {
+                os.writeInt(joinWeight);
             }
 
             os.writeInt(units.length);
-            for (int i = 0; i < units.length; i++) {
-                units[i].dumpBinary(os);
+            for (DatabaseClusterUnit unit : units) {
+                unit.dumpBinary(os);
             }
 
             os.writeInt(unitTypes.length);
-            for (int i = 0; i < unitTypes.length; i++) {
-                unitTypes[i].dumpBinary(os);
+            for (UnitType unitType : unitTypes) {
+                unitType.dumpBinary(os);
             }
             sts.dumpBinary(os);
             mcep.dumpBinary(os);
 
             os.writeInt(cartMap.size());
-            for (Iterator i = cartMap.keySet().iterator(); i.hasNext(); ) {
-                String name = (String) i.next();
-                CART cart = (CART) cartMap.get(name);
+            for (String name : cartMap.keySet()) {
+                CART cart = cartMap.get(name);
 
                 Utilities.outString(os, name);
                 cart.dumpBinary(os);
@@ -762,7 +771,6 @@ public class ClusterUnitDatabase {
                     ioe.getMessage());
         }
     }
-
 
     /**
      * Determines if two databases are identical.
@@ -813,11 +821,14 @@ public class ClusterUnitDatabase {
                 BulkTimer timer = new BulkTimer();
                 timer.start();
                 for (int i = 0; i < args.length; i++) {
-                    if (args[i].equals("-src")) {
+                    switch (args[i]) {
+                    case "-src":
                         srcPath = args[++i];
-                    } else if (args[i].equals("-dest")) {
+                        break;
+                    case "-dest":
                         destPath = args[++i];
-                    } else if (args[i].equals("-generate_binary")) {
+                        break;
+                    case "-generate_binary": {
                         String name = "clunits.txt";
                         if (i + 1 < args.length) {
                             String nameArg = args[++i];
@@ -846,7 +857,9 @@ public class ClusterUnitDatabase {
                         udb.dumpBinary(destPath + "/" + binaryName);
                         timer.stop("dump_binary");
 
-                    } else if (args[i].equals("-compare")) {
+                        break;
+                    }
+                    case "-compare": {
 
                         timer.start("load_text");
                         ClusterUnitDatabase udb = new
@@ -867,10 +880,14 @@ public class ClusterUnitDatabase {
                             System.out.println("other compare different");
                         }
                         timer.stop("compare");
-                    } else if (args[i].equals("-showtimes")) {
+                        break;
+                    }
+                    case "-showtimes":
                         showTimes = true;
-                    } else {
+                        break;
+                    default:
                         System.out.println("Unknown option " + args[i]);
+                        break;
                     }
                 }
                 timer.stop();
@@ -886,7 +903,7 @@ public class ClusterUnitDatabase {
                 System.out.println("    -showTimes");
             }
         } catch (IOException ioe) {
-            System.err.println(ioe);
+            ioe.printStackTrace();
         }
     }
 
@@ -984,7 +1001,7 @@ public class ClusterUnitDatabase {
     /**
      * Represents debug information about the origin of a unit.
      */
-    class UnitOriginInfo {
+    static class UnitOriginInfo {
         String originFile;
         float originStart;
         float originEnd;

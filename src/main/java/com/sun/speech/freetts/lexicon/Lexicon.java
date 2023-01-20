@@ -41,9 +41,9 @@ public interface Lexicon {
      * @param word the word to find
      * @param partOfSpeech the part of speech or <code>null</code>
      *
-     * @return the list of phones for word or null
+     * @return the array of phones for word or null
      */
-    public String[] getPhones(String word, String partOfSpeech);
+    String[] getPhones(String word, String partOfSpeech);
 
     /**
      * Gets the phone list for a given word.  If a phone list cannot
@@ -56,9 +56,9 @@ public interface Lexicon {
      * @param useLTS whether to use the letter-to-sound rules when
      *        the word is not in the lexicon.
      *
-     * @return the list of phones for word or null
+     * @return the array of phones for word or null
      */
-    public String[] getPhones(String word, String partOfSpeech, boolean useLTS);
+    String[] getPhones(String word, String partOfSpeech, boolean useLTS);
 
     /**
      * Adds a word to the addenda.  The
@@ -68,7 +68,7 @@ public interface Lexicon {
      * @param partOfSpeech the part of speech or <code>null</code>
      *
      */
-    public void addAddendum(String word, String partOfSpeech, String[] phones);
+    void addAddendum(String word, String partOfSpeech, String[] phones);
 
     /**
      * Removes a word from the addenda.  Both the part of speech and
@@ -77,7 +77,7 @@ public interface Lexicon {
      * @param word the word to add
      * @param partOfSpeech the part of speech
      */
-    public void removeAddendum(String word, String partOfSpeech);
+    void removeAddendum(String word, String partOfSpeech);
 
     /**
      * Determines if the <code>currentWordPhone</code> represents a
@@ -89,7 +89,7 @@ public interface Lexicon {
      *
      * @return <code>true</code> if the phone is a new boundary
      */
-    public boolean isSyllableBoundary(List syllablePhones,
+    boolean isSyllableBoundary(List<String> syllablePhones,
                                       String[] wordPhones,
                                       int currentWordPhone);
 
@@ -99,7 +99,7 @@ public interface Lexicon {
      *
      * @throws IOException if an error occurs while loading
      */
-    public void load() throws IOException;
+    void load() throws IOException;
 
 
     /**
@@ -107,5 +107,5 @@ public interface Lexicon {
      *
      * @return <code>true</code> if the lexicon is loaded
      */
-    public boolean isLoaded();
+    boolean isLoaded();
 }

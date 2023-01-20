@@ -10,12 +10,13 @@ package com.sun.speech.freetts.util;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
 import java.net.URL;
 import java.nio.ByteBuffer;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 
 /**
@@ -40,7 +41,7 @@ public class Utilities {
      */
     public static String pad(int padding) {
         if (padding > 0) {
-            StringBuffer sb = new StringBuffer(padding);
+            StringBuilder sb = new StringBuilder(padding);
             for (int i = 0; i < padding; i++) {
                 sb.append(' ');
             }
@@ -80,7 +81,7 @@ public class Utilities {
      * @return a String with all instances of the specified char deleted
      */
     public static String deleteChar(String fromString, char charToDelete) {
-        StringBuffer buffer = new StringBuffer(fromString.length());
+        StringBuilder buffer = new StringBuilder(fromString.length());
         for (int i = 0; i < fromString.length(); i++) {
             if (fromString.charAt(i) != charToDelete) {
                 buffer.append(fromString.charAt(i));
@@ -115,7 +116,7 @@ public class Utilities {
      */
     public static InputStream getInputStream(URL url) throws IOException {
         if (url.getProtocol().equals("file")) {
-            return new FileInputStream(url.getFile());
+            return Files.newInputStream(Paths.get(url.getFile()));
         } else {
             return url.openStream();
         }
@@ -233,7 +234,7 @@ public class Utilities {
         try {
             value = Long.getLong(name, defaultValue);
         } catch (SecurityException se) {
-            value = new Long(defaultValue);
+            value = defaultValue;
         }
         return value;
     }
@@ -255,7 +256,7 @@ public class Utilities {
         try {
             value = Integer.getInteger(name, defaultValue);
         } catch (SecurityException se) {
-            value = new Integer(defaultValue);
+            value = defaultValue;
         }
         return value;
     }

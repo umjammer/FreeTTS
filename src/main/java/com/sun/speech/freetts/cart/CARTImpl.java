@@ -186,8 +186,8 @@ public class CARTImpl implements CART {
      */
     public void dumpBinary(DataOutputStream os) throws IOException {
         os.writeInt(cart.length);
-        for (int i = 0; i < cart.length; i++) {
-            cart[i].dumpBinary(os);
+        for (Node node : cart) {
+            node.dumpBinary(os);
         }
     }
 
@@ -207,7 +207,7 @@ public class CARTImpl implements CART {
 
         for (Node n : cart) {
             out.println("\tnode" + Math.abs(n.hashCode()) + " [ label=\""
-                    + n.toString() + "\", color=" + dumpDotNodeColor(n)
+                    + n + "\", color=" + dumpDotNodeColor(n)
                     + ", shape=" + dumpDotNodeShape(n) + " ]\n");
             if (n instanceof DecisionNode) {
                 DecisionNode dn = (DecisionNode) n;
@@ -353,13 +353,14 @@ public class CARTImpl implements CART {
         int openParen = string.indexOf("(");
         String type = string.substring(0, openParen);
         String value = string.substring(openParen + 1, string.length() - 1);
-        if (type.equals("String")) {
+        switch (type) {
+        case "String":
             return value;
-        } else if (type.equals("Float")) {
-            return new Float(Float.parseFloat(value));
-        } else if (type.equals("Integer")) {
-            return new Integer(Integer.parseInt(value));
-        } else if (type.equals("List")) {
+        case "Float":
+            return Float.parseFloat(value);
+        case "Integer":
+            return Integer.parseInt(value);
+        case "List":
             StringTokenizer tok = new StringTokenizer(value, ",");
             int size = tok.countTokens();
 
@@ -369,7 +370,7 @@ public class CARTImpl implements CART {
                 values[i] = Math.round(fval);
             }
             return values;
-        } else {
+        default:
             throw new Error("Unknown type: " + type);
         }
     }
@@ -393,7 +394,7 @@ public class CARTImpl implements CART {
         if (LOGGER.isLoggable(Level.FINER)) {
             LOGGER.finer("LEAF " + cart[nodeIndex].getValue());
         }
-        return ((LeafNode) cart[nodeIndex]).getValue();
+        return cart[nodeIndex].getValue();
     }
 
     /**
@@ -427,13 +428,13 @@ public class CARTImpl implements CART {
             if (value == null) {
                 return "NULL()";
             } else if (value instanceof String) {
-                return "String(" + value.toString() + ")";
+                return "String(" + value + ")";
             } else if (value instanceof Float) {
-                return "Float(" + value.toString() + ")";
+                return "Float(" + value + ")";
             } else if (value instanceof Integer) {
-                return "Integer(" + value.toString() + ")";
+                return "Integer(" + value + ")";
             } else {
-                return value.getClass().toString() + "(" + value.toString() + ")";
+                return value.getClass().toString() + "(" + value + ")";
             }
         }
 
@@ -593,12 +594,12 @@ public class CARTImpl implements CART {
                 float cart_fval;
                 float fval;
                 if (value instanceof Float) {
-                    cart_fval = ((Float) value).floatValue();
+                    cart_fval = (Float) value;
                 } else {
                     cart_fval = Float.parseFloat(value.toString());
                 }
                 if (val instanceof Float) {
-                    fval = ((Float) val).floatValue();
+                    fval = (Float) val;
                 } else {
                     fval = Float.parseFloat(val.toString());
                 }
@@ -643,8 +644,8 @@ public class CARTImpl implements CART {
                     "NODE " + getFeature() + " "
                             + comparisonType + " "
                             + getValueString() + " "
-                            + Integer.toString(qtrue) + " "
-                            + Integer.toString(qfalse);
+                            + qtrue + " "
+                            + qfalse;
         }
     }
 
@@ -683,12 +684,10 @@ public class CARTImpl implements CART {
          * Get a string representation of this Node.
          */
         public String toString() {
-            StringBuffer buf = new StringBuffer(
-                    NODE + " " + getFeature() + " " + OPERAND_MATCHES);
-            buf.append(getValueString() + " ");
-            buf.append(Integer.toString(qtrue) + " ");
-            buf.append(Integer.toString(qfalse));
-            return buf.toString();
+            String buf = NODE + " " + getFeature() + " " + OPERAND_MATCHES + getValueString() + " " +
+                    qtrue + " " +
+                    qfalse;
+            return buf;
         }
     }
 
@@ -698,7 +697,7 @@ public class CARTImpl implements CART {
     static class LeafNode extends Node {
         /**
          * Create a new LeafNode with the given value.
-         * @param the value of this LeafNode
+         * @param value the value of this LeafNode
          */
         public LeafNode(Object value) {
             super(value);

@@ -96,22 +96,22 @@ public class JavaStreamingAudioPlayer implements AudioPlayer {
     private long openFailDelayMs;
     private long totalOpenFailDelayMs;
 
-    private Object openLock = new Object();
-    private Object lineLock = new Object();
+    private final Object openLock = new Object();
+    private final Object lineLock = new Object();
 
 
     /**
      * controls the buffering to java audio
      */
     private final static int AUDIO_BUFFER_SIZE = Utilities.getInteger(
-            "com.sun.speech.freetts.audio.AudioPlayer.bufferSize", 8192).intValue();
+            "com.sun.speech.freetts.audio.AudioPlayer.bufferSize", 8192);
 
     /**
      * controls the number of bytes of audio to write to the buffer
      * for each call to write()
      */
     private final static int BYTES_PER_WRITE = Utilities.getInteger
-            ("com.sun.speech.freetts.audio.AudioPlayer.bytesPerWrite", 160).intValue();
+            ("com.sun.speech.freetts.audio.AudioPlayer.bytesPerWrite", 160);
 
 
     /**
@@ -122,16 +122,16 @@ public class JavaStreamingAudioPlayer implements AudioPlayer {
                 ("com.sun.speech.freetts.audio.AudioPlayer.debug");
         cancelDelay = Utilities.getLong
                 ("com.sun.speech.freetts.audio.AudioPlayer.cancelDelay",
-                        0L).longValue();
+                        0L);
         drainDelay = Utilities.getLong
                 ("com.sun.speech.freetts.audio.AudioPlayer.drainDelay",
-                        150L).longValue();
+                        150L);
         openFailDelayMs = Utilities.getLong
                 ("com.sun.speech.freetts.audio.AudioPlayer.openFailDelayMs",
-                        0L).longValue();
+                        0L);
         totalOpenFailDelayMs = Utilities.getLong
                 ("com.sun.speech.freetts.audio.AudioPlayer.totalOpenFailDelayMs",
-                        0L).longValue();
+                        0L);
         audioMetrics = Utilities.getBoolean
                 ("com.sun.speech.freetts.audio.AudioPlayer.showAudioMetrics");
 
@@ -599,7 +599,7 @@ public class JavaStreamingAudioPlayer implements AudioPlayer {
      */
     private void debugPrint(String msg) {
         if (debug) {
-            System.out.println(toString() + ": " + msg);
+            System.out.println(this + ": " + msg);
         }
     }
 

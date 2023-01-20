@@ -34,7 +34,7 @@ public class BulkTimer {
      */
     public BulkTimer() {
         this.verbose = false;
-        timers = new LinkedHashMap<String, Timer>();
+        timers = new LinkedHashMap<>();
     }
 
     /**

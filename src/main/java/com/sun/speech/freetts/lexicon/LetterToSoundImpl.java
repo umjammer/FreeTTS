@@ -21,9 +21,10 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.StringTokenizer;
@@ -248,7 +249,7 @@ public class LetterToSoundImpl implements LetterToSound {
         tokenizeOnLoad = tokenize.equals("load");
         tokenizeOnLookup = tokenize.equals("lookup");
 
-        letterIndex = new HashMap();
+        letterIndex = new HashMap<>();
 
         reader = new BufferedReader(new InputStreamReader(is));
         line = reader.readLine();
@@ -282,7 +283,7 @@ public class LetterToSoundImpl implements LetterToSound {
         // read the phoneme table
         //
         int phonemeTableSize = dis.readInt();
-        phonemeTable = new ArrayList(phonemeTableSize);
+        phonemeTable = new ArrayList<>(phonemeTableSize);
 
         for (int i = 0; i < phonemeTableSize; i++) {
             String phoneme = dis.readUTF();
@@ -292,11 +293,11 @@ public class LetterToSoundImpl implements LetterToSound {
         // letter index
         //
         int letterIndexSize = dis.readInt();
-        letterIndex = new HashMap();
+        letterIndex = new HashMap<>();
         for (int i = 0; i < letterIndexSize; i++) {
             char c = dis.readChar();
             int index = dis.readInt();
-            letterIndex.put(Character.toString(c), new Integer(index));
+            letterIndex.put(Character.toString(c), index);
         }
 
         // statemachine states
@@ -328,23 +329,28 @@ public class LetterToSoundImpl implements LetterToSound {
         StringTokenizer tokenizer = new StringTokenizer(line, " ");
         String type = tokenizer.nextToken();
 
-        if (type.equals(STATE) || type.equals(PHONE)) {
+        switch (type) {
+        case STATE:
+        case PHONE:
             if (tokenizeOnLoad) {
                 stateMachine[numStates] = getState(type, tokenizer);
             } else {
                 stateMachine[numStates] = line;
             }
             numStates++;
-        } else if (type.equals(INDEX)) {
+            break;
+        case INDEX:
             Integer index = new Integer(tokenizer.nextToken());
-            if (index.intValue() != numStates) {
+            if (index != numStates) {
                 throw new Error("Bad INDEX in file.");
             } else {
                 String c = tokenizer.nextToken();
                 letterIndex.put(c, index);
             }
-        } else if (type.equals(TOTAL)) {
+            break;
+        case TOTAL:
             stateMachine = new Object[Integer.parseInt(tokenizer.nextToken())];
+            break;
         }
     }
 
@@ -376,17 +382,17 @@ public class LetterToSoundImpl implements LetterToSound {
         //
         phonemeTable = findPhonemes();
         dos.writeInt(phonemeTable.size());
-        for (Iterator i = phonemeTable.iterator(); i.hasNext(); ) {
-            String phoneme = (String) i.next();
+        for (Object value : phonemeTable) {
+            String phoneme = (String) value;
             dos.writeUTF(phoneme);
         }
 
         // letter index
         //
         dos.writeInt(letterIndex.size());
-        for (Iterator i = letterIndex.keySet().iterator(); i.hasNext(); ) {
-            String letter = (String) i.next();
-            int index = ((Integer) letterIndex.get(letter)).intValue();
+        for (Object o : letterIndex.keySet()) {
+            String letter = (String) o;
+            int index = (Integer) letterIndex.get(letter);
             dos.writeChar(letter.charAt(0));
             dos.writeInt(index);
         }
@@ -408,17 +414,15 @@ public class LetterToSoundImpl implements LetterToSound {
      */
     private List findPhonemes() {
         Set set = new HashSet();
-        for (int i = 0; i < stateMachine.length; i++) {
-            if (stateMachine[i] instanceof FinalState) {
-                FinalState fstate = (FinalState) stateMachine[i];
+        for (Object o : stateMachine) {
+            if (o instanceof FinalState) {
+                FinalState fstate = (FinalState) o;
                 if (fstate.phoneList != null) {
-                    for (int j = 0; j < fstate.phoneList.length; j++) {
-                        set.add(fstate.phoneList[j]);
-                    }
+                    set.addAll(Arrays.asList(fstate.phoneList));
                 }
             }
         }
-        return new ArrayList(set);
+        return new ArrayList<>(set);
     }
 
 
@@ -511,10 +515,10 @@ public class LetterToSoundImpl implements LetterToSound {
      * @param word the word to find
      * @param partOfSpeech the part of speech.
      *
-     * @return the list of phones for word or <code>null</code>
+     * @return the array of phones for word or <code>null</code>
      */
     public String[] getPhones(String word, String partOfSpeech) {
-        ArrayList<String> phoneList = new ArrayList<String>();
+        ArrayList<String> phoneList = new ArrayList<>();
         State currentState;
         Integer startIndex;
         int stateIndex;
@@ -542,7 +546,7 @@ public class LetterToSoundImpl implements LetterToSound {
             if (startIndex == null) {
                 continue;
             }
-            stateIndex = startIndex.intValue();
+            stateIndex = startIndex;
             currentState = getState(stateIndex);
             while (!(currentState instanceof FinalState)) {
                 stateIndex =
@@ -552,7 +556,7 @@ public class LetterToSoundImpl implements LetterToSound {
             }
             ((FinalState) currentState).append(phoneList);
         }
-        return (String[]) phoneList.toArray(new String[0]);
+        return phoneList.toArray(new String[0]);
     }
 
     /**
@@ -566,8 +570,8 @@ public class LetterToSoundImpl implements LetterToSound {
 
         // compare letter index table
         //
-        for (Iterator i = letterIndex.keySet().iterator(); i.hasNext(); ) {
-            String key = (String) i.next();
+        for (Object o : letterIndex.keySet()) {
+            String key = (String) o;
             Integer thisIndex = (Integer) letterIndex.get(key);
             Integer otherIndex = (Integer) other.letterIndex.get(key);
             if (!thisIndex.equals(otherIndex)) {
@@ -596,10 +600,10 @@ public class LetterToSoundImpl implements LetterToSound {
      * @see DecisionState
      * @see FinalState
      */
-    static interface State {
-        public void writeBinary(DataOutputStream dos) throws IOException;
+    interface State {
+        void writeBinary(DataOutputStream dos) throws IOException;
 
-        public boolean compare(State other);
+        boolean compare(State other);
     }
 
 
@@ -636,7 +640,7 @@ public class LetterToSoundImpl implements LetterToSound {
          *
          * @param chars the characters for comparison
          *
-         * @ret an index into the state machine.
+         * @return an index into the state machine.
          */
         public int getNextState(char[] chars) {
             return (chars[index] == c) ? qtrue : qfalse;
@@ -649,10 +653,10 @@ public class LetterToSoundImpl implements LetterToSound {
          * @return a <code>String</code> describing this <code>State</code>.
          */
         public String toString() {
-            return STATE + " " + Integer.toString(index)
-                    + " " + Character.toString(c)
-                    + " " + Integer.toString(qtrue)
-                    + " " + Integer.toString(qfalse);
+            return STATE + " " + index
+                    + " " + c
+                    + " " + qtrue
+                    + " " + qfalse;
         }
 
         /**
@@ -760,9 +764,7 @@ public class LetterToSoundImpl implements LetterToSound {
             if (phoneList == null) {
                 return;
             } else {
-                for (int i = 0; i < phoneList.length; i++) {
-                    array.add(phoneList[i]);
-                }
+                Collections.addAll(array, phoneList);
             }
         }
 
@@ -822,8 +824,8 @@ public class LetterToSoundImpl implements LetterToSound {
                 dos.writeInt(0);
             } else {
                 dos.writeInt(phoneList.length);
-                for (int i = 0; i < phoneList.length; i++) {
-                    dos.writeInt(phonemeTable.indexOf(phoneList[i]));
+                for (String s : phoneList) {
+                    dos.writeInt(phonemeTable.indexOf(s));
                 }
             }
         }
@@ -931,7 +933,7 @@ public class LetterToSoundImpl implements LetterToSound {
                 System.out.println("    -showTimes");
             }
         } catch (IOException ioe) {
-            System.err.println(ioe);
+            ioe.printStackTrace();
         }
     }
 }

@@ -22,7 +22,7 @@ import java.util.List;
  * pend method.
  */
 public class OutputQueue {
-    private List<Utterance> list = new LinkedList<Utterance>();
+    private List<Utterance> list = new LinkedList<>();
     private int size;
     private final static int DEFAULT_SIZE = 5;
     private volatile boolean closed = false;

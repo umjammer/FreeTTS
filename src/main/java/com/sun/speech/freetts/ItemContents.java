@@ -39,8 +39,8 @@ public class ItemContents {
      * @param item the item reference in the relation
      */
     public void addItemRelation(String relationName, Item item) {
-        // System.out.println("AddItemRelation: " + relationName
-        //                    + " item: " + item);
+//        System.out.println("AddItemRelation: " + relationName
+//                + " item: " + item);
         relations.setObject(relationName, item);
     }
 
