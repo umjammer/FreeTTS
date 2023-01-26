@@ -989,6 +989,10 @@
     </repository>
     <repository>
       <id>umjammer-mvn-repo</id>
+      <url>https://raw.github.com/umjammer/umjammer/mvn-repo/</url>
+    </repository>
+    <repository>
+      <id>github</id>
       <url>https://maven.pkg.github.com/umjammer/jsapi</url>
     </repository>
   </repositories>
