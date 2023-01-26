@@ -1,6 +1,6 @@
 [![GitHub Packages](https://github.com/umjammer/FreeTTS/actions/workflows/maven-publish.yml/badge.svg)](https://github.com/umjammer/jsapi/actions/workflows/maven-publish.yml)
 [![Java CI](https://github.com/umjammer/FreeTTS/actions/workflows/maven.yml/badge.svg)](https://github.com/umjammer/FreeTTS/actions/workflows/maven.yml)
-[![CodeQL](https://github.com/umjammer/FreeTTS/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/umjammer/FreeTTS/actions/workflows/codeql-analysis.yml)
+[![CodeQL](https://github.com/umjammer/FreeTTS/actions/workflows/codeql.yml/badge.svg)](https://github.com/umjammer/FreeTTS/actions/workflows/codeql.yml)
 ![Java](https://img.shields.io/badge/Java-8-b07219)
 [![Parent](https://img.shields.io/badge/Parent-jspai-pink)](https://github.com/umjammer/jsapi)
 
