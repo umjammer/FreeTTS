@@ -1,14 +1,23 @@
-[![Release](https://jitpack.io/v/umjammer/freetts.svg)](https://jitpack.io/#umjammer/freetts)
-[![Java CI](https://github.com/umjammer/freetts/actions/workflows/maven.yml/badge.svg)](https://github.com/umjammer/freetts/actions/workflows/maven.yml)
-[![CodeQL](https://github.com/umjammer/freetts/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/umjammer/freetts/actions/workflows/codeql-analysis.yml)
-[![Parent](https://img.shields.io/badge/Parent-vavi--speech-pink)](https://github.com/umjammer/vavi-speech)
+[![GitHub Packages](https://github.com/umjammer/FreeTTS/actions/workflows/maven-publish.yml/badge.svg)](https://github.com/umjammer/jsapi/actions/workflows/maven-publish.yml)
+[![Java CI](https://github.com/umjammer/FreeTTS/actions/workflows/maven.yml/badge.svg)](https://github.com/umjammer/FreeTTS/actions/workflows/maven.yml)
+[![CodeQL](https://github.com/umjammer/FreeTTS/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/umjammer/FreeTTS/actions/workflows/codeql-analysis.yml)
+![Java](https://img.shields.io/badge/Java-8-b07219)
+[![Parent](https://img.shields.io/badge/Parent-jspai-pink)](https://github.com/umjammer/jsapi)
+
+# FreeTTS Speech Synthesis System
 
 mavenized FreeTTS
 
+## Install
+
+ * [maven](https://github.com/umjammer/FreeTTS/packages)
+
+## TODO
+
+ * demo
+
 ---
 [Original](https://github.com/JVoiceXML/FreeTTS)
-
-# FreeTTS Speech Synthesis System
 
 FreeTTS is a speech synthesis system written entirely in the Java programming language. It is based upon Flite, a small, fast, run-time speech
 synthesis engine, which in turn is based upon University of Edinburgh's Festival Speech Synthesis System and Carnegie Mellon University's
