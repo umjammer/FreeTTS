@@ -987,7 +987,7 @@
     </repository>
     <repository>
       <id>umjammer-mvn-repo</id>
-      <url>https://raw.github.com/umjammer/umjammer/mvn-repo/</url>
+      <url>https://maven.pkg.github.com/umjammer/vavi-image</url>
     </repository>
   </repositories>
 
@@ -1010,14 +1010,14 @@
       <version>1.0.0</version>
     </dependency>
     <dependency>
-      <groupId>com.github.umjammer.jsapi</groupId> <!-- com.github.umjammer.jsapi, org.jvoicexml -->
+      <groupId>org.jvoicexml</groupId> <!-- com.github.umjammer.jsapi, org.jvoicexml -->
       <artifactId>javax.speech</artifactId>
-      <version>0.6.2</version>
+      <version>0.6.3-SNAPSHOT</version>
     </dependency>
     <dependency>
-      <groupId>com.github.umjammer.jsapi</groupId> <!-- com.github.umjammer.jsapi, org.jvoicexml -->
+      <groupId>org.jvoicexml</groupId> <!-- com.github.umjammer.jsapi, org.jvoicexml -->
       <artifactId>org.jvoicexml.jsapi2.freetts</artifactId>
-      <version>0.6.2</version>
+      <version>0.6.3-SNAPSHOT</version>
     </dependency>
 
     <dependency>

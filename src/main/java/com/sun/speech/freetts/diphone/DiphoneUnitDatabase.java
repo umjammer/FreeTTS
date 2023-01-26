@@ -45,9 +45,9 @@ import com.sun.speech.freetts.util.Utilities;
  * Represents and manages the unit data for all diphones.  The diphone
  * data set is stored in a set of data files. These data are loaded by this
  * class into internal data structures before diphone synthesis can
- * occur. 
+ * occur.
  * <p>
- *The diphone data set is one of the largest sets of data that
+ * The diphone data set is one of the largest sets of data that
  * needs to be loaded by the synthesizer and therefore can add to the
  * overall startup time for any system using this database.  For
  * certain applications, the startup time is a critical spec that
@@ -64,7 +64,7 @@ import com.sun.speech.freetts.util.Utilities;
  * binary datafile.  The binary version loads significantly faster
  * than the text version. Additionally, a binary index can be
  * generated and used to reduce overall memory footprint.
- * <p> 
+ * <p>
  * <p>
  * A DiphoneUnitDatabase contains an array of frames, and an aray of
  * residuals. The frames are the samples of the wave, and the
@@ -77,9 +77,9 @@ import com.sun.speech.freetts.util.Utilities;
  * <p>
  * The system property
  * <pre>
- *	com.sun.speech.freetts.diphone.UnitDatabase.cacheType 
+ * 	com.sun.speech.freetts.diphone.UnitDatabase.cacheType
  * </pre>
- *
+ * <p>
  * can be set to one of:
  *
  * <ul>
@@ -88,16 +88,16 @@ import com.sun.speech.freetts.util.Utilities;
  * <li> hard: database is loaded on demand but cached
  * <li> soft: database is loaded on demand but cached with soft references
  * </ul>
- *
+ * <p>
  * This <code> cacheType </code> setting controls how the database is
  * loaded. The default is to 'preload' the database. This setting
  * gives best runtime performance but with longer initial startup
- * cost.  
+ * cost.
  */
 public class DiphoneUnitDatabase {
+
     /** Logger instance. */
-    private static final Logger LOGGER =
-            Logger.getLogger(DiphoneUnitDatabase.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(DiphoneUnitDatabase.class.getName());
 
     private String name;
     private int sampleRate;
@@ -135,10 +135,9 @@ public class DiphoneUnitDatabase {
     /**
      * Creates the DiphoneUnitDatabase from the given input stream.
      *
-     * @param url the location of the database
-     * @param isBinary if <code>true</code> the database is in 
-     *		binary format; otherwise it is in text format
-     *
+     * @param url      the location of the database
+     * @param isBinary if <code>true</code> the database is in
+     *                 binary format; otherwise it is in text format
      * @throws IOException if there is trouble opening the DB
      */
     public DiphoneUnitDatabase(URL url, boolean isBinary) throws IOException {
@@ -170,20 +169,17 @@ public class DiphoneUnitDatabase {
      *
      * @return the sample info
      */
-
     SampleInfo getSampleInfo() {
         return sampleInfo;
     }
-
 
     /**
      * Returns the index name from the databaseName.
      *
      * @param databaseName the database name
-     *
      * @return the index name or null if the database is not
-     * 	       a binary database.
-     *
+     * a binary database.
+     * <p>
      * [[[ TODO the index should probably be incorporated into the
      * binary database ]]]
      */
@@ -229,7 +225,7 @@ public class DiphoneUnitDatabase {
      * Parses and process the given line. Used to process the text
      * form of the database.
      *
-     * @param line the line to process
+     * @param line   the line to process
      * @param reader the source for the lines
      */
     private void parseAndAdd(String line, BufferedReader reader) {
@@ -300,7 +296,6 @@ public class DiphoneUnitDatabase {
         }
     }
 
-
     /**
      * Adds the given diphone to the DB. Diphones are kept in a map so
      * they can be accessed by name.
@@ -335,7 +330,6 @@ public class DiphoneUnitDatabase {
      * Looks up the diphone with the given name.
      *
      * @param unitName the name of the diphone to look for
-     *
      * @return the diphone or the defaultDiphone if not found.
      */
     public Diphone getUnit(String unitName) {
@@ -400,12 +394,11 @@ public class DiphoneUnitDatabase {
      * performance. In small memory systems, the weak cache would
      * likely be reclaimed, giving us lower performance but with the
      * ability to still be able to run. In reality, the soft caches
-     * did not help much. They just did not work correctly. 
+     * did not help much. They just did not work correctly.
      * [[[ TODO: test weak/soft cache behavior with new versions of
      * the runtime to see if their behavior has improved ]]]
      *
      * @param name the name of the diphone
-     *
      * @return the diphone or <code> null </code>  if not in the cache
      */
     private Diphone getFromCache(String name) {
@@ -432,8 +425,8 @@ public class DiphoneUnitDatabase {
     /**
      * Puts the diphone in the cache.
      *
-     * @param diphoneName the name of the diphone 
-     * @param diphone the diphone to put in the cache
+     * @param diphoneName the name of the diphone
+     * @param diphone     the diphone to put in the cache
      */
     private void putIntoCache(String diphoneName, Diphone diphone) {
         if (diphoneMap == null) {
@@ -464,7 +457,6 @@ public class DiphoneUnitDatabase {
         System.out.println("   empty: " + empty);
         System.out.println("    full: " + full);
     }
-
 
     /**
      * Returns the name of this DiphoneUnitDatabase.
@@ -597,7 +589,6 @@ public class DiphoneUnitDatabase {
      * Gets the index for the given diphone.
      *
      * @param diphone the name of the diphone
-     *
      * @return the index into the database for the diphone
      */
     private int getIndex(String diphone) {
@@ -614,9 +605,8 @@ public class DiphoneUnitDatabase {
         }
     }
 
-
     /**
-     * Loads a binary file from the input stream. 
+     * Loads a binary file from the input stream.
      * <p>
      * Note that we currently have four! methods of loading up the
      * database. We were interested in the performance characteristics
@@ -624,10 +614,8 @@ public class DiphoneUnitDatabase {
      * all up.
      *
      * @param is the input stream to read the database
-     * 		from
-     *
+     *           from
      * @throws IOException if there is trouble opening the DB
-     *
      */
     private void loadBinary(InputStream is) throws IOException {
         // we get better performance if we can map the file in
@@ -648,7 +636,6 @@ public class DiphoneUnitDatabase {
             loadBinary(dis);
         }
     }
-
 
     /**
      * Loads the binary data from the given input stream.
@@ -676,12 +663,10 @@ public class DiphoneUnitDatabase {
         }
     }
 
-
     /**
      * Loads the database from the given FileInputStream.
      *
      * @param is the InputStream to load the database from
-     *
      * @throws IOException if there is trouble opening the DB
      */
     private void loadMappedBinary(FileInputStream is) throws IOException {
@@ -698,7 +683,6 @@ public class DiphoneUnitDatabase {
      * Maps the database from the given FileInputStream.
      *
      * @param is the InputStream to load the database from
-     *
      * @throws IOException if there is trouble opening the DB
      */
     private void mapDatabase(FileInputStream is) throws IOException {
@@ -712,7 +696,6 @@ public class DiphoneUnitDatabase {
      * Loads the database header from the given byte buffer.
      *
      * @param bb the byte buffer to load the db from
-     *
      * @throws IOException if there is trouble opening the DB
      */
     private void loadDatabaseHeader(ByteBuffer bb) throws IOException {
@@ -733,7 +716,6 @@ public class DiphoneUnitDatabase {
      * Loads the database from the given byte buffer.
      *
      * @param bb the byte buffer to load the db from
-     *
      * @throws IOException if there is trouble opening the DB
      */
     private void loadDatabase(ByteBuffer bb) throws IOException {
@@ -757,9 +739,8 @@ public class DiphoneUnitDatabase {
      * verify that the dbs are identical
      *
      * @param other the other database
-     *
-     * @return <code>true</code>  if the DBs are identical; 
-     *		otherwise <code>false</code> 
+     * @return <code>true</code>  if the DBs are identical;
+     * otherwise <code>false</code>
      */
     public boolean compare(DiphoneUnitDatabase other) {
         if (sampleRate != other.sampleRate) {
@@ -796,35 +777,34 @@ public class DiphoneUnitDatabase {
 
     /**
      * Manipulates a DiphoneUnitDatabase. This program is typically
-     * used to generate the binary form (with index) of the 
-     * DiphoneUnitDatabase from the text form. Additionally, this program 
+     * used to generate the binary form (with index) of the
+     * DiphoneUnitDatabase from the text form. Additionally, this program
      * can be used to compare two databases to see if they are
      * identical (used for testing).
      *
      * <p>
      * <b> Usage </b>
      * <p>
-     *  <code> java com.sun.speech.freetts.diphone.DiphoneUnitDatabase
-     *  [options]</code> 
+     * <code> java com.sun.speech.freetts.diphone.DiphoneUnitDatabase
+     * [options]</code>
      * <p>
      * <b> Options </b>
      * <p>
-     *    <ul>
-     *          <li> <code> -src path </code> provides a directory
-     *          path to the source text for the database
-     *          <li> <code> -dest path </code> provides a directory
-     *          for where to place the resulting binaries
-     *		<li> <code> -generate_binary [filename] </code> 
-     *		reads in the text
-     *		version of the database and generates the binary
-     *		version of the database.
-     *		<li> <code> -compare </code>  Loads the text and
-     *		binary versions of the database and compares them to
-     *		see if they are equivalent.
-     *		<li> <code> -showTimes </code> shows timings for any
-     *		loading, comparing or dumping operation
-     *    </ul>
-     *
+     *  <ul>
+     *        <li> <code> -src path </code> provides a directory
+     *        path to the source text for the database
+     *        <li> <code> -dest path </code> provides a directory
+     *        for where to place the resulting binaries
+     * <li> <code> -generate_binary [filename] </code>
+     * reads in the text
+     * version of the database and generates the binary
+     * version of the database.
+     * <li> <code> -compare </code>  Loads the text and
+     * binary versions of the database and compares them to
+     * see if they are equivalent.
+     * <li> <code> -showTimes </code> shows timings for any
+     * loading, comparing or dumping operation
+     *  </ul>
      */
     public static void main(String[] args) {
         boolean showTimes = false;
