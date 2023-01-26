@@ -146,9 +146,9 @@ public class DiphoneUnitDatabase {
         // data is read from a FileInputStream. This is not true when useing
         // the default settings but setting
         // com.sun.speech.freetts.diphone.UnitDatabase.cacheType=demand
-        //if (!useIndexing || useCache) {
+//        if (!useIndexing || useCache) {
         diphoneMap = new LinkedHashMap<>();
-        //}
+//        }
         InputStream is = Utilities.getInputStream(url);
 
         indexName = getIndexName(url.toString());
@@ -180,14 +180,12 @@ public class DiphoneUnitDatabase {
      * @return the index name or null if the database is not
      * a binary database.
      * <p>
-     * [[[ TODO the index should probably be incorporated into the
-     * binary database ]]]
+     * TODO the index should probably be incorporated into the binary database
      */
     private String getIndexName(String databaseName) {
         String indexName = null;
         if (databaseName.lastIndexOf(".") != -1) {
-            indexName = databaseName.substring(0,
-                    databaseName.lastIndexOf(".")) + ".idx";
+            indexName = databaseName.substring(0, databaseName.lastIndexOf(".")) + ".idx";
         }
         return indexName;
     }
@@ -848,8 +846,7 @@ public class DiphoneUnitDatabase {
                         System.out.println("Loading " + name);
                         timer.start("load_text");
                         DiphoneUnitDatabase udb = new DiphoneUnitDatabase(
-                                new URL("file:"
-                                        + srcPath + "/" + name), false);
+                                new URL("file:" + srcPath + "/" + name), false);
                         timer.stop("load_text");
 
                         System.out.println("Dumping " + binaryName);
@@ -858,11 +855,9 @@ public class DiphoneUnitDatabase {
                         timer.stop("dump_binary");
 
                         timer.start("load_binary");
-                        DiphoneUnitDatabase budb =
-                                new DiphoneUnitDatabase(
-                                        new URL("file:"
-                                                + destPath + "/" + binaryName),
-                                        true);
+                        DiphoneUnitDatabase budb = new DiphoneUnitDatabase(
+                                new URL("file:" + destPath + "/" + binaryName),
+                                true);
                         timer.stop("load_binary");
 
                         System.out.println("Dumping " + indexName);
@@ -879,9 +874,8 @@ public class DiphoneUnitDatabase {
                         timer.stop("load_text");
 
                         timer.start("load_binary");
-                        DiphoneUnitDatabase budb =
-                                new DiphoneUnitDatabase(
-                                        new URL("file:./diphone_units.bin"), true);
+                        DiphoneUnitDatabase budb = new DiphoneUnitDatabase(
+                                new URL("file:./diphone_units.bin"), true);
                         timer.stop("load_binary");
 
                         timer.start("compare");

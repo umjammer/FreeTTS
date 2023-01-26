@@ -10,6 +10,7 @@ package com.sun.speech.freetts.util;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
@@ -116,7 +117,7 @@ public class Utilities {
      */
     public static InputStream getInputStream(URL url) throws IOException {
         if (url.getProtocol().equals("file")) {
-            return Files.newInputStream(Paths.get(url.getFile()));
+            return new FileInputStream(url.getFile()); // should be FileInputStream
         } else {
             return url.openStream();
         }

@@ -42,6 +42,7 @@
                         <path refid="maven.compile.classpath"/>
                         <path refid="maven.test.classpath"/>
                       </classpath>
+                      <jvmarg value="-Djava.util.logging.config.file=${project.testResources.directory}/logging.properties" />
                       <arg line="-src ${project.resources.directory}/com/sun/speech/freetts/en/us/cmu_us_kal" />
                       <arg line="-dest ${project.testResources.directory}/com/sun/speech/freetts/en/us/cmu_us_kal" />
                       <arg line="-generate_binary cmu_us_kal.txt" />
@@ -65,6 +66,7 @@
                         <path refid="maven.compile.classpath"/>
                         <path refid="maven.test.classpath"/>
                       </classpath>
+                      <jvmarg value="-Djava.util.logging.config.file=${project.testResources.directory}/logging.properties" />
                       <arg line="-src ${project.resources.directory}/com/sun/speech/freetts/en/us/cmu_us_kal" />
                       <arg line="-dest ${project.testResources.directory}/com/sun/speech/freetts/en/us/cmu_us_kal" />
                       <arg line="-generate_binary cmu_us_kal16.txt" />
@@ -987,7 +989,7 @@
     </repository>
     <repository>
       <id>umjammer-mvn-repo</id>
-      <url>https://maven.pkg.github.com/umjammer/vavi-image</url>
+      <url>https://maven.pkg.github.com/umjammer/jsapi</url>
     </repository>
   </repositories>
 
@@ -1010,14 +1012,14 @@
       <version>1.0.0</version>
     </dependency>
     <dependency>
-      <groupId>org.jvoicexml</groupId> <!-- com.github.umjammer.jsapi, org.jvoicexml -->
+      <groupId>com.github.umjammer.jsapi</groupId> <!-- com.github.umjammer.jsapi, org.jvoicexml -->
       <artifactId>javax.speech</artifactId>
-      <version>0.6.3-SNAPSHOT</version>
+      <version>0.6.2</version>
     </dependency>
     <dependency>
-      <groupId>org.jvoicexml</groupId> <!-- com.github.umjammer.jsapi, org.jvoicexml -->
+      <groupId>com.github.umjammer.jsapi</groupId> <!-- com.github.umjammer.jsapi, org.jvoicexml -->
       <artifactId>org.jvoicexml.jsapi2.freetts</artifactId>
-      <version>0.6.3-SNAPSHOT</version>
+      <version>0.6.2</version>
     </dependency>
 
     <dependency>
@@ -1033,6 +1035,13 @@
     <dependency>
       <groupId>org.junit.platform</groupId>
       <artifactId>junit-platform-commons</artifactId>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>com.github.umjammer</groupId>
+      <artifactId>vavi-commons</artifactId>
+      <version>1.1.8</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
