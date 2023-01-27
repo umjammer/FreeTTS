@@ -50,7 +50,7 @@ public class UnitConcatenator implements UtteranceProcessor {
      *     the utterance
      */
     public void processUtterance(Utterance utterance) throws ProcessException {
-        float uIndex = 0, m;
+        float uIndex, m;
         int pmI = 0, targetResidualPosition = 0,
                 targetStart = 0, targetEnd, residualSize, numberFrames;
         Relation unitRelation = utterance.getRelation(Relation.UNIT);

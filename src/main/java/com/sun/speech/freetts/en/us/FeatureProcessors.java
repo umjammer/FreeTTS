@@ -456,7 +456,7 @@ public class FeatureProcessors {
     }
 
     /**
-     * Classifies the the syllable as single, initial, mid or final.
+     * Classifies the syllable as single, initial, mid or final.
      * This is a feature processor. A feature processor takes an item,
      * performs some sort of processing on the item and returns an object.
      */

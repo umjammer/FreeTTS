@@ -129,9 +129,7 @@ public class RawFileAudioPlayer implements AudioPlayer {
     }
 
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public boolean write(byte[] audioData) throws IOException {
         return write(audioData, 0, audioData.length);
     }
@@ -154,9 +152,7 @@ public class RawFileAudioPlayer implements AudioPlayer {
         return true;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public boolean write(byte[] bytes, int offset, int size)
             throws IOException {
         os.write(bytes, offset, size);

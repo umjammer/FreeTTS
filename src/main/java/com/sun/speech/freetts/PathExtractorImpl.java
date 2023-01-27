@@ -38,23 +38,21 @@ import com.sun.speech.freetts.util.Utilities;
  * to extract a feature or an item based upon a path.
  */
 public class PathExtractorImpl implements PathExtractor {
+
     /** Logger instance. */
-    private static final Logger LOGGER =
-            Logger.getLogger(PathExtractorImpl.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(PathExtractorImpl.class.getName());
 
     /**
      * If this system property is set to true, paths will
      * not be compiled.
      */
-    public final static String INTERPRET_PATHS_PROPERTY =
-            "com.sun.speech.freetts.interpretCartPaths";
+    public final static String INTERPRET_PATHS_PROPERTY = "com.sun.speech.freetts.interpretCartPaths";
 
     /**
      * If this system property is set to true, CART feature/item
      * paths will only be compiled as needed.
      */
-    public final static String LAZY_COMPILE_PROPERTY =
-            "com.sun.speech.freetts.lazyCartCompile";
+    public final static String LAZY_COMPILE_PROPERTY = "com.sun.speech.freetts.lazyCartCompile";
 
     private final static boolean INTERPRET_PATHS =
             Utilities.getProperty(INTERPRET_PATHS_PROPERTY, "false").equals("true");
@@ -141,13 +139,11 @@ public class PathExtractorImpl implements PathExtractor {
                 String relationName = (String) compiledPath[i++];
                 pitem = pitem.getSharedContents().getItemRelation(relationName);
             } else {
-                System.out.println("findItem: bad feature " + op +
-                        " in " + path);
+                System.out.println("findItem: bad feature " + op + " in " + path);
             }
         }
         return pitem;
     }
-
 
     /**
      * Finds the feature associated with this Path.
@@ -165,19 +161,14 @@ public class PathExtractorImpl implements PathExtractor {
         Object results = null;
         if (pitem != null) {
             if (LOGGER.isLoggable(Level.FINER)) {
-                LOGGER.finer("findFeature: Item [" + pitem + "], feature '"
-                        + feature + "'");
+                LOGGER.finer("findFeature: Item [" + pitem + "], feature '" + feature + "'");
             }
 
-            FeatureProcessor fp =
-                    pitem.getOwnerRelation().getUtterance().
-                            getVoice().getFeatureProcessor(feature);
+            FeatureProcessor fp = pitem.getOwnerRelation().getUtterance().getVoice().getFeatureProcessor(feature);
 
             if (fp != null) {
                 if (LOGGER.isLoggable(Level.FINER)) {
-                    LOGGER.finer(
-                            "findFeature: There is a feature processor for '"
-                                    + feature + "'");
+                    LOGGER.finer("findFeature: There is a feature processor for '" + feature + "'");
                 }
                 try {
                     results = fp.process(pitem);
@@ -197,7 +188,6 @@ public class PathExtractorImpl implements PathExtractor {
         return results;
     }
 
-
     /**
      * Compiles the given path into the compiled form
      * @param path the path to compile
@@ -205,7 +195,7 @@ public class PathExtractorImpl implements PathExtractor {
      * of an array path traversal enums and associated strings
      */
     private Object[] compile(String path) {
-        List list = new ArrayList<>();
+        List<Object> list = new ArrayList<>();
 
         if (path == null) {
             return list.toArray();
@@ -245,7 +235,8 @@ public class PathExtractorImpl implements PathExtractor {
  * An enumerated type associated with path operations.
  */
 class OpEnum {
-    static private Map map = new HashMap<>();
+
+    static private Map<Object, OpEnum> map = new HashMap<>();
 
     public final static OpEnum NEXT = new OpEnum("n");
     public final static OpEnum PREV = new OpEnum("p");
@@ -259,7 +250,7 @@ class OpEnum {
     private String name;
 
     /**
-     * Creates a new OpEnum.. There is a limited
+     * Creates a new OpEnum. There is a limited
      * set of OpEnums
      * @param name the path name for this Enum
      */
@@ -269,12 +260,12 @@ class OpEnum {
     }
 
     /**
-     * gets an OpEnum thats associated with
+     * gets an OpEnum that's associated with
      * the given name.
      * @param name the name of the OpEnum of interest
      */
     public static OpEnum getInstance(String name) {
-        return (OpEnum) map.get(name);
+        return map.get(name);
     }
 
     // inherited from Object

@@ -291,8 +291,7 @@ public class TextSynthesizerQueueItem extends BaseSynthesizerQueueItem {
         for (String attribute : attributes) {
             if (element.hasAttribute(attribute)) {
                 String data = element.getAttribute(attribute);
-                attributeText.append(
-                        DATA_PREFIX + attribute + "=" + data + DATA_SUFFIX);
+                attributeText.append(DATA_PREFIX).append(attribute).append("=").append(data).append(DATA_SUFFIX);
             }
         }
         return attributeText;

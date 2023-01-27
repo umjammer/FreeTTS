@@ -72,16 +72,16 @@ public class Segmenter implements UtteranceProcessor {
                 utterance.createRelation(Relation.SYLLABLE_STRUCTURE);
         Relation seg = utterance.createRelation(Relation.SEGMENT);
         Lexicon lex = utterance.getVoice().getLexicon();
-        List syllableList = null;
+        List<String> syllableList = null;
 
         for (Item word = utterance.getRelation(Relation.WORD).getHead();
              word != null; word = word.getNext()) {
             Item ssword = sylstructure.appendItem(word);
             Item sylItem = null;   // item denoting syllable boundaries
-            Item segItem = null;   // item denoting phonelist (segments)
+            Item segItem;   // item denoting phonelist (segments)
             Item sssyl = null;     // item denoting syl in word
 
-            String[] phones = null;
+            String[] phones;
 
             Item token = word.getItemAs("Token");
             FeatureSet featureSet = null;

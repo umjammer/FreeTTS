@@ -228,7 +228,7 @@ public class ClusterUnitSelector implements UtteranceProcessor {
             return;
         }
         // default to LDOM naming scheme 'ae_afternoon':
-        String cname = null;
+        String cname;
 
         String segName = seg.getFeatures().getString("name");
 
@@ -304,8 +304,8 @@ public class ClusterUnitSelector implements UtteranceProcessor {
         private int numStates = -1;
         private boolean bigIsGood = false;
         private ViterbiPoint timeline = null;
-        private ViterbiPoint lastPoint = null;
-        private FeatureSet f = null;
+        private ViterbiPoint lastPoint;
+        private FeatureSet f;
         private ClusterUnitDatabase clunitDB;
 
         /**
@@ -790,17 +790,13 @@ public class ClusterUnitSelector implements UtteranceProcessor {
             u0_st = u0_end / 3;
             u1_p_st = u1_p_end / 3;
 
-            if ((u0_end - u0_st) < (u1_p_end - u1_p_st)) {
-                fcount = u0_end - u0_st;
-                // We could now shift the starting point for coupling in the longer unit
-                // so that the distance from the end is the same in both units:
-                /* u1_p_st = u1_p_end - fcount; */
-            } else {
-                fcount = u1_p_end - u1_p_st;
-                // We could now shift the starting point for coupling in the longer unit
-                // so that the distance from the end is the same in both units:
-                /* u0_st = u0_end - fcount; */
-            }
+            // We could now shift the starting point for coupling in the longer unit
+            // so that the distance from the end is the same in both units:
+            /* u1_p_st = u1_p_end - fcount; */
+            // We could now shift the starting point for coupling in the longer unit
+            // so that the distance from the end is the same in both units:
+            /* u0_st = u0_end - fcount; */
+            fcount = Math.min((u0_end - u0_st), (u1_p_end - u1_p_st));
 
             // Now go through the two units, and search for the frame pair where
             // the acoustic distance is smallest.
@@ -900,7 +896,7 @@ public class ClusterUnitSelector implements UtteranceProcessor {
      * about its next ViterbiPoint, i.e. they can form a queue.
      */
     static class ViterbiPoint {
-        Item item = null;
+        Item item;
         // TODO: remove the numStates attribute from ViterbiPoint, as this is only statePaths.length
         int numStates = 0;
         int numPaths = 0;

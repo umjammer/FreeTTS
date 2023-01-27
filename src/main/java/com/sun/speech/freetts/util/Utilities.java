@@ -16,8 +16,6 @@ import java.io.InputStream;
 import java.io.PrintWriter;
 import java.net.URL;
 import java.nio.ByteBuffer;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 
 
 /**
@@ -231,7 +229,7 @@ public class Utilities {
      *
      */
     public static Long getLong(String name, long defaultValue) {
-        Long value;
+        long value;
         try {
             value = Long.getLong(name, defaultValue);
         } catch (SecurityException se) {
@@ -253,7 +251,7 @@ public class Utilities {
      *
      */
     public static Integer getInteger(String name, int defaultValue) {
-        Integer value;
+        int value;
         try {
             value = Integer.getInteger(name, defaultValue);
         } catch (SecurityException se) {

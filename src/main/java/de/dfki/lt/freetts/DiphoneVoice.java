@@ -58,7 +58,7 @@ public class DiphoneVoice extends Voice implements ConcatenativeVoice {
      * Creates a ClusterUnitVoice
      *
      * @param database the database of the voice
-     * @param name specifies the name of the Units (if null, an
+     * @param name specifies the name of the Units (if null, a
      * ldom naming scheme will be used: 'ae_afternoon')
      * @param phonesetURL leads to the phoneset, which will be used 
      * for the FeatureProcessors (can be null)
@@ -118,7 +118,7 @@ public class DiphoneVoice extends Voice implements ConcatenativeVoice {
      * Gets the url to the database that defines the unit data for this
      * voice.
      *
-     * @return a url to the database
+     * @return an url to the database
      */
     public URL getDatabase() {
         return database;

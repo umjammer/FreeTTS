@@ -48,7 +48,7 @@ public class JavaClipAudioPlayer implements AudioPlayer {
 
     /** The current volume. */
     private float volume = 1.0f;
-    private boolean audioMetrics = false;
+    private boolean audioMetrics;
     private final BulkTimer timer = new BulkTimer();
     /** Default format is 8kHz. */
     private AudioFormat defaultFormat =
@@ -416,16 +416,12 @@ public class JavaClipAudioPlayer implements AudioPlayer {
         return ok;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public boolean write(byte[] audioData) throws IOException {
         return write(audioData, 0, audioData.length);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public boolean write(byte[] bytes, int offset, int size)
             throws IOException {
         if (firstSample) {

@@ -154,7 +154,7 @@ public class ClusterUnitDatabase {
      * @return the cart 
      */
     CART getTree(String unitType) {
-        CART cart = (CART) cartMap.get(unitType);
+        CART cart = cartMap.get(unitType);
 
         if (cart == null) {
             System.err.println("ClusterUnitDatabase: can't find tree for "
@@ -695,7 +695,7 @@ public class ClusterUnitDatabase {
         unitOrigins = new UnitOriginInfo[units.length];
         BufferedReader in = new BufferedReader(new InputStreamReader(is));
 
-        String currentLine = null;
+        String currentLine;
         // Skip EST header:
         while ((currentLine = in.readLine()) != null) {
             if (currentLine.startsWith("EST_Header_End")) break;

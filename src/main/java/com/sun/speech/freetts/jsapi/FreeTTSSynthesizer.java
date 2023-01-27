@@ -329,7 +329,7 @@ public class FreeTTSSynthesizer extends BaseSynthesizer {
 
             } catch (PropertyVetoException pve) {
                 // the actual properties in the voices have
-                // already changed to these new values so
+                // already changed to these new values, so
                 // we should not expect a PropertyVetoException
             }
         }
@@ -555,12 +555,12 @@ public class FreeTTSSynthesizer extends BaseSynthesizer {
          * Cancel the current item
          */
         protected void cancelItem() {
-            FreeTTSSynthesizerQueueItem item = null;
+            FreeTTSSynthesizerQueueItem item;
 
             synchronized (queue) {
                 audio.cancel();
                 if (queue.size() != 0) {
-                    item = (FreeTTSSynthesizerQueueItem) queue.remove(0);
+                    item = queue.remove(0);
                     if (item != null) {
                         // item.postSpeakableCancelled();
                         item.cancelled();
@@ -596,13 +596,13 @@ public class FreeTTSSynthesizer extends BaseSynthesizer {
          * @param source the item to cancel.
          */
         protected void cancelItem(Object source) {
-            FreeTTSSynthesizerQueueItem item = null;
+            FreeTTSSynthesizerQueueItem item;
             synchronized (queue) {
                 int index = queue.indexOf(source);
                 if (index == 0) {
                     cancelItem();
                 } else {
-                    item = (FreeTTSSynthesizerQueueItem) queue.remove(index);
+                    item = queue.remove(index);
                     if (item != null) {
                         // item.postSpeakableCancelled();
                         item.cancelled();
@@ -632,7 +632,7 @@ public class FreeTTSSynthesizer extends BaseSynthesizer {
          * @return a queue item
          */
         protected FreeTTSSynthesizerQueueItem getQueueItem() {
-            FreeTTSSynthesizerQueueItem item = null;
+            FreeTTSSynthesizerQueueItem item;
             synchronized (queue) {
                 while (queue.size() == 0 && !done) {
                     try {
@@ -646,7 +646,7 @@ public class FreeTTSSynthesizer extends BaseSynthesizer {
                 if (done) {
                     return null;
                 }
-                item = (FreeTTSSynthesizerQueueItem) queue.elementAt(0);
+                item = queue.elementAt(0);
             }
             item.postTopOfQueue();
             return item;

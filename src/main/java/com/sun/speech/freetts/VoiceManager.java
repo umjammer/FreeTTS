@@ -90,7 +90,7 @@ public class VoiceManager {
      * raised.
      *
      * <P>
-     * Every voices file that is read in contains a list of VoiceDirectory class
+     * Every voice's file that is read in contains a list of VoiceDirectory class
      * names.
      *
      * <p>
@@ -246,7 +246,7 @@ public class VoiceManager {
     }
 
     /**
-     * Recursively gets the urls of the class paths that url is dependant on.
+     * Recursively gets the urls of the class paths that url is dependent on.
      *
      * Conventions specified in
      * http://java.sun.com/j2se/1.4.1/docs/guide/extensions/spec.html#bundled
@@ -659,7 +659,7 @@ class DynamicClassLoader extends URLClassLoader {
     }
 
     /**
-     * Add a URL to a class path only if has not already been added.
+     * Add a URL to a class path only if it has not already been added.
      *
      * @param url
      *            the url to add to the class path
@@ -673,9 +673,7 @@ class DynamicClassLoader extends URLClassLoader {
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public Class<?> loadClass(String name)
             throws ClassNotFoundException {
         Class<?> loadedClass = findLoadedClass(name);

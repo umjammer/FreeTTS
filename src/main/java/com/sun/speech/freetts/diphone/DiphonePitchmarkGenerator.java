@@ -60,7 +60,7 @@ public class DiphonePitchmarkGenerator implements UtteranceProcessor {
                     ("DiphonePitchmarkGenerator: SampleInfo does not exist");
         }
 
-        float pos, f0, m = 0;
+        float pos, f0, m;
         float lf0 = utterance.getVoice().getPitch();
 
         double time = 0;
@@ -136,9 +136,9 @@ public class DiphonePitchmarkGenerator implements UtteranceProcessor {
  * [[[ TODO look at replacing this with a simple int array ]]]
  */
 class IntLinkedList {
-    private IntListNode head = null;
-    private IntListNode tail = null;
-    private IntListNode iterator = null;
+    private IntListNode head;
+    private IntListNode tail;
+    private IntListNode iterator;
 
     /**
      * Constructs an empty IntLinkedList.

@@ -237,9 +237,9 @@ public class SpeechEventUtilities {
      */
     protected static class SpeechAWTEvent extends AWTEvent {
         static final int EVENT_ID = AWTEvent.RESERVED_ID_MAX + 14830;
-        SpeechEventDispatcher dispatcher = null;
-        SpeechEvent event = null;
-        Object lock = null;
+        SpeechEventDispatcher dispatcher;
+        SpeechEvent event;
+        Object lock;
 
         SpeechAWTEvent(SpeechAWTEventTarget target,
                        SpeechEventDispatcher dispatcher,

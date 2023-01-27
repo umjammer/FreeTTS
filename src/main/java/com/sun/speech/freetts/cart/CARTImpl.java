@@ -586,7 +586,7 @@ public class CARTImpl implements CART {
          * @param val the value to compare
          */
         public int getNextNode(Object val) {
-            boolean yes = false;
+            boolean yes;
             int ret;
 
             if (comparisonType.equals(LESS_THAN)

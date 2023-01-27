@@ -89,7 +89,7 @@ public class PronounceableFSM {
      */
     private void loadText(InputStream is) throws IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(is));
-        String line = null;
+        String line;
         while ((line = reader.readLine()) != null) {
             if (!line.startsWith("***")) {
                 if (line.startsWith(VOCAB_SIZE)) {

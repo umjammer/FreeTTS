@@ -28,6 +28,7 @@ import org.w3c.dom.Document;
  */
 public class BaseSynthesizerQueueItem extends SynthesizerQueueItem
         implements SpeechEventDispatcher {
+
     private volatile boolean done = false;
     private volatile boolean cancelled = false;
 
@@ -45,7 +46,7 @@ public class BaseSynthesizerQueueItem extends SynthesizerQueueItem
     /**
      * Count for this item used for debug.
      */
-    protected int thisItemNumber = 0;
+    protected int thisItemNumber;
 
 
     /**
@@ -235,9 +236,7 @@ public class BaseSynthesizerQueueItem extends SynthesizerQueueItem
     public void postMarkerReached(String text, int markerType) {
         SpeechEventUtilities.postSpeechEvent(
                 this,
-                new SpeakableEvent(source,
-                        SpeakableEvent.MARKER_REACHED,
-                        text, markerType));
+                new SpeakableEvent(source, SpeakableEvent.MARKER_REACHED, text, markerType));
     }
 
     /**
@@ -255,8 +254,7 @@ public class BaseSynthesizerQueueItem extends SynthesizerQueueItem
 
 
         if (synth.speakableListeners != null) {
-            for (Object o : synth.speakableListeners) {
-                SpeakableListener sl = (SpeakableListener) o;
+            for (SpeakableListener sl : synth.speakableListeners) {
                 sl.markerReached(event);
             }
         }
@@ -308,8 +306,7 @@ public class BaseSynthesizerQueueItem extends SynthesizerQueueItem
 
 
         if (synth.speakableListeners != null) {
-            for (Object o : synth.speakableListeners) {
-                SpeakableListener sl = (SpeakableListener) o;
+            for (SpeakableListener sl : synth.speakableListeners) {
                 sl.speakableCancelled(event);
             }
         }
@@ -360,8 +357,7 @@ public class BaseSynthesizerQueueItem extends SynthesizerQueueItem
 
 
         if (synth.speakableListeners != null) {
-            for (Object o : synth.speakableListeners) {
-                SpeakableListener sl = (SpeakableListener) o;
+            for (SpeakableListener sl : synth.speakableListeners) {
                 sl.speakableEnded(event);
             }
         }
@@ -399,8 +395,7 @@ public class BaseSynthesizerQueueItem extends SynthesizerQueueItem
 
 
         if (synth.speakableListeners != null) {
-            for (Object o : synth.speakableListeners) {
-                SpeakableListener sl = (SpeakableListener) o;
+            for (SpeakableListener sl : synth.speakableListeners) {
                 sl.speakablePaused(event);
             }
         }
@@ -438,9 +433,7 @@ public class BaseSynthesizerQueueItem extends SynthesizerQueueItem
 
 
         if (synth.speakableListeners != null) {
-            for (Object o : synth.speakableListeners) {
-                SpeakableListener sl =
-                        (SpeakableListener) o;
+            for (SpeakableListener sl : synth.speakableListeners) {
                 sl.speakableResumed(event);
             }
         }
@@ -476,10 +469,8 @@ public class BaseSynthesizerQueueItem extends SynthesizerQueueItem
             listener.speakableStarted(event);
         }
 
-
         if (synth.speakableListeners != null) {
-            for (Object o : synth.speakableListeners) {
-                SpeakableListener sl = (SpeakableListener) o;
+            for (SpeakableListener sl : synth.speakableListeners) {
                 sl.speakableStarted(event);
             }
         }
@@ -517,8 +508,7 @@ public class BaseSynthesizerQueueItem extends SynthesizerQueueItem
 
 
         if (synth.speakableListeners != null) {
-            for (Object o : synth.speakableListeners) {
-                SpeakableListener sl = (SpeakableListener) o;
+            for (SpeakableListener sl : synth.speakableListeners) {
                 sl.topOfQueue(event);
             }
         }
@@ -541,8 +531,7 @@ public class BaseSynthesizerQueueItem extends SynthesizerQueueItem
     public void postWordStarted(String text, int wordStart, int wordEnd) {
         SpeechEventUtilities.postSpeechEvent(
                 this,
-                new SpeakableEvent(source, SpeakableEvent.WORD_STARTED,
-                        text, wordStart, wordEnd));
+                new SpeakableEvent(source, SpeakableEvent.WORD_STARTED, text, wordStart, wordEnd));
     }
 
     /**
@@ -558,10 +547,8 @@ public class BaseSynthesizerQueueItem extends SynthesizerQueueItem
             listener.wordStarted(event);
         }
 
-
         if (synth.speakableListeners != null) {
-            for (Object o : synth.speakableListeners) {
-                SpeakableListener sl = (SpeakableListener) o;
+            for (SpeakableListener sl : synth.speakableListeners) {
                 sl.wordStarted(event);
             }
         }

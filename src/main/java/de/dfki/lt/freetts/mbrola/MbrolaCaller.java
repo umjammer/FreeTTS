@@ -29,10 +29,10 @@ import com.sun.speech.freetts.util.Utilities;
 public class MbrolaCaller implements UtteranceProcessor {
 
     private String[] cmd;
-    private long closeDelay = 0L;
+    private long closeDelay;
 
     /**
-     * Create an Mbrola caller which will call an external MBROLA binary
+     * Create a Mbrola caller which will call an external MBROLA binary
      * using the command <code>cmd</code>. The command string is used
      * as it is, which means that it must contain full path specifications
      * and the correct file separators.
@@ -118,9 +118,9 @@ public class MbrolaCaller implements UtteranceProcessor {
         // In order to avoid resizing a large array, we save the audio data
         // in the chunks in which we read it.
 
-        List audioData = new java.util.ArrayList();
+        List<byte[]> audioData = new java.util.ArrayList<>();
         int totalSize = 0;
-        int nrRead = -1; // -1 means end of file
+        int nrRead; // -1 means end of file
 
         try {
             while ((nrRead = fromMbrola.read(buffer)) != -1) {

@@ -11,7 +11,8 @@
 
 package com.sun.speech.freetts.en.us;
 
-import java.util.Hashtable;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -107,7 +108,7 @@ public class TokenToWords implements UtteranceProcessor {
      * Here we use a hashtable for constant time matching, instead of using
      * if (A.equals(B) || A.equals(C) || ...) to match Strings
      */
-    private static Hashtable kingSectionLikeHash = new Hashtable();
+    private static Map<String, String> kingSectionLikeHash = new HashMap<>();
 
     private static final String KING_NAMES = "kingNames";
     private static final String KING_TITLES = "kingTitles";
@@ -126,16 +127,14 @@ public class TokenToWords implements UtteranceProcessor {
         }
     }
 
-    private static final String[] postrophes = {
-            "'s", "'ll", "'ve", "'d"};
+    private static final String[] postrophes = {"'s", "'ll", "'ve", "'d"};
 
     // Finite state machines to check if a Token is pronounceable
-    private PronounceableFSM prefixFSM = null;
-    private PronounceableFSM suffixFSM = null;
+    private PronounceableFSM prefixFSM;
+    private PronounceableFSM suffixFSM;
 
     // List of US states abbreviations and their full names
-    private static final String[][] usStates =
-            {
+    private static final String[][] usStates = {
                     {"AL", "ambiguous", "alabama"},
                     {"Al", "ambiguous", "alabama"},
                     {"Ala", "", "alabama"},
@@ -239,7 +238,7 @@ public class TokenToWords implements UtteranceProcessor {
             };
 
     // Again hashtable for constant time searching
-    private static Hashtable usStatesHash = new Hashtable();
+    private static Map<String, String[]> usStatesHash = new HashMap<>();
 
     // initialize the Hashtable for usStates
     static {
@@ -260,21 +259,17 @@ public class TokenToWords implements UtteranceProcessor {
     // a CART for classifying numbers
     private CART cart;
 
-
     /**
      * Constructs a default USTokenWordProcessor. It uses the USEnglish
      * regular expression set (USEngRegExp) by default.
      *
      * @param usNumbersCART the cart to use to classify numbers
      */
-    public TokenToWords(CART usNumbersCART,
-                        PronounceableFSM prefixFSM,
-                        PronounceableFSM suffixFSM) {
+    public TokenToWords(CART usNumbersCART, PronounceableFSM prefixFSM, PronounceableFSM suffixFSM) {
         this.cart = usNumbersCART;
         this.prefixFSM = prefixFSM;
         this.suffixFSM = suffixFSM;
     }
-
 
     /**
      * Returns the currently processing token Item.
@@ -284,7 +279,6 @@ public class TokenToWords implements UtteranceProcessor {
     public Item getTokenItem() {
         return tokenItem;
     }
-
 
     /**
      *  process the utterance
@@ -297,8 +291,7 @@ public class TokenToWords implements UtteranceProcessor {
     public void processUtterance(Utterance utterance) throws ProcessException {
         Relation tokenRelation;
         if ((tokenRelation = utterance.getRelation(Relation.TOKEN)) == null) {
-            throw new IllegalStateException
-                    ("TokenToWords: Token relation does not exist");
+            throw new IllegalStateException("TokenToWords: Token relation does not exist");
         }
 
         wordRelation = WordRelation.createWordRelation(utterance, this);
@@ -314,7 +307,6 @@ public class TokenToWords implements UtteranceProcessor {
             tokenToWords(tokenVal);
         }
     }
-
 
     /**
      * Returns true if the given token matches part of a phone number
@@ -346,7 +338,6 @@ public class TokenToWords implements UtteranceProcessor {
                                 && matches(threeDigitsPattern, p_p_name))));
     }
 
-
     /**
      * Returns true if the given string is in the given string array.
      *
@@ -363,7 +354,6 @@ public class TokenToWords implements UtteranceProcessor {
         }
         return false;
     }
-
 
     /**
      * Converts the given Token into (word) Items in the WordRelation.
@@ -385,26 +375,26 @@ public class TokenToWords implements UtteranceProcessor {
                 ((tokenItem.getNext() == null) ||
                         !(tokenVal.equals(itemName)) ||
                         !(tokenItem.findFeature("punc").equals("")))) {
-            /* if A is a sub part of a token, then its ey not ah */
+            // if A is a sub part of a token, then its ey not ah
             wordRelation.addWord("_a");
 
         } else if (matches(alphabetPattern, tokenVal)) {
 
             if (matches(romanNumbersPattern, tokenVal)) {
 
-                /* XVIII */
+                // XVIII
                 romanToWords(tokenVal);
 
             } else if (matches(illionPattern, tokenVal) &&
                     matches(usMoneyPattern,
                             (String) tokenItem.findFeature("p.name"))) {
-                /* $ X -illion */
+                // $ X -illion
                 wordRelation.addWord(tokenVal);
                 wordRelation.addWord("dollars");
 
             } else if (matches(drStPattern, tokenVal)) {
 
-                /* St Andrew's St, Dr King Dr */
+                // St Andrew's St, Dr King Dr
                 drStToWords(tokenVal);
 
             } else if (tokenVal.equals("Mr")) {
@@ -431,38 +421,36 @@ public class TokenToWords implements UtteranceProcessor {
                     wordRelation.addWord(aaa);
                 }
             } else if (isStateName(tokenVal)) {
-		/*
-		  The name of a US state
-		  isStateName() has already added the full name of the
-		  state, so we're all set.
-		*/
+                // The name of a US state
+                // isStateName() has already added the full name of the
+                // state, so we're all set.
             } else if (tokenLength > 1 && !isPronounceable(tokenVal)) {
-                /* Need common exception list */
-                /* unpronouncable list of alphas */
+                // Need common exception list
+                // unpronouncable list of alphas
                 NumberExpander.expandLetters
                         (tokenVal, wordRelation);
 
             } else {
-                /* just a word */
+                // just a word
                 wordRelation.addWord(tokenVal.toLowerCase());
             }
 
         } else if (matches(dottedAbbrevPattern, tokenVal)) {
 
-            /* U.S.A. */
+            // U.S.A.
             // remove all dots
             String aaa = Utilities.deleteChar(tokenVal, '.');
             NumberExpander.expandLetters(aaa, wordRelation);
 
         } else if (matches(commaIntPattern, tokenVal)) {
 
-            /* 99,999,999 */
+            // 99,999,999
             String aaa = Utilities.deleteChar(tokenVal, ',');
             NumberExpander.expandReal(aaa, wordRelation);
 
         } else if (matches(sevenPhoneNumberPattern, tokenVal)) {
 
-            /* 234-3434  telephone numbers */
+            // 234-3434  telephone numbers
             int dashIndex = tokenVal.indexOf('-');
             String aaa = tokenVal.substring(0, dashIndex);
             String bbb = tokenVal.substring(dashIndex + 1);
@@ -473,7 +461,7 @@ public class TokenToWords implements UtteranceProcessor {
 
         } else if (matchesPartPhoneNumber(tokenVal)) {
 
-            /* part of a telephone number */
+            // part of a telephone number
             String punctuation = (String) tokenItem.findFeature("punc");
             if (punctuation.equals("")) {
                 tokenItem.getFeatures().setString("punc", ",");
@@ -483,7 +471,7 @@ public class TokenToWords implements UtteranceProcessor {
 
         } else if (matches(numberTimePattern, tokenVal)) {
 
-            /* 12:35 */
+            // 12:35
             int colonIndex = tokenVal.indexOf(':');
             String aaa = tokenVal.substring(0, colonIndex);
             String bbb = tokenVal.substring(colonIndex + 1);
@@ -495,7 +483,7 @@ public class TokenToWords implements UtteranceProcessor {
 
         } else if (matches(digits2DashPattern, tokenVal)) {
 
-            /* 999-999-999 */
+            // 999-999-999
             digitsDashToWords(tokenVal);
 
         } else if (matches(digitsPattern, tokenVal)) {
@@ -504,10 +492,8 @@ public class TokenToWords implements UtteranceProcessor {
 
         } else if (tokenLength == 1
                 && isUppercaseLetter(tokenVal.charAt(0))
-                && tokenItem.findFeature("n.whitespace").equals
-                (" ")
-                && isUppercaseLetter
-                (((String) tokenItem.findFeature("n.name")).charAt(0))) {
+                && tokenItem.findFeature("n.whitespace").equals(" ")
+                && isUppercaseLetter(((String) tokenItem.findFeature("n.name")).charAt(0))) {
 
             tokenFeatures.setString("punc", "");
             String aaa = tokenVal.toLowerCase();
@@ -522,26 +508,25 @@ public class TokenToWords implements UtteranceProcessor {
 
         } else if (matches(ordinalPattern, tokenVal)) {
 
-            /* explicit ordinals */
+            // explicit ordinals
             String aaa = tokenVal.substring(0, tokenLength - 2);
             NumberExpander.expandOrdinal(aaa, wordRelation);
 
         } else if (matches(usMoneyPattern, tokenVal)) {
 
-            /* US money */
+            // US money
             usMoneyToWords(tokenVal);
 
-        } else if (tokenLength > 0
-                && tokenVal.charAt(tokenLength - 1) == '%') {
+        } else if (tokenLength > 0 && tokenVal.charAt(tokenLength - 1) == '%') {
 
-            /* Y% */
+            // Y%
             tokenToWords(tokenVal.substring(0, tokenLength - 1));
             wordRelation.addWord("per");
             wordRelation.addWord("cent");
 
         } else if (matches(numessPattern, tokenVal)) {
 
-            /* 60s and 7s and 9s */
+            // 60s and 7s and 9s
             tokenToWords(tokenVal.substring(0, tokenLength - 1));
             wordRelation.addWord("'s");
 
@@ -549,8 +534,7 @@ public class TokenToWords implements UtteranceProcessor {
 
             postropheToWords(tokenVal);
 
-        } else if (matches(digitsSlashDigitsPattern, tokenVal) &&
-                tokenVal.equals(itemName)) {
+        } else if (matches(digitsSlashDigitsPattern, tokenVal) && tokenVal.equals(itemName)) {
 
             digitsSlashDigitsToWords(tokenVal);
 
@@ -558,17 +542,15 @@ public class TokenToWords implements UtteranceProcessor {
 
             dashToWords(tokenVal);
 
-        } else if (tokenLength > 1 &&
-                !matches(alphabetPattern, tokenVal)) {
+        } else if (tokenLength > 1 && !matches(alphabetPattern, tokenVal)) {
 
             notJustAlphasToWords(tokenVal);
 
         } else {
-            /* just a word */
+            // just a word
             wordRelation.addWord(tokenVal.toLowerCase());
         }
     }
-
 
     /**
      * Convert the given digit token with dashes (e.g. 999-999-999)
@@ -589,7 +571,6 @@ public class TokenToWords implements UtteranceProcessor {
         }
     }
 
-
     /**
      * Convert the given digit token into (word) Items in the WordRelation.
      *
@@ -606,7 +587,7 @@ public class TokenToWords implements UtteranceProcessor {
             NumberExpander.expandID(tokenVal, wordRelation);
         } else {
             String rName = featureSet.getString("name");
-            String digitsType = null;
+            String digitsType;
 
             if (tokenVal.equals(rName)) {
                 digitsType = (String) cart.interpret(tokenItem);
@@ -633,7 +614,6 @@ public class TokenToWords implements UtteranceProcessor {
         }
     }
 
-
     /**
      * Converts the given Roman numeral string into (word) Items in the
      * WordRelation.
@@ -644,7 +624,7 @@ public class TokenToWords implements UtteranceProcessor {
         String punctuation = (String) tokenItem.findFeature("p.punc");
 
         if (punctuation.equals("")) {
-            /* no preceeding punctuation */
+            // no preceeding punctuation
             String n = String.valueOf(NumberExpander.expandRoman(romanString));
 
             if (kingLike(tokenItem)) {
@@ -660,7 +640,6 @@ public class TokenToWords implements UtteranceProcessor {
         }
     }
 
-
     /**
      * Returns true if the given key is in the kingSectionLikeHash
      * Hashtable, and the value is the same as the given value.
@@ -672,14 +651,13 @@ public class TokenToWords implements UtteranceProcessor {
      * the key is not mapped to any value in the hashtable.
      */
     private static boolean inKingSectionLikeHash(String key, String value) {
-        String hashValue = (String) kingSectionLikeHash.get(key);
+        String hashValue = kingSectionLikeHash.get(key);
         if (hashValue != null) {
             return (hashValue.equals(value));
         } else {
             return false;
         }
     }
-
 
     /**
      * Returns true if the given token item contains a token that is
@@ -690,17 +668,14 @@ public class TokenToWords implements UtteranceProcessor {
      * @return true or false
      */
     public static boolean kingLike(Item tokenItem) {
-        String kingName =
-                ((String) tokenItem.findFeature("p.name")).toLowerCase();
+        String kingName = ((String) tokenItem.findFeature("p.name")).toLowerCase();
         if (inKingSectionLikeHash(kingName, KING_NAMES)) {
             return true;
         } else {
-            String kingTitle =
-                    ((String) tokenItem.findFeature("p.p.name")).toLowerCase();
+            String kingTitle = ((String) tokenItem.findFeature("p.p.name")).toLowerCase();
             return inKingSectionLikeHash(kingTitle, KING_TITLES);
         }
     }
-
 
     /**
      * Returns true if the given token item contains a token that is
@@ -711,11 +686,9 @@ public class TokenToWords implements UtteranceProcessor {
      * @return true or false
      */
     public static boolean sectionLike(Item tokenItem) {
-        String sectionType =
-                ((String) tokenItem.findFeature("p.name")).toLowerCase();
+        String sectionType = ((String) tokenItem.findFeature("p.name")).toLowerCase();
         return inKingSectionLikeHash(sectionType, SECTION_TYPES);
     }
-
 
     /**
      * Converts the given string containing "St" and "Dr" to (word) Items
@@ -724,8 +697,8 @@ public class TokenToWords implements UtteranceProcessor {
      * @param drStString the string with "St" and "Dr"
      */
     private void drStToWords(String drStString) {
-        String street = null;
-        String saint = null;
+        String street;
+        String saint;
         char c0 = drStString.charAt(0);
 
         if (c0 == 's' || c0 == 'S') {
@@ -741,8 +714,7 @@ public class TokenToWords implements UtteranceProcessor {
 
         String featPunctuation = (String) tokenItem.findFeature("punc");
 
-        if (tokenItem.getNext() == null ||
-                punctuation.indexOf(',') != -1) {
+        if (tokenItem.getNext() == null || punctuation.indexOf(',') != -1) {
             wordRelation.addWord(street);
         } else if (featPunctuation.equals(",")) {
             wordRelation.addWord(saint);
@@ -774,7 +746,6 @@ public class TokenToWords implements UtteranceProcessor {
         }
     }
 
-
     /**
      * Converts US money string into (word) Items in the WordRelation.
      *
@@ -799,7 +770,7 @@ public class TokenToWords implements UtteranceProcessor {
             }
         } else if (dotIndex == (tokenVal.length() - 1) ||
                 (tokenVal.length() - dotIndex) > 3) {
-            /* simply read as mumble point mumble */
+            // simply read as mumble point mumble
             NumberExpander.expandReal(tokenVal.substring(1), wordRelation);
             wordRelation.addWord("dollars");
         } else {
@@ -828,7 +799,6 @@ public class TokenToWords implements UtteranceProcessor {
         }
     }
 
-
     /**
      * Convert the given apostrophed word into (word) Items in the Word
      * Relation.
@@ -856,7 +826,6 @@ public class TokenToWords implements UtteranceProcessor {
             tokenToWords(buffer.toString());
         }
     }
-
 
     /**
      * Convert the given digits/digits string into word (Items) in the
@@ -894,7 +863,6 @@ public class TokenToWords implements UtteranceProcessor {
         }
     }
 
-
     /**
      * Convert the given dashed string (e.g. "aaa-bbb") into (word) Items
      * in the WordRelation.
@@ -921,7 +889,6 @@ public class TokenToWords implements UtteranceProcessor {
         }
     }
 
-
     /**
      * Convert the given string (which does not only consist of alphabet)
      * into (word) Items in the WordRelation.
@@ -930,7 +897,7 @@ public class TokenToWords implements UtteranceProcessor {
      */
     private void notJustAlphasToWords(String tokenVal) {
 
-        /* its not just alphas */
+        // its not just alphas
         int index = 0;
         int tokenLength = tokenVal.length();
 
@@ -949,7 +916,6 @@ public class TokenToWords implements UtteranceProcessor {
         tokenToWords(bbb);
     }
 
-
     /**
      * Returns true if the given word is pronounceable.
      * This method is originally called us_aswd() in Flite 1.1.
@@ -960,10 +926,8 @@ public class TokenToWords implements UtteranceProcessor {
      */
     public boolean isPronounceable(String word) {
         String lowerCaseWord = word.toLowerCase();
-        return (prefixFSM.accept(lowerCaseWord) &&
-                suffixFSM.accept(lowerCaseWord));
+        return (prefixFSM.accept(lowerCaseWord) && suffixFSM.accept(lowerCaseWord));
     }
-
 
     /**
      * Returns true if the given token is the name of a US state.
@@ -975,7 +939,7 @@ public class TokenToWords implements UtteranceProcessor {
     private boolean isStateName(String tokenVal) {
         String[] state = (String[]) usStatesHash.get(tokenVal);
         if (state != null) {
-            boolean expandState = false;
+            boolean expandState;
 
             // check to see if the state initials are ambiguous
             // in the English language
@@ -1008,11 +972,7 @@ public class TokenToWords implements UtteranceProcessor {
                                 || ((nextLength == 5 || nextLength == 10) &&
                                 matches(digitsPattern, next)));
 
-                if (previousIsCity && nextIsGood) {
-                    expandState = true;
-                } else {
-                    expandState = false;
-                }
+                expandState = previousIsCity && nextIsGood;
             } else {
                 expandState = true;
             }
@@ -1028,7 +988,6 @@ public class TokenToWords implements UtteranceProcessor {
         return false;
     }
 
-
     /**
      * Determines if the given input matches the given Pattern.
      *
@@ -1042,7 +1001,6 @@ public class TokenToWords implements UtteranceProcessor {
         Matcher m = pattern.matcher(input);
         return m.matches();
     }
-
 
     /**
      * Determines if the character at the given position of the given
@@ -1066,13 +1024,9 @@ public class TokenToWords implements UtteranceProcessor {
 
         if (isLetter(c0) && isLetter(c1)) {
             return false;
-        } else if (NumberExpander.isDigit(c0) && NumberExpander.isDigit(c1)) {
-            return false;
-        } else {
-            return true;
-        }
+        } else
+            return !NumberExpander.isDigit(c0) || !NumberExpander.isDigit(c1);
     }
-
 
     /**
      * Returns true if the given character is a letter (a-z or A-Z).
@@ -1085,7 +1039,6 @@ public class TokenToWords implements UtteranceProcessor {
         return (('a' <= ch && ch <= 'z') || ('A' <= ch && ch <= 'Z'));
     }
 
-
     /**
      * Returns true if the given character is an uppercase letter (A-Z).
      *
@@ -1097,7 +1050,6 @@ public class TokenToWords implements UtteranceProcessor {
         return ('A' <= ch && ch <= 'Z');
     }
 
-
     /**
      * Returns true if the given character is a lowercase letter (a-z).
      *
@@ -1108,7 +1060,6 @@ public class TokenToWords implements UtteranceProcessor {
     private static boolean isLowercaseLetter(char ch) {
         return ('a' <= ch && ch <= 'z');
     }
-
 
     /**
      * Converts this object to its String representation

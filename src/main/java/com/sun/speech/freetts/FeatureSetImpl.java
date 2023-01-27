@@ -74,7 +74,7 @@ public class FeatureSetImpl implements FeatureSet {
     }
 
     /**
-     * Convenience method that returns the named feature as a int.
+     * Convenience method that returns the named feature as an int.
      *
      * @param name the name of the feature
      *
@@ -115,7 +115,7 @@ public class FeatureSetImpl implements FeatureSet {
     }
 
     /**
-     * Convenience method that sets the named feature as a int.
+     * Convenience method that sets the named feature as an int.
      *
      * @param name the name of the feature
      * @param value the value of the feature
@@ -176,7 +176,7 @@ public class FeatureSetImpl implements FeatureSet {
      */
     public void dump(PrintWriter output, int pad, String title,
                      boolean showName) {
-        List<String> keys = new ArrayList<String>(featureMap.keySet());
+        List<String> keys = new ArrayList<>(featureMap.keySet());
 
         if (formatter == null) {
             formatter = new DecimalFormat("########0.000000");

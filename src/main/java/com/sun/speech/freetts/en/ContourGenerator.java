@@ -195,7 +195,7 @@ public class ContourGenerator implements UtteranceProcessor {
      * @return the 3 points for the syllable as an <code>Interceptor</code>
      */
     private Interceptor applyLrModel(Item syllable) {
-        float fv = 0.0f;
+        float fv;
         Interceptor interceptor = new Interceptor();
         interceptor.start = terms[0].start;
         interceptor.mid = terms[0].mid;

@@ -703,8 +703,8 @@ public class LPCResult {
         public static final boolean DEFAULT_BIG_ENDIAN = false;
 
 
-        private byte[] samples = null;
-        private AudioFormat audioFormat = null;
+        private byte[] samples;
+        private AudioFormat audioFormat;
 
         /**
          * Constructs a Wave with the given audio format and wave samples.

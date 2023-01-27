@@ -193,9 +193,9 @@ public abstract class BaseEngineProperties
         if (propertyChangeListeners == null) {
             return;
         }
-        for (Object propertyChangeListener : propertyChangeListeners) {
+        for (PropertyChangeListener propertyChangeListener : propertyChangeListeners) {
             PropertyChangeListener pl =
-                    (PropertyChangeListener) propertyChangeListener;
+                    propertyChangeListener;
             pl.propertyChange(event);
         }
     }

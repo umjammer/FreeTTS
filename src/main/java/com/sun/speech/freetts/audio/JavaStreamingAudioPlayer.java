@@ -87,8 +87,8 @@ public class JavaStreamingAudioPlayer implements AudioPlayer {
             new AudioFormat(8000f, 16, 1, true, true);
     private AudioFormat currentFormat = defaultFormat;
 
-    private boolean debug = false;
-    private boolean audioMetrics = false;
+    private boolean debug;
+    private boolean audioMetrics;
     private boolean firstSample = true;
 
     private long cancelDelay;

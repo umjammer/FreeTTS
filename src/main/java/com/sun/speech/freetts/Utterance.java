@@ -29,7 +29,6 @@ import com.sun.speech.freetts.util.SegmentRelationUtils;
  * found in the utterance feature set, the query is forwarded to the
  * FeatureSet of the voice associated with the utterance.
  */
-@SuppressWarnings("serial")
 public class Utterance implements FeatureSet, Serializable {
 
     private Voice voice;
@@ -228,7 +227,7 @@ public class Utterance implements FeatureSet, Serializable {
     }
 
     /**
-     * Convenience method that returns the named feature as a int.
+     * Convenience method that returns the named feature as an int.
      * If the named feature is not present in the utterance, then this
      * attempts to retrieve it from the voice.
      *
@@ -279,6 +278,7 @@ public class Utterance implements FeatureSet, Serializable {
      * @return the value associated with the name or null if the value
      *   is not found
      */
+    @Override
     public Object getObject(String name) {
         if (!features.isPresent(name)) {
             return getVoice().getFeatures().getObject(name);
@@ -293,6 +293,7 @@ public class Utterance implements FeatureSet, Serializable {
      * @param name the name of the feature
      * @param value the value of the feature
      */
+    @Override
     public void setInt(String name, int value) {
         features.setInt(name, value);
     }
@@ -303,6 +304,7 @@ public class Utterance implements FeatureSet, Serializable {
      * @param name the name of the feature
      * @param value the value of the feature
      */
+    @Override
     public void setFloat(String name, float value) {
         features.setFloat(name, value);
     }
@@ -313,6 +315,7 @@ public class Utterance implements FeatureSet, Serializable {
      * @param name the name of the feature
      * @param value the value of the feature
      */
+    @Override
     public void setString(String name, String value) {
         features.setString(name, value);
     }
@@ -323,6 +326,7 @@ public class Utterance implements FeatureSet, Serializable {
      * @param name the name of the feature
      * @param value the value of the feature
      */
+    @Override
     public void setObject(String name, Object value) {
         features.setObject(name, value);
     }
@@ -339,11 +343,10 @@ public class Utterance implements FeatureSet, Serializable {
      */
     public Item getItem(String relation, float time) {
 
-        Relation segmentRelation = null;
+        Relation segmentRelation;
 
         if ((segmentRelation = getRelation(Relation.SEGMENT)) == null) {
-            throw new IllegalStateException
-                    ("Utterance has no Segment relation");
+            throw new IllegalStateException("Utterance has no Segment relation");
         }
 
         String pathName = null;
@@ -368,15 +371,13 @@ public class Utterance implements FeatureSet, Serializable {
             pathName = "R:SylStructure.parent.parent.R:Phrase.parent";
             break;
         default:
-            throw new IllegalArgumentException
-                    ("Utterance.getItem(): relation cannot be " + relation);
+            throw new IllegalArgumentException("Utterance.getItem(): relation cannot be " + relation);
         }
 
         PathExtractor path = new PathExtractorImpl(pathName, false);
 
         // get the Item in the Segment Relation with the given time
-        Item segmentItem = SegmentRelationUtils.getItem
-                (segmentRelation, time);
+        Item segmentItem = SegmentRelationUtils.getItem(segmentRelation, time);
 
         if (relation.equals(Relation.SEGMENT)) {
             return segmentItem;
@@ -396,11 +397,10 @@ public class Utterance implements FeatureSet, Serializable {
      * @return the duration of this Utterance in seconds
      */
     public float getDuration() {
-        float duration = -1;
+        float duration;
         if ((duration = getLastFloat(Relation.SEGMENT, "end")) == -1) {
             if ((duration = getLastFloat(Relation.TARGET, "pos")) == -1) {
-                throw new IllegalStateException
-                        ("Utterance: Error finding duration");
+                throw new IllegalStateException("Utterance: Error finding duration");
             }
         }
         return duration;
@@ -425,7 +425,6 @@ public class Utterance implements FeatureSet, Serializable {
         return duration;
     }
 
-
     /**
      * Sets the input text for this utterance
      *
@@ -439,7 +438,6 @@ public class Utterance implements FeatureSet, Serializable {
         }
         setString("input_text", str.toString());
     }
-
 
     /**
      * Sets the token list for this utterance. Note that this could be

@@ -26,6 +26,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.StringTokenizer;
 
@@ -199,12 +200,12 @@ public class LetterToSoundImpl implements LetterToSound {
     /**
      * The indexes of the starting points for letters in the state machine.
      */
-    protected HashMap letterIndex;
+    protected Map<String, Integer> letterIndex;
 
     /**
      * The list of phones that can be returned by the LTS rules.
      */
-    static private List phonemeTable;
+    static private List<String> phonemeTable;
 
     /**
      * Class constructor.
@@ -382,16 +383,14 @@ public class LetterToSoundImpl implements LetterToSound {
         //
         phonemeTable = findPhonemes();
         dos.writeInt(phonemeTable.size());
-        for (Object value : phonemeTable) {
-            String phoneme = (String) value;
+        for (String phoneme : phonemeTable) {
             dos.writeUTF(phoneme);
         }
 
         // letter index
         //
         dos.writeInt(letterIndex.size());
-        for (Object o : letterIndex.keySet()) {
-            String letter = (String) o;
+        for (String letter : letterIndex.keySet()) {
             int index = (Integer) letterIndex.get(letter);
             dos.writeChar(letter.charAt(0));
             dos.writeInt(index);
@@ -412,8 +411,8 @@ public class LetterToSoundImpl implements LetterToSound {
      *
      * @return a list of all the phonemes
      */
-    private List findPhonemes() {
-        Set set = new HashSet();
+    private List<String> findPhonemes() {
+        Set<String> set = new HashSet<>();
         for (Object o : stateMachine) {
             if (o instanceof FinalState) {
                 FinalState fstate = (FinalState) o;
@@ -436,7 +435,7 @@ public class LetterToSoundImpl implements LetterToSound {
      * @return the <code>State</code> at the given index.
      */
     protected State getState(int i) {
-        State state = null;
+        State state;
         if (stateMachine[i] instanceof String) {
             state = getState((String) stateMachine[i]);
             if (tokenizeOnLookup) {
@@ -570,8 +569,7 @@ public class LetterToSoundImpl implements LetterToSound {
 
         // compare letter index table
         //
-        for (Object o : letterIndex.keySet()) {
-            String key = (String) o;
+        for (String key : letterIndex.keySet()) {
             Integer thisIndex = (Integer) letterIndex.get(key);
             Integer otherIndex = (Integer) other.letterIndex.get(key);
             if (!thisIndex.equals(otherIndex)) {
@@ -760,7 +758,7 @@ public class LetterToSoundImpl implements LetterToSound {
          *
          * @param array the array to append to
          */
-        public void append(ArrayList array) {
+        public void append(List<String> array) {
             if (phoneList == null) {
                 return;
             } else {
@@ -810,7 +808,6 @@ public class LetterToSoundImpl implements LetterToSound {
             return false;
         }
 
-
         /**
          * Writes this state to the given output stream.
          *
@@ -857,12 +854,10 @@ public class LetterToSoundImpl implements LetterToSound {
         }
     }
 
-
     /**
      * Translates between text and binary forms of the CMU6 LTS rules.
      */
     public static void main(String[] args) {
-        LexiconImpl lex, lex2;
         boolean showTimes = false;
         String srcPath = ".";
         String destPath = ".";
@@ -885,8 +880,7 @@ public class LetterToSoundImpl implements LetterToSound {
                         System.out.println("Loading " + name);
                         timer.start("load_text");
                         LetterToSoundImpl text = new LetterToSoundImpl(
-                                new URL("file:" + srcPath + "/"
-                                        + name + ".txt"),
+                                new URL("file:" + srcPath + "/" + name + ".txt"),
                                 false);
                         timer.stop("load_text");
 

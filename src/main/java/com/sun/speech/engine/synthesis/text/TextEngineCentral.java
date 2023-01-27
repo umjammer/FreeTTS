@@ -24,11 +24,11 @@ import javax.speech.EngineModeDesc;
  * </pre>
  */
 public class TextEngineCentral implements EngineCentral {
+
     /**
      * Simple mode.
      */
-    static private TextSynthesizerModeDesc textModeDesc =
-            new TextSynthesizerModeDesc();
+    static private TextSynthesizerModeDesc textModeDesc = new TextSynthesizerModeDesc();
 
     /**
      * Returns a list containing a single reference to a
@@ -39,6 +39,7 @@ public class TextEngineCentral implements EngineCentral {
      * @param require the required characteristics; <code>null</code>
      *   always matches       
      */
+    @SuppressWarnings("unchecked")
     public EngineList createEngineList(EngineModeDesc require) {
         if (require == null || textModeDesc.match(require)) {
             EngineList el = new EngineList();

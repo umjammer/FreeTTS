@@ -38,6 +38,7 @@ import java.util.StringTokenizer;
  * for the same phone to describe various features of that phone.
  */
 public class PhoneSetImpl implements PhoneSet {
+
     /**
      * Used for informational purposes if there's a bad line in the
      * file.
@@ -47,7 +48,7 @@ public class PhoneSetImpl implements PhoneSet {
     /**
      * The set of phone features indexed by phone.
      */
-    private Map phonesetMap;
+    private Map<String, String> phonesetMap;
 
     /**
      * Create a new <code>PhoneSetImpl</code> by reading from the
@@ -58,13 +59,9 @@ public class PhoneSetImpl implements PhoneSet {
      * @throws IOException if an error occurs
      */
     public PhoneSetImpl(URL url) throws IOException {
-        BufferedReader reader;
-        String line;
-
         phonesetMap = new HashMap<>();
-        reader = new BufferedReader(new
-                InputStreamReader(url.openStream()));
-        line = reader.readLine();
+        BufferedReader reader = new BufferedReader(new InputStreamReader(url.openStream()));
+        String line = reader.readLine();
         lineCount++;
         while (line != null) {
             if (!line.startsWith("***")) {
@@ -88,8 +85,7 @@ public class PhoneSetImpl implements PhoneSet {
             String value = tokenizer.nextToken();
             phonesetMap.put(getKey(phoneme, feature), value);
         } catch (NoSuchElementException nse) {
-            throw new Error("part of speech data in bad format at line "
-                    + lineCount);
+            throw new Error("part of speech data in bad format at line " + lineCount);
         }
     }
 
@@ -115,6 +111,6 @@ public class PhoneSetImpl implements PhoneSet {
      * @return the feature with the given name
      */
     public String getPhoneFeature(String phone, String featureName) {
-        return (String) phonesetMap.get(getKey(phone, featureName));
+        return phonesetMap.get(getKey(phone, featureName));
     }
 }

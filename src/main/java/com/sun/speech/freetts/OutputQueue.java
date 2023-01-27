@@ -94,7 +94,7 @@ public class OutputQueue {
      * returned.
      */
     public synchronized Utterance pend() {
-        Utterance utterance = null;
+        Utterance utterance;
         while (list.size() == 0) {
             try {
                 wait();

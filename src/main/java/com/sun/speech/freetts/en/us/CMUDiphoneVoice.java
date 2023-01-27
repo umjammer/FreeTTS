@@ -59,7 +59,7 @@ public class CMUDiphoneVoice extends CMUVoice implements ConcatenativeVoice {
      * &quot;general&quot;, &quot;time&quot;, or
      * &quot;weather&quot;.
      * @param lexicon the lexicon to load
-     * @param database a url to the unit database file for this voice
+     * @param database an url to the unit database file for this voice
      */
     public CMUDiphoneVoice(String name, Gender gender,
                            Age age, String description, Locale locale, String domain,
@@ -76,7 +76,7 @@ public class CMUDiphoneVoice extends CMUVoice implements ConcatenativeVoice {
      * Gets the url to the database that defines the unit data for this
      * voice.
      *
-     * @return a url to the database
+     * @return an url to the database
      */
     public URL getDatabase() {
         if (database == null) {

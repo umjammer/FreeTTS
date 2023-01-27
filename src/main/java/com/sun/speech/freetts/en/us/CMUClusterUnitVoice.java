@@ -63,7 +63,7 @@ public class CMUClusterUnitVoice extends CMUVoice implements ConcatenativeVoice 
      * Gets the url to the database that defines the unit data for this
      * voice.
      *
-     * @return a url to the database
+     * @return an url to the database
      */
     public URL getDatabase() {
         return database;

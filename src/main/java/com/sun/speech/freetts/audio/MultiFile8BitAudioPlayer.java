@@ -154,9 +154,7 @@ public class MultiFile8BitAudioPlayer implements AudioPlayer {
         curIndex = 0;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public boolean end() throws IOException {
         ByteArrayInputStream bais = new ByteArrayInputStream(outputData);
         AudioInputStream ais = new AudioInputStream
