@@ -43,14 +43,12 @@ public class UnitConcatenator implements UtteranceProcessor {
      * result.
      *
      * @param utterance the Utterance to do concatenation
-     *
-     * @see LPCResult
-     *
      * @throws ProcessException if an error occurs while processing
-     *     the utterance
+     *                          the utterance
+     * @see LPCResult
      */
     public void processUtterance(Utterance utterance) throws ProcessException {
-        float uIndex = 0, m;
+        float uIndex, m;
         int pmI = 0, targetResidualPosition = 0,
                 targetStart = 0, targetEnd, residualSize, numberFrames;
         Relation unitRelation = utterance.getRelation(Relation.UNIT);
@@ -141,6 +139,7 @@ public class UnitConcatenator implements UtteranceProcessor {
 
     /**
      * Converts this object to a string
+     *
      * @return the string form of this object.
      */
     public String toString() {

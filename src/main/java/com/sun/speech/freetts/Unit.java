@@ -16,8 +16,7 @@ import com.sun.speech.freetts.relp.Sample;
 
 
 /**
- * Defines a generic interface to a Unit. 
- *
+ * Defines a generic interface to a Unit.
  */
 public interface Unit {
 
@@ -39,7 +38,6 @@ public interface Unit {
      * Retrieves the nearest sample.
      *
      * @param index the ideal index
-     *
      * @return the nearest Sample
      */
     Sample getNearestSample(float index);

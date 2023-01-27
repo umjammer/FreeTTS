@@ -31,13 +31,14 @@ import java.util.StringTokenizer;
  * phone feature value
  * ...
  * </pre>
- *
+ * <p>
  * Where <code>phone</code> is the phone name, <code>feature</code> is
  * the phone feature such as "vc," "vlng," "vheight," and so on, and
  * "value" is the value of the feature.  There can be multiple lines
  * for the same phone to describe various features of that phone.
  */
 public class PhoneSetImpl implements PhoneSet {
+
     /**
      * Used for informational purposes if there's a bad line in the
      * file.
@@ -47,24 +48,19 @@ public class PhoneSetImpl implements PhoneSet {
     /**
      * The set of phone features indexed by phone.
      */
-    private Map phonesetMap;
+    private Map<String, String> phonesetMap;
 
     /**
      * Create a new <code>PhoneSetImpl</code> by reading from the
      * given URL.
      *
      * @param url the input source
-     *
      * @throws IOException if an error occurs
      */
     public PhoneSetImpl(URL url) throws IOException {
-        BufferedReader reader;
-        String line;
-
         phonesetMap = new HashMap<>();
-        reader = new BufferedReader(new
-                InputStreamReader(url.openStream()));
-        line = reader.readLine();
+        BufferedReader reader = new BufferedReader(new InputStreamReader(url.openStream()));
+        String line = reader.readLine();
         lineCount++;
         while (line != null) {
             if (!line.startsWith("***")) {
@@ -88,8 +84,7 @@ public class PhoneSetImpl implements PhoneSet {
             String value = tokenizer.nextToken();
             phonesetMap.put(getKey(phoneme, feature), value);
         } catch (NoSuchElementException nse) {
-            throw new Error("part of speech data in bad format at line "
-                    + lineCount);
+            throw new Error("part of speech data in bad format at line " + lineCount);
         }
     }
 
@@ -99,7 +94,6 @@ public class PhoneSetImpl implements PhoneSet {
      *
      * @param phoneme the phoneme
      * @param feature the name of the feature
-     *
      * @return the key used to obtain the value
      */
     private String getKey(String phoneme, String feature) {
@@ -109,12 +103,11 @@ public class PhoneSetImpl implements PhoneSet {
     /**
      * Given a phoneme and a feature name, returns the feature.
      *
-     * @param phone the phoneme of interest
+     * @param phone       the phoneme of interest
      * @param featureName the name of the feature of interest
-     *
      * @return the feature with the given name
      */
     public String getPhoneFeature(String phone, String featureName) {
-        return (String) phonesetMap.get(getKey(phone, featureName));
+        return phonesetMap.get(getKey(phone, featureName));
     }
 }

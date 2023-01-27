@@ -34,7 +34,7 @@ public class PhoneDuration {
      * Creates a new <code>PhoneDuration</code> with the given mean
      * and standard deviation.
      *
-     * @param mean mean duration, typically in seconds
+     * @param mean              mean duration, typically in seconds
      * @param standardDeviation standardDeviation from the mean
      */
     public PhoneDuration(float mean, float standardDeviation) {

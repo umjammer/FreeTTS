@@ -66,10 +66,9 @@ public class ContourGenerator implements UtteranceProcessor {
     /**
      * Creates a ContourGenerator utterance processor.
      *
-     * @param url source of the data
-     * @param modelMean the average frequency
+     * @param url         source of the data
+     * @param modelMean   the average frequency
      * @param modelStddev the std deviation of the frequency
-     *
      * @throws IOException if an error occurs while loading data
      */
     public ContourGenerator(URL url,
@@ -97,10 +96,9 @@ public class ContourGenerator implements UtteranceProcessor {
     /**
      * Generates the F0 contour for the utterance.
      *
-     * @param  utterance  the utterance to process
-     *
-     * @throws ProcessException if an <code>IOException</code> is 
-     *		thrown during the processing of the utterance
+     * @param utterance the utterance to process
+     * @throws ProcessException if an <code>IOException</code> is
+     *                          thrown during the processing of the utterance
      */
     public void processUtterance(Utterance utterance) throws ProcessException {
         float lend = 0.0f;
@@ -191,11 +189,10 @@ public class ContourGenerator implements UtteranceProcessor {
      * Applies the linear regression model.
      *
      * @param syllable the syllable to process
-
      * @return the 3 points for the syllable as an <code>Interceptor</code>
      */
     private Interceptor applyLrModel(Item syllable) {
-        float fv = 0.0f;
+        float fv;
         Interceptor interceptor = new Interceptor();
         interceptor.start = terms[0].start;
         interceptor.mid = terms[0].mid;
@@ -225,7 +222,6 @@ public class ContourGenerator implements UtteranceProcessor {
      * Returns the time point mid way in vowel in this syllable.
      *
      * @param syllable the syllable of interest
-     *
      * @return the time point mid way in vowel in this syllable
      */
     private float vowelMid(Item syllable) {
@@ -261,8 +257,8 @@ public class ContourGenerator implements UtteranceProcessor {
      * to the given relation.
      *
      * @param target the target of interest
-     * @param pos the time
-     * @param f0 the frequency
+     * @param pos    the time
+     * @param f0     the frequency
      */
     private void addTargetPoint(Relation target, float pos, float f0) {
         Item item = target.appendItem();
@@ -280,9 +276,8 @@ public class ContourGenerator implements UtteranceProcessor {
      * Determines if this syllable is following a break.
      *
      * @param syllable the syllable to check
-     *
      * @return <code>true</code> if this syllable is following a
-     * 	break; otherwise <code>false</code>.
+     * break; otherwise <code>false</code>.
      */
     private boolean isPostBreak(Item syllable) {
         return ((syllable.getPrevious() == null) ||
@@ -293,9 +288,8 @@ public class ContourGenerator implements UtteranceProcessor {
      * Determines if this syllable is before a break.
      *
      * @param syllable the syllable to check
-     *
      * @return <code>true</code> if this syllable is before a
-     * 	break; otherwise <code>false</code>.
+     * break; otherwise <code>false</code>.
      */
     private boolean isPreBreak(Item syllable) {
         return ((syllable.getNext() == null) ||
@@ -306,7 +300,6 @@ public class ContourGenerator implements UtteranceProcessor {
      * Maps the given value to the curve.
      *
      * @param val the value to map
-     *
      * @return the mapped value
      */
     private float mapF0(float val, float mean, float stddev) {
@@ -366,10 +359,10 @@ class F0ModelTerm {
      * Constructs an F0ModelTerm.
      *
      * @param feature the feature of the term
-     * @param start the starting point of the term
-     * @param mid the mid-point of the term
-     * @param end the end point of the term
-     * @param type the type of the term
+     * @param start   the starting point of the term
+     * @param mid     the mid-point of the term
+     * @param end     the end point of the term
+     * @param type    the type of the term
      */
     F0ModelTerm(String feature, float start, float mid,
                 float end, String type) {
@@ -384,7 +377,6 @@ class F0ModelTerm {
      * Find the feature associated with the given item
      *
      * @param item the item of interest
-     *
      * @return the object representing the feature.
      */
     public Object findFeature(Item item) {

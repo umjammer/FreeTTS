@@ -11,7 +11,8 @@
 
 package com.sun.speech.freetts.en.us;
 
-import java.util.Hashtable;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -26,7 +27,7 @@ import com.sun.speech.freetts.util.Utilities;
 
 
 /**
- * Converts the Tokens (in US English words) in an 
+ * Converts the Tokens (in US English words) in an
  * Utterance into a list of words. It puts the produced list back
  * into the Utterance. Usually, the tokens that gets expanded are numbers
  * like "23" (to "twenty" "three").
@@ -107,7 +108,7 @@ public class TokenToWords implements UtteranceProcessor {
      * Here we use a hashtable for constant time matching, instead of using
      * if (A.equals(B) || A.equals(C) || ...) to match Strings
      */
-    private static Hashtable kingSectionLikeHash = new Hashtable();
+    private static Map<String, String> kingSectionLikeHash = new HashMap<>();
 
     private static final String KING_NAMES = "kingNames";
     private static final String KING_TITLES = "kingTitles";
@@ -126,120 +127,118 @@ public class TokenToWords implements UtteranceProcessor {
         }
     }
 
-    private static final String[] postrophes = {
-            "'s", "'ll", "'ve", "'d"};
+    private static final String[] postrophes = {"'s", "'ll", "'ve", "'d"};
 
     // Finite state machines to check if a Token is pronounceable
-    private PronounceableFSM prefixFSM = null;
-    private PronounceableFSM suffixFSM = null;
+    private PronounceableFSM prefixFSM;
+    private PronounceableFSM suffixFSM;
 
     // List of US states abbreviations and their full names
-    private static final String[][] usStates =
-            {
-                    {"AL", "ambiguous", "alabama"},
-                    {"Al", "ambiguous", "alabama"},
-                    {"Ala", "", "alabama"},
-                    {"AK", "", "alaska"},
-                    {"Ak", "", "alaska"},
-                    {"AZ", "", "arizona"},
-                    {"Az", "", "arizona"},
-                    {"CA", "", "california"},
-                    {"Ca", "", "california"},
-                    {"Cal", "ambiguous", "california"},
-                    {"Calif", "", "california"},
-                    {"CO", "ambiguous", "colorado"},
-                    {"Co", "ambiguous", "colorado"},
-                    {"Colo", "", "colorado"},
-                    {"DC", "", "d", "c"},
-                    {"DE", "", "delaware"},
-                    {"De", "ambiguous", "delaware"},
-                    {"Del", "ambiguous", "delaware"},
-                    {"FL", "", "florida"},
-                    {"Fl", "ambiguous", "florida"},
-                    {"Fla", "", "florida"},
-                    {"GA", "", "georgia"},
-                    {"Ga", "", "georgia"},
-                    {"HI", "ambiguous", "hawaii"},
-                    {"Hi", "ambiguous", "hawaii"},
-                    {"IA", "", "iowa"},
-                    {"Ia", "ambiguous", "iowa"},
-                    {"IN", "ambiguous", "indiana"},
-                    {"In", "ambiguous", "indiana"},
-                    {"Ind", "ambiguous", "indiana"},
-                    {"ID", "ambiguous", "idaho"},
-                    {"IL", "ambiguous", "illinois"},
-                    {"Il", "ambiguous", "illinois"},
-                    {"ILL", "ambiguous", "illinois"},
-                    {"KS", "", "kansas"},
-                    {"Ks", "", "kansas"},
-                    {"Kans", "", "kansas"},
-                    {"KY", "ambiguous", "kentucky"},
-                    {"Ky", "ambiguous", "kentucky"},
-                    {"LA", "ambiguous", "louisiana"},
-                    {"La", "ambiguous", "louisiana"},
-                    {"Lou", "ambiguous", "louisiana"},
-                    {"Lous", "ambiguous", "louisiana"},
-                    {"MA", "ambiguous", "massachusetts"},
-                    {"Mass", "ambiguous", "massachusetts"},
-                    {"Ma", "ambiguous", "massachusetts"},
-                    {"MD", "ambiguous", "maryland"},
-                    {"Md", "ambiguous", "maryland"},
-                    {"ME", "ambiguous", "maine"},
-                    {"Me", "ambiguous", "maine"},
-                    {"MI", "", "michigan"},
-                    {"Mi", "ambiguous", "michigan"},
-                    {"Mich", "ambiguous", "michigan"},
-                    {"MN", "ambiguous", "minnestota"},
-                    {"Minn", "ambiguous", "minnestota"},
-                    {"MS", "ambiguous", "mississippi"},
-                    {"Miss", "ambiguous", "mississippi"},
-                    {"MT", "ambiguous", "montanna"},
-                    {"Mt", "ambiguous", "montanna"},
-                    {"MO", "ambiguous", "missouri"},
-                    {"Mo", "ambiguous", "missouri"},
-                    {"NC", "ambiguous", "north", "carolina"},
-                    {"ND", "ambiguous", "north", "dakota"},
-                    {"NE", "ambiguous", "nebraska"},
-                    {"Ne", "ambiguous", "nebraska"},
-                    {"Neb", "ambiguous", "nebraska"},
-                    {"NH", "ambiguous", "new", "hampshire"},
-                    {"NV", "", "nevada"},
-                    {"Nev", "", "nevada"},
-                    {"NY", "", "new", "york"},
-                    {"OH", "ambiguous", "ohio"},
-                    {"OK", "ambiguous", "oklahoma"},
-                    {"Okla", "", "oklahoma"},
-                    {"OR", "ambiguous", "oregon"},
-                    {"Or", "ambiguous", "oregon"},
-                    {"Ore", "ambiguous", "oregon"},
-                    {"PA", "ambiguous", "pennsylvania"},
-                    {"Pa", "ambiguous", "pennsylvania"},
-                    {"Penn", "ambiguous", "pennsylvania"},
-                    {"RI", "ambiguous", "rhode", "island"},
-                    {"SC", "ambiguous", "south", "carlolina"},
-                    {"SD", "ambiguous", "south", "dakota"},
-                    {"TN", "ambiguous", "tennesee"},
-                    {"Tn", "ambiguous", "tennesee"},
-                    {"Tenn", "ambiguous", "tennesee"},
-                    {"TX", "ambiguous", "texas"},
-                    {"Tx", "ambiguous", "texas"},
-                    {"Tex", "ambiguous", "texas"},
-                    {"UT", "ambiguous", "utah"},
-                    {"VA", "ambiguous", "virginia"},
-                    {"WA", "ambiguous", "washington"},
-                    {"Wa", "ambiguous", "washington"},
-                    {"Wash", "ambiguous", "washington"},
-                    {"WI", "ambiguous", "wisconsin"},
-                    {"Wi", "ambiguous", "wisconsin"},
-                    {"WV", "ambiguous", "west", "virginia"},
-                    {"WY", "ambiguous", "wyoming"},
-                    {"Wy", "ambiguous", "wyoming"},
-                    {"Wyo", "", "wyoming"},
-                    {"PR", "ambiguous", "puerto", "rico"}
-            };
+    private static final String[][] usStates = {
+            {"AL", "ambiguous", "alabama"},
+            {"Al", "ambiguous", "alabama"},
+            {"Ala", "", "alabama"},
+            {"AK", "", "alaska"},
+            {"Ak", "", "alaska"},
+            {"AZ", "", "arizona"},
+            {"Az", "", "arizona"},
+            {"CA", "", "california"},
+            {"Ca", "", "california"},
+            {"Cal", "ambiguous", "california"},
+            {"Calif", "", "california"},
+            {"CO", "ambiguous", "colorado"},
+            {"Co", "ambiguous", "colorado"},
+            {"Colo", "", "colorado"},
+            {"DC", "", "d", "c"},
+            {"DE", "", "delaware"},
+            {"De", "ambiguous", "delaware"},
+            {"Del", "ambiguous", "delaware"},
+            {"FL", "", "florida"},
+            {"Fl", "ambiguous", "florida"},
+            {"Fla", "", "florida"},
+            {"GA", "", "georgia"},
+            {"Ga", "", "georgia"},
+            {"HI", "ambiguous", "hawaii"},
+            {"Hi", "ambiguous", "hawaii"},
+            {"IA", "", "iowa"},
+            {"Ia", "ambiguous", "iowa"},
+            {"IN", "ambiguous", "indiana"},
+            {"In", "ambiguous", "indiana"},
+            {"Ind", "ambiguous", "indiana"},
+            {"ID", "ambiguous", "idaho"},
+            {"IL", "ambiguous", "illinois"},
+            {"Il", "ambiguous", "illinois"},
+            {"ILL", "ambiguous", "illinois"},
+            {"KS", "", "kansas"},
+            {"Ks", "", "kansas"},
+            {"Kans", "", "kansas"},
+            {"KY", "ambiguous", "kentucky"},
+            {"Ky", "ambiguous", "kentucky"},
+            {"LA", "ambiguous", "louisiana"},
+            {"La", "ambiguous", "louisiana"},
+            {"Lou", "ambiguous", "louisiana"},
+            {"Lous", "ambiguous", "louisiana"},
+            {"MA", "ambiguous", "massachusetts"},
+            {"Mass", "ambiguous", "massachusetts"},
+            {"Ma", "ambiguous", "massachusetts"},
+            {"MD", "ambiguous", "maryland"},
+            {"Md", "ambiguous", "maryland"},
+            {"ME", "ambiguous", "maine"},
+            {"Me", "ambiguous", "maine"},
+            {"MI", "", "michigan"},
+            {"Mi", "ambiguous", "michigan"},
+            {"Mich", "ambiguous", "michigan"},
+            {"MN", "ambiguous", "minnestota"},
+            {"Minn", "ambiguous", "minnestota"},
+            {"MS", "ambiguous", "mississippi"},
+            {"Miss", "ambiguous", "mississippi"},
+            {"MT", "ambiguous", "montanna"},
+            {"Mt", "ambiguous", "montanna"},
+            {"MO", "ambiguous", "missouri"},
+            {"Mo", "ambiguous", "missouri"},
+            {"NC", "ambiguous", "north", "carolina"},
+            {"ND", "ambiguous", "north", "dakota"},
+            {"NE", "ambiguous", "nebraska"},
+            {"Ne", "ambiguous", "nebraska"},
+            {"Neb", "ambiguous", "nebraska"},
+            {"NH", "ambiguous", "new", "hampshire"},
+            {"NV", "", "nevada"},
+            {"Nev", "", "nevada"},
+            {"NY", "", "new", "york"},
+            {"OH", "ambiguous", "ohio"},
+            {"OK", "ambiguous", "oklahoma"},
+            {"Okla", "", "oklahoma"},
+            {"OR", "ambiguous", "oregon"},
+            {"Or", "ambiguous", "oregon"},
+            {"Ore", "ambiguous", "oregon"},
+            {"PA", "ambiguous", "pennsylvania"},
+            {"Pa", "ambiguous", "pennsylvania"},
+            {"Penn", "ambiguous", "pennsylvania"},
+            {"RI", "ambiguous", "rhode", "island"},
+            {"SC", "ambiguous", "south", "carlolina"},
+            {"SD", "ambiguous", "south", "dakota"},
+            {"TN", "ambiguous", "tennesee"},
+            {"Tn", "ambiguous", "tennesee"},
+            {"Tenn", "ambiguous", "tennesee"},
+            {"TX", "ambiguous", "texas"},
+            {"Tx", "ambiguous", "texas"},
+            {"Tex", "ambiguous", "texas"},
+            {"UT", "ambiguous", "utah"},
+            {"VA", "ambiguous", "virginia"},
+            {"WA", "ambiguous", "washington"},
+            {"Wa", "ambiguous", "washington"},
+            {"Wash", "ambiguous", "washington"},
+            {"WI", "ambiguous", "wisconsin"},
+            {"Wi", "ambiguous", "wisconsin"},
+            {"WV", "ambiguous", "west", "virginia"},
+            {"WY", "ambiguous", "wyoming"},
+            {"Wy", "ambiguous", "wyoming"},
+            {"Wyo", "", "wyoming"},
+            {"PR", "ambiguous", "puerto", "rico"}
+    };
 
     // Again hashtable for constant time searching
-    private static Hashtable usStatesHash = new Hashtable();
+    private static Map<String, String[]> usStatesHash = new HashMap<>();
 
     // initialize the Hashtable for usStates
     static {
@@ -260,21 +259,17 @@ public class TokenToWords implements UtteranceProcessor {
     // a CART for classifying numbers
     private CART cart;
 
-
     /**
      * Constructs a default USTokenWordProcessor. It uses the USEnglish
      * regular expression set (USEngRegExp) by default.
      *
      * @param usNumbersCART the cart to use to classify numbers
      */
-    public TokenToWords(CART usNumbersCART,
-                        PronounceableFSM prefixFSM,
-                        PronounceableFSM suffixFSM) {
+    public TokenToWords(CART usNumbersCART, PronounceableFSM prefixFSM, PronounceableFSM suffixFSM) {
         this.cart = usNumbersCART;
         this.prefixFSM = prefixFSM;
         this.suffixFSM = suffixFSM;
     }
-
 
     /**
      * Returns the currently processing token Item.
@@ -285,20 +280,17 @@ public class TokenToWords implements UtteranceProcessor {
         return tokenItem;
     }
 
-
     /**
-     *  process the utterance
+     * process the utterance
      *
-     * @param  utterance  the utterance contain the tokens
-     *
+     * @param utterance the utterance contain the tokens
      * @throws ProcessException if an IOException is thrown during the
-     *         processing of the utterance
+     *                          processing of the utterance
      */
     public void processUtterance(Utterance utterance) throws ProcessException {
         Relation tokenRelation;
         if ((tokenRelation = utterance.getRelation(Relation.TOKEN)) == null) {
-            throw new IllegalStateException
-                    ("TokenToWords: Token relation does not exist");
+            throw new IllegalStateException("TokenToWords: Token relation does not exist");
         }
 
         wordRelation = WordRelation.createWordRelation(utterance, this);
@@ -315,12 +307,10 @@ public class TokenToWords implements UtteranceProcessor {
         }
     }
 
-
     /**
      * Returns true if the given token matches part of a phone number
      *
      * @param tokenVal the string value of the token
-     *
      * @return true or false
      */
     private boolean matchesPartPhoneNumber(String tokenVal) {
@@ -346,13 +336,11 @@ public class TokenToWords implements UtteranceProcessor {
                                 && matches(threeDigitsPattern, p_p_name))));
     }
 
-
     /**
      * Returns true if the given string is in the given string array.
      *
-     * @param value the string to check
+     * @param value       the string to check
      * @param stringArray the array to check
-     *
      * @return true if the string is in the array, false otherwise
      */
     private static boolean inStringArray(String value, String[] stringArray) {
@@ -364,13 +352,11 @@ public class TokenToWords implements UtteranceProcessor {
         return false;
     }
 
-
     /**
      * Converts the given Token into (word) Items in the WordRelation.
      *
-     * @param  tokenVal the String value of the token, which may or may not be
-     *                  same as the one in called "name" in flite
-     *
+     * @param tokenVal the String value of the token, which may or may not be
+     *                 same as the one in called "name" in flite
      */
     private void tokenToWords(String tokenVal) {
 
@@ -385,26 +371,26 @@ public class TokenToWords implements UtteranceProcessor {
                 ((tokenItem.getNext() == null) ||
                         !(tokenVal.equals(itemName)) ||
                         !(tokenItem.findFeature("punc").equals("")))) {
-            /* if A is a sub part of a token, then its ey not ah */
+            // if A is a sub part of a token, then its ey not ah
             wordRelation.addWord("_a");
 
         } else if (matches(alphabetPattern, tokenVal)) {
 
             if (matches(romanNumbersPattern, tokenVal)) {
 
-                /* XVIII */
+                // XVIII
                 romanToWords(tokenVal);
 
             } else if (matches(illionPattern, tokenVal) &&
                     matches(usMoneyPattern,
                             (String) tokenItem.findFeature("p.name"))) {
-                /* $ X -illion */
+                // $ X -illion
                 wordRelation.addWord(tokenVal);
                 wordRelation.addWord("dollars");
 
             } else if (matches(drStPattern, tokenVal)) {
 
-                /* St Andrew's St, Dr King Dr */
+                // St Andrew's St, Dr King Dr
                 drStToWords(tokenVal);
 
             } else if (tokenVal.equals("Mr")) {
@@ -431,38 +417,36 @@ public class TokenToWords implements UtteranceProcessor {
                     wordRelation.addWord(aaa);
                 }
             } else if (isStateName(tokenVal)) {
-		/*
-		  The name of a US state
-		  isStateName() has already added the full name of the
-		  state, so we're all set.
-		*/
+                // The name of a US state
+                // isStateName() has already added the full name of the
+                // state, so we're all set.
             } else if (tokenLength > 1 && !isPronounceable(tokenVal)) {
-                /* Need common exception list */
-                /* unpronouncable list of alphas */
+                // Need common exception list
+                // unpronouncable list of alphas
                 NumberExpander.expandLetters
                         (tokenVal, wordRelation);
 
             } else {
-                /* just a word */
+                // just a word
                 wordRelation.addWord(tokenVal.toLowerCase());
             }
 
         } else if (matches(dottedAbbrevPattern, tokenVal)) {
 
-            /* U.S.A. */
+            // U.S.A.
             // remove all dots
             String aaa = Utilities.deleteChar(tokenVal, '.');
             NumberExpander.expandLetters(aaa, wordRelation);
 
         } else if (matches(commaIntPattern, tokenVal)) {
 
-            /* 99,999,999 */
+            // 99,999,999
             String aaa = Utilities.deleteChar(tokenVal, ',');
             NumberExpander.expandReal(aaa, wordRelation);
 
         } else if (matches(sevenPhoneNumberPattern, tokenVal)) {
 
-            /* 234-3434  telephone numbers */
+            // 234-3434  telephone numbers
             int dashIndex = tokenVal.indexOf('-');
             String aaa = tokenVal.substring(0, dashIndex);
             String bbb = tokenVal.substring(dashIndex + 1);
@@ -473,7 +457,7 @@ public class TokenToWords implements UtteranceProcessor {
 
         } else if (matchesPartPhoneNumber(tokenVal)) {
 
-            /* part of a telephone number */
+            // part of a telephone number
             String punctuation = (String) tokenItem.findFeature("punc");
             if (punctuation.equals("")) {
                 tokenItem.getFeatures().setString("punc", ",");
@@ -483,7 +467,7 @@ public class TokenToWords implements UtteranceProcessor {
 
         } else if (matches(numberTimePattern, tokenVal)) {
 
-            /* 12:35 */
+            // 12:35
             int colonIndex = tokenVal.indexOf(':');
             String aaa = tokenVal.substring(0, colonIndex);
             String bbb = tokenVal.substring(colonIndex + 1);
@@ -495,7 +479,7 @@ public class TokenToWords implements UtteranceProcessor {
 
         } else if (matches(digits2DashPattern, tokenVal)) {
 
-            /* 999-999-999 */
+            // 999-999-999
             digitsDashToWords(tokenVal);
 
         } else if (matches(digitsPattern, tokenVal)) {
@@ -504,10 +488,8 @@ public class TokenToWords implements UtteranceProcessor {
 
         } else if (tokenLength == 1
                 && isUppercaseLetter(tokenVal.charAt(0))
-                && tokenItem.findFeature("n.whitespace").equals
-                (" ")
-                && isUppercaseLetter
-                (((String) tokenItem.findFeature("n.name")).charAt(0))) {
+                && tokenItem.findFeature("n.whitespace").equals(" ")
+                && isUppercaseLetter(((String) tokenItem.findFeature("n.name")).charAt(0))) {
 
             tokenFeatures.setString("punc", "");
             String aaa = tokenVal.toLowerCase();
@@ -522,26 +504,25 @@ public class TokenToWords implements UtteranceProcessor {
 
         } else if (matches(ordinalPattern, tokenVal)) {
 
-            /* explicit ordinals */
+            // explicit ordinals
             String aaa = tokenVal.substring(0, tokenLength - 2);
             NumberExpander.expandOrdinal(aaa, wordRelation);
 
         } else if (matches(usMoneyPattern, tokenVal)) {
 
-            /* US money */
+            // US money
             usMoneyToWords(tokenVal);
 
-        } else if (tokenLength > 0
-                && tokenVal.charAt(tokenLength - 1) == '%') {
+        } else if (tokenLength > 0 && tokenVal.charAt(tokenLength - 1) == '%') {
 
-            /* Y% */
+            // Y%
             tokenToWords(tokenVal.substring(0, tokenLength - 1));
             wordRelation.addWord("per");
             wordRelation.addWord("cent");
 
         } else if (matches(numessPattern, tokenVal)) {
 
-            /* 60s and 7s and 9s */
+            // 60s and 7s and 9s
             tokenToWords(tokenVal.substring(0, tokenLength - 1));
             wordRelation.addWord("'s");
 
@@ -549,8 +530,7 @@ public class TokenToWords implements UtteranceProcessor {
 
             postropheToWords(tokenVal);
 
-        } else if (matches(digitsSlashDigitsPattern, tokenVal) &&
-                tokenVal.equals(itemName)) {
+        } else if (matches(digitsSlashDigitsPattern, tokenVal) && tokenVal.equals(itemName)) {
 
             digitsSlashDigitsToWords(tokenVal);
 
@@ -558,23 +538,21 @@ public class TokenToWords implements UtteranceProcessor {
 
             dashToWords(tokenVal);
 
-        } else if (tokenLength > 1 &&
-                !matches(alphabetPattern, tokenVal)) {
+        } else if (tokenLength > 1 && !matches(alphabetPattern, tokenVal)) {
 
             notJustAlphasToWords(tokenVal);
 
         } else {
-            /* just a word */
+            // just a word
             wordRelation.addWord(tokenVal.toLowerCase());
         }
     }
-
 
     /**
      * Convert the given digit token with dashes (e.g. 999-999-999)
      * into (word) Items in the WordRelation.
      *
-     * @param tokenVal  the digit string
+     * @param tokenVal the digit string
      */
     private void digitsDashToWords(String tokenVal) {
         int tokenLength = tokenVal.length();
@@ -589,11 +567,10 @@ public class TokenToWords implements UtteranceProcessor {
         }
     }
 
-
     /**
      * Convert the given digit token into (word) Items in the WordRelation.
      *
-     * @param tokenVal  the digit string
+     * @param tokenVal the digit string
      */
     private void digitsToWords(String tokenVal) {
         FeatureSet featureSet = tokenItem.getFeatures();
@@ -606,7 +583,7 @@ public class TokenToWords implements UtteranceProcessor {
             NumberExpander.expandID(tokenVal, wordRelation);
         } else {
             String rName = featureSet.getString("name");
-            String digitsType = null;
+            String digitsType;
 
             if (tokenVal.equals(rName)) {
                 digitsType = (String) cart.interpret(tokenItem);
@@ -633,7 +610,6 @@ public class TokenToWords implements UtteranceProcessor {
         }
     }
 
-
     /**
      * Converts the given Roman numeral string into (word) Items in the
      * WordRelation.
@@ -644,7 +620,7 @@ public class TokenToWords implements UtteranceProcessor {
         String punctuation = (String) tokenItem.findFeature("p.punc");
 
         if (punctuation.equals("")) {
-            /* no preceeding punctuation */
+            // no preceeding punctuation
             String n = String.valueOf(NumberExpander.expandRoman(romanString));
 
             if (kingLike(tokenItem)) {
@@ -660,19 +636,17 @@ public class TokenToWords implements UtteranceProcessor {
         }
     }
 
-
     /**
      * Returns true if the given key is in the kingSectionLikeHash
      * Hashtable, and the value is the same as the given value.
      *
-     * @param key key to look for in the hashtable
+     * @param key   key to look for in the hashtable
      * @param value the value to match
-     *
      * @return true if it matches, or false if it does not or if
      * the key is not mapped to any value in the hashtable.
      */
     private static boolean inKingSectionLikeHash(String key, String value) {
-        String hashValue = (String) kingSectionLikeHash.get(key);
+        String hashValue = kingSectionLikeHash.get(key);
         if (hashValue != null) {
             return (hashValue.equals(value));
         } else {
@@ -680,42 +654,34 @@ public class TokenToWords implements UtteranceProcessor {
         }
     }
 
-
     /**
      * Returns true if the given token item contains a token that is
      * in a king-like context, e.g., "King" or "Louis".
      *
      * @param tokenItem the token item to check
-     *
      * @return true or false
      */
     public static boolean kingLike(Item tokenItem) {
-        String kingName =
-                ((String) tokenItem.findFeature("p.name")).toLowerCase();
+        String kingName = ((String) tokenItem.findFeature("p.name")).toLowerCase();
         if (inKingSectionLikeHash(kingName, KING_NAMES)) {
             return true;
         } else {
-            String kingTitle =
-                    ((String) tokenItem.findFeature("p.p.name")).toLowerCase();
+            String kingTitle = ((String) tokenItem.findFeature("p.p.name")).toLowerCase();
             return inKingSectionLikeHash(kingTitle, KING_TITLES);
         }
     }
-
 
     /**
      * Returns true if the given token item contains a token that is
      * in a section-like context, e.g., "chapter" or "act".
      *
      * @param tokenItem the token item to check
-     *
      * @return true or false
      */
     public static boolean sectionLike(Item tokenItem) {
-        String sectionType =
-                ((String) tokenItem.findFeature("p.name")).toLowerCase();
+        String sectionType = ((String) tokenItem.findFeature("p.name")).toLowerCase();
         return inKingSectionLikeHash(sectionType, SECTION_TYPES);
     }
-
 
     /**
      * Converts the given string containing "St" and "Dr" to (word) Items
@@ -724,8 +690,8 @@ public class TokenToWords implements UtteranceProcessor {
      * @param drStString the string with "St" and "Dr"
      */
     private void drStToWords(String drStString) {
-        String street = null;
-        String saint = null;
+        String street;
+        String saint;
         char c0 = drStString.charAt(0);
 
         if (c0 == 's' || c0 == 'S') {
@@ -741,8 +707,7 @@ public class TokenToWords implements UtteranceProcessor {
 
         String featPunctuation = (String) tokenItem.findFeature("punc");
 
-        if (tokenItem.getNext() == null ||
-                punctuation.indexOf(',') != -1) {
+        if (tokenItem.getNext() == null || punctuation.indexOf(',') != -1) {
             wordRelation.addWord(street);
         } else if (featPunctuation.equals(",")) {
             wordRelation.addWord(saint);
@@ -774,7 +739,6 @@ public class TokenToWords implements UtteranceProcessor {
         }
     }
 
-
     /**
      * Converts US money string into (word) Items in the WordRelation.
      *
@@ -799,7 +763,7 @@ public class TokenToWords implements UtteranceProcessor {
             }
         } else if (dotIndex == (tokenVal.length() - 1) ||
                 (tokenVal.length() - dotIndex) > 3) {
-            /* simply read as mumble point mumble */
+            // simply read as mumble point mumble
             NumberExpander.expandReal(tokenVal.substring(1), wordRelation);
             wordRelation.addWord("dollars");
         } else {
@@ -828,7 +792,6 @@ public class TokenToWords implements UtteranceProcessor {
         }
     }
 
-
     /**
      * Convert the given apostrophed word into (word) Items in the Word
      * Relation.
@@ -856,7 +819,6 @@ public class TokenToWords implements UtteranceProcessor {
             tokenToWords(buffer.toString());
         }
     }
-
 
     /**
      * Convert the given digits/digits string into word (Items) in the
@@ -894,7 +856,6 @@ public class TokenToWords implements UtteranceProcessor {
         }
     }
 
-
     /**
      * Convert the given dashed string (e.g. "aaa-bbb") into (word) Items
      * in the WordRelation.
@@ -921,7 +882,6 @@ public class TokenToWords implements UtteranceProcessor {
         }
     }
 
-
     /**
      * Convert the given string (which does not only consist of alphabet)
      * into (word) Items in the WordRelation.
@@ -930,7 +890,7 @@ public class TokenToWords implements UtteranceProcessor {
      */
     private void notJustAlphasToWords(String tokenVal) {
 
-        /* its not just alphas */
+        // its not just alphas
         int index = 0;
         int tokenLength = tokenVal.length();
 
@@ -949,21 +909,17 @@ public class TokenToWords implements UtteranceProcessor {
         tokenToWords(bbb);
     }
 
-
     /**
      * Returns true if the given word is pronounceable.
      * This method is originally called us_aswd() in Flite 1.1.
      *
      * @param word the word to test
-     *
      * @return true if the word is pronounceable, false otherwise
      */
     public boolean isPronounceable(String word) {
         String lowerCaseWord = word.toLowerCase();
-        return (prefixFSM.accept(lowerCaseWord) &&
-                suffixFSM.accept(lowerCaseWord));
+        return (prefixFSM.accept(lowerCaseWord) && suffixFSM.accept(lowerCaseWord));
     }
-
 
     /**
      * Returns true if the given token is the name of a US state.
@@ -975,7 +931,7 @@ public class TokenToWords implements UtteranceProcessor {
     private boolean isStateName(String tokenVal) {
         String[] state = (String[]) usStatesHash.get(tokenVal);
         if (state != null) {
-            boolean expandState = false;
+            boolean expandState;
 
             // check to see if the state initials are ambiguous
             // in the English language
@@ -1008,11 +964,7 @@ public class TokenToWords implements UtteranceProcessor {
                                 || ((nextLength == 5 || nextLength == 10) &&
                                 matches(digitsPattern, next)));
 
-                if (previousIsCity && nextIsGood) {
-                    expandState = true;
-                } else {
-                    expandState = false;
-                }
+                expandState = previousIsCity && nextIsGood;
             } else {
                 expandState = true;
             }
@@ -1028,36 +980,33 @@ public class TokenToWords implements UtteranceProcessor {
         return false;
     }
 
-
     /**
      * Determines if the given input matches the given Pattern.
      *
      * @param pattern the pattern to match
-     * @param input the string to test
-     *
+     * @param input   the string to test
      * @return <code>true</code> if the input string matches the given Pattern;
-     *         <code>false</code> otherwise
+     * <code>false</code> otherwise
      */
     private static boolean matches(Pattern pattern, String input) {
         Matcher m = pattern.matcher(input);
         return m.matches();
     }
 
-
     /**
      * Determines if the character at the given position of the given
      * input text is splittable. A character is splittable if:
      * <p>
      * 1) the character and the following character are not letters
-     *    in the English alphabet (A-Z and a-z)
+     * in the English alphabet (A-Z and a-z)
      * <p>
      * 2) the character and the following character are not digits (0-9)
      * <p>
-     * @param text the text containing the character of interest
-     * @param index the index of the character of interest
      *
+     * @param text  the text containing the character of interest
+     * @param index the index of the character of interest
      * @return true if the position of the given text is splittable
-     *         false otherwise
+     * false otherwise
      */
     private static boolean isTextSplitable(String text, int index) {
 
@@ -1066,49 +1015,39 @@ public class TokenToWords implements UtteranceProcessor {
 
         if (isLetter(c0) && isLetter(c1)) {
             return false;
-        } else if (NumberExpander.isDigit(c0) && NumberExpander.isDigit(c1)) {
-            return false;
-        } else {
-            return true;
-        }
+        } else
+            return !NumberExpander.isDigit(c0) || !NumberExpander.isDigit(c1);
     }
-
 
     /**
      * Returns true if the given character is a letter (a-z or A-Z).
      *
      * @param ch the character to test
-     *
      * @return true or false
      */
     private static boolean isLetter(char ch) {
         return (('a' <= ch && ch <= 'z') || ('A' <= ch && ch <= 'Z'));
     }
 
-
     /**
      * Returns true if the given character is an uppercase letter (A-Z).
      *
      * @param ch the character to test
-     *
      * @return true or false
      */
     private static boolean isUppercaseLetter(char ch) {
         return ('A' <= ch && ch <= 'Z');
     }
 
-
     /**
      * Returns true if the given character is a lowercase letter (a-z).
      *
      * @param ch the character to test
-     *
      * @return true or false
      */
     private static boolean isLowercaseLetter(char ch) {
         return ('a' <= ch && ch <= 'z');
     }
-
 
     /**
      * Converts this object to its String representation

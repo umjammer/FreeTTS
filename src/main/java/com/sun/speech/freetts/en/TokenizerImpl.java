@@ -150,9 +150,9 @@ public class TokenizerImpl implements Tokenizer {
 
 
     /**
-     * Sets the text to tokenize. 
+     * Sets the text to tokenize.
      *
-     * @param  inputString  the string to tokenize
+     * @param inputString the string to tokenize
      */
     public void setInputText(String inputString) {
         inputText = inputString;
@@ -166,7 +166,7 @@ public class TokenizerImpl implements Tokenizer {
     /**
      * Sets the input reader
      *
-     * @param  reader the input source
+     * @param reader the input source
      */
     public void setInputReader(Reader reader) {
         this.reader = reader;
@@ -178,7 +178,7 @@ public class TokenizerImpl implements Tokenizer {
      * Returns the next token.
      *
      * @return the next token if it exists,
-     *          <code>null</code> if no more tokens
+     * <code>null</code> if no more tokens
      */
     public Token getNextToken() {
         lastToken = token;
@@ -213,10 +213,10 @@ public class TokenizerImpl implements Tokenizer {
 
     /**
      * Returns <code>true</code> if there are more tokens,
-     * 		<code>false</code> otherwise.
+     * <code>false</code> otherwise.
      *
      * @return <code>true</code> if there are more tokens
-     *         <code>false</code> otherwise
+     * <code>false</code> otherwise
      */
     public boolean hasMoreTokens() {
         int nextChar = currentChar;
@@ -266,12 +266,10 @@ public class TokenizerImpl implements Tokenizer {
      * returns the subsequent characters of type charClass,
      * and not of type singleCharSymbols.
      *
-     * @param  charClass  the type of characters to look for
-     *
+     * @param charClass the type of characters to look for
      * @return a string of characters starting from the current position
-     *          of the input text, until it encounters a character not
-     *          in the string charClass
-     *
+     * of the input text, until it encounters a character not
+     * in the string charClass
      */
     private String getTokenOfCharClass(String charClass) {
         return getTokenByCharClass(charClass, true);
@@ -284,33 +282,30 @@ public class TokenizerImpl implements Tokenizer {
      * string is "xxxxyyy", endingCharClass is "yz", and singleCharClass
      * "abc". Then this method will return to "xxxx".
      *
-     * @param  endingCharClass  the type of characters to look for
-     *
+     * @param endingCharClass the type of characters to look for
      * @return a string of characters from the current position until
-     *          it encounters characters in endingCharClass
-     *
+     * it encounters characters in endingCharClass
      */
     private String getTokenNotOfCharClass(String endingCharClass) {
         return getTokenByCharClass(endingCharClass, false);
     }
 
     /**
-     * Provides a `compressed' method from getTokenOfCharClass() and 
+     * Provides a `compressed' method from getTokenOfCharClass() and
      * getTokenNotOfCharClass().
-     * If parameter containThisCharClass is <code>true</code>, 
+     * If parameter containThisCharClass is <code>true</code>,
      * then a string from the
      * current position to the last character in charClass is returned.
-     * If containThisCharClass is <code>false</code>, then a string 
+     * If containThisCharClass is <code>false</code>, then a string
      * before the first
      * occurrence of a character in containThisCharClass is returned.
      *
-     * @param  charClass  the string of characters you want included or
-     *                    excluded in your return
-     * @param  containThisCharClass  determines if you want characters
-     *                in charClass in the returned string or not
-     *
+     * @param charClass            the string of characters you want included or
+     *                             excluded in your return
+     * @param containThisCharClass determines if you want characters
+     *                             in charClass in the returned string or not
      * @return a string of characters from the current position until
-     *          it encounters characters in endingCharClass
+     * it encounters characters in endingCharClass
      */
     private String getTokenByCharClass(String charClass,
                                        boolean containThisCharClass) {
@@ -366,14 +361,14 @@ public class TokenizerImpl implements Tokenizer {
      * Returns <code>true</code> if there were errors while reading tokens
      *
      * @return <code>true</code> if there were errors;
-     * 		<code>false</code> otherwise
+     * <code>false</code> otherwise
      */
     public boolean hasErrors() {
         return errorDescription != null;
     }
 
     /**
-     * if hasErrors returns <code>true</code>, this will return a 
+     * if hasErrors returns <code>true</code>, this will return a
      * description of the error encountered, otherwise
      * it will return <code>null</code>
      *

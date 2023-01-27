@@ -50,7 +50,7 @@ public class MbrolaVoiceDirectory extends VoiceDirectory {
 
             Voice[] voices = {mbrola1, mbrola2, mbrola3};
 
-            List validVoices = new java.util.ArrayList();
+            List<Voice> validVoices = new java.util.ArrayList<>();
             int count = 0;
 
             for (Voice voice : voices) {
@@ -80,7 +80,7 @@ public class MbrolaVoiceDirectory extends VoiceDirectory {
                                 + "system property.\n");
                 return new Voice[0];
             } else {
-                return ((Voice[]) validVoices.toArray(new Voice[count]));
+                return validVoices.toArray(new Voice[count]);
             }
         }
     }

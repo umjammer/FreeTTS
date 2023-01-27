@@ -21,13 +21,13 @@ public class VoiceList {
     /**
      * The list of <code>Voices</code>.
      */
-    protected final List voiceList;
+    protected final List<BaseVoice> voiceList;
 
     /**
      * Class constructor.
      */
     public VoiceList() {
-        voiceList = new java.util.ArrayList();
+        voiceList = new java.util.ArrayList<>();
     }
 
     /**
@@ -38,7 +38,7 @@ public class VoiceList {
      * @param desc the <code>SynthesizerModeDesc</code> to get voices from
      */
     public VoiceList(SynthesizerModeDesc desc) {
-        voiceList = new java.util.ArrayList();
+        voiceList = new java.util.ArrayList<>();
 
         Voice[] v = desc.getVoices();
 
@@ -53,7 +53,6 @@ public class VoiceList {
      * Adds a voice to the list.
      *
      * @param voice the voice to add
-     *
      * @see #removeVoice
      */
     public void addVoice(BaseVoice voice) {
@@ -66,7 +65,6 @@ public class VoiceList {
      * Removes a voice from the list.
      *
      * @param voice the voice to remove
-     *
      * @see #addVoice
      */
     public void removeVoice(BaseVoice voice) {
@@ -77,14 +75,11 @@ public class VoiceList {
      * Gets a voice by its identifier.
      *
      * @param id the voice id
-     *
      * @return the voice if it exists; otherwise <code>null</code>
-     *
      * @see BaseVoice#getId
      */
     public BaseVoice getVoiceById(String id) {
-        for (Object o : voiceList) {
-            BaseVoice bv = (BaseVoice) o;
+        for (BaseVoice bv : voiceList) {
             if (bv.getId().equals(id)) {
                 return bv;
             }
@@ -95,9 +90,8 @@ public class VoiceList {
     /**
      * Gets the id of a voice.
      *
-     * @param voice the voice
+     * @param voice   the voice
      * @param variant the voice variant
-     *
      * @return the id of the voice
      */
     public String getVoiceId(Voice voice, int variant) {
@@ -118,7 +112,7 @@ public class VoiceList {
         int count = 0;
 
         for (int i = 0; i < voiceList.size(); i++) {
-            BaseVoice bv = (BaseVoice) (voiceList.get(i));
+            BaseVoice bv = voiceList.get(i);
             if (bv.match(voice)) {
                 if (variant <= 0) {
                     return bv.getId();
@@ -136,7 +130,7 @@ public class VoiceList {
         variant = (variant - 1) % count;
 
         // Return the selected voice id.
-        BaseVoice bv = (BaseVoice) (voiceList.get(indexes[variant]));
+        BaseVoice bv = voiceList.get(indexes[variant]);
         return bv.getId();
     }
 
@@ -145,13 +139,11 @@ public class VoiceList {
      * Priority to voice name.  Then try to match age and gender plus
      * variant.
      *
-     * @param name the voice name
-     * @param gender the gender
-     * @param age the age
+     * @param name    the voice name
+     * @param gender  the gender
+     * @param age     the age
      * @param variant the variant
-     *
      * @return the voice id
-     *
      * @see BaseVoice
      * @see Voice
      */
@@ -161,44 +153,27 @@ public class VoiceList {
         // Is there a match by voice name?  If yes, return it.
         // Otherwise, ignore name.
         if (name != null && name.length() > 0) {
-            id = getVoiceId(new Voice(name,
-                            Voice.GENDER_DONT_CARE,
-                            Voice.AGE_DONT_CARE,
-                            null),
-                    0);
+            id = getVoiceId(new Voice(name, Voice.GENDER_DONT_CARE, Voice.AGE_DONT_CARE, null), 0);
             if (id != null && id.length() > 0) {
                 return id;
             }
         }
 
-
         // Try to match gender and age
-        id = getVoiceId(new Voice(null,
-                        gender,
-                        age,
-                        null),
-                variant);
+        id = getVoiceId(new Voice(null, gender, age, null), variant);
         if (id != null && id.length() > 0) {
             return id;
         }
 
         // Try to match gender and adjoining ages
         int looseAge = age | (age << 1) | (age >> 1);
-        id = getVoiceId(new Voice(null,
-                        gender,
-                        looseAge,
-                        null),
-                variant);
+        id = getVoiceId(new Voice(null, gender, looseAge, null), variant);
         if (id != null && id.length() > 0) {
             return id;
         }
 
         // Try to match just gender
-        id = getVoiceId(new Voice(null,
-                        gender,
-                        Voice.AGE_DONT_CARE,
-                        null),
-                variant);
+        id = getVoiceId(new Voice(null, gender, Voice.AGE_DONT_CARE, null), variant);
         if (id != null && id.length() > 0) {
             return id;
         }

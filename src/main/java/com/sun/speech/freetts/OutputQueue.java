@@ -48,7 +48,6 @@ public class OutputQueue {
      * the queue is full.
      *
      * @param utterance the utterance to post
-     *
      * @throws IllegalStateException if the queue is closed
      */
     public synchronized void post(Utterance utterance) {
@@ -94,7 +93,7 @@ public class OutputQueue {
      * returned.
      */
     public synchronized Utterance pend() {
-        Utterance utterance = null;
+        Utterance utterance;
         while (list.size() == 0) {
             try {
                 wait();

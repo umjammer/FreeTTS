@@ -62,9 +62,8 @@ public interface PhoneSet {
     /**
      * Given a phoneme and a feature name, return the feature.
      *
-     * @param phone the phoneme of interest
+     * @param phone       the phoneme of interest
      * @param featureName the name of the feature of interest
-     *
      * @return the feature with the given name
      */
     String getPhoneFeature(String phone, String featureName);

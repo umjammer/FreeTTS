@@ -28,12 +28,11 @@ import com.sun.speech.freetts.audio.AudioPlayer;
  * </code> takes an utterance containing an open BufferedInputStream, from
  * which to read raw audio data provided by the external MBROLA binary. The
  * audio data is read and sent to the proper audio player.
- *
  */
 public class MbrolaAudioOutput implements UtteranceProcessor {
+
     /** Logger instance. */
-    private static final Logger LOGGER =
-            Logger.getLogger(MbrolaAudioOutput.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(MbrolaAudioOutput.class.getName());
 
     /**
      * The raw audio data coming out of MBROLA is in native byte order,
@@ -53,15 +52,13 @@ public class MbrolaAudioOutput implements UtteranceProcessor {
      * Utterance. The data is read from the open BufferedInputStream associated
      * with the Utterance, and written into the AudioPlayer.
      *
-     * @param  utterance  the utterance to generate waves
-     *
+     * @param utterance the utterance to generate waves
      * @throws ProcessException if an IOException is thrown during the
-     *         processing of the utterance
+     *                          processing of the utterance
      */
     public void processUtterance(Utterance utterance) throws ProcessException {
         if (LOGGER.isLoggable(Level.FINE)) {
-            LOGGER.fine("=== " +
-                    utterance.getString("input_text"));
+            LOGGER.fine("=== " + utterance.getString("input_text"));
         }
 
         AudioPlayer audioPlayer = utterance.getVoice().getAudioPlayer();
@@ -74,10 +71,10 @@ public class MbrolaAudioOutput implements UtteranceProcessor {
         // before we can start writing them. Therefore, we need to load all
         // audio data for this utterance into RAM.
 
-        List audioData = (List) utterance.getObject("mbrolaAudio");
+        @SuppressWarnings("unchecked")
+        List<Object> audioData = (List<Object>) utterance.getObject("mbrolaAudio");
         if (audioData == null) {
-            throw new ProcessException
-                    ("No \"mbrolaAudio\" object is associated with utterance");
+            throw new ProcessException("No \"mbrolaAudio\" object is associated with utterance");
         }
 
         // total number of audio bytes
@@ -99,8 +96,7 @@ public class MbrolaAudioOutput implements UtteranceProcessor {
             byte[] bytes = (byte[]) audioDatum;
             try {
                 if (!audioPlayer.write(bytes)) {
-                    throw new ProcessException
-                            ("Cannot write audio data to audio player");
+                    throw new ProcessException("Cannot write audio data to audio player");
                 }
             } catch (IOException e) {
                 throw new ProcessException(e.getMessage(), e);
@@ -116,9 +112,7 @@ public class MbrolaAudioOutput implements UtteranceProcessor {
         }
     }
 
-
     /**
-     *
      * Returns the string form of this object
      *
      * @return the string form of this object

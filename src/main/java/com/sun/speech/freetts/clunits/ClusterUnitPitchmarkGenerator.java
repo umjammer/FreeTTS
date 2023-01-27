@@ -21,7 +21,6 @@ import com.sun.speech.freetts.relp.SampleSet;
 
 
 /**
- *
  * Calculates the pitchmarks. This class is an UtteranceProcessor that
  * calculates target pitchmarks for the given utterance and adds the
  * <i>target_lpcres</i> relation to the utterance with the pitchmark
@@ -37,11 +36,9 @@ public class ClusterUnitPitchmarkGenerator implements UtteranceProcessor {
      * "target_lpcres".
      *
      * @param utterance the utterance to process
-     *
-     * @see LPCResult
-     *
      * @throws ProcessException if an error occurs while processing
-     *     the utterance
+     *                          the utterance
+     * @see LPCResult
      */
     public void processUtterance(Utterance utterance) throws ProcessException {
         LPCResult lpcResult;

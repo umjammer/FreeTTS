@@ -28,7 +28,6 @@ public interface CART {
      * interpretation.
      *
      * @param item the item to analyze
-     *
      * @return the interpretation
      */
     Object interpret(Item item);
@@ -37,7 +36,6 @@ public interface CART {
      * Dumps this CART to the output stream.
      *
      * @param os the output stream
-     *
      * @throws IOException if an error occurs during output
      */
     void dumpBinary(DataOutputStream os) throws IOException;

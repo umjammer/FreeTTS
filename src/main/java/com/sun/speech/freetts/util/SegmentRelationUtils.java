@@ -17,7 +17,7 @@ import com.sun.speech.freetts.Relation;
 
 
 /**
- * Provides a set of utilities for the SegmentRelation. A 
+ * Provides a set of utilities for the SegmentRelation. A
  * SegmentRelation is a Relation, but has
  * features specific to Segments.
  */
@@ -28,7 +28,7 @@ public class SegmentRelationUtils {
      * time.
      *
      * @param segmentRelation the segmentRelation of interest
-     * @param time the time
+     * @param time            the time
      */
     public static Item getItem(Relation segmentRelation, float time) {
 
@@ -55,7 +55,6 @@ public class SegmentRelationUtils {
      * the given Segment Item.
      *
      * @param segment the Segment Item
-     *
      * @return the <code>end</code> feature of the Segment
      */
     public static float getSegmentEnd(Item segment) {
@@ -68,8 +67,7 @@ public class SegmentRelationUtils {
      * that corresponds to the given time.
      *
      * @param segmentRelation the Segment Relation to search
-     * @param time the time of the Segment Item
-     *
+     * @param time            the time of the Segment Item
      * @return the Segment Item
      */
     public static Item findFromFront(Relation segmentRelation, float time) {
@@ -88,8 +86,7 @@ public class SegmentRelationUtils {
      * to find the Item that corresponds to the given time.
      *
      * @param segmentRelation the Segment Relation to search
-     * @param time the time of the Segment Item
-     *
+     * @param time            the time of the Segment Item
      * @return the Segment Item
      */
     public static Item findFromEnd(Relation segmentRelation, float time) {

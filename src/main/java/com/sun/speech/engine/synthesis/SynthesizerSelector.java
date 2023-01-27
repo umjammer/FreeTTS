@@ -23,6 +23,7 @@ import javax.swing.JOptionPane;
  * <code>SynthesizerModeDesc</code> is returned to the caller.
  */
 public class SynthesizerSelector {
+
     /**
      * Asks <code>Central</code> for a list of available synthesizers.
      * If there are none, returns <code>null</code>.  If there is only
@@ -30,30 +31,26 @@ public class SynthesizerSelector {
      * the user a choice.
      *
      * @param component the component for JOptionPane.showInputDialog
-     * @param appName the title for the input dialog
-     *
+     * @param appName   the title for the input dialog
      * @return a <code>SynthesizerModeDesc</code> representing the
-     *   synthesizer to use.
+     * synthesizer to use.
      */
-    static public SynthesizerModeDesc getSynthesizerModeDesc(
-            Component component,
-            String appName) {
-        List synths = new java.util.ArrayList();
-        List synthNames = new java.util.ArrayList();
+    static public SynthesizerModeDesc getSynthesizerModeDesc(Component component, String appName) {
+        List<SynthesizerModeDesc> synths = new java.util.ArrayList<>();
+        List<String> synthNames = new java.util.ArrayList<>();
         EngineList list = Central.availableSynthesizers(null);
-        Enumeration e = list.elements();
+        @SuppressWarnings("unchecked")
+        Enumeration<SynthesizerModeDesc> e = (Enumeration<SynthesizerModeDesc>) list.elements();
         while (e.hasMoreElements()) {
             synths.add(e.nextElement());
-            synthNames.add(
-                    ((SynthesizerModeDesc)
-                            synths.get(synths.size() - 1)).getEngineName());
+            synthNames.add(synths.get(synths.size() - 1).getEngineName());
         }
         Object[] synthNamesArray = synthNames.toArray();
 
         if (synths.size() == 0) {
             return null;
         } else if (synths.size() == 1) {
-            return (SynthesizerModeDesc) synths.get(0);
+            return synths.get(0);
         }
 
         String synthName = (String) JOptionPane.showInputDialog(
@@ -69,6 +66,6 @@ public class SynthesizerSelector {
         if (index == -1) {
             return null;
         }
-        return (SynthesizerModeDesc) synths.get(index);
+        return synths.get(index);
     }
 }

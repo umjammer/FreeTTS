@@ -35,7 +35,6 @@ import com.sun.speech.freetts.util.Utilities;
  * output package. Since audio is batched and not sent to the audio
  * layer until an entire utterance has been processed, this player has
  * higher latency (50 msecs for a typical 4 second utterance).
- *
  */
 public class JavaClipAudioPlayer implements AudioPlayer {
     /** Logger instance. */
@@ -48,7 +47,7 @@ public class JavaClipAudioPlayer implements AudioPlayer {
 
     /** The current volume. */
     private float volume = 1.0f;
-    private boolean audioMetrics = false;
+    private boolean audioMetrics;
     private final BulkTimer timer = new BulkTimer();
     /** Default format is 8kHz. */
     private AudioFormat defaultFormat =
@@ -69,7 +68,7 @@ public class JavaClipAudioPlayer implements AudioPlayer {
 
 
     /**
-     * Constructs a default JavaClipAudioPlayer 
+     * Constructs a default JavaClipAudioPlayer
      */
     public JavaClipAudioPlayer() {
         drainDelay = Utilities.getLong
@@ -92,9 +91,8 @@ public class JavaClipAudioPlayer implements AudioPlayer {
      * Sets the audio format for this player
      *
      * @param format the audio format
-     *
      * @throws UnsupportedOperationException if the line cannot be opened with
-     *     the given format
+     *                                       the given format
      */
     public synchronized void setAudioFormat(AudioFormat format) {
         if (currentFormat.matches(format)) {
@@ -117,7 +115,7 @@ public class JavaClipAudioPlayer implements AudioPlayer {
     }
 
     /**
-     * Pauses audio output.   All audio output is 
+     * Pauses audio output.   All audio output is
      * stopped. Output can be resumed at the
      * current point by calling <code>resume</code>. Output can be
      * aborted by calling <code> cancel </code>
@@ -136,7 +134,6 @@ public class JavaClipAudioPlayer implements AudioPlayer {
 
     /**
      * Resumes playing audio after a pause.
-     *
      */
     public synchronized void resume() {
         if (paused) {
@@ -184,8 +181,8 @@ public class JavaClipAudioPlayer implements AudioPlayer {
     /**
      * Waits for all queued audio to be played
      *
-     * @return <code>true</code> if the write completed successfully, 
-     *       	<code> false </code>if the write was cancelled.
+     * @return <code>true</code> if the write completed successfully,
+     * <code> false </code>if the write was cancelled.
      */
     public boolean drain() {
         timer.stop("speakableOut");
@@ -194,13 +191,13 @@ public class JavaClipAudioPlayer implements AudioPlayer {
 
     /**
      * Closes this audio player
-     *
-     *	[[[ WORKAROUND TODO
-     *   The javax.sound.sampled drain is almost working properly.  On
-     *   linux, there is still a little bit of sound that needs to go
-     *   out, even after drain is called. Thus, the drainDelay. We
-     *   wait for a few hundred milliseconds while the data is really
-     *   drained out of the system
+     * <p>
+     * [[[ WORKAROUND TODO
+     * The javax.sound.sampled drain is almost working properly.  On
+     * linux, there is still a little bit of sound that needs to go
+     * out, even after drain is called. Thus, the drainDelay. We
+     * wait for a few hundred milliseconds while the data is really
+     * drained out of the system
      * ]]]
      */
     public synchronized void close() {
@@ -219,6 +216,7 @@ public class JavaClipAudioPlayer implements AudioPlayer {
 
     /**
      * Returns the current volume.
+     *
      * @return the current volume (between 0 and 1)
      */
     public float getVolume() {
@@ -227,7 +225,8 @@ public class JavaClipAudioPlayer implements AudioPlayer {
 
     /**
      * Sets the current volume.
-     * @param volume  the current volume (between 0 and 1)
+     *
+     * @param volume the current volume (between 0 and 1)
      */
     public void setVolume(float volume) {
         if (volume > 1.0f) {
@@ -244,6 +243,7 @@ public class JavaClipAudioPlayer implements AudioPlayer {
 
     /**
      * Sets pause mode
+     *
      * @param state true if we are paused
      */
     private void setPaused(boolean state) {
@@ -255,7 +255,7 @@ public class JavaClipAudioPlayer implements AudioPlayer {
      * Sets the volume on the given clip
      *
      * @param clip the line to set the volume on
-     * @param vol the volume (range 0 to 1)
+     * @param vol  the volume (range 0 to 1)
      */
     private void setVolume(Clip clip, float vol) {
         if (clip.isControlSupported(FloatControl.Type.MASTER_GAIN)) {
@@ -270,12 +270,11 @@ public class JavaClipAudioPlayer implements AudioPlayer {
 
     /**
      * Returns the current position in the output stream since the
-     * last <code>resetTime</code> 
-     *
+     * last <code>resetTime</code>
+     * <p>
      * Currently not supported.
      *
      * @return the position in the audio stream in milliseconds
-     *
      */
     public synchronized long getTime() {
         return -1L;
@@ -291,7 +290,6 @@ public class JavaClipAudioPlayer implements AudioPlayer {
 
     /**
      * {@inheritDoc}
-     *
      */
     public synchronized void begin(int size) throws IOException {
         timer.start("utteranceOutput");
@@ -352,9 +350,9 @@ public class JavaClipAudioPlayer implements AudioPlayer {
 
     /**
      * Lazy instantiation of the clip.
+     *
      * @return the clip to use.
-     * @throws LineUnavailableException
-     *         if the target line is not available.
+     * @throws LineUnavailableException if the target line is not available.
      */
     private Clip getClip() throws LineUnavailableException {
         if (currentClip == null) {
@@ -377,7 +375,7 @@ public class JavaClipAudioPlayer implements AudioPlayer {
      * grouped between begin/end pairs.
      *
      * @return <code>true</code> if the audio was output properly,
-     *         <code>false </code> if the output was canceled or interrupted.
+     * <code>false </code> if the output was canceled or interrupted.
      */
     public synchronized boolean end() {
         boolean ok = true;
@@ -416,16 +414,12 @@ public class JavaClipAudioPlayer implements AudioPlayer {
         return ok;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public boolean write(byte[] audioData) throws IOException {
         return write(audioData, 0, audioData.length);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public boolean write(byte[] bytes, int offset, int size)
             throws IOException {
         if (firstSample) {
@@ -480,8 +474,7 @@ public class JavaClipAudioPlayer implements AudioPlayer {
          * Implements update() method of LineListener interface. Responds to the
          * line events as appropriate.
          *
-         * @param event
-         *            the LineEvent to handle
+         * @param event the LineEvent to handle
          */
         public void update(LineEvent event) {
             if (event.getType().equals(LineEvent.Type.START)) {

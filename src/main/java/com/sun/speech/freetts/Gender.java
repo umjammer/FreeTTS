@@ -11,7 +11,7 @@ package com.sun.speech.freetts;
 /**
  * Provides an enumeration of Gender, following the JSAPI style.
  * (http://java.sun.com/products/java-media/speech/forDevelopers/jsapi-doc/)
- *
+ * <p>
  * These are intended for use to define properties about FreeTTS
  * voices.
  *

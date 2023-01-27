@@ -13,16 +13,16 @@ package com.sun.speech.freetts;
 
 /**
  * Performs a specific type of processing on an item and returns an
- * object.   
+ * object.
  */
 public interface FeatureProcessor {
 
     /**
      * Performs some processing on the given item.
-     * @param  item  the item to process
      *
+     * @param item the item to process
      * @throws ProcessException if an exception occurred during the
-     *   processing
+     *                          processing
      */
     String process(Item item) throws ProcessException;
 }

@@ -44,7 +44,6 @@ public class WaveUtils {
      * Converts a raw short to ulaw.
      *
      * @param sampleData signed 16-bit linear sample
-     *
      * @return 8-bit ulaw sample, normalized
      */
     public static byte shortToUlaw(short sampleData) {
@@ -86,10 +85,9 @@ public class WaveUtils {
      * 1) CCITT Recommendation G.711  (very difficult to follow)
      * <br>
      * 2) MIL-STD-188-113,"Interoperability and Performance Standards
-     *    for Analog-to_Digital Conversion Techniques," 17 February 1987
+     * for Analog-to_Digital Conversion Techniques," 17 February 1987
      *
      * @param uByte 8 bit ulaw sample
-     *
      * @return signed 16 bit linear sample
      */
     public static short ulawToShort(short uByte) {
@@ -114,7 +112,6 @@ public class WaveUtils {
      *
      * @param hiByte the high byte
      * @param loByte the low byte
-     *
      * @return the short value
      */
     public static short bytesToShort(byte hiByte, byte loByte) {

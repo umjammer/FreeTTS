@@ -27,7 +27,7 @@ import com.sun.speech.freetts.audio.AudioPlayer;
 
 
 /**
- * Provides  partial support for a JSAPI 1.0 synthesizer for the 
+ * Provides  partial support for a JSAPI 1.0 synthesizer for the
  * FreeTTS speech synthesis system.
  */
 public class FreeTTSSynthesizer extends BaseSynthesizer {
@@ -57,7 +57,7 @@ public class FreeTTSSynthesizer extends BaseSynthesizer {
      * Creates a new Synthesizer in the DEALLOCATED state.
      *
      * @param desc describes the allowed mode of operations for this
-     * 		synthesizer.
+     *             synthesizer.
      */
     public FreeTTSSynthesizer(FreeTTSSynthesizerModeDesc desc) {
         super(desc);
@@ -178,10 +178,9 @@ public class FreeTTSSynthesizer extends BaseSynthesizer {
      * Returns an enumeration of the queue.
      *
      * @return an enumeration of the contents of the queue. This
-     * 		enumeration contains FreeTTSSynthesizerQueueItem objects
-     *
+     * enumeration contains FreeTTSSynthesizerQueueItem objects
      * @throws EngineStateError if the engine was not in the proper
-     * 				state
+     *                          state
      */
     public Enumeration<?> enumerateQueue() throws EngineStateError {
         checkEngineState(DEALLOCATED | DEALLOCATING_RESOURCES);
@@ -191,7 +190,7 @@ public class FreeTTSSynthesizer extends BaseSynthesizer {
     /**
      * Places an item on the speaking queue and send the queue update event.
      *
-     * @param item    the item to place  in the queue
+     * @param item the item to place  in the queue
      */
     protected void appendQueue(BaseSynthesizerQueueItem item) {
         outputHandler.appendQueue((FreeTTSSynthesizerQueueItem) item);
@@ -201,7 +200,7 @@ public class FreeTTSSynthesizer extends BaseSynthesizer {
      * Cancels the item at the top of the queue.
      *
      * @throws EngineStateError if the synthesizer is not in the
-     * 				proper state
+     *                          proper state
      */
     public void cancel() throws EngineStateError {
         checkEngineState(DEALLOCATED | DEALLOCATING_RESOURCES);
@@ -212,11 +211,10 @@ public class FreeTTSSynthesizer extends BaseSynthesizer {
      * Cancels a specific object on the queue.
      *
      * @param source the object to cancel
-     *
      * @throws IllegalArgumentException if the source object is not
-     * 					currently in the queue
-     * @throws EngineStateError        the synthesizer is not in the
-     * 					proper state
+     *                                  currently in the queue
+     * @throws EngineStateError         the synthesizer is not in the
+     *                                  proper state
      */
     public void cancel(Object source)
             throws IllegalArgumentException, EngineStateError {
@@ -273,15 +271,15 @@ public class FreeTTSSynthesizer extends BaseSynthesizer {
         /**
          * Constructor
          *
-         * @param defaultVoice the voice to use as the default for
-         * 			this synthesizer
-         * @param defaultPitch the default pitch in hertz
-         * @param defaultPitchRange the default range of pitch in
-         * 			hertz
+         * @param defaultVoice        the voice to use as the default for
+         *                            this synthesizer
+         * @param defaultPitch        the default pitch in hertz
+         * @param defaultPitchRange   the default range of pitch in
+         *                            hertz
          * @param defaultSpeakingRate the default speaking rate in
-         * 			words per minute
-         * @param defaultVolume the default speaking volume
-         *			(0.0 to 1.0)
+         *                            words per minute
+         * @param defaultVolume       the default speaking volume
+         *                            (0.0 to 1.0)
          */
         FreeTTSSynthesizerProperties(
                 BaseVoice defaultVoice,
@@ -329,7 +327,7 @@ public class FreeTTSSynthesizer extends BaseSynthesizer {
 
             } catch (PropertyVetoException pve) {
                 // the actual properties in the voices have
-                // already changed to these new values so
+                // already changed to these new values, so
                 // we should not expect a PropertyVetoException
             }
         }
@@ -380,9 +378,8 @@ public class FreeTTSSynthesizer extends BaseSynthesizer {
          * Set the baseline pitch for the current synthesis voice.
          *
          * @param hertz sets the current pitch
-         *
          * @throws PropertyVetoException if the synthesizer rejects or
-         * 	limits the new value
+         *                               limits the new value
          */
         public void setPitch(float hertz) throws PropertyVetoException {
             if (hertz != getPitch()) {
@@ -407,7 +404,7 @@ public class FreeTTSSynthesizer extends BaseSynthesizer {
          * Set the pitch range for the current synthesis voice.
          *
          * @throws PropertyVetoException if the synthesizer rejects or
-         * 	limits the new value
+         *                               limits the new value
          */
         public void setPitchRange(float hertz) throws PropertyVetoException {
             if (hertz != getPitchRange()) {
@@ -431,10 +428,9 @@ public class FreeTTSSynthesizer extends BaseSynthesizer {
          * Set the target speaking rate.
          *
          * @param wpm sets the target speaking rate in
-         *	words per minute
-         *
+         *            words per minute
          * @throws PropertyVetoException if the synthesizer rejects or
-         * 				limits the new value
+         *                               limits the new value
          */
         public void setSpeakingRate(float wpm) throws PropertyVetoException {
             if (wpm != getSpeakingRate()) {
@@ -458,9 +454,8 @@ public class FreeTTSSynthesizer extends BaseSynthesizer {
          * Sets the volume
          *
          * @param volume the new volume setting (between 0 and 1)
-         *
          * @throws PropertyVetoException if the synthesizer rejects or
-         * 	limits the new value
+         *                               limits the new value
          */
         public void setVolume(float volume) throws PropertyVetoException {
             if (volume > 1.0f)
@@ -485,7 +480,7 @@ public class FreeTTSSynthesizer extends BaseSynthesizer {
         protected boolean done = false;
 
         /**
-         * Internal speech output queue that will contain a set of 
+         * Internal speech output queue that will contain a set of
          * FreeTTSSynthesizerQueueItems.
          *
          * @see BaseSynthesizerQueueItem
@@ -555,12 +550,12 @@ public class FreeTTSSynthesizer extends BaseSynthesizer {
          * Cancel the current item
          */
         protected void cancelItem() {
-            FreeTTSSynthesizerQueueItem item = null;
+            FreeTTSSynthesizerQueueItem item;
 
             synchronized (queue) {
                 audio.cancel();
                 if (queue.size() != 0) {
-                    item = (FreeTTSSynthesizerQueueItem) queue.remove(0);
+                    item = queue.remove(0);
                     if (item != null) {
                         // item.postSpeakableCancelled();
                         item.cancelled();
@@ -596,13 +591,13 @@ public class FreeTTSSynthesizer extends BaseSynthesizer {
          * @param source the item to cancel.
          */
         protected void cancelItem(Object source) {
-            FreeTTSSynthesizerQueueItem item = null;
+            FreeTTSSynthesizerQueueItem item;
             synchronized (queue) {
                 int index = queue.indexOf(source);
                 if (index == 0) {
                     cancelItem();
                 } else {
-                    item = (FreeTTSSynthesizerQueueItem) queue.remove(index);
+                    item = queue.remove(index);
                     if (item != null) {
                         // item.postSpeakableCancelled();
                         item.cancelled();
@@ -632,7 +627,7 @@ public class FreeTTSSynthesizer extends BaseSynthesizer {
          * @return a queue item
          */
         protected FreeTTSSynthesizerQueueItem getQueueItem() {
-            FreeTTSSynthesizerQueueItem item = null;
+            FreeTTSSynthesizerQueueItem item;
             synchronized (queue) {
                 while (queue.size() == 0 && !done) {
                     try {
@@ -646,7 +641,7 @@ public class FreeTTSSynthesizer extends BaseSynthesizer {
                 if (done) {
                     return null;
                 }
-                item = (FreeTTSSynthesizerQueueItem) queue.elementAt(0);
+                item = queue.elementAt(0);
             }
             item.postTopOfQueue();
             return item;

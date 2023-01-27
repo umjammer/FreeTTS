@@ -21,14 +21,14 @@ public interface Tokenizer {
     /**
      * Sets the text to be tokenized by this tokenizer.
      *
-     * @param textToTokenize  the text to tokenize
+     * @param textToTokenize the text to tokenize
      */
     void setInputText(String textToTokenize);
 
     /**
      * Sets the input reader.
      *
-     * @param  reader the input source
+     * @param reader the input source
      */
     void setInputReader(Reader reader);
 

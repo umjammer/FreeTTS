@@ -72,7 +72,7 @@ import com.sun.speech.freetts.util.Utilities;
  * "cst_sts" (a struct) in flite.
  * <p>
  * Note that if 'com.sun.speech.freetts.useNewIO' is set to true and
- * the input type is binary, than the JDK1.4+ new IO api is used to
+ * the input type is binary, then the JDK1.4+ new IO api is used to
  * load the database.
  * <p>
  * The system property
@@ -91,7 +91,7 @@ import com.sun.speech.freetts.util.Utilities;
  * <p>
  * This <code> cacheType </code> setting controls how the database is
  * loaded. The default is to 'preload' the database. This setting
- * gives best runtime performance but with longer initial startup
+ * gives the best runtime performance but with longer initial startup
  * cost.
  */
 public class DiphoneUnitDatabase {
@@ -128,7 +128,7 @@ public class DiphoneUnitDatabase {
     private final static int VERSION = 1;
     private final static int MAX_DB_SIZE = 4 * 1024 * 1024;
 
-    private String indexName = null;
+    private String indexName;
     private MappedByteBuffer mbb = null;
     private int defaultIndex = -1;
 
@@ -331,7 +331,7 @@ public class DiphoneUnitDatabase {
      * @return the diphone or the defaultDiphone if not found.
      */
     public Diphone getUnit(String unitName) {
-        Diphone diphone = null;
+        Diphone diphone;
 
         if (useIndexing) {
             diphone = getFromCache(unitName);
@@ -590,7 +590,7 @@ public class DiphoneUnitDatabase {
      * @return the index into the database for the diphone
      */
     private int getIndex(String diphone) {
-        Integer index = (Integer) diphoneIndex.get(diphone);
+        Integer index = diphoneIndex.get(diphone);
         if (index != null) {
             int idx = index;
             if (defaultIndex == -1) {

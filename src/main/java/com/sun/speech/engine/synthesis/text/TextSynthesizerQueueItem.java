@@ -139,7 +139,7 @@ public class TextSynthesizerQueueItem extends BaseSynthesizerQueueItem {
     /**
      * Appends the text for this node to the given StringBuffer.
      *
-     * @param n the node to traverse in depth-first order
+     * @param n   the node to traverse in depth-first order
      * @param buf the buffer to append text to
      */
     protected void linearize(Node n, StringBuffer buf) {
@@ -160,11 +160,10 @@ public class TextSynthesizerQueueItem extends BaseSynthesizerQueueItem {
      * be needed to undo the effects of this node after it is
      * processed.
      *
-     * @param n the node to traverse in depth-first order
+     * @param n   the node to traverse in depth-first order
      * @param buf the buffer to append text to
-     *
      * @return a <code>String</code> containing text to undo the
-     *   effects of the node
+     * effects of the node
      */
     protected StringBuffer processNode(Node n, StringBuffer buf) {
         StringBuffer endText = null;
@@ -241,10 +240,9 @@ public class TextSynthesizerQueueItem extends BaseSynthesizerQueueItem {
      * be needed to undo the effects of this element after it is processed.
      *
      * @param element the element to traverse in depth-first order
-     * @param buf the buffer to append text to
-     *
+     * @param buf     the buffer to append text to
      * @return a <code>String</code> containing text to undo the
-     *   effects of the element
+     * effects of the element
      */
     protected StringBuffer processElement(Element element, StringBuffer buf) {
         StringBuffer endText;
@@ -279,10 +277,9 @@ public class TextSynthesizerQueueItem extends BaseSynthesizerQueueItem {
      * Gets the list of attributes of the element and returns them in
      * a <code>StringBuffer</code>.
      *
-     * @param element the element containing attributes (if any)
+     * @param element    the element containing attributes (if any)
      * @param attributes the allowed attributes for
-     *   <code>element</code>
-     *
+     *                   <code>element</code>
      * @return a buffer containing the attributes in text form
      */
     protected StringBuffer processAttributes(Element element,
@@ -291,8 +288,7 @@ public class TextSynthesizerQueueItem extends BaseSynthesizerQueueItem {
         for (String attribute : attributes) {
             if (element.hasAttribute(attribute)) {
                 String data = element.getAttribute(attribute);
-                attributeText.append(
-                        DATA_PREFIX + attribute + "=" + data + DATA_SUFFIX);
+                attributeText.append(DATA_PREFIX).append(attribute).append("=").append(data).append(DATA_SUFFIX);
             }
         }
         return attributeText;

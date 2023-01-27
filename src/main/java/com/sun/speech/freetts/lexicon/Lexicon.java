@@ -38,9 +38,8 @@ public interface Lexicon {
      * <code>partOfSpeech</code> is implementation dependent, but
      * <code>null</code> always matches.
      *
-     * @param word the word to find
+     * @param word         the word to find
      * @param partOfSpeech the part of speech or <code>null</code>
-     *
      * @return the array of phones for word or null
      */
     String[] getPhones(String word, String partOfSpeech);
@@ -51,11 +50,10 @@ public interface Lexicon {
      * <code>partOfSpeech</code> is implementation dependent, but
      * <code>null</code> always matches.
      *
-     * @param word the word to find
+     * @param word         the word to find
      * @param partOfSpeech the part of speech or <code>null</code>
-     * @param useLTS whether to use the letter-to-sound rules when
-     *        the word is not in the lexicon.
-     *
+     * @param useLTS       whether to use the letter-to-sound rules when
+     *                     the word is not in the lexicon.
      * @return the array of phones for word or null
      */
     String[] getPhones(String word, String partOfSpeech, boolean useLTS);
@@ -64,9 +62,8 @@ public interface Lexicon {
      * Adds a word to the addenda.  The
      * part of speech is implementation dependent.
      *
-     * @param word the word to add
+     * @param word         the word to add
      * @param partOfSpeech the part of speech or <code>null</code>
-     *
      */
     void addAddendum(String word, String partOfSpeech, String[] phones);
 
@@ -74,7 +71,7 @@ public interface Lexicon {
      * Removes a word from the addenda.  Both the part of speech and
      * word must be an exact match.
      *
-     * @param word the word to add
+     * @param word         the word to add
      * @param partOfSpeech the part of speech
      */
     void removeAddendum(String word, String partOfSpeech);
@@ -83,15 +80,14 @@ public interface Lexicon {
      * Determines if the <code>currentWordPhone</code> represents a
      * new syllable boundary.
      *
-     * @param syllablePhones the phones in the current syllable so far
-     * @param wordPhones the phones for the whole word
+     * @param syllablePhones   the phones in the current syllable so far
+     * @param wordPhones       the phones for the whole word
      * @param currentWordPhone the word phone in question
-     *
      * @return <code>true</code> if the phone is a new boundary
      */
     boolean isSyllableBoundary(List<String> syllablePhones,
-                                      String[] wordPhones,
-                                      int currentWordPhone);
+                               String[] wordPhones,
+                               int currentWordPhone);
 
     /**
      * Loads this lexicon.  The loading of a lexicon need not be done

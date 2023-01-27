@@ -115,7 +115,7 @@ public class EngineMonitor {
      * current engine state.
      *
      * @return the panel containing the labels for representing the
-     *   current engine state.
+     * current engine state.
      */
     public Component getStatePanel() {
         if (statePanel == null) {
@@ -201,9 +201,8 @@ public class EngineMonitor {
      * <code>state</code>.
      *
      * @param state the state to turn into a <code>String</code>
-     *
      * @return a <code>String</code> representing the
-     *   <code>state</code>
+     * <code>state</code>
      */
     protected String engineStateString(long state) {
         StringBuffer buf = new StringBuffer();

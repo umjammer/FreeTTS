@@ -111,7 +111,7 @@ public class FeatureProcessors {
 
     /**
      * Returns a guess of the part-of-speech.
-     *
+     * <p>
      * This is a feature processor. A feature processor takes an item,
      * performs some sort of processing on the item and returns an object.
      */
@@ -130,12 +130,10 @@ public class FeatureProcessors {
         /**
          * Performs some processing on the given item.
          *
-         * @param  item  the item to process
-         *
+         * @param item the item to process
          * @return a guess at the part-of-speech for the item
-         *
          * @throws ProcessException if an exception occurred during the
-         * processing
+         *                          processing
          */
         public String process(Item item) throws ProcessException {
             return pos.getPartOfSpeech(item.toString());
@@ -153,12 +151,10 @@ public class FeatureProcessors {
         /**
          * Performs some processing on the given item.
          *
-         * @param  item  the item to process
-         *
+         * @param item the item to process
          * @return the number of syllables in the given word
-         *
          * @throws ProcessException if an exception occurred during the
-         * processing
+         *                          processing
          */
         public String process(Item item) throws ProcessException {
             int count = 0;
@@ -182,13 +178,11 @@ public class FeatureProcessors {
         /**
          * Performs some processing on the given item.
          *
-         * @param  item  the item to process
-         *
+         * @param item the item to process
          * @return the number of accented syllables since the last
-         *    major break
-         *
+         * major break
          * @throws ProcessException if an exception occurred during the
-         * processing
+         *                          processing
          */
         public String process(Item item) throws ProcessException {
             int count = 0;
@@ -218,13 +212,11 @@ public class FeatureProcessors {
         /**
          * Performs some processing on the given item.
          *
-         * @param  item  the item to process
-         *
+         * @param item the item to process
          * @return the number of stresses syllables since the last
          * major break
-         *
          * @throws ProcessException if an exception occurred during the
-         * processing
+         *                          processing
          */
         public String process(Item item) throws ProcessException {
             int count = 0;
@@ -255,12 +247,10 @@ public class FeatureProcessors {
         /**
          * Performs some processing on the given item.
          *
-         * @param  item  the item to process
-         *
+         * @param item the item to process
          * @return the number of stressed syllables until the next major break
-         *
          * @throws ProcessException if an exception occurred during the
-         * processing
+         *                          processing
          */
         public String process(Item item) throws ProcessException {
             int count = 0;
@@ -290,12 +280,10 @@ public class FeatureProcessors {
         /**
          * Performs some processing on the given item.
          *
-         * @param  item  the item to process
-         *
+         * @param item the item to process
          * @return the length of the string
-         *
          * @throws ProcessException if an exception occurred during the
-         * processing
+         *                          processing
          */
         public String process(Item item) throws ProcessException {
             String name = item.getFeatures().getString("name");
@@ -315,13 +303,11 @@ public class FeatureProcessors {
         /**
          * Performs some processing on the given item.
          *
-         * @param  item  the item to process
-         *
+         * @param item the item to process
          * @return returns "1" if the given item is a number between 0
          * and 32 (exclusive) otherwise returns "0"
-         *
          * @throws ProcessException if an exception occurred during the
-         * processing
+         *                          processing
          */
         public String process(Item item) throws ProcessException {
             int v = Integer.parseInt(item.getFeatures().getString("name"));
@@ -342,12 +328,10 @@ public class FeatureProcessors {
         /**
          * Performs some processing on the given item.
          *
-         * @param  item  the item to process
-         *
+         * @param item the item to process
          * @return a guess at the part of speech
-         *
          * @throws ProcessException if an exception occurred during the
-         * processing
+         *                          processing
          */
         public String process(Item item) throws ProcessException {
             String name = item.getFeatures().getString("name");
@@ -381,12 +365,11 @@ public class FeatureProcessors {
 
         /**
          * Performs some processing on the given item.
-         * @param  item  the item to process
          *
+         * @param item the item to process
          * @return "1" if the syllable is accented; otherwise "0"
-         *
          * @throws ProcessException if an exception occurred during the
-         * processing
+         *                          processing
          */
         public String process(Item item) throws ProcessException {
             if (isAccented(item)) {
@@ -407,12 +390,10 @@ public class FeatureProcessors {
         /**
          * Performs some processing on the given item.
          *
-         * @param  item  the item to process
-         *
+         * @param item the item to process
          * @return the count of the last accented syllable
-         *
          * @throws ProcessException if an exception occurred during the
-         * processing
+         *                          processing
          */
         public String process(Item item) throws ProcessException {
             int count = 0;
@@ -437,12 +418,10 @@ public class FeatureProcessors {
         /**
          * Performs some processing on the given item.
          *
-         * @param  item  the item to process
-         *
+         * @param item the item to process
          * @return the position of the phoneme in the syllable
-         *
          * @throws ProcessException if an exception occurred during the
-         * processing
+         *                          processing
          */
         public String process(Item item) throws ProcessException {
             int count = -1;
@@ -456,7 +435,7 @@ public class FeatureProcessors {
     }
 
     /**
-     * Classifies the the syllable as single, initial, mid or final.
+     * Classifies the syllable as single, initial, mid or final.
      * This is a feature processor. A feature processor takes an item,
      * performs some sort of processing on the item and returns an object.
      */
@@ -465,13 +444,11 @@ public class FeatureProcessors {
         /**
          * Performs some processing on the given item.
          *
-         * @param  item  the item to process
-         *
+         * @param item the item to process
          * @return classifies the syllable as "single", "final",
          * "initial" or "mid"
-         *
          * @throws ProcessException if an exception occurred during the
-         * processing
+         *                          processing
          */
         public String process(Item item) throws ProcessException {
             String type;
@@ -505,13 +482,11 @@ public class FeatureProcessors {
         /**
          * Performs some processing on the given item.
          *
-         * @param  item  the item to process
-         *
+         * @param item the item to process
          * @return the number of stressed syllables since the last
          * major break
-         *
          * @throws ProcessException if an exception occurred during the
-         * processing
+         *                          processing
          */
         public String process(Item item) throws ProcessException {
             int count = 0;
@@ -537,13 +512,11 @@ public class FeatureProcessors {
         /**
          * Performs some processing on the given item.
          *
-         * @param  item  the item to process
-         *
+         * @param item the item to process
          * @return the number of stressed syllables since the last
          * major break
-         *
          * @throws ProcessException if an exception occurred during the
-         * processing
+         *                          processing
          */
         public String process(Item item) throws ProcessException {
             int count = 0;
@@ -571,12 +544,10 @@ public class FeatureProcessors {
         /**
          * Performs some processing on the given item.
          *
-         * @param  syl  the item to process
-         *
+         * @param syl the item to process
          * @return the break level after this syllable
-         *
          * @throws ProcessException if an exception occurred during the
-         * processing
+         *                          processing
          */
         public String process(Item syl) throws ProcessException {
             Item ss = syl.getItemAs(Relation.SYLLABLE_STRUCTURE);
@@ -603,12 +574,10 @@ public class FeatureProcessors {
         /**
          * Performs some processing on the given item.
          *
-         * @param  word  the item to process
-         *
+         * @param word the item to process
          * @return the break level for this word
-         *
          * @throws ProcessException if an exception occurred during the
-         * processing
+         *                          processing
          */
         public String process(Item word) throws ProcessException {
             return wordBreak(word);
@@ -625,12 +594,10 @@ public class FeatureProcessors {
         /**
          * Performs some processing on the given item.
          *
-         * @param  word  the item to process
-         *
+         * @param word the item to process
          * @return the punctuation for this word
-         *
          * @throws ProcessException if an exception occurred during the
-         * processing
+         *                          processing
          */
         public String process(Item word) throws ProcessException {
             return wordPunc(word);
@@ -638,9 +605,9 @@ public class FeatureProcessors {
     }
 
     /**
-     * Return consonant cplace 
-     *   l-labial a-alveolar p-palatal b-labio_dental d-dental v-velar
-     *
+     * Return consonant cplace
+     * l-labial a-alveolar p-palatal b-labio_dental d-dental v-velar
+     * <p>
      * This is a feature processor. A feature processor takes an item,
      * performs some sort of processing on the item and returns an object.
      */
@@ -649,12 +616,10 @@ public class FeatureProcessors {
         /**
          * Performs some processing on the given item.
          *
-         * @param  item  the item to process
-         *
+         * @param item the item to process
          * @return consonant cplace
-         *
          * @throws ProcessException if an exception occurred during the
-         * processing
+         *                          processing
          */
         public String process(Item item) throws ProcessException {
             return getPhoneFeature(item, "cplace");
@@ -662,9 +627,9 @@ public class FeatureProcessors {
     }
 
     /**
-     * Return consonant type 
-     *   s-stop f-fricative a-affricative n-nasal * l-liquid
-     *
+     * Return consonant type
+     * s-stop f-fricative a-affricative n-nasal * l-liquid
+     * <p>
      * This is a feature processor. A feature processor takes an item,
      * performs some sort of processing on the item and returns an object.
      */
@@ -673,12 +638,10 @@ public class FeatureProcessors {
         /**
          * Performs some processing on the given item.
          *
-         * @param  item  the item to process
-         *
+         * @param item the item to process
          * @return consonant type
-         *
          * @throws ProcessException if an exception occurred during the
-         * processing
+         *                          processing
          */
         public String process(Item item) throws ProcessException {
             return getPhoneFeature(item, "ctype");
@@ -686,9 +649,9 @@ public class FeatureProcessors {
     }
 
     /**
-     * Return consonant voicing 
-     *   +=on -=off
-     *
+     * Return consonant voicing
+     * +=on -=off
+     * <p>
      * This is a feature processor. A feature processor takes an item,
      * performs some sort of processing on the item and returns an object.
      */
@@ -697,12 +660,10 @@ public class FeatureProcessors {
         /**
          * Performs some processing on the given item.
          *
-         * @param  item  the item to process
-         *
+         * @param item the item to process
          * @return consonant voicing
-         *
          * @throws ProcessException if an exception occurred during the
-         * processing
+         *                          processing
          */
         public String process(Item item) throws ProcessException {
             return getPhoneFeature(item, "cvox");
@@ -711,8 +672,8 @@ public class FeatureProcessors {
 
     /**
      * Return vowel or consonant
-     *   +=on -=off
-     *
+     * +=on -=off
+     * <p>
      * This is a feature processor. A feature processor takes an item,
      * performs some sort of processing on the item and returns an object.
      */
@@ -721,12 +682,10 @@ public class FeatureProcessors {
         /**
          * Performs some processing on the given item.
          *
-         * @param  item  the item to process
-         *
+         * @param item the item to process
          * @return vowel or consonant
-         *
          * @throws ProcessException if an exception occurred during the
-         * processing
+         *                          processing
          */
         public String process(Item item) throws ProcessException {
             return getPhoneFeature(item, "vc");
@@ -735,8 +694,8 @@ public class FeatureProcessors {
 
     /**
      * Return vowel frontness
-     *  1-front  2-mid 3-back
-     *
+     * 1-front  2-mid 3-back
+     * <p>
      * This is a feature processor. A feature processor takes an item,
      * performs some sort of processing on the item and returns an object.
      */
@@ -745,12 +704,10 @@ public class FeatureProcessors {
         /**
          * Performs some processing on the given item.
          *
-         * @param  item  the item to process
-         *
+         * @param item the item to process
          * @return vowel frontness
-         *
          * @throws ProcessException if an exception occurred during the
-         * processing
+         *                          processing
          */
         public String process(Item item) throws ProcessException {
             return getPhoneFeature(item, "vfront");
@@ -759,8 +716,8 @@ public class FeatureProcessors {
 
     /**
      * Return vowel height
-     *   1-high 2-mid 3-low
-     *
+     * 1-high 2-mid 3-low
+     * <p>
      * This is a feature processor. A feature processor takes an item,
      * performs some sort of processing on the item and returns an object.
      */
@@ -769,12 +726,10 @@ public class FeatureProcessors {
         /**
          * Performs some processing on the given item.
          *
-         * @param  item  the item to process
-         *
+         * @param item the item to process
          * @return vowel height
-         *
          * @throws ProcessException if an exception occurred during the
-         * processing
+         *                          processing
          */
         public String process(Item item) throws ProcessException {
             return getPhoneFeature(item, "vheight");
@@ -784,8 +739,8 @@ public class FeatureProcessors {
 
     /**
      * Return vowel length
-     *   s-short l-long d-dipthong a-schwa
-     *
+     * s-short l-long d-dipthong a-schwa
+     * <p>
      * This is a feature processor. A feature processor takes an item,
      * performs some sort of processing on the item and returns an object.
      */
@@ -794,12 +749,10 @@ public class FeatureProcessors {
         /**
          * Performs some processing on the given item.
          *
-         * @param  item  the item to process
-         *
+         * @param item the item to process
          * @return vowel length
-         *
          * @throws ProcessException if an exception occurred during the
-         * processing
+         *                          processing
          */
         public String process(Item item) throws ProcessException {
             return getPhoneFeature(item, "vlng");
@@ -809,8 +762,8 @@ public class FeatureProcessors {
 
     /**
      * Return vowel rnd (lip rounding)
-     *   lip rounding  +=on -=off
-     *
+     * lip rounding  +=on -=off
+     * <p>
      * This is a feature processor. A feature processor takes an item,
      * performs some sort of processing on the item and returns an object.
      */
@@ -819,12 +772,10 @@ public class FeatureProcessors {
         /**
          * Performs some processing on the given item.
          *
-         * @param  item  the item to process
-         *
+         * @param item the item to process
          * @return volwel rnd
-         *
          * @throws ProcessException if an exception occurred during the
-         * processing
+         *                          processing
          */
         public String process(Item item) throws ProcessException {
             return getPhoneFeature(item, "vrnd");
@@ -841,12 +792,10 @@ public class FeatureProcessors {
         /**
          * Performs some processing on the given item.
          *
-         * @param  syl  the item to process
-         *
+         * @param syl the item to process
          * @return onset size of this syllable
-         *
          * @throws ProcessException if an exception occurred during the
-         * processing
+         *                          processing
          */
         public String process(Item syl) throws ProcessException {
             int count = 0;
@@ -874,12 +823,10 @@ public class FeatureProcessors {
         /**
          * Performs some processing on the given item.
          *
-         * @param  syl  the item to process
-         *
+         * @param syl the item to process
          * @return coda size
-         *
          * @throws ProcessException if an exception occurred during the
-         * processing
+         *                          processing
          */
         public String process(Item syl) throws ProcessException {
             int count = 0;
@@ -909,12 +856,10 @@ public class FeatureProcessors {
         /**
          * Performs some processing on the given item.
          *
-         * @param  seg  the item to process
-         *
+         * @param seg the item to process
          * @return "1" if fricative; else "0"
-         *
          * @throws ProcessException if an exception occurred during the
-         * processing
+         *                          processing
          */
         public String process(Item seg) throws ProcessException {
             return segCodaCtype(seg, "f");
@@ -931,12 +876,10 @@ public class FeatureProcessors {
         /**
          * Performs some processing on the given item.
          *
-         * @param  seg  the item to process
-         *
+         * @param seg the item to process
          * @return "1" if fricative; else "0"
-         *
          * @throws ProcessException if an exception occurred during the
-         * processing
+         *                          processing
          */
         public String process(Item seg) throws ProcessException {
             return segOnsetCtype(seg, "f");
@@ -954,12 +897,10 @@ public class FeatureProcessors {
         /**
          * Performs some processing on the given item.
          *
-         * @param  seg  the item to process
-         *
+         * @param seg the item to process
          * @return if coda stop "1"; otherwise "0"
-         *
          * @throws ProcessException if an exception occurred during the
-         * processing
+         *                          processing
          */
         public String process(Item seg) throws ProcessException {
             return segCodaCtype(seg, "s");
@@ -976,12 +917,10 @@ public class FeatureProcessors {
         /**
          * Performs some processing on the given item.
          *
-         * @param  seg  the item to process
-         *
+         * @param seg the item to process
          * @return if Onset Stop "1"; otherwise "0"
-         *
          * @throws ProcessException if an exception occurred during the
-         * processing
+         *                          processing
          */
         public String process(Item seg) throws ProcessException {
             return segOnsetCtype(seg, "s");
@@ -998,12 +937,10 @@ public class FeatureProcessors {
         /**
          * Performs some processing on the given item.
          *
-         * @param  seg  the item to process
-         *
+         * @param seg the item to process
          * @return if coda stop "1"; otherwise "0"
-         *
          * @throws ProcessException if an exception occurred during the
-         * processing
+         *                          processing
          */
         public String process(Item seg) throws ProcessException {
             return segCodaCtype(seg, "n");
@@ -1020,12 +957,10 @@ public class FeatureProcessors {
         /**
          * Performs some processing on the given item.
          *
-         * @param  seg  the item to process
-         *
+         * @param seg the item to process
          * @return if Onset Stop "1"; otherwise "0"
-         *
          * @throws ProcessException if an exception occurred during the
-         * processing
+         *                          processing
          */
         public String process(Item seg) throws ProcessException {
             return segOnsetCtype(seg, "n");
@@ -1042,12 +977,10 @@ public class FeatureProcessors {
         /**
          * Performs some processing on the given item.
          *
-         * @param  seg  the item to process
-         *
+         * @param seg the item to process
          * @return if coda stop "1"; otherwise "0"
-         *
          * @throws ProcessException if an exception occurred during the
-         * processing
+         *                          processing
          */
         public String process(Item seg) throws ProcessException {
             if (segCodaCtype(seg, "r").equals("0")) {
@@ -1067,12 +1000,10 @@ public class FeatureProcessors {
         /**
          * Performs some processing on the given item.
          *
-         * @param  seg  the item to process
-         *
+         * @param seg the item to process
          * @return if coda stop "1"; otherwise "0"
-         *
          * @throws ProcessException if an exception occurred during the
-         * processing
+         *                          processing
          */
         public String process(Item seg) throws ProcessException {
             if (segOnsetCtype(seg, "r").equals("0")) {
@@ -1084,7 +1015,7 @@ public class FeatureProcessors {
 
 
     /**
-     * Checks for onset coda 
+     * Checks for onset coda
      * This is a feature processor. A feature processor takes an item,
      * performs some sort of processing on the item and returns an object.
      */
@@ -1093,12 +1024,10 @@ public class FeatureProcessors {
         /**
          * Performs some processing on the given item.
          *
-         * @param  seg  the item to process
-         *
+         * @param seg the item to process
          * @return if onset coda "1"; otherwise "0"
-         *
          * @throws ProcessException if an exception occurred during the
-         * processing
+         *                          processing
          */
         public String process(Item seg) throws ProcessException {
             Item s = seg.getItemAs(Relation.SYLLABLE_STRUCTURE);
@@ -1129,12 +1058,10 @@ public class FeatureProcessors {
         /**
          * Performs some processing on the given item.
          *
-         * @param  item  the item to process
-         *
+         * @param item the item to process
          * @return the number of phrases before this one
-         *
          * @throws ProcessException if an exception occurred during the
-         * processing
+         *                          processing
          */
         public String process(Item item) throws ProcessException {
             int count = 0;
@@ -1157,12 +1084,10 @@ public class FeatureProcessors {
         /**
          * Performs some processing on the given item.
          *
-         * @param  seg  the item to process
-         *
+         * @param seg the item to process
          * @return the duration of the segment as a string.
-         *
          * @throws ProcessException if an exception occurred during the
-         * processing
+         *                          processing
          */
         public String process(Item seg) throws ProcessException {
             if (seg == null) {
@@ -1181,11 +1106,9 @@ public class FeatureProcessors {
     /**
      * Gets the phoneset feature with the given name
      *
-     * @param item item the phoneme of interest
+     * @param item        item the phoneme of interest
      * @param featureName the feature of interest
-     *
      * @return the phone feature for the item
-     *
      */
 
     public static String getPhoneFeature(Item item, String featureName) {
@@ -1197,12 +1120,10 @@ public class FeatureProcessors {
     /**
      * Classifies the type of word break
      *
-     * @param  item  the item to process
-     *
-     * @return  "4" for a big break, "3" for  a break; otherwise "1"
-     *
+     * @param item the item to process
+     * @return "4" for a big break, "3" for  a break; otherwise "1"
      * @throws ProcessException if an exception occurred during the
-     * processing
+     *                          processing
      */
     public static String wordBreak(Item item) throws ProcessException {
         Item ww = item.getItemAs(Relation.PHRASE);
@@ -1223,12 +1144,10 @@ public class FeatureProcessors {
     /**
      * Gets the punctuation associated with the word
      *
-     * @param  item  the word to process
-     *
+     * @param item the word to process
      * @return the punctuation associated with the word
-     *
      * @throws ProcessException if an exception occurred during the
-     * processing
+     *                          processing
      */
     public static String wordPunc(Item item) throws ProcessException {
         Item ww = item.getItemAs(Relation.TOKEN);
@@ -1246,9 +1165,8 @@ public class FeatureProcessors {
     /**
      * Tests the coda ctype of the given segment.
      *
-     * @param seg the segment to test
+     * @param seg   the segment to test
      * @param ctype the ctype to check for
-     *
      * @return "1" on match "0" on no match
      */
     private static String segCodaCtype(Item seg, String ctype) {
@@ -1272,11 +1190,9 @@ public class FeatureProcessors {
     /**
      * Tests the onset ctype of the given segment.
      *
-     * @param  seg  the segment to test to process
+     * @param seg   the segment to test to process
      * @param ctype the ctype to check for
-     *
      * @return if Onset Stop "1"; otherwise "0"
-     *
      */
     private static String segOnsetCtype(Item seg, String ctype) {
         Item daughter = seg.getItemAs(
@@ -1299,7 +1215,6 @@ public class FeatureProcessors {
      * Determines if the given item is accented
      *
      * @param item the item of interest
-     *
      * @return <code>true</code> if the item is accented, otherwise
      * <code>false</code>
      */
@@ -1314,7 +1229,6 @@ public class FeatureProcessors {
      * here so that our tests will match.
      *
      * @param val the value to rail
-     *
      * @return val clipped to be betweein 0 and 19
      */
     private static int rail(int val) {

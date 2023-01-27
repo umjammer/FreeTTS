@@ -19,7 +19,7 @@ import com.sun.speech.freetts.util.Utilities;
 
 /**
  * Provides an implementation of <code>AudioPlayer</code> that sends
- * all audio data to the given file. 
+ * all audio data to the given file.
  */
 public class RawFileAudioPlayer implements AudioPlayer {
 
@@ -71,7 +71,6 @@ public class RawFileAudioPlayer implements AudioPlayer {
     /**
      * Cancels all queued output. Current 'write' call will return
      * false
-     *
      */
     public void cancel() {
     }
@@ -122,41 +121,35 @@ public class RawFileAudioPlayer implements AudioPlayer {
     /**
      * Sets the current volume.
      *
-     * @param volume  the current volume (between 0 and 1)
+     * @param volume the current volume (between 0 and 1)
      */
     public void setVolume(float volume) {
         this.volume = volume;
     }
 
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public boolean write(byte[] audioData) throws IOException {
         return write(audioData, 0, audioData.length);
     }
 
 
     /**
-     *  Starts the output of a set of data
+     * Starts the output of a set of data
      *
      * @param size the size of data between now and the end
-     *
      */
     public void begin(int size) {
     }
 
     /**
-     *  Marks the end of a set of data
-     *
+     * Marks the end of a set of data
      */
     public boolean end() {
         return true;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public boolean write(byte[] bytes, int offset, int size)
             throws IOException {
         os.write(bytes, offset, size);
@@ -173,7 +166,7 @@ public class RawFileAudioPlayer implements AudioPlayer {
      * Waits for all queued audio to be played
      *
      * @return <code>true</code> if the audio played to completion,
-     *     	<code> false </code>if the audio was stopped
+     * <code> false </code>if the audio was stopped
      */
     public boolean drain() {
         return true;

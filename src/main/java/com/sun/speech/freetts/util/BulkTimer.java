@@ -90,7 +90,7 @@ public class BulkTimer {
      * Checks to see if we are in verbose mode.
      *
      * @return <code>true</code>  if verbose mode; otherwise
-     *     <code>false</code>.
+     * <code>false</code>.
      */
     public boolean isVerbose() {
         return verbose;
@@ -100,7 +100,6 @@ public class BulkTimer {
      * Gets the timer with the given name.
      *
      * @param name the timer name
-     *
      * @return the timer with that name
      */
     public Timer getTimer(String name) {

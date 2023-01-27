@@ -38,10 +38,9 @@ public class PartOfSpeechTagger implements UtteranceProcessor {
      * Tags the utterance with part-of-speech information. Currently
      * this processor does nothing.
      *
-     * @param  utterance  the utterance to process/tokenize
-     *
-     * @throws ProcessException if an error occurs while 
-     *         processing of the utterance
+     * @param utterance the utterance to process/tokenize
+     * @throws ProcessException if an error occurs while
+     *                          processing of the utterance
      */
     public void processUtterance(Utterance utterance) throws ProcessException {
         if (LOGGER.isLoggable(Level.FINE)) {

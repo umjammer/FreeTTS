@@ -34,19 +34,19 @@ public class CMUClusterUnitVoice extends CMUVoice implements ConcatenativeVoice 
     /**
      * Creates a simple cluster unit voice
      *
-     * @param name the name of the voice
-     * @param gender the gender of the voice
-     * @param age the age of the voice
-     * @param description a human-readable string providing a
-     * description that can be displayed for the users.
-     * @param locale the locale of the voice
-     * @param domain the domain of this voice.  For example,
+     * @param name         the name of the voice
+     * @param gender       the gender of the voice
+     * @param age          the age of the voice
+     * @param description  a human-readable string providing a
+     *                     description that can be displayed for the users.
+     * @param locale       the locale of the voice
+     * @param domain       the domain of this voice.  For example,
      * @param organization the organization which created the voice
-     * &quot;general&quot;, &quot;time&quot;, or
-     * &quot;weather&quot;.
-     * @param lexicon the lexicon to load
-     * @param database the url to the database containing unit data
-     * for this voice.
+     *                     &quot;general&quot;, &quot;time&quot;, or
+     *                     &quot;weather&quot;.
+     * @param lexicon      the lexicon to load
+     * @param database     the url to the database containing unit data
+     *                     for this voice.
      */
     public CMUClusterUnitVoice(String name, Gender gender, Age age,
                                String description, Locale locale, String domain,
@@ -63,7 +63,7 @@ public class CMUClusterUnitVoice extends CMUVoice implements ConcatenativeVoice 
      * Gets the url to the database that defines the unit data for this
      * voice.
      *
-     * @return a url to the database
+     * @return an url to the database
      */
     public URL getDatabase() {
         return database;
@@ -85,9 +85,8 @@ public class CMUClusterUnitVoice extends CMUVoice implements ConcatenativeVoice 
      * This voice uses  a cluster unit selector as the unit selector.
      *
      * @return the post lexical processor
-     *
      * @throws IOException if an IO error occurs while getting
-     *     processor
+     *                     processor
      */
     public UtteranceProcessor getUnitSelector() throws IOException {
         return new ClusterUnitSelector(getDatabase());
@@ -99,9 +98,8 @@ public class CMUClusterUnitVoice extends CMUVoice implements ConcatenativeVoice 
      * There is no default unit selector
      *
      * @return the post lexical processor
-     *
      * @throws IOException if an IO error occurs while getting
-     *     processor
+     *                     processor
      */
     public UtteranceProcessor getPitchmarkGenerator() throws IOException {
         return new ClusterUnitPitchmarkGenerator();
@@ -113,9 +111,8 @@ public class CMUClusterUnitVoice extends CMUVoice implements ConcatenativeVoice 
      * There is no default unit selector
      *
      * @return the post lexical processor
-     *
      * @throws IOException if an IO error occurs while getting
-     *     processor
+     *                     processor
      */
     public UtteranceProcessor getUnitConcatenator() throws IOException {
         return new UnitConcatenator();

@@ -47,7 +47,7 @@ public class InputMode {
     public static final InputMode URL = new InputMode("url");
 
     /**
-     * Indicates that the input is a set of lines in a file..
+     * Indicates that the input is a set of lines in a file.
      */
     public static final InputMode LINES = new InputMode("lines");
 

@@ -28,8 +28,9 @@ public class ProcessException extends Exception {
 
     /**
      * Constructs a new object.
+     *
      * @param message the reason why the exception was thrown
-     * @param cause the root cause of this exception
+     * @param cause   the root cause of this exception
      */
     public ProcessException(String message, Throwable cause) {
         super(message, cause);

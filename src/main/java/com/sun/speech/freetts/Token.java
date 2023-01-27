@@ -27,7 +27,7 @@ public class Token {
      * Returns the whitespace characters of this Token.
      *
      * @return the whitespace characters of this Token;
-     *   null if this Token does not use whitespace characters
+     * null if this Token does not use whitespace characters
      */
     public String getWhitespace() {
         return whitespace;
@@ -37,7 +37,7 @@ public class Token {
      * Returns the prepunctuation characters of this Token.
      *
      * @return the prepunctuation characters of this Token;
-     *   null if this Token does not use prepunctuation characters
+     * null if this Token does not use prepunctuation characters
      */
     public String getPrepunctuation() {
         return prepunctuation;
@@ -47,7 +47,7 @@ public class Token {
      * Returns the postpunctuation characters of this Token.
      *
      * @return the postpunctuation characters of this Token;
-     *   null if this Token does not use postpunctuation characters
+     * null if this Token does not use postpunctuation characters
      */
     public String getPostpunctuation() {
         return postpunctuation;

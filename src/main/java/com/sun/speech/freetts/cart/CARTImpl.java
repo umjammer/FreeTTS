@@ -37,7 +37,7 @@ import com.sun.speech.freetts.util.Utilities;
  * operate on an Item and have the following format:
  *
  * <pre>
- *   NODE feat operand value qfalse 
+ *   NODE feat operand value qfalse
  * </pre>
  *
  * <p>Where <code>feat</code> is an string that represents a feature
@@ -49,10 +49,10 @@ import com.sun.speech.freetts.util.Utilities;
  * available operands are as follows:
  *
  * <ul>
- *   <li>&lt; - the feature is less than value 
- *   <li>= - the feature is equal to the value 
- *   <li>> - the feature is greater than the value 
- *   <li>MATCHES - the feature matches the regular expression stored in value 
+ *   <li>&lt; - the feature is less than value
+ *   <li>= - the feature is equal to the value
+ *   <li>> - the feature is greater than the value
+ *   <li>MATCHES - the feature matches the regular expression stored in value
  *   <li>IN - [[[TODO: still guessing because none of the CART's in
  *     Flite seem to use IN]]] the value is in the list defined by the
  *     feature.
@@ -131,7 +131,6 @@ public class CARTImpl implements CART {
      * Creates a new CART by reading from the given URL.
      *
      * @param url the location of the CART data
-     *
      * @throws IOException if errors occur while reading the data
      */
     public CARTImpl(URL url) throws IOException {
@@ -153,8 +152,7 @@ public class CARTImpl implements CART {
      * Creates a new CART by reading from the given reader.
      *
      * @param reader the source of the CART data
-     * @param nodes the number of nodes to read for this cart
-     *
+     * @param nodes  the number of nodes to read for this cart
      * @throws IOException if errors occur while reading the data
      */
     public CARTImpl(BufferedReader reader, int nodes) throws IOException {
@@ -181,7 +179,6 @@ public class CARTImpl implements CART {
      * Dumps this CART to the output stream.
      *
      * @param os the output stream
-     *
      * @throws IOException if an error occurs during output
      */
     public void dumpBinary(DataOutputStream os) throws IOException {
@@ -199,6 +196,7 @@ public class CARTImpl implements CART {
      * If installed, call it as "dot -O -Tpdf *.dot" from the console to
      * generate pdfs.
      * </p>
+     *
      * @param out The PrintWriter to write to.
      */
     public void dumpDot(PrintWriter out) {
@@ -243,13 +241,11 @@ public class CARTImpl implements CART {
      * Loads a CART from the input byte buffer.
      *
      * @param bb the byte buffer
-     *
      * @return the CART
-     *
      * @throws IOException if an error occurs during output
-     *
-     * Note that cart nodes are really saved as strings that
-     * have to be parsed.
+     *                     <p>
+     *                     Note that cart nodes are really saved as strings that
+     *                     have to be parsed.
      */
     public static CART loadBinary(ByteBuffer bb) throws IOException {
         int numNodes = bb.getInt();
@@ -266,13 +262,11 @@ public class CARTImpl implements CART {
      * Loads a CART from the input stream.
      *
      * @param is the input stream
-     *
      * @return the CART
-     *
      * @throws IOException if an error occurs during output
-     *
-     * Note that cart nodes are really saved as strings that
-     * have to be parsed.
+     *                     <p>
+     *                     Note that cart nodes are really saved as strings that
+     *                     have to be parsed.
      */
     public static CART loadBinary(DataInputStream is) throws IOException {
         int numNodes = is.readInt();
@@ -309,10 +303,9 @@ public class CARTImpl implements CART {
     /**
      * Gets the node based upon the type and tokenizer.
      *
-     * @param type <code>NODE</code> or <code>LEAF</code>
-     * @param tokenizer the StringTokenizer containing the data to get
+     * @param type        <code>NODE</code> or <code>LEAF</code>
+     * @param tokenizer   the StringTokenizer containing the data to get
      * @param currentNode the index of the current node we're looking at
-     *
      * @return the node
      */
     protected Node getNode(String type,
@@ -346,7 +339,6 @@ public class CARTImpl implements CART {
      * Coerces a string into a value.
      *
      * @param string of the form "type(value)"; for example, "Float(2.3)"
-     *
      * @return the value
      */
     protected Object parseValue(String string) {
@@ -380,7 +372,6 @@ public class CARTImpl implements CART {
      * interpretation.
      *
      * @param item the item to analyze
-     *
      * @return the interpretation
      */
     public Object interpret(Item item) {
@@ -440,6 +431,7 @@ public class CARTImpl implements CART {
 
         /**
          * sets the line of text used to create this node.
+         *
          * @param line the creation line
          */
         public void setCreationLine(String line) {
@@ -448,6 +440,7 @@ public class CARTImpl implements CART {
 
         /**
          * Dumps the binary form of this node.
+         *
          * @param os the output stream to output the node on
          * @throws IOException if an IO error occurs
          */
@@ -486,6 +479,7 @@ public class CARTImpl implements CART {
         /**
          * Find the feature associated with this DecisionNode
          * and the given item
+         *
          * @param item the item to start from
          * @return the object representing the feature
          */
@@ -497,6 +491,7 @@ public class CARTImpl implements CART {
         /**
          * Returns the next node based upon the
          * descision determined at this node
+         *
          * @param item the current item.
          * @return the index of the next node
          */
@@ -506,10 +501,11 @@ public class CARTImpl implements CART {
 
         /**
          * Create a new DecisionNode.
+         *
          * @param feature the string used to get a value from an Item
-         * @param value the value to compare to
-         * @param qtrue the Node index to go to if the comparison matches
-         * @param qfalse the Node machine index to go to upon no match
+         * @param value   the value to compare to
+         * @param qtrue   the Node index to go to if the comparison matches
+         * @param qfalse  the Node machine index to go to upon no match
          */
         public DecisionNode(String feature,
                             Object value,
@@ -549,17 +545,18 @@ public class CARTImpl implements CART {
 
         /**
          * The comparison type.  One of LESS_THAN, GREATER_THAN, or
-         *  EQUAL_TO.
+         * EQUAL_TO.
          */
         String comparisonType;
 
         /**
          * Create a new ComparisonNode with the given values.
-         * @param feature the string used to get a value from an Item
-         * @param value the value to compare to
+         *
+         * @param feature        the string used to get a value from an Item
+         * @param value          the value to compare to
          * @param comparisonType one of LESS_THAN, EQUAL_TO, or GREATER_THAN
-         * @param qtrue the Node index to go to if the comparison matches
-         * @param qfalse the Node index to go to upon no match
+         * @param qtrue          the Node index to go to if the comparison matches
+         * @param qfalse         the Node index to go to upon no match
          */
         public ComparisonNode(String feature,
                               Object value,
@@ -583,10 +580,11 @@ public class CARTImpl implements CART {
          * values.  For EQUAL, the Node's value and the value passed in
          * are treated as String compares.  This is the way of Flite, so
          * be it Flite.
+         *
          * @param val the value to compare
          */
         public int getNextNode(Object val) {
-            boolean yes = false;
+            boolean yes;
             int ret;
 
             if (comparisonType.equals(LESS_THAN)
@@ -657,10 +655,11 @@ public class CARTImpl implements CART {
 
         /**
          * Create a new MatchingNode with the given values.
+         *
          * @param feature the string used to get a value from an Item
-         * @param regex the regular expression
-         * @param qtrue the Node index to go to if the comparison matches
-         * @param qfalse the Node index to go to upon no match
+         * @param regex   the regular expression
+         * @param qtrue   the Node index to go to if the comparison matches
+         * @param qfalse  the Node index to go to upon no match
          */
         public MatchingNode(String feature,
                             String regex,
@@ -672,6 +671,7 @@ public class CARTImpl implements CART {
 
         /**
          * Compare the given value and return the appropriate CART index.
+         *
          * @param val the value to compare -- this must be a String
          */
         public int getNextNode(Object val) {
@@ -697,6 +697,7 @@ public class CARTImpl implements CART {
     static class LeafNode extends Node {
         /**
          * Create a new LeafNode with the given value.
+         *
          * @param value the value of this LeafNode
          */
         public LeafNode(Object value) {

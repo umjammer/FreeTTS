@@ -30,9 +30,9 @@ public class SampleSet {
     private SampleInfo sampleInfo;
 
     /**
-     * Reads a SampleSet from the input reader. 
+     * Reads a SampleSet from the input reader.
      *
-     * @param tok tokenizer that holds parameters for this SampleSet
+     * @param tok    tokenizer that holds parameters for this SampleSet
      * @param reader the input reader to read the data from
      */
     public SampleSet(StringTokenizer tok, BufferedReader reader) {
@@ -61,7 +61,6 @@ public class SampleSet {
      * Creates a SampleSet by reading it from the given byte buffer
      *
      * @param bb source of the Unit data
-     *
      * @throws IOException if an IO error occurs
      */
     public SampleSet(ByteBuffer bb) throws IOException {
@@ -78,7 +77,6 @@ public class SampleSet {
      * Creates a SampleSet by reading it from the given input stream
      *
      * @param is source of the Unit data
-     *
      * @throws IOException if an IO error occurs
      */
     public SampleSet(DataInputStream is) throws IOException {
@@ -95,7 +93,6 @@ public class SampleSet {
      * Dumps this sample set to the given stream
      *
      * @param os the output stream
-     *
      * @throws IOException if an error occurs.
      */
     public void dumpBinary(DataOutputStream os) throws IOException {
@@ -111,7 +108,6 @@ public class SampleSet {
      * return the sample associated with the index
      *
      * @param index the index of the sample
-     *
      * @return the sample.
      */
     public Sample getSample(int index) {
@@ -133,8 +129,7 @@ public class SampleSet {
      * by the given start and end points
      *
      * @param start the start of the unit
-     * @param end the end of the unit
-     *
+     * @param end   the end of the unit
      * @return the size of the unit
      */
     public int getUnitSize(int start, int end) {
@@ -151,7 +146,6 @@ public class SampleSet {
      * Gets the size of the given frame
      *
      * @param frame the frame of interest
-     *
      * @return the size of the frame
      */
     public int getFrameSize(int frame) {

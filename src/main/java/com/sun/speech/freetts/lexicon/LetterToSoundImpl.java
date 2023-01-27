@@ -26,6 +26,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.StringTokenizer;
 
@@ -49,21 +50,21 @@ import com.sun.speech.freetts.util.Utilities;
  * first of these two indices represents where to go if the decision
  * is true, and the second represents where to go if the decision is
  * false. All entries that do not contain a decision are final
- * entries, and these contain a phone. 
+ * entries, and these contain a phone.
  *
  * <p>The decision in this case is a simple character comparison,
  * but it is done in the context of a window around the character in
  * the word. The decision consists of a index into the context window
  * and a character value. If the character in the context window
- * matches the character value, then the decision is true. 
+ * matches the character value, then the decision is true.
  *
  * <p>The machine traversal for each letter starts at that letter's
  * entry in the state machine and ends only when it reaches a final
  * state. If there is no phone that can be mapped, the phone in the
- * final state is set to 'epsilon.' 
+ * final state is set to 'epsilon.'
  *
  * <p>The context window for a character is generated in the following
- * way: 
+ * way:
  *
  * <ul>
  * <li>Pad the original word on either side with '#' and '0'
@@ -75,24 +76,24 @@ import com.sun.speech.freetts.util.Utilities;
  * the characters in the padded form the preceed and follow the word.
  * The number of characters on each side is dependent upon the window
  * size. So, for this implementation, the context window for the 'k'
- * in monkey is "#money#0". 
+ * in monkey is "#money#0".
  * </ul>
  *
- * <p>Here's how the phone for 'k' in 'monkey' might be determined: 
+ * <p>Here's how the phone for 'k' in 'monkey' might be determined:
  *
  * <ul>
- * <li>Create the context window "#money#0". 
- * <li>Start at the state machine entry for 'k' in the state machine. 
+ * <li>Create the context window "#money#0".
+ * <li>Start at the state machine entry for 'k' in the state machine.
  * <li>Grab the 'index' from the current state. This represents an
  * index into the context window.
  * <li>Compare the value of the character at the index in the context
  * window to the character from the current state. If there is a
  * match, the next state is the qtrue value. If there isn't a match,
- * the next state is the qfalse state. 
+ * the next state is the qfalse state.
  * <li>Keep on working through the machine until you read a final
  * state.
  * <li>When you get to the final state, the phone is the character in
- * that state. 
+ * that state.
  * </ul>
  *
  * <p>This implementation will either read from a straight ASCII file
@@ -148,7 +149,7 @@ public class LetterToSoundImpl implements LetterToSound {
     /**
      * If true, the state string is tokenized when it is first read.
      * The side effects of this are quicker lookups, but more memory
-     * usage and a longer startup time. 
+     * usage and a longer startup time.
      */
     protected boolean tokenizeOnLoad = false;
 
@@ -199,23 +200,22 @@ public class LetterToSoundImpl implements LetterToSound {
     /**
      * The indexes of the starting points for letters in the state machine.
      */
-    protected HashMap letterIndex;
+    protected Map<String, Integer> letterIndex;
 
     /**
      * The list of phones that can be returned by the LTS rules.
      */
-    static private List phonemeTable;
+    static private List<String> phonemeTable;
 
     /**
      * Class constructor.
      *
      * @param ltsRules a URL pointing to the text
-     *   containing the letter to sound rules
-     * @param binary if true, the URL is a binary source
-     *
+     *                 containing the letter to sound rules
+     * @param binary   if true, the URL is a binary source
      * @throws NullPointerException if the ltsRules are null
-     * @throws IOException if errors are encountered while reading the
-     *   compiled form or the addenda
+     * @throws IOException          if errors are encountered while reading the
+     *                              compiled form or the addenda
      */
     public LetterToSoundImpl(URL ltsRules, boolean binary) throws IOException {
         BulkTimer.LOAD.start("LTS");
@@ -231,10 +231,9 @@ public class LetterToSoundImpl implements LetterToSound {
 
     /**
      * Loads the LTS rules from the given text input stream.  The
-     * stream is not closed after the rules are read.       
+     * stream is not closed after the rules are read.
      *
      * @param is the input stream
-     *
      * @throws IOException if an error occurs on input.
      */
     private void loadText(InputStream is) throws IOException {
@@ -266,7 +265,6 @@ public class LetterToSoundImpl implements LetterToSound {
      * input stream is not closed after the rules are read.
      *
      * @param is the input stream
-     *
      * @throws IOException if an error occurs on input.
      */
     private void loadBinary(InputStream is) throws IOException {
@@ -364,10 +362,9 @@ public class LetterToSoundImpl implements LetterToSound {
      *   VERSION
      *   NUM STATES
      *   for each state ...
-     * </pre> 
+     * </pre>
      *
      * @param path the path to dump the file to
-     *
      * @throws IOException if a problem occurs during the dump
      */
     public void dumpBinary(String path) throws IOException {
@@ -382,16 +379,14 @@ public class LetterToSoundImpl implements LetterToSound {
         //
         phonemeTable = findPhonemes();
         dos.writeInt(phonemeTable.size());
-        for (Object value : phonemeTable) {
-            String phoneme = (String) value;
+        for (String phoneme : phonemeTable) {
             dos.writeUTF(phoneme);
         }
 
         // letter index
         //
         dos.writeInt(letterIndex.size());
-        for (Object o : letterIndex.keySet()) {
-            String letter = (String) o;
+        for (String letter : letterIndex.keySet()) {
             int index = (Integer) letterIndex.get(letter);
             dos.writeChar(letter.charAt(0));
             dos.writeInt(index);
@@ -412,8 +407,8 @@ public class LetterToSoundImpl implements LetterToSound {
      *
      * @return a list of all the phonemes
      */
-    private List findPhonemes() {
-        Set set = new HashSet();
+    private List<String> findPhonemes() {
+        Set<String> set = new HashSet<>();
         for (Object o : stateMachine) {
             if (o instanceof FinalState) {
                 FinalState fstate = (FinalState) o;
@@ -432,11 +427,10 @@ public class LetterToSoundImpl implements LetterToSound {
      * the current spot with an actual <code>State</code> instance.
      *
      * @param i the index into the state machine
-     *
      * @return the <code>State</code> at the given index.
      */
     protected State getState(int i) {
-        State state = null;
+        State state;
         if (stateMachine[i] instanceof String) {
             state = getState((String) stateMachine[i]);
             if (tokenizeOnLookup) {
@@ -452,7 +446,6 @@ public class LetterToSoundImpl implements LetterToSound {
      * Gets the <code>State</code> based upon the <code>String</code>.
      *
      * @param s the string to parse
-     *
      * @return the parsed <code>State</code>
      */
     protected State getState(String s) {
@@ -464,11 +457,10 @@ public class LetterToSoundImpl implements LetterToSound {
      * Gets the <code>State</code> based upon the <code>type</code>
      * and <code>tokenizer<code>.
      *
-     * @param type one of <code>STATE</code> or <code>PHONE</code>
+     * @param type      one of <code>STATE</code> or <code>PHONE</code>
      * @param tokenizer a <code>StringTokenizer</code> containing the
-     *   <code>State</code>
-     *
-     * @return the parsed <code>State</code>     
+     *                  <code>State</code>
+     * @return the parsed <code>State</code>
      */
     protected State getState(String type, StringTokenizer tokenizer) {
         if (type.equals(STATE)) {
@@ -487,7 +479,6 @@ public class LetterToSoundImpl implements LetterToSound {
      * Makes a character array that looks like "000#word#000".
      *
      * @param word the original word
-     *
      * @return the padded word
      */
     protected char[] getFullBuff(String word) {
@@ -512,9 +503,8 @@ public class LetterToSoundImpl implements LetterToSound {
      * be determined, <code>null</code> is returned.  This particular
      * implementation ignores the part of speech.
      *
-     * @param word the word to find
+     * @param word         the word to find
      * @param partOfSpeech the part of speech.
-     *
      * @return the array of phones for word or <code>null</code>
      */
     public String[] getPhones(String word, String partOfSpeech) {
@@ -563,15 +553,13 @@ public class LetterToSoundImpl implements LetterToSound {
      * Compares this LTS to another for debugging purposes.
      *
      * @param other the other LTS to compare to
-     *
      * @return <code>true</code> if these are equivalent
      */
     public boolean compare(LetterToSoundImpl other) {
 
         // compare letter index table
         //
-        for (Object o : letterIndex.keySet()) {
-            String key = (String) o;
+        for (String key : letterIndex.keySet()) {
             Integer thisIndex = (Integer) letterIndex.get(key);
             Integer otherIndex = (Integer) other.letterIndex.get(key);
             if (!thisIndex.equals(otherIndex)) {
@@ -622,9 +610,9 @@ public class LetterToSoundImpl implements LetterToSound {
         /**
          * Class constructor.
          *
-         * @param index the index into a string for comparison to c
-         * @param c the character to match in a string at index
-         * @param qtrue the state to go to in the state machine on a match
+         * @param index  the index into a string for comparison to c
+         * @param c      the character to match in a string at index
+         * @param qtrue  the state to go to in the state machine on a match
          * @param qfalse the state to go to in the state machine on no match
          */
         public DecisionState(int index, char c, int qtrue, int qfalse) {
@@ -639,7 +627,6 @@ public class LetterToSoundImpl implements LetterToSound {
          * sequence.
          *
          * @param chars the characters for comparison
-         *
          * @return an index into the state machine.
          */
         public int getNextState(char[] chars) {
@@ -663,7 +650,6 @@ public class LetterToSoundImpl implements LetterToSound {
          * Writes this <code>State</code> to the given output stream.
          *
          * @param dos the data output stream
-         *
          * @throws IOException if an error occurs
          */
         public void writeBinary(DataOutputStream dos) throws IOException {
@@ -680,7 +666,6 @@ public class LetterToSoundImpl implements LetterToSound {
          *
          * @param dis the data input stream
          * @return a newly constructed decision state
-         *
          * @throws IOException if an error occurs
          */
         public static State loadBinary(DataInputStream dis)
@@ -696,7 +681,6 @@ public class LetterToSoundImpl implements LetterToSound {
          * Compares this state to another state for debugging purposes.
          *
          * @param other the other state to compare against
-         *
          * @return true if the states are equivalent
          */
         public boolean compare(State other) {
@@ -760,7 +744,7 @@ public class LetterToSoundImpl implements LetterToSound {
          *
          * @param array the array to append to
          */
-        public void append(ArrayList array) {
+        public void append(List<String> array) {
             if (phoneList == null) {
                 return;
             } else {
@@ -790,7 +774,6 @@ public class LetterToSoundImpl implements LetterToSound {
          * purposes.
          *
          * @param other the other state to compare against
-         *
          * @return <code>true</code> if the states are equivalent
          */
         public boolean compare(State other) {
@@ -810,12 +793,10 @@ public class LetterToSoundImpl implements LetterToSound {
             return false;
         }
 
-
         /**
          * Writes this state to the given output stream.
          *
          * @param dos the data output stream
-         *
          * @throws IOException if an error occurs
          */
         public void writeBinary(DataOutputStream dos) throws IOException {
@@ -834,9 +815,7 @@ public class LetterToSoundImpl implements LetterToSound {
          * Loads a FinalState object from the given input stream
          *
          * @param dis the data input stream
-         *
          * @return a newly constructed final state
-         *
          * @throws IOException if an error occurs
          */
         public static State loadBinary(DataInputStream dis)
@@ -857,12 +836,10 @@ public class LetterToSoundImpl implements LetterToSound {
         }
     }
 
-
     /**
      * Translates between text and binary forms of the CMU6 LTS rules.
      */
     public static void main(String[] args) {
-        LexiconImpl lex, lex2;
         boolean showTimes = false;
         String srcPath = ".";
         String destPath = ".";
@@ -885,8 +862,7 @@ public class LetterToSoundImpl implements LetterToSound {
                         System.out.println("Loading " + name);
                         timer.start("load_text");
                         LetterToSoundImpl text = new LetterToSoundImpl(
-                                new URL("file:" + srcPath + "/"
-                                        + name + ".txt"),
+                                new URL("file:" + srcPath + "/" + name + ".txt"),
                                 false);
                         timer.stop("load_text");
 

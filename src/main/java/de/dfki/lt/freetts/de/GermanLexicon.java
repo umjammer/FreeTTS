@@ -32,14 +32,13 @@ public class GermanLexicon extends LexiconImpl {
      * Creates a GermanLexicon based upon the given compiled and addenda
      * DBs and the given letter to sound rules
      *
-     * @param compiledURL the compiled database is loaded from here
-     * @param addendaURL the database addenda is loaded from here
+     * @param compiledURL      the compiled database is loaded from here
+     * @param addendaURL       the database addenda is loaded from here
      * @param letterToSoundURL the letter to sound rules are loaded
-     * 		from here
-     * @param binary if <code>true</code> the input data are loaded as
-     * 		binary ; otherwise if <code>false</code> the input
-     * 		data are loaded as text.
-     *
+     *                         from here
+     * @param binary           if <code>true</code> the input data are loaded as
+     *                         binary ; otherwise if <code>false</code> the input
+     *                         data are loaded as text.
      */
     public GermanLexicon(URL compiledURL,
                          URL addendaURL,
@@ -100,7 +99,6 @@ public class GermanLexicon extends LexiconImpl {
      * Get the GermanLexicon.
      *
      * @param useBinaryIO if true use binary IO to load DB
-     *
      * @throws IOException if problems occurred while reading the data
      */
     static public GermanLexicon getInstance(boolean useBinaryIO)
@@ -112,7 +110,6 @@ public class GermanLexicon extends LexiconImpl {
      * Get the GermanLexicon.
      *
      * @param useBinaryIO if true use binary IO to load DB
-     *
      * @throws IOException if problems occurred while reading the data
      */
     static public GermanLexicon getInstance(String basename, boolean useBinaryIO)
@@ -126,12 +123,11 @@ public class GermanLexicon extends LexiconImpl {
      * Determines if the currentPhone represents a new syllable
      * boundary.
      *
-     * @param syllablePhones the phones in the current syllable so far
-     * @param wordPhones the phones for the whole word
+     * @param syllablePhones   the phones in the current syllable so far
+     * @param wordPhones       the phones for the whole word
      * @param currentWordPhone the word phone in question
-     *
      * @return <code>true</code> if the word phone in question is on a
-     *     syllable boundary; otherwise <code>false</code>.
+     * syllable boundary; otherwise <code>false</code>.
      */
     public boolean isSyllableBoundary(List<String> syllablePhones,
                                       String[] wordPhones,

@@ -40,7 +40,7 @@ public abstract class BaseEngineProperties
 
     /**
      * Obtains the AWT <code>Component</code> that provides the
-     * default user interface 
+     * default user interface
      * for setting the properties of the <code>Engine</code>
      * associated with this object.
      *
@@ -89,7 +89,6 @@ public abstract class BaseEngineProperties
      * @param propName the name of the property
      * @param oldValue the old value
      * @param newValue the new value
-     *
      * @see #firePropertyChangeEvent
      * @see #dispatchSpeechEvent
      */
@@ -114,7 +113,6 @@ public abstract class BaseEngineProperties
      * @param propName the name of the property
      * @param oldValue the old value
      * @param newValue the new value
-     *
      * @see #firePropertyChangeEvent
      * @see #dispatchSpeechEvent
      */
@@ -139,7 +137,6 @@ public abstract class BaseEngineProperties
      * @param propName the name of the property
      * @param oldValue the old value
      * @param newValue the new value
-     *
      * @see #firePropertyChangeEvent
      * @see #dispatchSpeechEvent
      */
@@ -164,7 +161,6 @@ public abstract class BaseEngineProperties
      * @param propName the name of the property
      * @param oldValue the old value
      * @param newValue the new value
-     *
      * @see #firePropertyChangeEvent
      * @see #dispatchSpeechEvent
      */
@@ -185,7 +181,6 @@ public abstract class BaseEngineProperties
      * this object.  Called by <code>dispatchSpeechEvent</code>.
      *
      * @param event the <code>PropertyChangeEvent</code> to send
-     *
      * @see #firePropertyChangeEvent
      * @see #dispatchSpeechEvent
      */
@@ -193,9 +188,9 @@ public abstract class BaseEngineProperties
         if (propertyChangeListeners == null) {
             return;
         }
-        for (Object propertyChangeListener : propertyChangeListeners) {
+        for (PropertyChangeListener propertyChangeListener : propertyChangeListeners) {
             PropertyChangeListener pl =
-                    (PropertyChangeListener) propertyChangeListener;
+                    propertyChangeListener;
             pl.propertyChange(event);
         }
     }
@@ -207,8 +202,7 @@ public abstract class BaseEngineProperties
      * via the various post methods of this class.
      *
      * @param event the <code>SpeechEvent</code> containing a
-     *   <code>PropertyChangeEvent</code>
-     *
+     *              <code>PropertyChangeEvent</code>
      * @see #postPropertyChangeEvent
      */
     public void dispatchSpeechEvent(SpeechEvent event) {

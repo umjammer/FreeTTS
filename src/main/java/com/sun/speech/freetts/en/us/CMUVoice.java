@@ -48,17 +48,17 @@ public abstract class CMUVoice extends Voice {
     /**
      * Creates a simple voice
      *
-     * @param name the name of the voice
-     * @param gender the gender of the voice
-     * @param age the age of the voice
-     * @param description a human-readable string providing a
-     * description that can be displayed for the users.
-     * @param locale the locale of the voice
-     * @param domain the domain of this voice.  For example,
+     * @param name         the name of the voice
+     * @param gender       the gender of the voice
+     * @param age          the age of the voice
+     * @param description  a human-readable string providing a
+     *                     description that can be displayed for the users.
+     * @param locale       the locale of the voice
+     * @param domain       the domain of this voice.  For example,
      * @param organization the organization which created the voice
-     * &quot;general&quot;, &quot;time&quot;, or
-     * &quot;weather&quot;.
-     * @param lexicon the lexicon to load
+     *                     &quot;general&quot;, &quot;time&quot;, or
+     *                     &quot;weather&quot;.
+     * @param lexicon      the lexicon to load
      */
     public CMUVoice(String name, Gender gender,
                     Age age, String description, Locale locale, String domain,
@@ -147,9 +147,8 @@ public abstract class CMUVoice extends Voice {
      * Derived voices typically override this to customize behaviors.
      *
      * @return the post lexical analyzer in use by this voice
-     *
      * @throws IOException if an IO error occurs while getting
-     *     processor
+     *                     processor
      */
     protected UtteranceProcessor getPostLexicalAnalyzer() throws IOException {
         return new com.sun.speech.freetts.en.PostLexicalAnalyzer();
@@ -160,9 +159,8 @@ public abstract class CMUVoice extends Voice {
      * Derived voices typically override this to customize behaviors.
      *
      * @return the unit selector in use by this voice
-     *
      * @throws IOException if an IO error occurs while getting
-     *     processor
+     *                     processor
      */
     protected UtteranceProcessor getUnitSelector() throws IOException {
         return null;
@@ -173,9 +171,8 @@ public abstract class CMUVoice extends Voice {
      * Derived voices typically override this to customize behaviors.
      *
      * @return the pitch mark generator to be used by this voice
-     *
      * @throws IOException if an IO error occurs while getting
-     *     processor
+     *                     processor
      */
     protected UtteranceProcessor getPitchmarkGenerator() throws IOException {
         return null;
@@ -186,9 +183,8 @@ public abstract class CMUVoice extends Voice {
      * Derived voices typically override this to customize behaviors.
      *
      * @return the Unit concatenator
-     *
      * @throws IOException if an IO error occurs while getting
-     *     processor
+     *                     processor
      */
     protected UtteranceProcessor getUnitConcatenator() throws IOException {
         return null;
@@ -274,9 +270,8 @@ public abstract class CMUVoice extends Voice {
     /**
      * Given a phoneme and a feature name, return the feature
      *
-     * @param phone the phoneme of interest
+     * @param phone       the phoneme of interest
      * @param featureName the name of the feature of interest
-     *
      * @return the feature with the given name
      */
     public String getPhoneFeature(String phone, String featureName) {
@@ -288,9 +283,8 @@ public abstract class CMUVoice extends Voice {
      * Derived voices typically override this to customize behaviors.
      *
      * @return the audio output processor
-     *
      * @throws IOException if an IO error occurs while getting
-     *     processor
+     *                     processor
      */
     protected UtteranceProcessor getAudioOutput() throws IOException {
         return new AudioOutput();

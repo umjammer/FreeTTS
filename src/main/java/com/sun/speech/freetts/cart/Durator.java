@@ -54,10 +54,8 @@ public class Durator implements UtteranceProcessor {
      * Creates a new duration UtteranceProcessor with the given CART and phone
      * durations.
      *
-     * @param cart
-     *            contains zscore duration data
-     * @param durations
-     *            contains mean and standard deviation phone durations
+     * @param cart      contains zscore duration data
+     * @param durations contains mean and standard deviation phone durations
      */
     public Durator(CART cart, PhoneDurations durations) {
         this.cart = cart;
@@ -71,12 +69,9 @@ public class Durator implements UtteranceProcessor {
      * deviations from the mean. This is coupled with a phone durations table
      * that returns the mean and standard deviation for phones.
      *
-     * @param utterance
-     *            the utterance to process
-     *
-     * @throws ProcessException
-     *             if a problem is encountered during the processing of the
-     *             utterance
+     * @param utterance the utterance to process
+     * @throws ProcessException if a problem is encountered during the processing of the
+     *                          utterance
      */
     public void processUtterance(Utterance utterance) throws ProcessException {
         PhoneDuration durStat;

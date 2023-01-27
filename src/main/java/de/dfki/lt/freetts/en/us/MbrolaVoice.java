@@ -42,20 +42,20 @@ public class MbrolaVoice extends CMUVoice {
      * Creates an MbrolaVoice.
      *
      * @param databaseDirectory the directory within the MBROLA directory
-     *    where the voice database of this voice is located
-     * @param database the name of the voice database of this voice
-     * @param rate the rate of the voice
-     * @param pitch the pitch of the voice
-     * @param range the range of the voice
-     * @param name the name of the voice
-     * @param gender the gender of the voice
-     * @param age the age of the voice
-     * @param description a human-readable string providing a
-     * description that can be displayed for the users.
-     * @param locale the locale of the voice
-     * @param domain the domain of this voice.  For example,
-     * @param organization the organization which created the voice
-     * @param lexicon the lexicon to use
+     *                          where the voice database of this voice is located
+     * @param database          the name of the voice database of this voice
+     * @param rate              the rate of the voice
+     * @param pitch             the pitch of the voice
+     * @param range             the range of the voice
+     * @param name              the name of the voice
+     * @param gender            the gender of the voice
+     * @param age               the age of the voice
+     * @param description       a human-readable string providing a
+     *                          description that can be displayed for the users.
+     * @param locale            the locale of the voice
+     * @param domain            the domain of this voice.  For example,
+     * @param organization      the organization which created the voice
+     * @param lexicon           the lexicon to use
      */
     public MbrolaVoice(String databaseDirectory,
                        String database, float rate, float pitch, float range,
@@ -82,9 +82,8 @@ public class MbrolaVoice extends CMUVoice {
      * Derived voices typically override this to customize behaviors.
      *
      * @return the unit selector
-     *
      * @throws IOException if an IO error occurs while getting
-     *     processor
+     *                     processor
      */
     protected UtteranceProcessor getUnitSelector() throws IOException {
         return new ParametersToMbrolaConverter();
@@ -190,9 +189,8 @@ public class MbrolaVoice extends CMUVoice {
      * MbrolaCaller accordingly.
      *
      * @return the unit conatenator
-     *
      * @throws IOException if an IO error occurs while getting
-     *     processor
+     *                     processor
      */
     protected UtteranceProcessor getUnitConcatenator() throws IOException {
         return new MbrolaCaller(getMbrolaCommand());
@@ -202,7 +200,6 @@ public class MbrolaVoice extends CMUVoice {
      * Returns the audio output used by this voice.
      *
      * @return the audio output used by this voice
-     *
      * @throws IOException if an I/O error occurs
      */
     protected UtteranceProcessor getAudioOutput() throws IOException {

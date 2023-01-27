@@ -27,7 +27,7 @@ public interface ConcatenativeVoice {
      * Gets the url to the database that defines the unit data for this
      * voice.
      *
-     * @return a url to the database
+     * @return an url to the database
      */
     URL getDatabase();
 

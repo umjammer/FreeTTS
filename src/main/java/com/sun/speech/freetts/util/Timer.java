@@ -75,7 +75,7 @@ public class Timer {
      * Stops the timer.
      *
      * @param verbose if <code>true</code>, print out details from
-     * 	this run; otherwise, don't print the details
+     *                this run; otherwise, don't print the details
      */
     public void stop(boolean verbose) {
         if (startTime == 0L) {
@@ -107,7 +107,6 @@ public class Timer {
      * Formats times into a standard format.
      *
      * @param time the time (in milliseconds) to be formatted
-     *
      * @return a string representation of the time.
      */
     private String fmtTime(long time) {
@@ -118,7 +117,6 @@ public class Timer {
      * Formats times into a standard format.
      *
      * @param time the time (in seconds) to be formatted
-     *
      * @return a string representation of the time.
      */
     private String fmtTime(double time) {
@@ -160,7 +158,7 @@ public class Timer {
      * Shows the timing stats title.
      *
      * @param title shows the title and column headings for the time
-     * 	display
+     *              display
      */
     public static void showTimesShortTitle(String title) {
         String titleBar =
@@ -245,7 +243,7 @@ public class Timer {
      * The main program for performing simple tests. Creates a timer
      * uses it and shows its output.
      *
-     * @param args    program arguments (not used)
+     * @param args program arguments (not used)
      */
     public static void main(String[] args) {
         Timer timer = new Timer("testTimer");

@@ -29,7 +29,7 @@ import java.util.StringTokenizer;
  * phone mean stddev
  * ...
  * </pre>
- *
+ * <p>
  * Where <code>phone</code> is the phone name, <code>mean</code> is
  * a <code>float</code> representing the mean duration of the phone
  * (typically in seconds), and <code>stddev</code> is a
@@ -46,7 +46,6 @@ public class PhoneDurationsImpl implements PhoneDurations {
      * Creates a new PhoneDurationsImpl by reading from the given URL.
      *
      * @param url the input source
-     *
      * @throws IOException if an error occurs
      */
     public PhoneDurationsImpl(URL url) throws IOException {
@@ -85,7 +84,6 @@ public class PhoneDurationsImpl implements PhoneDurations {
      * duration is applicable, returns <code>null</code>.
      *
      * @param phone the phone
-     *
      * @return the <code>PhoneDuration</code> for <code>phone</code>
      */
     public PhoneDuration getPhoneDuration(String phone) {

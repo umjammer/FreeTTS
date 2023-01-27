@@ -56,10 +56,9 @@ public class Phraser implements UtteranceProcessor {
      * Depends upon a phrasing CART that returns strings containing
      * "BB" for big breaks.
      *
-     * @param  utterance  the utterance to process
-     *
+     * @param utterance the utterance to process
      * @throws ProcessException if a problem is encountered during the
-     *         processing of the utterance
+     *                          processing of the utterance
      */
     public void processUtterance(Utterance utterance) throws ProcessException {
         Relation relation = utterance.createRelation(Relation.PHRASE);

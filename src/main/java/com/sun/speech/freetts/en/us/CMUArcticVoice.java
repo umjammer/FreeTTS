@@ -53,7 +53,7 @@ public class CMUArcticVoice extends CMUClusterUnitVoice {
     public UtteranceProcessor getUnitSelector() throws IOException {
         ClusterUnitNamer unitNamer = seg -> {
             String VOWELS = "aeiou";
-            String cname = null;
+            String cname;
 
             String segName = seg.getFeatures().getString("name");
 

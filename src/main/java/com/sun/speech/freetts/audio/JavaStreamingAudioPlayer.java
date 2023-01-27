@@ -27,35 +27,35 @@ import com.sun.speech.freetts.util.Utilities;
  * method of sending audio output through the javax.sound audio API.
  * Audio data is sent in small sets to the audio system allowing it to
  * be played soon after it is generated.
- *
- *  Unfortunately, the current release of the JDK (JDK 1.4 beta 2) has 
- *  a bug or two in
- *  the implementation of 'SourceDataLine.drain'.  A workaround solution that
- *  sleep/waits on SourceDataLine.isActive is used here instead.  To
- *  disable the work around (i.e use the real 'drain') set the
- *  property:
+ * <p>
+ * Unfortunately, the current release of the JDK (JDK 1.4 beta 2) has
+ * a bug or two in
+ * the implementation of 'SourceDataLine.drain'.  A workaround solution that
+ * sleep/waits on SourceDataLine.isActive is used here instead.  To
+ * disable the work around (i.e use the real 'drain') set the
+ * property:
  * <p>
  * <code>
- *   com.sun.speech.freetts.audio.AudioPlayer.drainWorksProperly;
+ * com.sun.speech.freetts.audio.AudioPlayer.drainWorksProperly;
  * </code>
  * to <code>true</code>.
- *
+ * <p>
  * If the workaround is enabled, the line.isActive method will be
  * performed periodically. The period of the test can be controlled
  * with:
  *
  * <p>
  * <code>
- *   com.sun.speech.freetts.audio.AudioPlayer.drainDelay"
+ * com.sun.speech.freetts.audio.AudioPlayer.drainDelay"
  * </code>
  *
  * <p>
  * The default if 5ms.
  *
  * <p>
- * The property 
+ * The property
  * <code>
- *   com.sun.speech.freetts.audio.AudioPlayer.bufferSize"
+ * com.sun.speech.freetts.audio.AudioPlayer.bufferSize"
  * </code>
  *
  * <p>
@@ -68,8 +68,6 @@ import com.sun.speech.freetts.util.Utilities;
  * always continue at the proper position in the audio. On a rare
  * occasion, sound output will be repeated a number of times. This may
  * be related to bug 4421330 in the Bug Parade database.
- *
- *
  */
 public class JavaStreamingAudioPlayer implements AudioPlayer {
 
@@ -87,8 +85,8 @@ public class JavaStreamingAudioPlayer implements AudioPlayer {
             new AudioFormat(8000f, 16, 1, true, true);
     private AudioFormat currentFormat = defaultFormat;
 
-    private boolean debug = false;
-    private boolean audioMetrics = false;
+    private boolean debug;
+    private boolean audioMetrics;
     private boolean firstSample = true;
 
     private long cancelDelay;
@@ -115,7 +113,7 @@ public class JavaStreamingAudioPlayer implements AudioPlayer {
 
 
     /**
-     * Constructs a default JavaStreamingAudioPlayer 
+     * Constructs a default JavaStreamingAudioPlayer
      */
     public JavaStreamingAudioPlayer() {
         debug = Utilities.getBoolean
@@ -143,9 +141,8 @@ public class JavaStreamingAudioPlayer implements AudioPlayer {
      * Sets the audio format for this player
      *
      * @param format the audio format
-     *
      * @throws UnsupportedOperationException if the line cannot be opened with
-     *     the given format
+     *                                       the given format
      */
     public synchronized void setAudioFormat(AudioFormat format) {
         currentFormat = format;
@@ -175,9 +172,8 @@ public class JavaStreamingAudioPlayer implements AudioPlayer {
      * Opens the audio
      *
      * @param format the format for the audio
-     *
      * @throws UnsupportedOperationException if the line cannot be opened with
-     *     the given format
+     *                                       the given format
      */
     private synchronized void openLine(AudioFormat format) {
         synchronized (lineLock) {
@@ -348,7 +344,7 @@ public class JavaStreamingAudioPlayer implements AudioPlayer {
     /**
      * Sets the current volume.
      *
-     * @param volume  the current volume (between 0 and 1)
+     * @param volume the current volume (between 0 and 1)
      */
     public void setVolume(float volume) {
         if (volume > 1.0f) {
@@ -382,7 +378,7 @@ public class JavaStreamingAudioPlayer implements AudioPlayer {
      * Sets the volume on the given clip
      *
      * @param line the line to set the volume on
-     * @param vol the volume (range 0 to 1)
+     * @param vol  the volume (range 0 to 1)
      */
     private void setVolume(SourceDataLine line, float vol) {
         if (line != null &&
@@ -400,12 +396,12 @@ public class JavaStreamingAudioPlayer implements AudioPlayer {
      * For this JavaStreamingAudioPlayer, it actually opens the audio line.
      * Since this is a streaming audio player, the <code>size</code>
      * parameter has no meaning and effect at all, so any value can be used.
-     * Audio data for a single utterance should be grouped 
+     * Audio data for a single utterance should be grouped
      * between begin/end pairs.
      *
      * @param size supposedly the size of data between now and the end,
-     *    but since this is a streaming audio player, this parameter
-     *    has no meaning and effect at all
+     *             but since this is a streaming audio player, this parameter
+     *             has no meaning and effect at all
      */
     public void begin(int size) {
         debugPrint("opening Stream...");
@@ -415,12 +411,11 @@ public class JavaStreamingAudioPlayer implements AudioPlayer {
     }
 
     /**
-     *  Marks the end of a set of data. Audio data for a single 
-     *  utterance should be groupd between begin/end pairs.
+     * Marks the end of a set of data. Audio data for a single
+     * utterance should be groupd between begin/end pairs.
      *
-     *  @return true if the audio was output properly, false if the
-     *      output was cancelled or interrupted.
-     *
+     * @return true if the audio was output properly, false if the
+     * output was cancelled or interrupted.
      */
     public synchronized boolean end() {
         if (line != null) {
@@ -439,14 +434,14 @@ public class JavaStreamingAudioPlayer implements AudioPlayer {
      * Waits for all queued audio to be played
      *
      * @return true if the audio played to completion, false if
-     *   the audio was stopped
-     *
-     *	[[[ WORKAROUND TODO
-     *   The javax.sound.sampled drain is almost working properly.  On
-     *   linux, there is still a little bit of sound that needs to go
-     *   out, even after drain is called. Thus, the drainDelay. We
-     *   wait for a few hundred milliseconds while the data is really
-     *   drained out of the system
+     * the audio was stopped
+     * <p>
+     * [[[ WORKAROUND TODO
+     * The javax.sound.sampled drain is almost working properly.  On
+     * linux, there is still a little bit of sound that needs to go
+     * out, even after drain is called. Thus, the drainDelay. We
+     * wait for a few hundred milliseconds while the data is really
+     * drained out of the system
      * ]]]
      */
     public boolean drain() {
@@ -490,9 +485,8 @@ public class JavaStreamingAudioPlayer implements AudioPlayer {
      * Writes the given bytes to the audio stream
      *
      * @param audioData audio data to write to the device
-     *
-     * @return <code>true</code> of the write completed successfully, 
-     *       	<code> false </code>if the write was cancelled.
+     * @return <code>true</code> of the write completed successfully,
+     * <code> false </code>if the write was cancelled.
      */
     public boolean write(byte[] audioData) {
         return write(audioData, 0, audioData.length);
@@ -501,12 +495,11 @@ public class JavaStreamingAudioPlayer implements AudioPlayer {
     /**
      * Writes the given bytes to the audio stream
      *
-     * @param bytes audio data to write to the device
+     * @param bytes  audio data to write to the device
      * @param offset the offset into the buffer
-     * @param size the size into the buffer
-     *
-     * @return <code>true</code> of the write completed successfully, 
-     *       	<code> false </code>if the write was cancelled.
+     * @param size   the size into the buffer
+     * @return <code>true</code> of the write completed successfully,
+     * <code> false </code>if the write was cancelled.
      */
     public boolean write(byte[] bytes, int offset, int size) {
         if (line == null) {
@@ -567,7 +560,7 @@ public class JavaStreamingAudioPlayer implements AudioPlayer {
      * Returns if resumed, cancelled or shutdown.
      *
      * @return true if the output has been resumed, false if the
-     *     output has been cancelled or shutdown.
+     * output has been cancelled or shutdown.
      */
     private synchronized boolean waitResume() {
         while (isPaused() && !isCancelled() && !isDone()) {

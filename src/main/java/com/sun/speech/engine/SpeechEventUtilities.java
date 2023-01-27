@@ -67,6 +67,7 @@ public class SpeechEventUtilities {
      * a real method for determining if AWT is active or not.  The problem
      * with asking AWT if it is active right now is that it will activate
      * it if it isn't already active.
+     *
      * @return {@code true} if we are running in an AWT event queue
      */
     static protected boolean isAWTRunning() {
@@ -120,14 +121,14 @@ public class SpeechEventUtilities {
      * thread.  This is important because the Swing Thread Model requires
      * all interaction with Swing components to be done from the event
      * dispatch thread.
-     *
+     * <p>
      * This method will immediately return once the event has been
      * posted if the global waitUntilDispatched flag is set to false.
      * Otherwise, it will wait until the event has been dispatched
      * before returning.
      *
      * @param dispatcher the dispatcher that will dispatch the event
-     * @param event the SpeechEvent to post
+     * @param event      the SpeechEvent to post
      */
     static public void postSpeechEvent(SpeechEventDispatcher dispatcher,
                                        SpeechEvent event) {
@@ -142,16 +143,16 @@ public class SpeechEventUtilities {
      * thread.  This is important because the Swing Thread Model requires
      * all interaction with Swing components to be done from the event
      * dispatch thread.
-     *
+     * <p>
      * This method will immediately return once the event has been
      * posted if the waitUntilDispatched parameter is set to false.
      * Otherwise, it will wait until the event has been dispatched
      * before returning.
      *
-     * @param dispatcher the dispatcher that will dispatch the event
-     * @param event the SpeechEvent to post
+     * @param dispatcher          the dispatcher that will dispatch the event
+     * @param event               the SpeechEvent to post
      * @param waitUntilDispatched if true, do not return until the
-     * event have been dispatched
+     *                            event have been dispatched
      */
     static public void postSpeechEvent(
             SpeechEventDispatcher dispatcher,
@@ -237,9 +238,9 @@ public class SpeechEventUtilities {
      */
     protected static class SpeechAWTEvent extends AWTEvent {
         static final int EVENT_ID = AWTEvent.RESERVED_ID_MAX + 14830;
-        SpeechEventDispatcher dispatcher = null;
-        SpeechEvent event = null;
-        Object lock = null;
+        SpeechEventDispatcher dispatcher;
+        SpeechEvent event;
+        Object lock;
 
         SpeechAWTEvent(SpeechAWTEventTarget target,
                        SpeechEventDispatcher dispatcher,

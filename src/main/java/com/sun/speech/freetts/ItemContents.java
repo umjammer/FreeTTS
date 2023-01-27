@@ -36,7 +36,7 @@ public class ItemContents {
      * out the set of all relations that it is contained in.
      *
      * @param relationName the name of the relation
-     * @param item the item reference in the relation
+     * @param item         the item reference in the relation
      */
     public void addItemRelation(String relationName, Item item) {
 //        System.out.println("AddItemRelation: " + relationName
@@ -65,7 +65,6 @@ public class ItemContents {
      * same ItemContents.
      *
      * @param relationName the name of the relation of interest
-     *
      * @return the item associated with this ItemContents in the named
      * relation, or null if it does not exist
      */

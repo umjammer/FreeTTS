@@ -40,13 +40,11 @@ public class Segmenter implements UtteranceProcessor {
      * <code>Relation.SEGMENT</code>.
      *
      * @param utterance the utterance to process/tokenize
-     *
+     * @throws ProcessException if an IOException is thrown during the
+     *                          processing of the utterance
      * @see Relation#SEGMENT
      * @see Relation#SYLLABLE
      * @see Relation#SYLLABLE_STRUCTURE
-     *
-     * @throws ProcessException if an IOException is thrown during the
-     *   processing of the utterance
      */
     public void processUtterance(Utterance utterance) throws ProcessException {
 
@@ -72,16 +70,16 @@ public class Segmenter implements UtteranceProcessor {
                 utterance.createRelation(Relation.SYLLABLE_STRUCTURE);
         Relation seg = utterance.createRelation(Relation.SEGMENT);
         Lexicon lex = utterance.getVoice().getLexicon();
-        List syllableList = null;
+        List<String> syllableList = null;
 
         for (Item word = utterance.getRelation(Relation.WORD).getHead();
              word != null; word = word.getNext()) {
             Item ssword = sylstructure.appendItem(word);
             Item sylItem = null;   // item denoting syllable boundaries
-            Item segItem = null;   // item denoting phonelist (segments)
+            Item segItem;   // item denoting phonelist (segments)
             Item sssyl = null;     // item denoting syl in word
 
-            String[] phones = null;
+            String[] phones;
 
             Item token = word.getItemAs("Token");
             FeatureSet featureSet = null;
@@ -129,7 +127,6 @@ public class Segmenter implements UtteranceProcessor {
      * method if stresses are determined in other ways.
      *
      * @param phone the phone to check
-     *
      * @return true if the phone is stressed, otherwise false
      */
     protected boolean isStressed(String phone) {
@@ -142,7 +139,6 @@ public class Segmenter implements UtteranceProcessor {
      * should override this if another method is to be used.
      *
      * @param phone the phone to convert
-     *
      * @return de-stressed phone
      */
     protected String deStress(String phone) {

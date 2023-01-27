@@ -28,6 +28,7 @@ import com.sun.speech.engine.EngineMonitor;
  * <code>Synthesizer</code>.  Used for debugging and testing purposes.
  */
 public class SynthesizerMonitor extends EngineMonitor {
+
     /**
      * Label containing "queue empty"
      */
@@ -67,14 +68,13 @@ public class SynthesizerMonitor extends EngineMonitor {
      * by adding synthesizer queue state.
      *
      * @return the panel containing the labels for representing the
-     *   current engine state.
+     * current engine state.
      */
     public Component getStatePanel() {
         if (statePanel == null) {
             statePanel = (JPanel) super.getStatePanel();
             JPanel queueStatePanel = new JPanel();
-            queueStatePanel.setBorder(
-                    BorderFactory.createTitledBorder("Synthesizer State:"));
+            queueStatePanel.setBorder(BorderFactory.createTitledBorder("Synthesizer State:"));
             queueStatePanel.setLayout(new GridLayout(4, 1));
             queueEmptyLabel = new JLabel("QUEUE_EMPTY");
             queueNotEmptyLabel = new JLabel("QUEUE_NOT_EMPTY");
@@ -92,10 +92,8 @@ public class SynthesizerMonitor extends EngineMonitor {
     protected void updateGUIComponents() {
         super.updateGUIComponents();
         if (statePanel != null) {
-            queueEmptyLabel.setEnabled(
-                    engine.testEngineState(Synthesizer.QUEUE_EMPTY));
-            queueNotEmptyLabel.setEnabled(
-                    engine.testEngineState(Synthesizer.QUEUE_NOT_EMPTY));
+            queueEmptyLabel.setEnabled(engine.testEngineState(Synthesizer.QUEUE_EMPTY));
+            queueNotEmptyLabel.setEnabled(engine.testEngineState(Synthesizer.QUEUE_NOT_EMPTY));
 
             Synthesizer synth = (Synthesizer) engine;
             int queueSize = countElements(synth.enumerateQueue());
@@ -107,10 +105,9 @@ public class SynthesizerMonitor extends EngineMonitor {
      * Counts the number of elements in the enumeration.
      *
      * @param e the enumeration
-     *
      * @return the number of elements in the enumeration
      */
-    private int countElements(Enumeration e) {
+    private int countElements(Enumeration<?> e) {
         int count = 0;
         while (e.hasMoreElements()) {
             e.nextElement();

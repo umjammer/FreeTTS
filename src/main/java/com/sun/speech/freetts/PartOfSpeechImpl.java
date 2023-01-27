@@ -31,7 +31,7 @@ import java.util.StringTokenizer;
  * word pos
  * ...
  * </pre>
- *
+ * <p>
  * Where <code>word</code> is the word and <code>pos</code> is the
  * part of speech for the word.  The part of speech is implementation
  * dependent.
@@ -46,7 +46,7 @@ public class PartOfSpeechImpl implements PartOfSpeech {
     /**
      * A map from words to their part of speech.
      */
-    private Map partOfSpeechMap;
+    private Map<String, String> partOfSpeechMap;
 
     /**
      * Default part of speech.
@@ -56,21 +56,18 @@ public class PartOfSpeechImpl implements PartOfSpeech {
     /**
      * Creates a new PartOfSpeechImpl by reading from the given URL.
      *
-     * @param url the input source
+     * @param url                 the input source
      * @param defaultPartOfSpeech the default part of speech
-     *
      * @throws IOException if an error occurs
      */
-    public PartOfSpeechImpl(URL url, String defaultPartOfSpeech)
-            throws IOException {
+    public PartOfSpeechImpl(URL url, String defaultPartOfSpeech) throws IOException {
 
         BufferedReader reader;
         String line;
 
         partOfSpeechMap = new HashMap<>();
         this.defaultPartOfSpeech = defaultPartOfSpeech;
-        reader = new BufferedReader(new
-                InputStreamReader(url.openStream()));
+        reader = new BufferedReader(new InputStreamReader(url.openStream()));
         line = reader.readLine();
         lineCount++;
         while (line != null) {
@@ -94,8 +91,7 @@ public class PartOfSpeechImpl implements PartOfSpeech {
             String pos = tokenizer.nextToken();
             partOfSpeechMap.put(word, pos);
         } catch (NoSuchElementException nse) {
-            System.err.println("part of speech data in bad format at line "
-                    + lineCount);
+            System.err.println("part of speech data in bad format at line " + lineCount);
         }
     }
 
@@ -105,11 +101,10 @@ public class PartOfSpeechImpl implements PartOfSpeech {
      * <code>defaultPartOfSpeech</code> parameter passed to the constructor.
      *
      * @param word the word to classify
-     *
      * @return an implementation dependent part of speech for the word
      */
     public String getPartOfSpeech(String word) {
-        String pos = (String) partOfSpeechMap.get(word);
+        String pos = partOfSpeechMap.get(word);
         if (pos == null) {
             pos = defaultPartOfSpeech;
         }

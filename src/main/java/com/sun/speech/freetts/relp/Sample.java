@@ -22,7 +22,7 @@ import java.util.StringTokenizer;
 
 /**
  * A single short term sample containing Residual Excited Linear Predictive
- * (RELP) frame and residual voice data.  
+ * (RELP) frame and residual voice data.
  */
 public class Sample {
     private final short[] frameData;
@@ -33,7 +33,7 @@ public class Sample {
     /**
      * Constructs a RELP Sample from its component parts
      *
-     * @param frameData the framedata
+     * @param frameData    the framedata
      * @param residualData the residual data
      */
     public Sample(short[] frameData, byte[] residualData) {
@@ -45,7 +45,7 @@ public class Sample {
     /**
      * Constructs a Sample from its component parts
      *
-     * @param frameData the framedata
+     * @param frameData    the framedata
      * @param residualData the residual data
      */
     public Sample(short[] frameData, byte[] residualData, int residualSize) {
@@ -55,9 +55,9 @@ public class Sample {
     }
 
     /**
-     * Reads a sample from the input reader. 
+     * Reads a sample from the input reader.
      *
-     * @param reader the input reader to read the data from
+     * @param reader      the input reader to read the data from
      * @param numChannels the number of channels per frame
      */
     public Sample(BufferedReader reader, int numChannels) {
@@ -133,11 +133,10 @@ public class Sample {
 
 
     /**
-     * Returns the normalized residual data. You may not want to 
+     * Returns the normalized residual data. You may not want to
      * call this function because of the overhead involved.
      *
      * @param which the index of the data of interest
-     *
      * @return the normalized data.
      */
     public int getResidualData(int which) {
@@ -145,11 +144,10 @@ public class Sample {
     }
 
     /**
-     * Returns the normalized frame data. You may not want to 
+     * Returns the normalized frame data. You may not want to
      * call this function because of the overhead involved.
      *
      * @param which the index of the data of interest
-     *
      * @return the normalized data.
      */
     public int getFrameData(int which) {
@@ -178,7 +176,6 @@ public class Sample {
      * Dumps the samples to the given ByteBuffer
      *
      * @param bb the ByteBuffer to write the data to.
-     *
      * @throws IOException if IO error occurs
      */
     public void dumpBinary(ByteBuffer bb) throws IOException {
@@ -194,7 +191,6 @@ public class Sample {
      * Dumps the samples to the given stream
      *
      * @param os the DataOutputStream to write the data to.
-     *
      * @throws IOException if IO error occurs
      */
     public void dumpBinary(DataOutputStream os) throws IOException {
@@ -212,7 +208,6 @@ public class Sample {
      * Loads the samples from the byte bufer
      *
      * @param bb the byte buffer to read the data from.
-     *
      * @throws IOException if IO error occurs
      */
     public static Sample loadBinary(ByteBuffer bb) throws IOException {
@@ -238,7 +233,6 @@ public class Sample {
      * Loads the samples from the given channel
      *
      * @param dis the DataInputStream to read the data from.
-     *
      * @throws IOException if IO error occurs
      */
     public static Sample loadBinary(DataInputStream dis)
@@ -266,9 +260,8 @@ public class Sample {
      * "equals"
      *
      * @param other the other sample to compare this one to
-     *
      * @return <code>true</code> if they compare; otherwise
-     *     <code>false</code> 
+     * <code>false</code>
      */
     public boolean compare(Sample other) {
 

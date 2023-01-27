@@ -45,11 +45,10 @@ import com.sun.speech.freetts.util.Utilities;
  * cluster unit database is confined to this clunits package. This
  * class provides a main program that can be used to convert from a
  * text version of the database to a binary version of the database.
- *
+ * <p>
  * The ClusterUnitDataBase can be loaded from a text or a binary
  * source. The binary form of the database loads much faster and
  * therefore is generally used in a deployed system.
- *
  */
 public class ClusterUnitDatabase {
 
@@ -83,9 +82,8 @@ public class ClusterUnitDatabase {
     /**
      * Creates the UnitDatabase from the given input stream.
      *
-     * @param url is the input stream to read the database from
+     * @param url      is the input stream to read the database from
      * @param isBinary the input stream is a binary stream
-     *
      * @throws IOException if there is trouble opening the DB
      */
     ClusterUnitDatabase(URL url, boolean isBinary) throws IOException {
@@ -116,7 +114,6 @@ public class ClusterUnitDatabase {
      * given entry.
      *
      * @param unitEntry the entry of interest
-     *
      * @return the begininning sample index
      */
     int getStart(int unitEntry) {
@@ -128,7 +125,6 @@ public class ClusterUnitDatabase {
      * given entry.
      *
      * @param unitEntry the entry of interest
-     *
      * @return the ending sample index
      */
     int getEnd(int unitEntry) {
@@ -139,7 +135,6 @@ public class ClusterUnitDatabase {
      * Retrieves the phone for the given entry
      *
      * @param unitEntry the entry of interest
-     *
      * @return the phone for the entry
      */
     int getPhone(int unitEntry) {
@@ -150,11 +145,10 @@ public class ClusterUnitDatabase {
      * Returns the cart of the given unit type.
      *
      * @param unitType the type of cart
-     *
-     * @return the cart 
+     * @return the cart
      */
     CART getTree(String unitType) {
-        CART cart = (CART) cartMap.get(unitType);
+        CART cart = cartMap.get(unitType);
 
         if (cart == null) {
             System.err.println("ClusterUnitDatabase: can't find tree for "
@@ -165,10 +159,9 @@ public class ClusterUnitDatabase {
     }
 
     /**
-     * Retrieves the type index for the name given a name. 
+     * Retrieves the type index for the name given a name.
      *
      * @param name the name
-     *
      * @return the index for the name
      */
 // [[[TODO: perhaps replace this with  java.util.Arrays.binarySearch]]]
@@ -197,7 +190,6 @@ public class ClusterUnitDatabase {
      *
      * @param unitType the type of the unit
      * @param instance the value associated with the unit
-     *
      * @return the index.
      */
     int getUnitIndex(String unitType, int instance) {
@@ -216,10 +208,9 @@ public class ClusterUnitDatabase {
 
 
     /**
-     * Retrieves the index for the name given a name. 
+     * Retrieves the index for the name given a name.
      *
      * @param name the name
-     *
      * @return the index for the name
      */
     int getUnitIndexName(String name) {
@@ -255,7 +246,6 @@ public class ClusterUnitDatabase {
      * Gets the previous units.
      *
      * @param which which unit is of interest
-     *
      * @return the previous unit
      */
     int getPrevUnit(int which) {
@@ -268,9 +258,8 @@ public class ClusterUnitDatabase {
      *
      * @param unitA the index of unit a
      * @param unitB the index of unit B
-     *
      * @return <code>true</code> if the types of units a and b are
-     *     equal; otherwise return <code>false</code> 
+     * equal; otherwise return <code>false</code>
      */
     boolean isUnitTypeEqual(int unitA, int unitB) {
         return units[unitA].type == units[unitB].type;
@@ -292,7 +281,6 @@ public class ClusterUnitDatabase {
     /**
      * Retrieves the continuity weight setting.
      *
-     *
      * @return the continuity weight setting
      */
     int getContinuityWeight() {
@@ -313,7 +301,6 @@ public class ClusterUnitDatabase {
      * Looks up the unit with the given name.
      *
      * @param unitName the name of the unit to look for
-     *
      * @return the unit or the defaultUnit if not found.
      */
     DatabaseClusterUnit getUnit(String unitName) {
@@ -324,8 +311,7 @@ public class ClusterUnitDatabase {
      * Looks up the unit with the given index.
      *
      * @param which the index of the unit to look for
-     *
-     * @return the unit 
+     * @return the unit
      */
     DatabaseClusterUnit getUnit(int which) {
         return units[which];
@@ -335,8 +321,7 @@ public class ClusterUnitDatabase {
      * Looks up the origin info for the unit with the given index.
      *
      * @param which the index of the unit to look for
-     *
-     * @return the origin info for the unit, or null if none is available 
+     * @return the origin info for the unit, or null if none is available
      */
     UnitOriginInfo getUnitOriginInfo(int which) {
         if (unitOrigins != null)
@@ -399,7 +384,6 @@ public class ClusterUnitDatabase {
      * Calculates the join weight shift.
      *
      * @param joinWeights the weights to check
-     *
      * @return the amount to right shift (or zero if not possible)
      */
     private int calcJoinWeightShift(int[] joinWeights) {
@@ -462,9 +446,8 @@ public class ClusterUnitDatabase {
     /**
      * Parses and process the given line.
      *
-     * @param line the line to process
+     * @param line   the line to process
      * @param reader the source for the lines
-     *
      * @throws IOException if an error occurs while reading
      */
     private void parseAndAdd(String line, BufferedReader reader)
@@ -547,12 +530,10 @@ public class ClusterUnitDatabase {
     }
 
     /**
-     * Loads a binary file from the input stream. 
+     * Loads a binary file from the input stream.
      *
      * @param is the input stream to read the database from
-     *
      * @throws IOException if there is trouble opening the DB
-     *
      */
     private void loadBinary(InputStream is) throws IOException {
         // we get better performance if we can map the file in
@@ -576,7 +557,6 @@ public class ClusterUnitDatabase {
      * Loads the database from the given byte buffer.
      *
      * @param bb the byte buffer to load the db from
-     *
      * @throws IOException if there is trouble opening the DB
      */
     private void loadBinary(ByteBuffer bb) throws IOException {
@@ -631,7 +611,6 @@ public class ClusterUnitDatabase {
      * Loads the database from the given input stream.
      *
      * @param is the input stream to load the db from
-     *
      * @throws IOException if there is trouble opening the DB
      */
     private void loadBinary(DataInputStream is) throws IOException {
@@ -688,6 +667,7 @@ public class ClusterUnitDatabase {
      * This is useful when creating and debugging new voices: For a selected
      * unit, you can find out which unit from which original sound file
      * was used.
+     *
      * @param is the input stream from which to read the debug info.
      * @throws IOException if a read problem occurs.
      */
@@ -695,7 +675,7 @@ public class ClusterUnitDatabase {
         unitOrigins = new UnitOriginInfo[units.length];
         BufferedReader in = new BufferedReader(new InputStreamReader(is));
 
-        String currentLine = null;
+        String currentLine;
         // Skip EST header:
         while ((currentLine = in.readLine()) != null) {
             if (currentLine.startsWith("EST_Header_End")) break;
@@ -776,7 +756,6 @@ public class ClusterUnitDatabase {
      * Determines if two databases are identical.
      *
      * @param other the database to compare this one to
-     *
      * @return true if the databases are identical
      */
     public boolean compare(ClusterUnitDatabase other) {
@@ -785,31 +764,30 @@ public class ClusterUnitDatabase {
     }
 
     /**
-     *  Manipulates a ClusterUnitDatabase.  
+     * Manipulates a ClusterUnitDatabase.
      *
      * <p>
      * <b> Usage </b>
      * <p>
-     *  <code> java com.sun.speech.freetts.clunits.ClusterUnitDatabase
-     *  [options]</code> 
+     * <code> java com.sun.speech.freetts.clunits.ClusterUnitDatabase
+     * [options]</code>
      * <p>
      * <b> Options </b>
      * <p>
-     *    <ul>
-     *          <li> <code> -src path </code> provides a directory
-     *          path to the source text for the database
-     *          <li> <code> -dest path </code> provides a directory
-     *          for where to place the resulting binaries
-     *		<li> <code> -generate_binary [filename]</code> reads
-     *		in the text version of the database and generates
-     *		the binary version of the database.
-     *		<li> <code> -compare </code>  Loads the text and
-     *		binary versions of the database and compares them to
-     *		see if they are equivalent.
-     *		<li> <code> -showTimes </code> shows timings for any
-     *		loading, comparing or dumping operation
-     *    </ul>
-     *
+     *  <ul>
+     *        <li> <code> -src path </code> provides a directory
+     *        path to the source text for the database
+     *        <li> <code> -dest path </code> provides a directory
+     *        for where to place the resulting binaries
+     * <li> <code> -generate_binary [filename]</code> reads
+     * in the text version of the database and generates
+     * the binary version of the database.
+     * <li> <code> -compare </code>  Loads the text and
+     * binary versions of the database and compares them to
+     * see if they are equivalent.
+     * <li> <code> -showTimes </code> shows timings for any
+     * loading, comparing or dumping operation
+     *  </ul>
      */
     public static void main(String[] args) {
         boolean showTimes = false;
@@ -923,12 +901,12 @@ public class ClusterUnitDatabase {
         /**
          * Constructs a unit.
          *
-         * @param type the name of the unit
+         * @param type  the name of the unit
          * @param phone the name of the unit
          * @param start the starting frame
-         * @param end the ending frame
-         * @param prev the previous index
-         * @param next the next index
+         * @param end   the ending frame
+         * @param prev  the previous index
+         * @param next  the next index
          */
         DatabaseClusterUnit(int type, int phone, int start,
                             int end, int prev, int next) {
@@ -944,7 +922,6 @@ public class ClusterUnitDatabase {
          * Creates a unit by reading it from the given byte buffer.
          *
          * @param bb source of the DatabaseClusterUnit data
-         *
          * @throws IOException if an IO error occurs
          */
         DatabaseClusterUnit(ByteBuffer bb) throws IOException {
@@ -960,7 +937,6 @@ public class ClusterUnitDatabase {
          * Creates a unit by reading it from the given input stream.
          *
          * @param is source of the DatabaseClusterUnit data
-         *
          * @throws IOException if an IO error occurs
          */
         DatabaseClusterUnit(DataInputStream is) throws IOException {
@@ -985,7 +961,6 @@ public class ClusterUnitDatabase {
          * Dumps this unit to the given output stream.
          *
          * @param os the output stream
-         *
          * @throws IOException if an error occurs.
          */
         void dumpBinary(DataOutputStream os) throws IOException {
@@ -1028,7 +1003,7 @@ class UnitType {
     /**
      * Constructs a UnitType from the given parameters
      *
-     * @param name the name of the type
+     * @param name  the name of the type
      * @param start the starting index for this type
      * @param count the number of elements for this type
      */
@@ -1042,7 +1017,6 @@ class UnitType {
      * Creates a unit type by reading it from the given input stream.
      *
      * @param is source of the UnitType data
-     *
      * @throws IOException if an IO error occurs
      */
     UnitType(DataInputStream is) throws IOException {
@@ -1055,7 +1029,6 @@ class UnitType {
      * Creates a unit type by reading it from the given byte buffer.
      *
      * @param bb source of the UnitType  data
-     *
      * @throws IOException if an IO error occurs
      */
     UnitType(ByteBuffer bb) throws IOException {
@@ -1095,7 +1068,6 @@ class UnitType {
      * Dumps this unit to the given output stream.
      *
      * @param os the output stream
-     *
      * @throws IOException if an error occurs.
      */
     void dumpBinary(DataOutputStream os) throws IOException {

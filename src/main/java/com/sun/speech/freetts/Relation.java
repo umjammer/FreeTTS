@@ -57,7 +57,6 @@ public class Relation implements Dumpable {
      *
      * @see #SYLLABLE
      * @see #SYLLABLE_STRUCTURE
-     *
      * @see Segmenter
      */
     public static final String SEGMENT = "Segment";
@@ -70,7 +69,6 @@ public class Relation implements Dumpable {
      *
      * @see #SEGMENT
      * @see #SYLLABLE_STRUCTURE
-     *
      * @see Segmenter
      */
     public static final String SYLLABLE = "Syllable";
@@ -81,7 +79,6 @@ public class Relation implements Dumpable {
      *
      * @see #SEGMENT
      * @see #SYLLABLE
-     *
      * @see Segmenter
      */
     public static final String SYLLABLE_STRUCTURE = "SylStructure";
@@ -102,7 +99,7 @@ public class Relation implements Dumpable {
     /**
      * Creates a relation.
      *
-     * @param name the name of the Relation
+     * @param name  the name of the Relation
      * @param owner the utterance that contains this relation
      */
     Relation(String name, Utterance owner) {
@@ -158,7 +155,7 @@ public class Relation implements Dumpable {
     }
 
     /**
-     * Adds a new item to this relation. The item added does not share 
+     * Adds a new item to this relation. The item added does not share
      * its contents with any other item.
      *
      * @return the newly added item
@@ -172,8 +169,7 @@ public class Relation implements Dumpable {
      * contents with the original item.
      *
      * @param originalItem the ItemContents that will be
-     * shared by the new item
-     *
+     *                     shared by the new item
      * @return the newly added item
      */
     public Item appendItem(Item originalItem) {
@@ -211,10 +207,8 @@ public class Relation implements Dumpable {
     /**
      * Dumps this relation to the print writer.
      *
-     * @param pw the output stream
-     *
-     * @param pad the padding
-     *
+     * @param pw    the output stream
+     * @param pad   the padding
      * @param title the title for the dump
      */
     public void dump(PrintWriter pw, int pad, String title) {

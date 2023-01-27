@@ -30,7 +30,7 @@ import java.util.jar.Attributes;
 /**
  * Provides access to voices for all of FreeTTS. There is only one instance of
  * the VoiceManager.
- *
+ * <p>
  * Each call to getVoices() creates a new instance of each voice.
  *
  * @see Voice
@@ -72,7 +72,7 @@ public class VoiceManager {
 
     /**
      * Provide an array of all voices available to FreeTTS.
-     *
+     * <p>
      * First, if the "freetts.voices" property is set, it is assumed to be a
      * comma-separated list of VoiceDirectory classnames (e.g.,
      * "-Dfreetts.voices=com.sun.speech.freetts.en.us.cmu_us_kal.KevinVoiceDirectory"
@@ -89,8 +89,8 @@ public class VoiceManager {
      * the property is defined and the file does not exist, then an error is
      * raised.
      *
-     * <P>
-     * Every voices file that is read in contains a list of VoiceDirectory class
+     * <p>
+     * Every voice's file that is read in contains a list of VoiceDirectory class
      * names.
      *
      * <p>
@@ -149,9 +149,8 @@ public class VoiceManager {
      * the criteria specified by the contract for {@link #getVoices()}.
      *
      * @return the voice directories
+     * @throws IOException error loading a voice directory
      * @see #getVoices()
-     * @exception IOException
-     *            error loading a voice directory
      */
     private Collection<VoiceDirectory> getVoiceDirectories()
             throws IOException {
@@ -246,24 +245,20 @@ public class VoiceManager {
     }
 
     /**
-     * Recursively gets the urls of the class paths that url is dependant on.
-     *
+     * Recursively gets the urls of the class paths that url is dependent on.
+     * <p>
      * Conventions specified in
      * http://java.sun.com/j2se/1.4.1/docs/guide/extensions/spec.html#bundled
      * are followed.
      *
-     * @param url
-     *            the url to recursively check. If it ends with a "/" then it is
-     *            presumed to be a directory, and is not checked. Otherwise it
-     *            is assumed to be a jar, and its manifest is read to get the
-     *            urls Class-Path entry. These urls are passed to this method
-     *            recursively.
-     *
-     * @param dependencyURLs
-     *            a vector containing all of the dependent urls found. This
-     *            parameter is modified as urls are added to it.
-     * @exception IOException
-     *            error openig the URL connection
+     * @param url            the url to recursively check. If it ends with a "/" then it is
+     *                       presumed to be a directory, and is not checked. Otherwise it
+     *                       is assumed to be a jar, and its manifest is read to get the
+     *                       urls Class-Path entry. These urls are passed to this method
+     *                       recursively.
+     * @param dependencyURLs a vector containing all of the dependent urls found. This
+     *                       parameter is modified as urls are added to it.
+     * @throws IOException error openig the URL connection
      */
     private void getDependencyURLs(URL url, UniqueVector<URL> dependencyURLs)
             throws IOException {
@@ -316,8 +311,7 @@ public class VoiceManager {
      * voices.txt files.
      *
      * @return a vector containing the String names of the voice directories
-     * @exception IOException
-     *            error reading voice files.
+     * @throws IOException error reading voice files.
      */
     private UniqueVector<String> getVoiceDirectoryNamesFromFiles()
             throws IOException {
@@ -357,11 +351,9 @@ public class VoiceManager {
      * jarfiles. The class name is specified as the Main-Class in the manifest
      * of the jarfiles.
      *
-     * @param urls
-     *            a UniqueVector of URLs that refer to the voice jarfiles
-     *
+     * @param urls a UniqueVector of URLs that refer to the voice jarfiles
      * @return a UniqueVector of Strings representing the voice directory class
-     *         names
+     * names
      */
     private UniqueVector<String> getVoiceDirectoryNamesFromJarURLs(
             UniqueVector<URL> urls) {
@@ -473,8 +465,8 @@ public class VoiceManager {
      * Provides a string representation of all voices available to FreeTTS.
      *
      * @return a String which is a space-delimited list of voice names. If there
-     *         is more than one voice, then the word "or" appears before the
-     *         last one.
+     * is more than one voice, then the word "or" appears before the
+     * last one.
      */
     public String toString() {
         StringBuilder names = new StringBuilder();
@@ -498,11 +490,9 @@ public class VoiceManager {
     /**
      * Check if there is a voice provides with the given name.
      *
-     * @param voiceName
-     *            the name of the voice to check
-     *
+     * @param voiceName the name of the voice to check
      * @return <b>true</b> if FreeTTS has a voice available with the name
-     *         <b>voiceName</b>, else <b>false</b>.
+     * <b>voiceName</b>, else <b>false</b>.
      */
     public boolean contains(String voiceName) {
         return (getVoice(voiceName) != null);
@@ -511,11 +501,9 @@ public class VoiceManager {
     /**
      * Get a Voice with a given name.
      *
-     * @param voiceName
-     *            the name of the voice to get.
-     *
+     * @param voiceName the name of the voice to get.
      * @return the Voice that has the same name as <b>voiceName</b> if one
-     *         exists, else <b>null</b>
+     * exists, else <b>null</b>
      */
     public Voice getVoice(String voiceName) {
         Voice[] voices = getVoices();
@@ -531,8 +519,8 @@ public class VoiceManager {
      * Get the directory that the jar file containing this class resides in.
      *
      * @return the name of the directory with a trailing "/" (or equivalent for
-     *         the particular operating system), or "" if unable to determine.
-     *         (For example this class does not reside inside a jar file).
+     * the particular operating system), or "" if unable to determine.
+     * (For example this class does not reside inside a jar file).
      */
     private String getBaseDirectory() {
         String name = this.getClass().getName();
@@ -548,8 +536,7 @@ public class VoiceManager {
     /**
      * Gets the directory name from a URL
      *
-     * @param url
-     *            the url to parse
+     * @param url the url to parse
      * @return the String representation of the directory name in a URL
      */
     private String getURLDirName(URL url) {
@@ -570,9 +557,7 @@ public class VoiceManager {
      * and lines beginning with "#" are ignored. Beginning and trailing
      * whitespace is ignored.
      *
-     * @param fileName
-     *            the name of the voices file to read from
-     *
+     * @param fileName the name of the voices file to read from
      * @return a vector of the names of the VoiceDirectory subclasses
      * @throws FileNotFoundException
      * @throws IOException
@@ -588,12 +573,9 @@ public class VoiceManager {
      * and lines beginning with "#" are ignored. Beginning and trailing
      * whitespace is ignored.
      *
-     * @param is
-     *            the input stream to read from
-     *
+     * @param is the input stream to read from
      * @return a vector of the names of the VoiceDirectory subclasses
-     * @throws IOException
-     *         error reading from the input stream
+     * @throws IOException error reading from the input stream
      */
     private UniqueVector<String> getVoiceDirectoryNamesFromInputStream(
             InputStream is) throws IOException {
@@ -638,19 +620,15 @@ class DynamicClassLoader extends URLClassLoader {
      * searching in the specified parent class loader. Any URL that ends with a
      * '/' is assumed to refer to a directory. Otherwise, the URL is assumed to
      * refer to a JAR file which will be downloaded and opened as needed.
-     *
+     * <p>
      * If there is a security manager, this method first calls the security
      * manager's checkCreateClassLoader method to ensure creation of a class
      * loader is allowed.
      *
-     * @param urls
-     *            the URLs from which to load classes and resources
-     * @param parent
-     *            the parent class loader for delegation
-     *
-     * @throws SecurityException
-     *             if a security manager exists and its checkCreateClassLoader
-     *             method doesn't allow creation of a class loader.
+     * @param urls   the URLs from which to load classes and resources
+     * @param parent the parent class loader for delegation
+     * @throws SecurityException if a security manager exists and its checkCreateClassLoader
+     *                           method doesn't allow creation of a class loader.
      */
     public DynamicClassLoader(URL[] urls, ClassLoader parent) {
         super(urls, parent);
@@ -659,10 +637,9 @@ class DynamicClassLoader extends URLClassLoader {
     }
 
     /**
-     * Add a URL to a class path only if has not already been added.
+     * Add a URL to a class path only if it has not already been added.
      *
-     * @param url
-     *            the url to add to the class path
+     * @param url the url to add to the class path
      */
     public synchronized void addUniqueURL(URL url) {
         // Avoid loading of the freetts.jar.
@@ -673,9 +650,7 @@ class DynamicClassLoader extends URLClassLoader {
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public Class<?> loadClass(String name)
             throws ClassNotFoundException {
         Class<?> loadedClass = findLoadedClass(name);
@@ -715,8 +690,7 @@ class UniqueVector<T> {
      * Add an object o to the vector if it is not already present as defined by
      * the function HashSet.contains(o)
      *
-     * @param o
-     *            the object to add
+     * @param o the object to add
      */
     public void add(T o) {
         if (!contains(o)) {
@@ -729,8 +703,7 @@ class UniqueVector<T> {
      * Appends all elements of a vector to this vector. Only unique elements are
      * added.
      *
-     * @param v
-     *            the vector to add
+     * @param v the vector to add
      */
     public void addVector(UniqueVector<T> v) {
         for (int i = 0; i < v.size(); i++) {
@@ -742,8 +715,7 @@ class UniqueVector<T> {
      * Appends all elements of an array to this vector. Only unique elements are
      * added.
      *
-     * @param a
-     *            the array to add
+     * @param a the array to add
      */
     public void addArray(T[] a) {
         for (T t : a) {
@@ -765,9 +737,7 @@ class UniqueVector<T> {
      * convention of HashSet contains() function, so performance can be expected
      * to be a constant factor.
      *
-     * @param o
-     *            the object to check
-     *
+     * @param o the object to check
      * @return true if element o exists in the vector, else false.
      */
     public boolean contains(T o) {
@@ -777,9 +747,7 @@ class UniqueVector<T> {
     /**
      * Gets an element from a vector.
      *
-     * @param index
-     *            the index into the vector from which to retrieve the element
-     *
+     * @param index the index into the vector from which to retrieve the element
      * @return the object at index <b>index</b>
      */
     public T get(int index) {
@@ -809,6 +777,7 @@ class UniqueVector<T> {
 
     /**
      * Returns the entries of this vector.
+     *
      * @return elements.
      */
     public Collection<T> elements() {

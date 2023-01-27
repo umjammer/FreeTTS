@@ -20,9 +20,7 @@ import com.sun.speech.freetts.util.Utilities;
 
 
 /**
- * Streams audio to multiple files, one per utterance. 
- *
- *
+ * Streams audio to multiple files, one per utterance.
  */
 public class MultiFileAudioPlayer implements AudioPlayer {
     private AudioFormat currentFormat = null;
@@ -46,11 +44,10 @@ public class MultiFileAudioPlayer implements AudioPlayer {
     }
 
     /**
-     * Constructs a MultiFileAudioPlayer 
+     * Constructs a MultiFileAudioPlayer
      *
      * @param baseName the base name of the audio file
-     * @param type the type of audio output
-     *
+     * @param type     the type of audio output
      */
     public MultiFileAudioPlayer(String baseName, AudioFileFormat.Type type) {
         this.baseName = baseName;
@@ -61,9 +58,8 @@ public class MultiFileAudioPlayer implements AudioPlayer {
      * Sets the audio format for this player
      *
      * @param format the audio format
-     *
      * @throws UnsupportedOperationException if the line cannot be opened with
-     *     the given format
+     *                                       the given format
      */
     public synchronized void setAudioFormat(AudioFormat format) {
         currentFormat = format;
@@ -131,15 +127,15 @@ public class MultiFileAudioPlayer implements AudioPlayer {
     /**
      * Sets the current volume.
      *
-     * @param volume  the current volume (between 0 and 1)
+     * @param volume the current volume (between 0 and 1)
      */
     public void setVolume(float volume) {
     }
 
 
     /**
-     *  Starts the output of a set of data. Audio data for a single
-     *  utterance should be grouped between begin/end pairs.
+     * Starts the output of a set of data. Audio data for a single
+     * utterance should be grouped between begin/end pairs.
      *
      * @param size the size of data between now and the end
      */
@@ -148,9 +144,7 @@ public class MultiFileAudioPlayer implements AudioPlayer {
         curIndex = 0;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public boolean end() throws IOException {
         ByteArrayInputStream bais = new ByteArrayInputStream(outputData);
         AudioInputStream ais = new AudioInputStream(bais,
@@ -173,7 +167,7 @@ public class MultiFileAudioPlayer implements AudioPlayer {
      * Waits for all queued audio to be played
      *
      * @return true if the audio played to completion, false if
-     *   the audio was stopped
+     * the audio was stopped
      */
     public boolean drain() {
         return true;
@@ -200,9 +194,8 @@ public class MultiFileAudioPlayer implements AudioPlayer {
      * Writes the given bytes to the audio stream
      *
      * @param audioData audio data to write to the device
-     *
-     * @return <code>true</code> of the write completed successfully, 
-     *       	<code> false </code>if the write was cancelled.
+     * @return <code>true</code> of the write completed successfully,
+     * <code> false </code>if the write was cancelled.
      */
     public boolean write(byte[] audioData) {
         return write(audioData, 0, audioData.length);
@@ -211,12 +204,11 @@ public class MultiFileAudioPlayer implements AudioPlayer {
     /**
      * Writes the given bytes to the audio stream
      *
-     * @param bytes audio data to write to the device
+     * @param bytes  audio data to write to the device
      * @param offset the offset into the buffer
-     * @param size the size into the buffer
-     *
-     * @return <code>true</code> of the write completed successfully, 
-     *       	<code> false </code>if the write was cancelled.
+     * @param size   the size into the buffer
+     * @return <code>true</code> of the write completed successfully,
+     * <code> false </code>if the write was cancelled.
      */
     public boolean write(byte[] bytes, int offset, int size) {
         System.arraycopy(bytes, offset, outputData, curIndex, size);

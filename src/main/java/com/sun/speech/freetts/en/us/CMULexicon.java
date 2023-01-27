@@ -50,14 +50,13 @@ public class CMULexicon extends LexiconImpl {
      * Creates a CMULexicon based upon the given compiled and addenda
      * DBs and the given letter to sound rules
      *
-     * @param compiledURL the compiled database is loaded from here
-     * @param addendaURL the database addenda is loaded from here
+     * @param compiledURL      the compiled database is loaded from here
+     * @param addendaURL       the database addenda is loaded from here
      * @param letterToSoundURL the letter to sound rules are loaded
-     * 		from here
-     * @param binary if <code>true</code> the input data are loaded as
-     * 		binary ; otherwise if <code>false</code> the input
-     * 		data are loaded as text.
-     *
+     *                         from here
+     * @param binary           if <code>true</code> the input data are loaded as
+     *                         binary ; otherwise if <code>false</code> the input
+     *                         data are loaded as text.
      */
     public CMULexicon(URL compiledURL,
                       URL addendaURL,
@@ -118,7 +117,6 @@ public class CMULexicon extends LexiconImpl {
      * Get the CMULexicon.
      *
      * @param useBinaryIO if true use binary IO to load DB
-     *
      * @throws IOException if problems occurred while reading the data
      */
     static public CMULexicon getInstance(boolean useBinaryIO)
@@ -130,7 +128,6 @@ public class CMULexicon extends LexiconImpl {
      * Get the CMULexicon.
      *
      * @param useBinaryIO if true use binary IO to load DB
-     *
      * @throws IOException if problems occurred while reading the data
      */
     static public CMULexicon getInstance(String basename, boolean useBinaryIO)
@@ -144,12 +141,11 @@ public class CMULexicon extends LexiconImpl {
      * Determines if the currentPhone represents a new syllable
      * boundary.
      *
-     * @param syllablePhones the phones in the current syllable so far
-     * @param wordPhones the phones for the whole word
+     * @param syllablePhones   the phones in the current syllable so far
+     * @param wordPhones       the phones for the whole word
      * @param currentWordPhone the word phone in question
-     *
      * @return <code>true</code> if the word phone in question is on a
-     *     syllable boundary; otherwise <code>false</code>.
+     * syllable boundary; otherwise <code>false</code>.
      */
     public boolean isSyllableBoundary(List<String> syllablePhones,
                                       String[] wordPhones,
@@ -178,23 +174,21 @@ public class CMULexicon extends LexiconImpl {
      * Determines if the given phone represents a silent phone.
      *
      * @param phone the phone to test
-     *
      * @return <code>true</code> if the phone represents a silent
-     * 		phone; otherwise <code>false</code>. 
+     * phone; otherwise <code>false</code>.
      */
     static protected boolean isSilence(String phone) {
         return phone.equals("pau");
     }
 
     /**
-     * Determines if there is a vowel in the remainder of the array, 
+     * Determines if there is a vowel in the remainder of the array,
      * starting at the given index.
      *
      * @param phones the set of phones to check
-     * @param index start checking at this index
-     *
-     * @return <code>true</code> if a vowel is found; 
-     *		otherwise <code>false</code>. 
+     * @param index  start checking at this index
+     * @return <code>true</code> if a vowel is found;
+     * otherwise <code>false</code>.
      */
     static protected boolean hasVowel(String[] phones, int index) {
         for (int i = index; i < phones.length; i++) {
@@ -209,9 +203,8 @@ public class CMULexicon extends LexiconImpl {
      * Determines if there is a vowel in given list of phones.
      *
      * @param phones the list of phones
-     *
-     * @return <code>true</code> if a vowel is found; 
-     *		otherwise <code>false</code>. 
+     * @return <code>true</code> if a vowel is found;
+     * otherwise <code>false</code>.
      */
     static protected boolean hasVowel(List<String> phones) {
         for (String phone : phones) {
@@ -226,9 +219,8 @@ public class CMULexicon extends LexiconImpl {
      * Determines if the given phone is a vowel
      *
      * @param phone the phone to test
-     *
      * @return <code>true</code> if phone is a vowel
-     *		otherwise <code>false</code>. 
+     * otherwise <code>false</code>.
      */
     static protected boolean isVowel(String phone) {
         return VOWELS.contains(phone.substring(0, 1));
@@ -238,7 +230,6 @@ public class CMULexicon extends LexiconImpl {
      * Determines the sonority for the given phone.
      *
      * @param phone the phone of interest
-     *
      * @return an integer that classifies phone transitions
      */
     static protected int getSonority(String phone) {

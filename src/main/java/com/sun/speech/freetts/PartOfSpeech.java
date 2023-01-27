@@ -20,7 +20,6 @@ public interface PartOfSpeech {
      * The string is implementation dependent.
      *
      * @param word the word to classify
-     *
      * @return an implementation dependent part of speech for the word
      */
     String getPartOfSpeech(String word);

@@ -30,19 +30,19 @@ public class CMUTimeVoice extends CMUClusterUnitVoice {
     /**
      * Creates a simple cluster unit voice
      *
-     * @param name the name of the voice
-     * @param gender the gender of the voice
-     * @param age the age of the voice
-     * @param description a human-readable string providing a
-     * description that can be displayed for the users.
-     * @param locale the locale of the voice
-     * @param domain the domain of this voice.  For example,
+     * @param name         the name of the voice
+     * @param gender       the gender of the voice
+     * @param age          the age of the voice
+     * @param description  a human-readable string providing a
+     *                     description that can be displayed for the users.
+     * @param locale       the locale of the voice
+     * @param domain       the domain of this voice.  For example,
      * @param organization the organization which created the voice
-     * &quot;general&quot;, &quot;time&quot;, or
-     * &quot;weather&quot;.
-     * @param lexicon the lexicon to load
-     * @param database the url to the database containing unit data
-     * for this voice.
+     *                     &quot;general&quot;, &quot;time&quot;, or
+     *                     &quot;weather&quot;.
+     * @param lexicon      the lexicon to load
+     * @param database     the url to the database containing unit data
+     *                     for this voice.
      */
     public CMUTimeVoice(String name, Gender gender, Age age,
                         String description, Locale locale, String domain,
@@ -61,9 +61,8 @@ public class CMUTimeVoice extends CMUClusterUnitVoice {
      * in this voice.
      *
      * @return the post lexical analyzer in use by this voice
-     *
      * @throws IOException if an IO error occurs while getting
-     *     processor
+     *                     processor
      */
     protected UtteranceProcessor getPostLexicalAnalyzer() throws IOException {
         /* Do nothing

@@ -16,14 +16,14 @@ import java.util.StringTokenizer;
 
 
 /**
- * Represents a node in a Relation. Items can have shared contents but 
+ * Represents a node in a Relation. Items can have shared contents but
  * each item has its own set of Daughters. The shared contents of an
  * item (represented by ItemContents) includes the feature set for the
  * item and the set of all relations that this item is contained in.
  * An item can be contained in a number of relations and as daughters
  * to other items. This class is used to keep track of all of these
  * relationships. There may be many instances of item that reference
- * the same shared ItemContents. 
+ * the same shared ItemContents.
  */
 public class Item implements Dumpable {
     private Relation ownerRelation;
@@ -39,9 +39,9 @@ public class Item implements Dumpable {
      * Relation. If shared contents is null a new sharedContents is
      * created.
      *
-     * @param relation the relation that owns this item
+     * @param relation       the relation that owns this item
      * @param sharedContents the contents that is shared with others.
-     *   If null, a new sharedContents is created.
+     *                       If null, a new sharedContents is created.
      */
     public Item(Relation relation, ItemContents sharedContents) {
         ownerRelation = relation;
@@ -64,9 +64,8 @@ public class Item implements Dumpable {
      * contents.
      *
      * @param relationName the relation of interest
-     *
      * @return the item as found in the given relation or null if not
-     *   found
+     * found
      */
     public Item getItemAs(String relationName) {
         return getSharedContents().getItemRelation(relationName);
@@ -113,7 +112,6 @@ public class Item implements Dumpable {
      * Retrieves the Nth daughter of this item.
      *
      * @param which the index of the daughter to return
-     *
      * @return the Nth daughter or null if none at the given index
      */
     public Item getNthDaughter(int which) {
@@ -241,7 +239,7 @@ public class Item implements Dumpable {
     /**
      * Finds the feature by following the given path.
      * Path is a string of
-     *   ":" or "." separated strings with the following interpretations:
+     * ":" or "." separated strings with the following interpretations:
      * <ul>
      * <li> n - next item
      * <li> p - previous item
@@ -324,7 +322,6 @@ public class Item implements Dumpable {
      * graph, then list access exceptions will be thrown.
      *
      * @param path the path to follow
-     *
      * @return the item at the given path
      */
     public Item findItem(String path) {
@@ -405,9 +402,8 @@ public class Item implements Dumpable {
     /**
      * Appends an item in this list after this item.
      *
-     * @param originalItem new item has shared contents with this 
-     *   item (or * null)
-     *
+     * @param originalItem new item has shared contents with this
+     *                     item (or * null)
      * @return the newly appended item
      */
     public Item appendItem(Item originalItem) {
@@ -447,9 +443,8 @@ public class Item implements Dumpable {
     /**
      * Prepends an item in this list before this item.
      *
-     * @param originalItem new item has shared contents with this 
-     *   item (or * null)
-     *
+     * @param originalItem new item has shared contents with this
+     *                     item (or * null)
      * @return the newly appended item
      */
     public Item prependItem(Item originalItem) {
@@ -496,7 +491,6 @@ public class Item implements Dumpable {
      * Determines if the shared contents of the two items are the same.
      *
      * @param otherItem the item to compare
-     *
      * @return true if the shared contents are the same
      */
     public boolean equalsShared(Item otherItem) {

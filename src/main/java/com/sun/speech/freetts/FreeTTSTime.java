@@ -25,9 +25,8 @@ import java.util.regex.Pattern;
 
 /**
  * Standalone utility that tells the time.
- *
+ * <p>
  * Defaults to "alan" voice.
- *
  */
 public class FreeTTSTime extends FreeTTS {
 
@@ -115,8 +114,7 @@ public class FreeTTSTime extends FreeTTS {
      * of the time.
      *
      * @param hour the hour of the time
-     * @param min the minute of the time
-     *
+     * @param min  the minute of the time
      * @return a string phrase
      */
     private static String timeApprox(int hour, int min) {
@@ -140,8 +138,7 @@ public class FreeTTSTime extends FreeTTS {
      * to the hour.
      *
      * @param hour the hour of the time
-     * @param min the minute of the time
-     *
+     * @param min  the minute of the time
      * @return a string phrase.
      */
     private static String timeMin(int hour, int min) {
@@ -190,8 +187,7 @@ public class FreeTTSTime extends FreeTTS {
      * to the hour.
      *
      * @param hour the hour of the time
-     * @param min the minute of the time
-     *
+     * @param min  the minute of the time
      * @return a string phrase.
      */
     private static String timeHour(int hour, int min) {
@@ -243,8 +239,7 @@ public class FreeTTSTime extends FreeTTS {
      * Returns a phrase that conveys the time of day.
      *
      * @param hour the hour of the time
-     * @param min the minute of the time
-     *
+     * @param min  the minute of the time
      * @return a string phrase
      */
     private static String timeOfDay(int hour, int min) {
@@ -268,9 +263,8 @@ public class FreeTTSTime extends FreeTTS {
      * Returns a string that corresponds to the given time.
      *
      * @param time the time in the form HH:MM
-     *
      * @return the time in string, null if the given time is not in the
-     *   form HH:MM 
+     * form HH:MM
      */
     public static String timeToString(String time) {
         String theTime = null;
@@ -287,8 +281,7 @@ public class FreeTTSTime extends FreeTTS {
      * Returns a string that corresponds to the given time.
      *
      * @param hour the hour
-     * @param min the minutes
-     *
+     * @param min  the minutes
      * @return the time in string, null if the given time out of range
      */
     public static String timeToString(int hour, int min) {
@@ -307,9 +300,8 @@ public class FreeTTSTime extends FreeTTS {
      * 59.
      *
      * @param time the time in the form HH:MM
-     *
      * @throws IllegalArgumentException if time is not in the form
-     *   HH:MM
+     *                                  HH:MM
      */
     public void timeToSpeech(String time) {
         String theTime = timeToString(time);
@@ -324,7 +316,7 @@ public class FreeTTSTime extends FreeTTS {
      * Speaks the time given the hour and minute.
      *
      * @param hour the hour of the day (0 to 23)
-     * @param min the minute of the hour (0 to 59)
+     * @param min  the minute of the hour (0 to 59)
      */
     public void timeToSpeech(int hour, int min) {
         if (hour < 0 || hour > 23) {

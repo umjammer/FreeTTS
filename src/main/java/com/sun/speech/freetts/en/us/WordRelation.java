@@ -33,12 +33,11 @@ public class WordRelation {
 
 
     /**
-     * Creates a WordRelation object with the given utterance and 
+     * Creates a WordRelation object with the given utterance and
      * TokenToWords.
      *
-     * @param utterance the Utterance from which to create a Relation
+     * @param utterance    the Utterance from which to create a Relation
      * @param tokenToWords the TokenToWords object to use
-     *
      * @return a WordRelation object
      */
     public static WordRelation createWordRelation(Utterance utterance,
