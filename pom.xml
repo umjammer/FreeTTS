@@ -5,7 +5,7 @@
 
   <groupId>org.jvoicexml</groupId>
   <artifactId>freetts</artifactId>
-  <version>1.2.3</version>
+  <version>1.2.4</version>
 
   <properties>
     <user_voice_base_path>com/sun/speech/freetts/en/us</user_voice_base_path>
