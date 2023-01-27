@@ -14,7 +14,7 @@ mavenized FreeTTS
 
 ## TODO
 
- * demo
+ * demo (wip)
 
 ---
 [Original](https://github.com/JVoiceXML/FreeTTS)
