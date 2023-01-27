@@ -24,7 +24,7 @@ import javax.speech.synthesis.Voice;
 public class HelloWorld {
 
     /**
-     * Returns a "no synthesizer" message, and asks 
+     * Returns a "no synthesizer" message, and asks
      * the user to check if the "speech.properties" file is
      * at <code>user.home</code> or <code>java.home/lib</code>.
      *
@@ -53,7 +53,7 @@ public class HelloWorld {
      * JSAPI mode name.  The currently supported domains are
      * "general," which means general purpose synthesis for tasks
      * such as reading e-mail, and "time" which means a domain that's
-     * only good for speaking the time of day. 
+     * only good for speaking the time of day.
      */
     public static void listAllVoices(String modeName) {
 

@@ -75,7 +75,7 @@ public class FreeTTSEmacspeakServer extends TTSServer {
 
     /**
      * Starts this TTS Server.
-     *
+     * <p>
      * Usage: FreeTTSEmacspeakServer [voicename [speaking rate]]
      */
     public static void main(String[] args) {

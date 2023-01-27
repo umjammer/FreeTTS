@@ -3,20 +3,20 @@ package tools.arcticToFreeTTS;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintStream;
-
 import java.util.StringTokenizer;
+
 
 public class STSFrame extends Frame {
 
     public int[] residuals;
 
     public STSFrame(int numChannels, BufferedReader reader)
-        throws IOException {
+            throws IOException {
         String line = reader.readLine();
         pitchmarkTime = Float.parseFloat(line);
 
         parameters = new int[numChannels];
-        
+
         line = reader.readLine();
         StringTokenizer tokenizer = new StringTokenizer(line);
         for (int i = 0; i < numChannels; i++) {
@@ -45,5 +45,5 @@ public class STSFrame extends Frame {
             out.print(" " + residual);
         }
         out.println();
-    }    
+    }
 }

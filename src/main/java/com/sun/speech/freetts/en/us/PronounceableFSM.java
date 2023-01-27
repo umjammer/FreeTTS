@@ -52,9 +52,9 @@ public class PronounceableFSM {
     /**
      * Constructs a PronounceableFSM with information in the given URL.
      *
-     * @param url the URL that contains the FSM specification
+     * @param url           the URL that contains the FSM specification
      * @param scanFromFront indicates whether this FSM should scan the input
-     * string from the front, or from the back
+     *                      string from the front, or from the back
      */
     public PronounceableFSM(URL url, boolean scanFromFront) throws IOException {
         this.scanFromFront = scanFromFront;
@@ -68,9 +68,9 @@ public class PronounceableFSM {
      * Constructs a PronounceableFSM with the given attributes.
      *
      * @param vocabularySize the vocabulary size of the FSM
-     * @param transitions the transitions of the FSM
-     * @param scanFromFront indicates whether this FSM should scan the input
-     * string from the front, or from the back
+     * @param transitions    the transitions of the FSM
+     * @param scanFromFront  indicates whether this FSM should scan the input
+     *                       string from the front, or from the back
      */
     public PronounceableFSM(int vocabularySize, int[] transitions,
                             boolean scanFromFront) {
@@ -84,7 +84,6 @@ public class PronounceableFSM {
      * Loads the ASCII specification of this FSM from the given InputStream.
      *
      * @param is the input stream to load from
-     *
      * @throws IOException if an error occurs on input.
      */
     private void loadText(InputStream is) throws IOException {
@@ -116,7 +115,6 @@ public class PronounceableFSM {
      * Returns the integer value of the last integer in the given string.
      *
      * @param line the line to parse the integer from
-     *
      * @return an integer
      */
     private int parseLastInt(String line) {
@@ -129,7 +127,7 @@ public class PronounceableFSM {
      * Causes this FSM to transition to the next state given
      * the current state and input symbol.
      *
-     * @param state the current state
+     * @param state  the current state
      * @param symbol the input symbol
      */
     private int transition(int state, int symbol) {
@@ -147,7 +145,6 @@ public class PronounceableFSM {
      * input string.
      *
      * @param inputString the input string to be tested
-     *
      * @return true if this FSM accepts, false if it rejects
      */
     public boolean accept(String inputString) {

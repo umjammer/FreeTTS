@@ -47,10 +47,9 @@ public class MbrolaCaller implements UtteranceProcessor {
     /**
      * Call external MBROLA binary to synthesize the utterance.
      *
-     * @param  utterance  the utterance to process
-     *
+     * @param utterance the utterance to process
      * @throws ProcessException if an error occurs while
-     *         processing of the utterance
+     *                          processing of the utterance
      */
     public void processUtterance(Utterance utterance) throws ProcessException {
         // Go through Segment relation and print values into Mbrola

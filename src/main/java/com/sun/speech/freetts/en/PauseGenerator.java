@@ -39,10 +39,9 @@ public class PauseGenerator implements UtteranceProcessor {
     /**
      * Annotates an utterance with pause information.
      *
-     * @param  utterance  the utterance to process
-     *
+     * @param utterance the utterance to process
      * @throws ProcessException if an error occurs while
-     *         processing of the utterance
+     *                          processing of the utterance
      */
     public void processUtterance(Utterance utterance) throws ProcessException {
         String silence = utterance.getVoice().getFeatures().

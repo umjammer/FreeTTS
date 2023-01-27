@@ -48,7 +48,6 @@ public class OutputQueue {
      * the queue is full.
      *
      * @param utterance the utterance to post
-     *
      * @throws IllegalStateException if the queue is closed
      */
     public synchronized void post(Utterance utterance) {

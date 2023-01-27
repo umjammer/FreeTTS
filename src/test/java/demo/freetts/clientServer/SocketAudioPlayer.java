@@ -70,7 +70,6 @@ public class SocketAudioPlayer implements AudioPlayer {
      * Retrieves the audio format for this player
      *
      * @return the current audio format
-     *
      */
     public AudioFormat getAudioFormat() {
         return this.audioFormat;
@@ -117,11 +116,11 @@ public class SocketAudioPlayer implements AudioPlayer {
 
 
     /**
-     *  Starts the output of a set of data. Audio data for a single
-     *  utterance should be grouped between begin/end pairs.
+     * Starts the output of a set of data. Audio data for a single
+     * utterance should be grouped between begin/end pairs.
      *
      * @param size the size of data in bytes to be output before
-     *    <code>end</code> is called.
+     *             <code>end</code> is called.
      */
     public void begin(int size) {
         try {
@@ -146,13 +145,12 @@ public class SocketAudioPlayer implements AudioPlayer {
 
 
     /**
-     *  Signals the end of a set of data. Audio data for a single 
-     *  utterance should be groupd between <code> begin/end </code> pairs.
+     * Signals the end of a set of data. Audio data for a single
+     * utterance should be groupd between <code> begin/end </code> pairs.
      *
-     *  @return <code>true</code> if the audio was output properly, 
-     *          <code> false</code> if the output was cancelled 
-     *          or interrupted.
-     *
+     * @return <code>true</code> if the audio was output properly,
+     * <code> false</code> if the output was cancelled
+     * or interrupted.
      */
     public boolean end() {
         if (debug) {
@@ -172,7 +170,6 @@ public class SocketAudioPlayer implements AudioPlayer {
     /**
      * Cancels all queued output. All 'write' calls until the next
      * reset will return false. Not implemented in this Player.
-     *
      */
     public void cancel() {
     }
@@ -231,9 +228,8 @@ public class SocketAudioPlayer implements AudioPlayer {
      * Writes the given bytes to the audio stream
      *
      * @param audioData audio data to write to the device
-     *
-     * @return <code>true</code> of the write completed successfully, 
-     *          <code> false </code>if the write was cancelled.
+     * @return <code>true</code> of the write completed successfully,
+     * <code> false </code>if the write was cancelled.
      */
     public boolean write(byte[] audioData) {
         return write(audioData, 0, audioData.length);
@@ -244,11 +240,10 @@ public class SocketAudioPlayer implements AudioPlayer {
      * Writes the given bytes to the audio stream
      *
      * @param audioData audio data to write to the device
-     * @param offset the offset into the buffer
-     * @param size the number of bytes to write.
-     *
-     * @return <code>true</code> of the write completed successfully, 
-     *          <code> false </code>if the write was cancelled.
+     * @param offset    the offset into the buffer
+     * @param size      the number of bytes to write.
+     * @return <code>true</code> of the write completed successfully,
+     * <code> false </code>if the write was cancelled.
      */
     public boolean write(byte[] audioData, int offset, int size) {
         try {

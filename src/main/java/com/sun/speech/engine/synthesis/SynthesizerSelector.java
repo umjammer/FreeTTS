@@ -31,10 +31,9 @@ public class SynthesizerSelector {
      * the user a choice.
      *
      * @param component the component for JOptionPane.showInputDialog
-     * @param appName the title for the input dialog
-     *
+     * @param appName   the title for the input dialog
      * @return a <code>SynthesizerModeDesc</code> representing the
-     *   synthesizer to use.
+     * synthesizer to use.
      */
     static public SynthesizerModeDesc getSynthesizerModeDesc(Component component, String appName) {
         List<SynthesizerModeDesc> synths = new java.util.ArrayList<>();

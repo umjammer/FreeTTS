@@ -12,7 +12,6 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.FlowLayout;
-import javax.speech.synthesis.SynthesizerModeDesc;
 import javax.swing.ComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -33,7 +32,7 @@ import javax.swing.border.TitledBorder;
 /**
  * Defines and contains all the user-interface Swing objects of the Player.
  * In terms of the model-view-controller (MVC) architecture, this implements
- * the "view" and "control" elements. Its interacts with the PlayerModel 
+ * the "view" and "control" elements. Its interacts with the PlayerModel
  * class, the "model" element.
  */
 public class PlayerPanel extends JPanel {
@@ -98,7 +97,7 @@ public class PlayerPanel extends JPanel {
      * Constructs a PlayerPanel that interacts with the given PlayerModel.
      *
      * @param playerModel the PlayerModel that this PlayerPanel interacts
-     *   with.
+     *                    with.
      */
     public PlayerPanel(PlayerModel playerModel) {
 
@@ -124,7 +123,7 @@ public class PlayerPanel extends JPanel {
      * </ol>
      *
      * @return the upper JPanel of the application with all the controls
-     *    and play list 
+     * and play list
      */
     private JPanel createMainPanel() {
         JPanel centerPanel = new JPanel();
@@ -186,10 +185,10 @@ public class PlayerPanel extends JPanel {
      */
     private JPanel createSettingsPanel() {
         synthesizerComboBox = createComboBox((ComboBoxModel<Object>) playerModel.getSynthesizerList(),
-                        "Synthesizer", "FreeTTS Synthesizer");
+                "Synthesizer", "FreeTTS Synthesizer");
 
         voiceComboBox = createComboBox((ComboBoxModel<Object>) playerModel.getVoiceList(),
-                        "Voice", "Voice");
+                "Voice", "Voice");
 
         JLabel synthesizerLabel = new JLabel("Synthesizer:");
         synthesizerLabel.setDisplayedMnemonic(synthesizerMnemonic);
@@ -223,10 +222,10 @@ public class PlayerPanel extends JPanel {
     /**
      * Creates a non-editable ComboBox with the given attributes.
      *
-     * @param model the ComboBoxModel this ComboBox is based on
-     * @param toolTipText the tooltip text
+     * @param model                 the ComboBoxModel this ComboBox is based on
+     * @param toolTipText           the tooltip text
      * @param prototypeDisplayValue the String used to calculate the
-     *    width of the ComboBox
+     *                              width of the ComboBox
      */
     public JComboBox<Object> createComboBox(ComboBoxModel<Object> model, String toolTipText, String prototypeDisplayValue) {
         JComboBox<Object> comboBox = new JComboBox<>(model);
@@ -267,7 +266,7 @@ public class PlayerPanel extends JPanel {
     /**
      * Creates the JPanel and the buttons it contains.
      *
-     * @return a JPanel that contains the buttons. 
+     * @return a JPanel that contains the buttons.
      */
     private JPanel createControlsPanel() {
 
@@ -299,9 +298,8 @@ public class PlayerPanel extends JPanel {
      * Creates a JButton with the given label, which is also the tooltip
      * text, and the given mnemonic.
      *
-     * @param label the button label, which is also the tooltip text
+     * @param label    the button label, which is also the tooltip text
      * @param mnemonic mnemonic for the button
-     *
      * @return a JButton
      */
     private JButton createJButton(String label, int mnemonic) {
@@ -422,11 +420,11 @@ public class PlayerPanel extends JPanel {
      * Creates a JPanel that contains the given JSlider, with the
      * given attributes.
      *
-     * @param slider the JSlider
-     * @param toolTipText the text for the tooltip
+     * @param slider           the JSlider
+     * @param toolTipText      the text for the tooltip
      * @param minorTickSpacing the spacing between minor ticks
      * @param majorTickSpacing the spacing between major ticks
-     * @param title the title of the JSlider
+     * @param title            the title of the JSlider
      */
     private JPanel createSliderPanel(JSlider slider, String toolTipText,
                                      int minorTickSpacing,

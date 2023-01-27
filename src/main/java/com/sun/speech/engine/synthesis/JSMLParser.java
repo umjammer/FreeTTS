@@ -45,10 +45,8 @@ public class JSMLParser {
      *
      * @param jsmlText the JSML text
      * @param validate if <code>true</code>, validate the JSML text
-     *
-     * @see #getDocument
-     *
      * @throws JSMLException if the JSML text contains errors
+     * @see #getDocument
      */
     public JSMLParser(String jsmlText, boolean validate)
             throws JSMLException {
@@ -76,12 +74,10 @@ public class JSMLParser {
      * This is typically not used since JSML doesn't require validation.
      *
      * @param jsmlSource the URL containing JSML text
-     * @param validate if <code>true</code>, validate the JSML text
-     *
-     * @see #getDocument
-     *
+     * @param validate   if <code>true</code>, validate the JSML text
      * @throws JSMLException if the JSML text contains errors
-     * @throws IOException if problems encountered with URL
+     * @throws IOException   if problems encountered with URL
+     * @see #getDocument
      */
     public JSMLParser(URL jsmlSource, boolean validate)
             throws JSMLException, IOException {
@@ -101,11 +97,11 @@ public class JSMLParser {
 
     /**
      * Lazy instantiation of the document builder.
+     *
      * @param validate <code>true</code> if the document builder should be
-     *          validating.
+     *                 validating.
      * @return document builder to use
-     * @throws JSMLException
-     *         error creating the document builder.
+     * @throws JSMLException error creating the document builder.
      */
     private DocumentBuilder getDocumentBuilder(boolean validate)
             throws JSMLException {
@@ -140,12 +136,11 @@ public class JSMLParser {
     /**
      * Parses the source and optionally validates it.
      *
-     * @param source the JSML text
+     * @param source   the JSML text
      * @param validate if <code>true</code>, validate the JSML text
-     *
      * @return parsed document
      * @throws JSMLException if the JSML text contains errors
-     * @throws IOException if problems encountered with <code>source</code>
+     * @throws IOException   if problems encountered with <code>source</code>
      */
     protected Document parse(InputSource source, boolean validate)
             throws JSMLException, IOException {

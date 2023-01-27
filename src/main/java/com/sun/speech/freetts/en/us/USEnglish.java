@@ -18,8 +18,8 @@ package com.sun.speech.freetts.en.us;
  * Regular Expressions for the US English language.
  * With regular expressions, it specifies what are whitespace,
  * letters in the alphabet, uppercase and lowercase letters, alphanumeric
- * characters, identifiers, integers, doubles, digits, and 'comma and int'. 
- *
+ * characters, identifiers, integers, doubles, digits, and 'comma and int'.
+ * <p>
  * It translates the following code from flite:
  * src/regex/cst_regex.c
  * lang/usenglish/us_text.c

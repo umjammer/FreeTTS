@@ -28,7 +28,6 @@ public interface FeatureSet extends Dumpable {
      * Determines if the given feature is present.
      *
      * @param name the name of the feature of interest
-     *
      * @return true if the named feature is present
      */
     boolean isPresent(String name);
@@ -45,12 +44,10 @@ public interface FeatureSet extends Dumpable {
      * Convenience method that returns the named feature as a string.
      *
      * @param name the name of the feature
-     *
      * @return the value associated with the name or null if the value
-     *   is not found
-     *
+     * is not found
      * @throws ClassCastException if the associated value is not a
-     *   String
+     *                            String
      */
     String getString(String name);
 
@@ -58,12 +55,10 @@ public interface FeatureSet extends Dumpable {
      * Convenience method that returns the named feature as an int.
      *
      * @param name the name of the feature
-     *
      * @return the value associated with the name or null if the value
-     *   is not found
-     *
+     * is not found
      * @throws ClassCastException if the associated value is not an
-     *   int
+     *                            int
      */
     int getInt(String name);
 
@@ -71,12 +66,10 @@ public interface FeatureSet extends Dumpable {
      * Convenience method that returns the named feature as a float.
      *
      * @param name the name of the feature
-     *
      * @return the value associated with the name or null if the value
-     *   is not found
-     *
+     * is not found
      * @throws ClassCastException if the associated value is not a
-     *   float.
+     *                            float.
      */
     float getFloat(String name);
 
@@ -84,16 +77,15 @@ public interface FeatureSet extends Dumpable {
      * Returns the named feature as an object.
      *
      * @param name the name of the feature
-     *
      * @return the value associated with the name or null if the value
-     *   is not found
+     * is not found
      */
     Object getObject(String name);
 
     /**
      * Convenience method that sets the named feature as an int.
      *
-     * @param name the name of the feature
+     * @param name  the name of the feature
      * @param value the value of the feature
      */
     void setInt(String name, int value);
@@ -101,7 +93,7 @@ public interface FeatureSet extends Dumpable {
     /**
      * Convenience method that sets the named feature as a float
      *
-     * @param name the name of the feature
+     * @param name  the name of the feature
      * @param value the value of the feature
      */
     void setFloat(String name, float value);
@@ -109,7 +101,7 @@ public interface FeatureSet extends Dumpable {
     /**
      * Convenience method that sets the named feature as a String.
      *
-     * @param name the name of the feature
+     * @param name  the name of the feature
      * @param value the value of the feature
      */
     void setString(String name, String value);
@@ -117,7 +109,7 @@ public interface FeatureSet extends Dumpable {
     /**
      * Sets the named feature .
      *
-     * @param name the name of the feature
+     * @param name  the name of the feature
      * @param value the value of the feature
      */
     void setObject(String name, Object value);
@@ -126,8 +118,8 @@ public interface FeatureSet extends Dumpable {
      * Dumps the FeatureSet in textual form.
      *
      * @param output where to send the formatted output
-     * @param pad the padding
-     * @param title the title
+     * @param pad    the padding
+     * @param title  the title
      */
     void dump(PrintWriter output, int pad, String title);
 }

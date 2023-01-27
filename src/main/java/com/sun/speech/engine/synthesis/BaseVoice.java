@@ -45,16 +45,16 @@ public class BaseVoice extends Voice {
      * Class constructor.  The age and gender parameters are defined in
      * <code>Voice</code>.
      *
-     * @param id the id
-     * @param name the name
-     * @param gender the gender
-     * @param age the age
-     * @param style the style
-     * @param pitch the baseline pitch in Hertz
-     * @param pitchRange the pitch range in Hertz
+     * @param id           the id
+     * @param name         the name
+     * @param gender       the gender
+     * @param age          the age
+     * @param style        the style
+     * @param pitch        the baseline pitch in Hertz
+     * @param pitchRange   the pitch range in Hertz
      * @param speakingRate the speaking rate in words per minute
-     * @param volume the volume expressed between 0.0 and 1.0,
-     *   inclusive
+     * @param volume       the volume expressed between 0.0 and 1.0,
+     *                     inclusive
      */
     public BaseVoice(String id,
                      String name,
@@ -78,7 +78,6 @@ public class BaseVoice extends Voice {
      * synthesizer.
      *
      * @return the id for this voice
-     *
      * @see #setId
      */
     public String getId() {
@@ -89,7 +88,6 @@ public class BaseVoice extends Voice {
      * Sets the id for this voice.
      *
      * @param id the new id
-     *
      * @see #getId
      */
     public void setId(String id) {
@@ -98,6 +96,7 @@ public class BaseVoice extends Voice {
 
     /**
      * Gets the pitch for this voice
+     *
      * @return the pitch
      */
     public float getPitch() {
@@ -106,6 +105,7 @@ public class BaseVoice extends Voice {
 
     /**
      * Gets the pitch range for this voice
+     *
      * @return the pitch range
      */
     public float getPitchRange() {
@@ -114,6 +114,7 @@ public class BaseVoice extends Voice {
 
     /**
      * Gets the speaking rate for this voice
+     *
      * @return the speaking rate
      */
     public float getSpeakingRate() {
@@ -122,6 +123,7 @@ public class BaseVoice extends Voice {
 
     /**
      * Gets the volume for this voice
+     *
      * @return the volume
      */
     public float getVolume() {
@@ -139,7 +141,6 @@ public class BaseVoice extends Voice {
 
     /**
      * Converts a Voice to a printable string.
-     *
      */
     public String toString() {
         StringBuilder buf = new StringBuilder();

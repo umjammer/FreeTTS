@@ -25,8 +25,7 @@ public class Playable {
      * Creates a JSML text Playable object with the given text.
      *
      * @param jsmlText the JSML text of the Playable object
-     *
-     * @return a JSML text Playable object 
+     * @return a JSML text Playable object
      */
     public static Playable createJSMLPlayable(String jsmlText) {
         return new Playable(PlayableType.JSML, jsmlText, jsmlText);
@@ -36,7 +35,6 @@ public class Playable {
      * Creates a JSML file Playable object with the given File.
      *
      * @param jsmlFile the JSML file
-     *
      * @return a JSML file Playable object
      */
     public static Playable createJSMLFilePlayable(File jsmlFile) {
@@ -48,7 +46,6 @@ public class Playable {
      * Creates an ASCII text Playable object with the given text.
      *
      * @param text the ASCII text
-     *
      * @return an ASCII text JSML file Playable object
      */
     public static Playable createTextPlayable(String text) {
@@ -59,7 +56,6 @@ public class Playable {
      * Creates an ASCII file Playable object with the given text file.
      *
      * @param textFile the ASCII text file
-     *
      * @return an ASCII text file Playable object
      */
     public static Playable createTextFilePlayable(File textFile) {
@@ -71,7 +67,6 @@ public class Playable {
      * Creates a URL Playable object with the given URL.
      *
      * @param url the URL
-     *
      * @return a URL Playable object
      */
     public static Playable createURLPlayable(String url) {

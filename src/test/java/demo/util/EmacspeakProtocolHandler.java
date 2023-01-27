@@ -22,7 +22,7 @@ import com.sun.speech.freetts.util.Utilities;
 /**
  * Implements a very simplified (and incomplete) version of the
  * Emacspeak speech server.
- *
+ * <p>
  * See the Emacspeak protocol document at
  * http://emacspeak.sourceforge.net/info/html/TTS-Servers.html
  * for more information.
@@ -108,10 +108,9 @@ public abstract class EmacspeakProtocolHandler implements Runnable {
      * starting and ending sequence.
      *
      * @param start the starting character sequence
-     * @param end the ending character sequence
-     *
+     * @param end   the ending character sequence
      * @return true if the input string matches the given Pattern;
-     *         false otherwise
+     * false otherwise
      */
     private static boolean matches(String start, String end, String input) {
         return (input.startsWith(start) && input.endsWith(end));
@@ -122,7 +121,6 @@ public abstract class EmacspeakProtocolHandler implements Runnable {
      * Returns the type of the given command.
      *
      * @param command the command from emacspeak
-     *
      * @return the command type
      */
     private static int getCommandType(String command) {
@@ -151,7 +149,6 @@ public abstract class EmacspeakProtocolHandler implements Runnable {
      * just returns the text after the first space.
      *
      * @param input the input text
-     *
      * @return text within curly brackets
      */
     public static String textInCurlyBrackets(String input) {
@@ -292,14 +289,13 @@ public abstract class EmacspeakProtocolHandler implements Runnable {
 
 
     /**
-     * Read a line of text. A line is considered to be terminated 
+     * Read a line of text. A line is considered to be terminated
      * by any one of a line feed ('\n'), a carriage return ('\r'),
-     * or a carriage return followed immediately by a linefeed. 
+     * or a carriage return followed immediately by a linefeed.
      *
-     * @return A String containing the contents of the line, 
+     * @return A String containing the contents of the line,
      * not including any line-termination
      * characters, or null if the end of the stream has been reached
-     *
      * @throws IOException if an I/O error occurs
      */
     private String readLine() throws IOException {
@@ -321,16 +317,16 @@ public abstract class EmacspeakProtocolHandler implements Runnable {
     }
 
     /**
-     * Detects and handles a possible emacspeak quitting sequence 
+     * Detects and handles a possible emacspeak quitting sequence
      * of commands, by looking at the given command type and content.
      * If a quitting sequence is detected, it will close the socket.
      * Note that this is not the best way to trap a quitting sequence,
      * but I can't find another way to trap it. This method will
      * do a socket.notifyAll() to tell objects waiting on the socket
-     * that it has been closed. 
+     * that it has been closed.
      *
      * @param commandType the command type
-     * @param content the contents of the command
+     * @param content     the contents of the command
      */
     private synchronized void detectQuitting(int commandType, String content)
             throws IOException {

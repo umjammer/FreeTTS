@@ -10,7 +10,7 @@ public class Frame {
 
     public Frame() {
     }
-    
+
     public Frame(float pitchmarkTime, int[] parameters) {
         this.pitchmarkTime = pitchmarkTime;
         this.parameters = parameters;
@@ -26,5 +26,5 @@ public class Frame {
         }
         out.println();
         out.println("RESIDUAL 0");
-    }    
+    }
 }

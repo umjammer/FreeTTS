@@ -14,36 +14,36 @@ public class Unit {
     public Unit previous;
     public Unit next;
     public int index;
-    
+
     /**
      * Creates a new Unit entry for the catalog.
      *
      * @param unitType the type of this unit
-     * @param unitNum the index of this unit
+     * @param unitNum  the index of this unit
      * @param filename (without extension) where the audio and STS
-     * data for this unit can be found
-     * @param start the timing info (in seconds) for where the audio
-     * and STS data for this unit starts in filename
-     * @param middle the timing info (in seconds) for where the middle
-     * of the audio and STS data for this unit is in filename
-     * @param end the timing info (in seconds) for where the audio
-     * and STS data for this unit ends in filename
+     *                 data for this unit can be found
+     * @param start    the timing info (in seconds) for where the audio
+     *                 and STS data for this unit starts in filename
+     * @param middle   the timing info (in seconds) for where the middle
+     *                 of the audio and STS data for this unit is in filename
+     * @param end      the timing info (in seconds) for where the audio
+     *                 and STS data for this unit ends in filename
      * @param previous the unit preceding this one in the recorded
-     * utterance
-     * @param next the unit following this one in the recorded
-     * utterance
-     * @param index the index of this unit in the overall catalog
+     *                 utterance
+     * @param next     the unit following this one in the recorded
+     *                 utterance
+     * @param index    the index of this unit in the overall catalog
      */
     public Unit(
-        String unitType,
-        int unitNum,
-        String filename,
-        float start,
-        float middle,
-        float end,
-        Unit previous,
-        Unit next,
-        int index) {
+            String unitType,
+            int unitNum,
+            String filename,
+            float start,
+            float middle,
+            float end,
+            Unit previous,
+            Unit next,
+            int index) {
 
         this.unitType = unitType;
         this.unitNum = unitNum;
@@ -70,7 +70,7 @@ public class Unit {
             buf.append(" CLUNIT_NONE");
         }
         buf.append(" (index=").append(index).append(")");
-        
+
         return buf.toString();
     }
 }

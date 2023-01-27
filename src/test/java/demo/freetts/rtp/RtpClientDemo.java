@@ -54,8 +54,7 @@ public class RtpClientDemo implements ControllerListener {
     /**
      * Starts the program
      *
-     * @param args
-     *            none expected
+     * @param args none expected
      */
     public static void main(String[] args) {
         RtpClientDemo client = new RtpClientDemo();

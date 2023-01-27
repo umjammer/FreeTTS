@@ -363,7 +363,7 @@ class PlayerMenuBar extends JMenuBar {
         });
         fileSpeakURLMenuItem.addActionListener(e -> {
             String url = JOptionPane.showInputDialog(getParent(), "Enter URL:", "Speak URL",
-                            JOptionPane.QUESTION_MESSAGE);
+                    JOptionPane.QUESTION_MESSAGE);
             if (url != null && url.length() > 0) {
                 playPlayable(Playable.createURLPlayable(url));
             }

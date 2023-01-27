@@ -24,7 +24,7 @@ public class FreeTTSVoice extends BaseVoice {
     /**
      * Constructs a FreeTTSVoice
      *
-     * @param freettsVoice the freetts voice
+     * @param freettsVoice  the freetts voice
      * @param validatorName the classname of the validator to use
      */
     public FreeTTSVoice(com.sun.speech.freetts.Voice freettsVoice,
@@ -52,7 +52,6 @@ public class FreeTTSVoice extends BaseVoice {
      * Convert a freetts gender to jsapi gender
      *
      * @param gender the freetts gender
-     *
      * @return the jsapi gender
      */
     private static int genderToInt(com.sun.speech.freetts.Gender gender) {
@@ -74,7 +73,6 @@ public class FreeTTSVoice extends BaseVoice {
      * Convert a freetts age to jsapi age
      *
      * @param age the freetts age
-     *
      * @return the jsapi age
      */
     private static int ageToInt(com.sun.speech.freetts.Age age) {

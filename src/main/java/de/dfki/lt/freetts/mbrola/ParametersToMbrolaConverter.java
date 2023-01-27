@@ -30,10 +30,9 @@ public class ParametersToMbrolaConverter implements UtteranceProcessor {
      * are saved in the Segment relation because in MBROLA input, targets
      * are represented as properties of the segments during which they occur.
      *
-     * @param  utterance  the utterance to process
-     *
+     * @param utterance the utterance to process
      * @throws ProcessException if an error occurs while
-     *         processing of the utterance
+     *                          processing of the utterance
      */
     public void processUtterance(Utterance utterance) throws ProcessException {
         Relation segmentRelation = utterance.getRelation(Relation.SEGMENT);

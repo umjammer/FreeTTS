@@ -27,9 +27,9 @@ import com.sun.speech.freetts.relp.SampleInfo;
  * LPCResult and add it to the utterance based upon features of the
  * target relation.
  *
- *  @see LPCResult
- *  @see Relation
- *  @see SampleInfo
+ * @see LPCResult
+ * @see Relation
+ * @see SampleInfo
  */
 public class DiphonePitchmarkGenerator implements UtteranceProcessor {
 
@@ -37,12 +37,11 @@ public class DiphonePitchmarkGenerator implements UtteranceProcessor {
      * Generates the LPCResult for this utterance.
      *
      * @param utterance the utterance to process
-     *
-     * @throws ProcessException if an error occurs while processing
-     *     the utterance
+     * @throws ProcessException      if an error occurs while processing
+     *                               the utterance
      * @throws IllegalStateException if the given utterance has no
-     * 		relation named Relation.TARGET or a feature named
-     * 		SampleInfo.UTT_NAME
+     *                               relation named Relation.TARGET or a feature named
+     *                               SampleInfo.UTT_NAME
      */
     public void processUtterance(Utterance utterance) throws ProcessException {
 
@@ -123,7 +122,7 @@ public class DiphonePitchmarkGenerator implements UtteranceProcessor {
  * the need to wrap the float number in a Float object. This avoids
  * unnecessary object creation, and is therefore faster and saves memory.
  * However, it does not implement the java.util.List interface.
- *
+ * <p>
  * This linked list is used as a replacement for a simple array of
  * ints. Certain performance critical loops have had performance
  * issues due to the overhead associated with array index bounds
@@ -132,7 +131,7 @@ public class DiphonePitchmarkGenerator implements UtteranceProcessor {
  * great improvement in compiler performance in this area such that we
  * may be able to revert to using an array without any performance
  * impact.
- *
+ * <p>
  * [[[ TODO look at replacing this with a simple int array ]]]
  */
 class IntLinkedList {
@@ -191,8 +190,8 @@ class IntLinkedList {
     /**
      * Checks if there are more elements for the iterator.
      *
-     * @return <code>true</code>  if there are more elements; 
-     *		otherwise <code>false</code>
+     * @return <code>true</code>  if there are more elements;
+     * otherwise <code>false</code>
      */
     public boolean hasNext() {
         return (iterator != null);

@@ -41,7 +41,6 @@ public class FeatureSetImpl implements FeatureSet {
      * Determines if the given feature is present.
      *
      * @param name the name of the feature of interest
-     *
      * @return true if the named feature is present
      */
     public boolean isPresent(String name) {
@@ -62,12 +61,10 @@ public class FeatureSetImpl implements FeatureSet {
      * Convenience method that returns the named feature as a string.
      *
      * @param name the name of the feature
-     *
      * @return the value associated with the name or null if the value
-     *   is not found
-     *
+     * is not found
      * @throws ClassCastException if the associated value is not a
-     *   String
+     *                            String
      */
     public String getString(String name) {
         return (String) getObject(name);
@@ -77,10 +74,8 @@ public class FeatureSetImpl implements FeatureSet {
      * Convenience method that returns the named feature as an int.
      *
      * @param name the name of the feature
-     *
      * @return the value associated with the name or null if the value
-     *   is not found
-     *
+     * is not found
      * @throws ClassCastException if the associated value is not an int.
      */
     public int getInt(String name) {
@@ -91,12 +86,10 @@ public class FeatureSetImpl implements FeatureSet {
      * Convenience method that returns the named feature as a float.
      *
      * @param name the name of the feature
-     *
      * @return the value associated with the name or null if the value
-     *   is not found.
-     *
+     * is not found.
      * @throws ClassCastException if the associated value is not a
-     *   float
+     *                            float
      */
     public float getFloat(String name) {
         return (Float) getObject(name);
@@ -106,9 +99,8 @@ public class FeatureSetImpl implements FeatureSet {
      * Returns the named feature as an object.
      *
      * @param name the name of the feature
-     *
      * @return the value associated with the name or null if the value
-     *   is not found
+     * is not found
      */
     public Object getObject(String name) {
         return featureMap.get(name);
@@ -117,7 +109,7 @@ public class FeatureSetImpl implements FeatureSet {
     /**
      * Convenience method that sets the named feature as an int.
      *
-     * @param name the name of the feature
+     * @param name  the name of the feature
      * @param value the value of the feature
      */
     public void setInt(String name, int value) {
@@ -127,7 +119,7 @@ public class FeatureSetImpl implements FeatureSet {
     /**
      * Convenience method that sets the named feature as a float.
      *
-     * @param name the name of the feature
+     * @param name  the name of the feature
      * @param value the value of the feature
      */
     public void setFloat(String name, float value) {
@@ -137,7 +129,7 @@ public class FeatureSetImpl implements FeatureSet {
     /**
      * Convenience method that sets the named feature as a String.
      *
-     * @param name the name of the feature
+     * @param name  the name of the feature
      * @param value the value of the feature
      */
     public void setString(String name, String value) {
@@ -147,7 +139,7 @@ public class FeatureSetImpl implements FeatureSet {
     /**
      * Sets the named feature.
      *
-     * @param name the name of the feature
+     * @param name  the name of the feature
      * @param value the value of the feature
      */
     public void setObject(String name, Object value) {
@@ -159,8 +151,8 @@ public class FeatureSetImpl implements FeatureSet {
      * is not included in the dump.
      *
      * @param output where to send the formatted output
-     * @param pad the padding
-     * @param title the title
+     * @param pad    the padding
+     * @param title  the title
      */
     public void dump(PrintWriter output, int pad, String title) {
         dump(output, pad, title, false);
@@ -169,9 +161,9 @@ public class FeatureSetImpl implements FeatureSet {
     /**
      * Dumps the FeatureSet in textual form.
      *
-     * @param output where to send the formatted output
-     * @param pad the padding
-     * @param title the title
+     * @param output   where to send the formatted output
+     * @param pad      the padding
+     * @param title    the title
      * @param showName if <code>true</code>, include the feature name
      */
     public void dump(PrintWriter output, int pad, String title,

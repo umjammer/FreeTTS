@@ -30,7 +30,7 @@ import java.io.OutputStreamWriter;
  * </p>
  *
  * <p>
- * Note: 
+ * Note:
  * The a/b diff result is slightly different than the C version due to
  * Intel floating-point math.
  * </p>
@@ -66,9 +66,9 @@ public strictfp class FindSTS {
 
     /**
      * Generate a sts file from lpc and wav files.
-     *
-     *     args[0..n] = filenames without paths or extensions
-     *                  (e.g., "arctic_a0001")
+     * <p>
+     * args[0..n] = filenames without paths or extensions
+     * (e.g., "arctic_a0001")
      */
     public static void main(String[] args) {
         try {
@@ -111,11 +111,10 @@ public strictfp class FindSTS {
     /**
      * Find the sts data.
      *
-     * @param wave the data from the wave file
-     * @param lpc the data from the lpc file
-     * @param lpc_min the minimum lpc value
+     * @param wave      the data from the wave file
+     * @param lpc       the data from the lpc file
+     * @param lpc_min   the minimum lpc value
      * @param lpc_range the range of the lpc values
-     *
      * @return an <code>STS</code> array containing the data
      */
     private static STS[] findSTS(Wave wave, LPC lpc, float lpc_min,
@@ -159,12 +158,11 @@ public strictfp class FindSTS {
     /**
      * Generate the residuals for this sts
      *
-     * @param wave specially formatted wave data
+     * @param wave  specially formatted wave data
      * @param start offset into the wave data
      * @param frame frame data from the lpc
      * @param order typically the number of lpc channels
-     * @param size size of the residual
-     *
+     * @param size  size of the residual
      * @return sts residuals
      */
     private static short[] generateResiduals(short[] wave, int start, float[] frame, int order, int size) {
@@ -190,13 +188,12 @@ public strictfp class FindSTS {
     /**
      * Save the sts data
      *
-     * @param stsData generated sts data
-     * @param lpc data loaded from the lpc file
-     * @param wave data loaded from the wave file
-     * @param osw the OutputStreamWriter to write the sts data to
-     * @param lpc_min minimum lpc value
+     * @param stsData   generated sts data
+     * @param lpc       data loaded from the lpc file
+     * @param wave      data loaded from the wave file
+     * @param osw       the OutputStreamWriter to write the sts data to
+     * @param lpc_min   minimum lpc value
      * @param lpc_range range of lpc values
-     *
      */
     private static void saveSTS(STS[] stsData, LPC lpc, Wave wave,
                                 OutputStreamWriter osw, float lpc_min, float lpc_range) {
@@ -230,7 +227,6 @@ public strictfp class FindSTS {
 
 /**
  * The lpc data
- *
  */
 class LPC {
 
@@ -243,7 +239,6 @@ class LPC {
      * Create lpc data from an input stream
      *
      * @param dis DataInputStream to read the lpc in from
-     *
      */
     public LPC(DataInputStream dis) {
         try {
@@ -303,7 +298,6 @@ class LPC {
      * load the data section of the lpc file as ascii text
      *
      * @param dis DataInputStream to read from
-     *
      * @throws IOException on ill-formatted input
      */
     private void loadTextData(DataInputStream dis) throws IOException {
@@ -319,10 +313,9 @@ class LPC {
     /**
      * load the data section of the lpc file as ascii text
      *
-     * @param dis DataInputStream to read from
+     * @param dis         DataInputStream to read from
      * @param isBigEndian whether or not the data in the file is in
-     *          big endian byte order
-     *
+     *                    big endian byte order
      * @throws IOException on ill-formatted input
      */
     private void loadBinaryData(DataInputStream dis, boolean isBigEndian) throws IOException {
@@ -369,7 +362,6 @@ class LPC {
      * Get an individual time associated with this lpc
      *
      * @param index index of time to get
-     *
      * @return time value at given index
      */
     public float getTime(int index) {
@@ -380,7 +372,6 @@ class LPC {
      * Get an individual frame
      *
      * @param i index of frame
-     *
      * @return the frame
      */
     public float[] getFrame(int i) {
@@ -392,9 +383,8 @@ class LPC {
      *
      * @param i index of frame
      * @param j index into frame
-     *
      * @return the frame entry in frame <code>i</code> at index
-     *          <code>j</code>
+     * <code>j</code>
      */
     public float getFrameEntry(int i, int j) {
         return frames[i][j];
@@ -463,7 +453,6 @@ class Wave {
      * load a RIFF header
      *
      * @param dis DataInputStream to read from
-     *
      * @throws IOException on ill-formatted input
      */
     private void loadHeader(DataInputStream dis) throws IOException {
@@ -495,9 +484,9 @@ class Wave {
      * Reconstruct a wave from a wave, sts, and lpc
      *
      * @param sampleRate the sample rate to use
-     * @param lpc lpc
-     * @param lpc_min minimum lpc value
-     * @param lpc_range range of lpc values
+     * @param lpc        lpc
+     * @param lpc_min    minimum lpc value
+     * @param lpc_range  range of lpc values
      */
     public Wave(int sampleRate, STS[] stsData, LPC lpc, float lpc_min,
                 float lpc_range) {
@@ -574,7 +563,6 @@ class Wave {
      * </p>
      *
      * @param wave2 the wave to compare this wave against
-     *
      */
     public void compare(Wave wave2) {
         if (numSamples > wave2.numSamples) {
@@ -594,12 +582,11 @@ class Wave {
     /**
      * Make sure that a string of characters appear next in the file
      *
-     * @param dis DataInputStream to read in
+     * @param dis   DataInputStream to read in
      * @param chars a String containing the ascii characters you
-     *          want the <code>dis</code> to contain.
-     *
+     *              want the <code>dis</code> to contain.
      * @return <code>true</code> if <code>chars</code> appears next
-     *          in <code>dis</code>, else <code>false</code>
+     * in <code>dis</code>, else <code>false</code>
      * @throws IOException on ill-formatted input (end of file, for example)
      */
     private boolean checkChars(DataInputStream dis, String chars) throws IOException {
@@ -657,10 +644,9 @@ class STS {
     /**
      * Create a sts with the given data
      *
-     * @param frame frame for this sts
+     * @param frame      frame for this sts
      * @param numSamples number of samples this sts will contain
-     * @param residual the residual for this sts
-     *
+     * @param residual   the residual for this sts
      */
     public STS(int[] frame, int numSamples, short[] residual) {
         this.frame = new int[frame.length];
@@ -703,7 +689,6 @@ class STS {
      * Get an entry out of the frame
      *
      * @param index the index into the frame
-     *
      * @return the entry in the frame at offset <code>index</code>
      */
     public int getFrameEntry(int index) {
@@ -723,9 +708,7 @@ class Utility {
      * given stream
      *
      * @param dis the input stream
-     *
      * @return the next word
-     *
      * @throws IOException on error
      */
     public static String readWord(DataInputStream dis) throws IOException {
@@ -750,7 +733,6 @@ class Utility {
      *
      * @param dis the stream to read
      * @return the next character on the stream
-     *
      * @throws IOException if an error occurs
      */
     public static char readChar(DataInputStream dis) throws IOException {
@@ -763,8 +745,7 @@ class Utility {
      * @param dis the stream to read
      * @param num the number of chars to read
      * @return a character array containing the next <code>num<code>
-     *          in the stream
-     *
+     * in the stream
      * @throws IOException if an error occurs
      */
     public static char[] readChars(DataInputStream dis, int num) throws IOException {
@@ -779,12 +760,10 @@ class Utility {
      * Read a float from the input stream, byte-swapping as
      * necessary
      *
-     * @param dis the inputstream
+     * @param dis         the inputstream
      * @param isBigEndian whether or not the data being read in is in
-     *          big endian format.
-     *
+     *                    big endian format.
      * @return a floating pint value
-     *
      * @throws IOException on error
      */
     public static float readFloat(DataInputStream dis, boolean isBigEndian) throws IOException {
@@ -802,7 +781,6 @@ class Utility {
      * where the data is in little endian.
      *
      * @param dataStream the DataInputStream to read from
-     *
      * @return a float
      */
     public static float readLittleEndianFloat(DataInputStream dataStream) throws IOException {
@@ -813,12 +791,10 @@ class Utility {
      * Read an integer from the input stream, byte-swapping as
      * necessary
      *
-     * @param dis the inputstream
+     * @param dis         the inputstream
      * @param isBigEndian whether or not the data being read in is in
-     *          big endian format.
-     *
+     *                    big endian format.
      * @return an integer value
-     *
      * @throws IOException on error
      */
     public static int readInt(DataInputStream dis, boolean isBigEndian) throws IOException {
@@ -833,7 +809,6 @@ class Utility {
      * Reads the next little-endian integer from the given DataInputStream.
      *
      * @param dataStream the DataInputStream to read from
-     *
      * @return an integer
      */
     public static int readLittleEndianInt(DataInputStream dataStream) throws IOException {
@@ -849,12 +824,10 @@ class Utility {
      * Read a short from the input stream, byte-swapping as
      * necessary
      *
-     * @param dis the inputstream
+     * @param dis         the inputstream
      * @param isBigEndian whether or not the data being read in is in
-     *          big endian format.
-     *
+     *                    big endian format.
      * @return an integer value
-     *
      * @throws IOException on error
      */
     public static short readShort(DataInputStream dis, boolean isBigEndian) throws IOException {
@@ -869,7 +842,6 @@ class Utility {
      * Reads the next little-endian short from the given DataInputStream.
      *
      * @param dis the DataInputStream to read from
-     *
      * @return a short
      */
     public static short readLittleEndianShort(DataInputStream dis) throws IOException {
@@ -882,9 +854,8 @@ class Utility {
      * Convert a short to ulaw format
      *
      * @param sample the short to convert
-     *
      * @return a short containing an unsigned 8-bit quantity
-     *          representing the ulaw
+     * representing the ulaw
      */
     public static short shortToUlaw(short sample) {
         int[] exp_lut = {
@@ -932,8 +903,7 @@ class Utility {
      * Convert a ulaw format to short
      *
      * @param ulawbyte a short containing an unsigned 8-but quantity
-     *          representing a ulaw
-     *
+     *                 representing a ulaw
      * @return the short equivalent of the ulaw
      */
     public static short ulawToShort(short ulawbyte) {
@@ -956,7 +926,6 @@ class Utility {
      * Print a float type's internal bit representation in hex
      *
      * @param f the float to print
-     *
      * @return a string containing the hex value of <code>f</code>
      */
     public static String hex(float f) {

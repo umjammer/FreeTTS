@@ -27,7 +27,7 @@ public class FreeTTSEmacspeakHandler extends EmacspeakProtocolHandler {
     /**
      * Constructs an Emacspeak ProtocolHandler
      *
-     * @param voice the FreeTTS that this FreeTTSEmacspeakHandler belongs
+     * @param voice  the FreeTTS that this FreeTTSEmacspeakHandler belongs
      * @param socket the Socket that holds the TCP connection
      */
     public FreeTTSEmacspeakHandler(Socket socket, Voice voice) {
@@ -72,7 +72,7 @@ public class FreeTTSEmacspeakHandler extends EmacspeakProtocolHandler {
 
     /**
      * This thread is used to separate the handling of Voice.speak() from
-     * the thread that accepts commands from the client, so that the 
+     * the thread that accepts commands from the client, so that the
      * latter won't be blocked by the former.
      */
     class SpeakCommandHandler extends Thread {

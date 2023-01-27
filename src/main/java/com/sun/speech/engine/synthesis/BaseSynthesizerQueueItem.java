@@ -65,11 +65,10 @@ public class BaseSynthesizerQueueItem extends SynthesizerQueueItem
     /**
      * Sets queue item data with a <code>Speakable</code> source.
      *
-     * @param synth the synthesizer
-     * @param source the <code>Speakable</code>
+     * @param synth    the synthesizer
+     * @param source   the <code>Speakable</code>
      * @param listener the <code>SpeakableListener</code> to be
-     *   notified as this object is processed
-     *
+     *                 notified as this object is processed
      * @throws JSMLException if the <code>source</code> contains JSML errors
      */
     protected void setData(BaseSynthesizer synth,
@@ -88,13 +87,12 @@ public class BaseSynthesizerQueueItem extends SynthesizerQueueItem
      * Sets queue item data with a <code>String</code> source that is
      * either plain text or JSML.
      *
-     * @param synth the synthesizer
-     * @param source the text
+     * @param synth     the synthesizer
+     * @param source    the text
      * @param plainText <code>true</code> only if the
-     *   <code>source</code> is plain text
-     * @param listener the <code>SpeakableListener</code> to be
-     *   notified as this object is processed
-     *
+     *                  <code>source</code> is plain text
+     * @param listener  the <code>SpeakableListener</code> to be
+     *                  notified as this object is processed
      * @throws JSMLException if the <code>source</code> contains JSML errors
      */
     protected void setData(BaseSynthesizer synth,
@@ -116,13 +114,12 @@ public class BaseSynthesizerQueueItem extends SynthesizerQueueItem
     /**
      * Sets queue item data with a <code>URL</code> source.
      *
-     * @param synth the synthesizer
-     * @param source the <code>URL</code> containing JSML text
+     * @param synth    the synthesizer
+     * @param source   the <code>URL</code> containing JSML text
      * @param listener the <code>SpeakableListener</code> to be
-     *   notified as this object is processed
-     *
+     *                 notified as this object is processed
      * @throws JSMLException if the <code>source</code> contains JSML errors
-     * @throws IOException if there are problems working with the URL.
+     * @throws IOException   if there are problems working with the URL.
      */
     protected void setData(BaseSynthesizer synth,
                            URL source,
@@ -149,8 +146,8 @@ public class BaseSynthesizerQueueItem extends SynthesizerQueueItem
     /**
      * determines if this queue item has been canceled
      *
-     * @return <code> true </code> if this item has been canceled; 
-     *   otherwise <code> false </code>
+     * @return <code> true </code> if this item has been canceled;
+     * otherwise <code> false </code>
      */
     protected synchronized boolean isCancelled() {
         return cancelled;
@@ -158,8 +155,9 @@ public class BaseSynthesizerQueueItem extends SynthesizerQueueItem
 
 
     /**
-     * returns true if this queue item has been 
+     * returns true if this queue item has been
      * processed.
+     *
      * @return true if it has been processed
      */
     public synchronized boolean isCompleted() {
@@ -226,9 +224,8 @@ public class BaseSynthesizerQueueItem extends SynthesizerQueueItem
      * by <code>dispatchSpeechEvent</code> as a result
      * of this action.
      *
-     * @param text the text of the marker
+     * @param text       the text of the marker
      * @param markerType the type of marker
-     *
      * @see SpeakableEvent#getMarkerType
      * @see #fireMarkerReached
      * @see #dispatchSpeechEvent
@@ -244,7 +241,6 @@ public class BaseSynthesizerQueueItem extends SynthesizerQueueItem
      * to all speakable listeners.
      *
      * @param event the <code>MARKER_REACHED</code> event
-     *
      * @see #postMarkerReached
      */
     public void fireMarkerReached(SpeakableEvent event) {
@@ -296,7 +292,6 @@ public class BaseSynthesizerQueueItem extends SynthesizerQueueItem
      * to all speakable listeners.
      *
      * @param event the <code>SPEAKABLE_CANCELLED</code> event
-     *
      * @see #postSpeakableCancelled
      */
     public void fireSpeakableCancelled(SpeakableEvent event) {
@@ -347,7 +342,6 @@ public class BaseSynthesizerQueueItem extends SynthesizerQueueItem
      * to all speakable listeners.
      *
      * @param event the <code>SPEAKABLE_ENDED</code> event
-     *
      * @see #postSpeakableEnded
      */
     public void fireSpeakableEnded(SpeakableEvent event) {
@@ -385,7 +379,6 @@ public class BaseSynthesizerQueueItem extends SynthesizerQueueItem
      * to all speakable listeners.
      *
      * @param event the <code>SPEAKABLE_PAUSED</code> event
-     *
      * @see #postSpeakablePaused
      */
     public void fireSpeakablePaused(SpeakableEvent event) {
@@ -423,7 +416,6 @@ public class BaseSynthesizerQueueItem extends SynthesizerQueueItem
      * to all speakable listeners.
      *
      * @param event the <code>SPEAKABLE_RESUMED</code> event
-     *
      * @see #postSpeakableResumed
      */
     public void fireSpeakableResumed(SpeakableEvent event) {
@@ -461,7 +453,6 @@ public class BaseSynthesizerQueueItem extends SynthesizerQueueItem
      * to all speakable listeners.
      *
      * @param event the <code>SPEAKABLE_STARTED</code> event
-     *
      * @see #postSpeakableStarted
      */
     public void fireSpeakableStarted(SpeakableEvent event) {
@@ -498,7 +489,6 @@ public class BaseSynthesizerQueueItem extends SynthesizerQueueItem
      * to all speakable listeners.
      *
      * @param event the <code>TOP_OF_QUEUE</code> event
-     *
      * @see #postTopOfQueue
      */
     public void fireTopOfQueue(SpeakableEvent event) {
@@ -522,9 +512,9 @@ public class BaseSynthesizerQueueItem extends SynthesizerQueueItem
      * by <code>dispatchSpeechEvent</code> as a result
      * of this action.
      *
-     * @param text the synthesized text
+     * @param text      the synthesized text
      * @param wordStart start position of the word within text
-     * @param wordEnd end position of the word within text
+     * @param wordEnd   end position of the word within text
      * @see #fireWordStarted
      * @see #dispatchSpeechEvent
      */
@@ -539,7 +529,6 @@ public class BaseSynthesizerQueueItem extends SynthesizerQueueItem
      * to all speakable listeners.
      *
      * @param event the <code>WORD_STARTED</code> event
-     *
      * @see #postWordStarted
      */
     public void fireWordStarted(SpeakableEvent event) {
@@ -561,7 +550,6 @@ public class BaseSynthesizerQueueItem extends SynthesizerQueueItem
      * via the various post methods of this class.
      *
      * @param event the <code>SpeechEvent</code> to dispatch
-     *
      * @see #postMarkerReached
      * @see #postSpeakableCancelled
      * @see #postSpeakableEnded

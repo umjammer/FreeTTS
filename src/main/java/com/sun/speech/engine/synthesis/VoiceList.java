@@ -53,7 +53,6 @@ public class VoiceList {
      * Adds a voice to the list.
      *
      * @param voice the voice to add
-     *
      * @see #removeVoice
      */
     public void addVoice(BaseVoice voice) {
@@ -66,7 +65,6 @@ public class VoiceList {
      * Removes a voice from the list.
      *
      * @param voice the voice to remove
-     *
      * @see #addVoice
      */
     public void removeVoice(BaseVoice voice) {
@@ -77,9 +75,7 @@ public class VoiceList {
      * Gets a voice by its identifier.
      *
      * @param id the voice id
-     *
      * @return the voice if it exists; otherwise <code>null</code>
-     *
      * @see BaseVoice#getId
      */
     public BaseVoice getVoiceById(String id) {
@@ -94,9 +90,8 @@ public class VoiceList {
     /**
      * Gets the id of a voice.
      *
-     * @param voice the voice
+     * @param voice   the voice
      * @param variant the voice variant
-     *
      * @return the id of the voice
      */
     public String getVoiceId(Voice voice, int variant) {
@@ -144,13 +139,11 @@ public class VoiceList {
      * Priority to voice name.  Then try to match age and gender plus
      * variant.
      *
-     * @param name the voice name
-     * @param gender the gender
-     * @param age the age
+     * @param name    the voice name
+     * @param gender  the gender
+     * @param age     the age
      * @param variant the variant
-     *
      * @return the voice id
-     *
      * @see BaseVoice
      * @see Voice
      */

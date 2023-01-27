@@ -18,8 +18,7 @@ public class TimeUtils {
      * of the time.
      *
      * @param hour the hour of the time
-     * @param min the minute of the time
-     *
+     * @param min  the minute of the time
      * @return a string phrase
      */
     private static String timeApprox(int hour, int min) {
@@ -43,8 +42,7 @@ public class TimeUtils {
      * to the hour.
      *
      * @param hour the hour of the time
-     * @param min the minute of the time
-     *
+     * @param min  the minute of the time
      * @return a string phrase.
      */
     private static String timeMin(int hour, int min) {
@@ -93,8 +91,7 @@ public class TimeUtils {
      * to the hour.
      *
      * @param hour the hour of the time
-     * @param min the minute of the time
-     *
+     * @param min  the minute of the time
      * @return a string phrase.
      */
     private static String timeHour(int hour, int min) {
@@ -146,8 +143,7 @@ public class TimeUtils {
      * Returns a phrase that conveys the time of day.
      *
      * @param hour the hour of the time
-     * @param min the minute of the time
-     *
+     * @param min  the minute of the time
      * @return a string phrase
      */
     private static String timeOfDay(int hour, int min) {
@@ -173,9 +169,8 @@ public class TimeUtils {
      * Returns a string that corresponds to the given time.
      *
      * @param time the time in the form HH:MM
-     *
      * @return the time in string, null if the given time is not in the
-     *   form HH:MM 
+     * form HH:MM
      */
     public static String timeToString(String time) {
         String theTime = null;
@@ -192,8 +187,7 @@ public class TimeUtils {
      * Returns a string that corresponds to the given time.
      *
      * @param hour the hour
-     * @param min the minutes
-     *
+     * @param min  the minutes
      * @return the time in string, null if the given time out of range
      */
     public static String timeToString(int hour, int min) {

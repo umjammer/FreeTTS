@@ -25,9 +25,7 @@ import com.sun.speech.freetts.util.Utilities;
 
 
 /**
- * Streams audio to a file. 
- *
- *
+ * Streams audio to a file.
  */
 public class SingleFileAudioPlayer implements AudioPlayer {
     /** Logger instance. */
@@ -44,11 +42,10 @@ public class SingleFileAudioPlayer implements AudioPlayer {
 
 
     /**
-     * Constructs a FileAudioPlayer 
+     * Constructs a FileAudioPlayer
      *
      * @param baseName the base name of the audio file
-     * @param type the type of audio output
-     *
+     * @param type     the type of audio output
      */
     public SingleFileAudioPlayer(String baseName, AudioFileFormat.Type type) {
         this.baseName = baseName + "." + type.getExtension();
@@ -74,9 +71,8 @@ public class SingleFileAudioPlayer implements AudioPlayer {
      * Sets the audio format for this player
      *
      * @param format the audio format
-     *
      * @throws UnsupportedOperationException if the line cannot be opened with
-     *     the given format
+     *                                       the given format
      */
     public synchronized void setAudioFormat(AudioFormat format) {
         currentFormat = format;
@@ -161,15 +157,15 @@ public class SingleFileAudioPlayer implements AudioPlayer {
     /**
      * Sets the current volume.
      *
-     * @param volume  the current volume (between 0 and 1)
+     * @param volume the current volume (between 0 and 1)
      */
     public void setVolume(float volume) {
     }
 
 
     /**
-     *  Starts the output of a set of data. Audio data for a single
-     *  utterance should be grouped between begin/end pairs.
+     * Starts the output of a set of data. Audio data for a single
+     * utterance should be grouped between begin/end pairs.
      *
      * @param size the size of data between now and the end
      */
@@ -179,12 +175,11 @@ public class SingleFileAudioPlayer implements AudioPlayer {
     }
 
     /**
-     *  Marks the end of a set of data. Audio data for a single 
-     *  utterance should be groupd between begin/end pairs.
+     * Marks the end of a set of data. Audio data for a single
+     * utterance should be groupd between begin/end pairs.
      *
-     *  @return true if the audio was output properly, false if the
-     *      output was cancelled or interrupted.
-     *
+     * @return true if the audio was output properly, false if the
+     * output was cancelled or interrupted.
      */
     public boolean end() {
         outputList.add(new ByteArrayInputStream(outputData));
@@ -197,7 +192,7 @@ public class SingleFileAudioPlayer implements AudioPlayer {
      * Waits for all queued audio to be played
      *
      * @return true if the audio played to completion, false if
-     *   the audio was stopped
+     * the audio was stopped
      */
     public boolean drain() {
         return true;
@@ -224,9 +219,8 @@ public class SingleFileAudioPlayer implements AudioPlayer {
      * Writes the given bytes to the audio stream
      *
      * @param audioData audio data to write to the device
-     *
-     * @return <code>true</code> of the write completed successfully, 
-     *       	<code> false </code>if the write was cancelled.
+     * @return <code>true</code> of the write completed successfully,
+     * <code> false </code>if the write was cancelled.
      */
     public boolean write(byte[] audioData) {
         return write(audioData, 0, audioData.length);
@@ -235,12 +229,11 @@ public class SingleFileAudioPlayer implements AudioPlayer {
     /**
      * Writes the given bytes to the audio stream
      *
-     * @param bytes audio data to write to the device
+     * @param bytes  audio data to write to the device
      * @param offset the offset into the buffer
-     * @param size the size into the buffer
-     *
-     * @return <code>true</code> of the write completed successfully, 
-     *       	<code> false </code>if the write was cancelled.
+     * @param size   the size into the buffer
+     * @return <code>true</code> of the write completed successfully,
+     * <code> false </code>if the write was cancelled.
      */
     public boolean write(byte[] bytes, int offset, int size) {
         System.arraycopy(bytes, offset, outputData, curIndex, size);

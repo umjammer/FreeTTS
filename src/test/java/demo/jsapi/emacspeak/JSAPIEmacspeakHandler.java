@@ -26,7 +26,7 @@ public class JSAPIEmacspeakHandler extends EmacspeakProtocolHandler {
     /**
      * Constructs a JSAPIEmacspeakHandler.
      *
-     * @param socket the Socket that holds the TCP connection
+     * @param socket      the Socket that holds the TCP connection
      * @param synthesizer the JSAPI synthesizer to use
      */
     public JSAPIEmacspeakHandler(Socket socket, Synthesizer synthesizer) {

@@ -49,7 +49,7 @@ public class Intonator implements UtteranceProcessor {
      * CARTs.
      *
      * @param accentCart the CART for doing accents
-     * @param toneCart the CART for doing end tones
+     * @param toneCart   the CART for doing end tones
      */
     public Intonator(CART accentCart, CART toneCart) {
         this.accentCart = accentCart;
@@ -63,10 +63,9 @@ public class Intonator implements UtteranceProcessor {
      * either the accent or tone CART to indicate there isn't an
      * intonation feature for a syllable.
      *
-     * @param  utterance  the utterance to process/tokenize
-     *
+     * @param utterance the utterance to process/tokenize
      * @throws ProcessException if an IOException is thrown during the
-     *         processing of the utterance
+     *                          processing of the utterance
      */
     public void processUtterance(Utterance utterance) throws ProcessException {
         String results;

@@ -41,12 +41,10 @@ public class DiphoneUnitSelector implements UtteranceProcessor {
      * Constructs a DiphoneUnitSelector.
      *
      * @param url the URL for the unit database. If the URL path ends
-     *     with a '.bin' it is assumed that the DB is a binary database,
-     *     otherwise, its assumed that its a text database1
-     *
+     *            with a '.bin' it is assumed that the DB is a binary database,
+     *            otherwise, its assumed that its a text database1
      * @throws IOException if an error occurs while loading the
-     *     database
-     *
+     *                     database
      */
     public DiphoneUnitSelector(URL url) throws IOException {
         if (url == null) {
@@ -58,6 +56,7 @@ public class DiphoneUnitSelector implements UtteranceProcessor {
 
     /**
      * Get the sample info for the underlying database.
+     *
      * @return the sample info object
      */
     public SampleInfo getSampleInfo() {
@@ -67,10 +66,9 @@ public class DiphoneUnitSelector implements UtteranceProcessor {
     /**
      * Generates the Unit Relation from the Segment Relation.
      *
-     * @param  utterance  the utterance to generate the Unit Relation
-     *
+     * @param utterance the utterance to generate the Unit Relation
      * @throws ProcessException if an IOException is thrown during the
-     *         processing of the utterance
+     *                          processing of the utterance
      */
     public void processUtterance(Utterance utterance) throws ProcessException {
 
@@ -134,9 +132,9 @@ public class DiphoneUnitSelector implements UtteranceProcessor {
      * unit entry (index in the database), and unit part (1 or 2).
      *
      * @param unitRelation the relation that gets the new item
-     * @param diphoneName the name of the dipohone
-     * @param targetEnd the time at the end of this unit
-     * @param unitPart the item can be in the first(1) or second part (2)
+     * @param diphoneName  the name of the dipohone
+     * @param targetEnd    the time at the end of this unit
+     * @param unitPart     the item can be in the first(1) or second part (2)
      */
     private Item createUnitItem(Relation unitRelation,
                                 String diphoneName,
@@ -181,7 +179,7 @@ class DiphoneUnit implements com.sun.speech.freetts.Unit {
     /**
      * Contructs a diphone unit given a diphone and unit part.
      *
-     * @param diphone the diphone to wrap
+     * @param diphone  the diphone to wrap
      * @param unitPart which half (1 or 2) does this unit represent
      */
     public DiphoneUnit(Diphone diphone, int unitPart) {
@@ -211,7 +209,6 @@ class DiphoneUnit implements com.sun.speech.freetts.Unit {
      * Retrieves the nearest sample.
      *
      * @param index the ideal index
-     *
      * @return the nearest Sample
      */
     public Sample getNearestSample(float index) {

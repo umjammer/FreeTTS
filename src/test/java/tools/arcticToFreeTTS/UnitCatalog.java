@@ -15,7 +15,7 @@ import java.util.StringTokenizer;
  * as a HashMap of ArrayLists where the HashMap is indexed by unit
  * type (e.g., "ae_afternoon"), and the ArrayList is a list of the
  * actual units themselves (e.g., "ae_afternoon_23").
- *�   
+ * �
  * Assumption: unit indeces are in reverse order.
  */
 public class UnitCatalog extends HashMap<String, List<Unit>> {
@@ -25,7 +25,7 @@ public class UnitCatalog extends HashMap<String, List<Unit>> {
     private String currentFilename;
     private Unit previousUnit;
     private int currentIndex;
-    
+
     /**
      * Creates a new UnitCatalog from the festival unit catalog file.
      *
@@ -67,7 +67,7 @@ public class UnitCatalog extends HashMap<String, List<Unit>> {
         // Split the unit into type ("ae_afternoon") and instance number (25).
         String unitType = unitName.substring(0, unitName.lastIndexOf("_"));
         int unitNum = Integer.parseInt(
-            unitName.substring(unitName.lastIndexOf("_") + 1));
+                unitName.substring(unitName.lastIndexOf("_") + 1));
 
         // Get the remaining parameters.
         String filename = tokenizer.nextToken();
@@ -88,18 +88,18 @@ public class UnitCatalog extends HashMap<String, List<Unit>> {
             previousUnit = null;
             currentFilename = filename;
         }
-            
+
         // The units come in reverse order, so always
         // add the unit to the begining of the entries.
         Unit unit = new Unit(unitType,
-                             unitNum,
-                             filename,
-                             start,
-                             middle,
-                             end,
-                             previousUnit,
-                             null,
-                             currentIndex++);
+                unitNum,
+                filename,
+                start,
+                middle,
+                end,
+                previousUnit,
+                null,
+                currentIndex++);
         units.add(0, unit);
 
         /* Save away this unit as the next unit of the previous unit.
@@ -107,7 +107,7 @@ public class UnitCatalog extends HashMap<String, List<Unit>> {
         if (previousUnit != null) {
             previousUnit.next = unit;
         }
-        previousUnit = unit;    
+        previousUnit = unit;
     }
 
     /**
@@ -125,27 +125,27 @@ public class UnitCatalog extends HashMap<String, List<Unit>> {
                 }
             }
         }
-    }    
+    }
 
     /**
      * Returns the given Unit or null if no such Unit exists.
      *
      * @param unitType the unit type (e.g., "ae_afternoon")
-     * @param unitNum the unit number
+     * @param unitNum  the unit number
      */
     public Unit getUnit(String unitType, int unitNum) {
         List<Unit> units = get(unitType);
-        if ((units == null) || (units.size() < unitNum)){
+        if ((units == null) || (units.size() < unitNum)) {
             return null;
         } else {
             return units.get(unitNum);
         }
-    }    
-     
+    }
+
     /**
      * For testing.  args[0] = festival/clunits/*.catalogue.
      */
-    public static void main(String[] args) {        
+    public static void main(String[] args) {
         try {
             UnitCatalog catalog = new UnitCatalog(args[0]);
             catalog.checkCatalog();

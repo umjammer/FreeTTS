@@ -58,13 +58,13 @@ public class ClusterUnitVoice extends Voice implements ConcatenativeVoice {
     /**
      * Creates a ClusterUnitVoice
      *
-     * @param database the database of the voice
-     * @param unitNamer specifies the name of the Units (if null, a
-     * ldom naming scheme will be used: 'ae_afternoon')
-     * @param phonesetURL leads to the phoneset, which will be used 
-     * for the FeatureProcessors (can be null)
+     * @param database        the database of the voice
+     * @param unitNamer       specifies the name of the Units (if null, a
+     *                        ldom naming scheme will be used: 'ae_afternoon')
+     * @param phonesetURL     leads to the phoneset, which will be used
+     *                        for the FeatureProcessors (can be null)
      * @param partOfSpeechURL leads to the pos-textfile which will be used
-     * for the FeatureProcessors (can be null)
+     *                        for the FeatureProcessors (can be null)
      */
     public ClusterUnitVoice(String name, Gender gender, Age age,
                             String description, Locale locale, String domain,
@@ -96,6 +96,7 @@ public class ClusterUnitVoice extends Voice implements ConcatenativeVoice {
 
     /**
      * Get the sample info for the underlying database.
+     *
      * @return the sample info object
      */
     public SampleInfo getSampleInfo() {
@@ -132,9 +133,8 @@ public class ClusterUnitVoice extends Voice implements ConcatenativeVoice {
      * This voice uses  a cluster unit selector as the unit selector.
      *
      * @return the post lexical processor
-     *
      * @throws IOException if an IO error occurs while getting
-     *     processor
+     *                     processor
      */
     public UtteranceProcessor getUnitSelector() throws IOException {
         return unitSelector;
@@ -146,9 +146,8 @@ public class ClusterUnitVoice extends Voice implements ConcatenativeVoice {
      * There is no default unit selector
      *
      * @return the post lexical processor
-     *
      * @throws IOException if an IO error occurs while getting
-     *     processor
+     *                     processor
      */
     public UtteranceProcessor getPitchmarkGenerator() throws IOException {
         return new ClusterUnitPitchmarkGenerator();
@@ -160,9 +159,8 @@ public class ClusterUnitVoice extends Voice implements ConcatenativeVoice {
      * There is no default unit selector
      *
      * @return the post lexical processor
-     *
      * @throws IOException if an IO error occurs while getting
-     *     processor
+     *                     processor
      */
     public UtteranceProcessor getUnitConcatenator() throws IOException {
         return new UnitConcatenator();
@@ -243,9 +241,8 @@ public class ClusterUnitVoice extends Voice implements ConcatenativeVoice {
     /**
      * Given a phoneme and a feature name, return the feature
      *
-     * @param phone the phoneme of interest
+     * @param phone       the phoneme of interest
      * @param featureName the name of the feature of interest
-     *
      * @return the feature with the given name
      */
     public String getPhoneFeature(String phone, String featureName) {

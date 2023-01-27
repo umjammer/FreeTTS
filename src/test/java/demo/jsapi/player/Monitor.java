@@ -35,7 +35,7 @@ public class Monitor extends JPanel {
     /**
      * Constructs a Monitor for the given synthesizer
      *
-     * @param synthesizer the synthesizer it monitors
+     * @param synthesizer     the synthesizer it monitors
      * @param synthesizerName name of the synthesizer
      */
     public Monitor(Synthesizer synthesizer, String synthesizerName) {

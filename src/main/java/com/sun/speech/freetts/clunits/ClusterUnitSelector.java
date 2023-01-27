@@ -37,7 +37,6 @@ import de.dfki.lt.freetts.ClusterUnitNamer;
 /**
  * Generates the Unit Relation of an Utterance from the
  * Segment Relation.
- *
  */
 public class ClusterUnitSelector implements UtteranceProcessor {
     /** Logger instance. */
@@ -53,12 +52,10 @@ public class ClusterUnitSelector implements UtteranceProcessor {
      * Constructs a ClusterUnitSelector.
      *
      * @param url the URL for the unit database. If the URL path ends
-     *     with a '.bin' it is assumed that the DB is a binary database,
-     *     otherwise, its assumed that its a text database1
-     *
+     *            with a '.bin' it is assumed that the DB is a binary database,
+     *            otherwise, its assumed that its a text database1
      * @throws IOException if an error occurs while loading the
-     *     database
-     *
+     *                     database
      */
     public ClusterUnitSelector(URL url) throws IOException {
         this(url, null);
@@ -67,17 +64,15 @@ public class ClusterUnitSelector implements UtteranceProcessor {
     /**
      * Constructs a ClusterUnitSelector.
      *
-     * @param url the URL for the unit database. If the URL path ends
-     *     with a '.bin' it is assumed that the DB is a binary database,
-     *     otherwise, its assumed that its a text database1
+     * @param url       the URL for the unit database. If the URL path ends
+     *                  with a '.bin' it is assumed that the DB is a binary database,
+     *                  otherwise, its assumed that its a text database1
      * @param unitNamer an optional unit namer, specifying how the cluster
-     * units are called in the voice database referenced by url. If this is null,
-     * an ldom unit naming scheme will be used (e.g., 'ae_afternoon' for the
-     * phoneme 'ae' in the word 'afternoon'.
-     *
+     *                  units are called in the voice database referenced by url. If this is null,
+     *                  an ldom unit naming scheme will be used (e.g., 'ae_afternoon' for the
+     *                  phoneme 'ae' in the word 'afternoon'.
      * @throws IOException if an error occurs while loading the
-     *     database
-     *
+     *                     database
      */
     public ClusterUnitSelector(URL url, ClusterUnitNamer unitNamer) throws IOException {
         if (url == null) {
@@ -92,6 +87,7 @@ public class ClusterUnitSelector implements UtteranceProcessor {
 
     /**
      * Get the sample info for the underlying database.
+     *
      * @return the sample info object
      */
     public SampleInfo getSampleInfo() {
@@ -101,30 +97,28 @@ public class ClusterUnitSelector implements UtteranceProcessor {
     /**
      * Generates the Unit Relation from the Segment Relation.
      * <br><b>Implementation note:</b><br>
-     *    Populates the segment relation with segment names of the form:
-     *    XX_YY where XX is the segment name (typically a phoneme)
-     *    and YY is the word that the segment is in (stripped and
-     *    lower case).
+     * Populates the segment relation with segment names of the form:
+     * XX_YY where XX is the segment name (typically a phoneme)
+     * and YY is the word that the segment is in (stripped and
+     * lower case).
+     * <p>
+     * The first step in cluster unit selection is to determine the unit
+     * type for each unit in the utterance. The unit type for
+     * selection in the simple talking clock example (cmu_time_awb) is
+     * done per phone. The unit type consists of the phone
+     * name followed by the word the phone comes from (e.g., n_now for
+     * the phone 'n' in the word 'now').
+     * <p>
+     * Invoke the Viterbi algorithm (via a viterbi class) that
+     * selects the proper units for the segment and adds that to
+     * each segment item.
+     * <p>
+     * For each segment, create a unit and attach features based
+     * upon the selected units.
      *
-     *    The first step in cluster unit selection is to determine the unit
-     * 	  type for each unit in the utterance. The unit type for
-     * 	  selection in the simple talking clock example (cmu_time_awb) is
-     * 	  done per phone. The unit type consists of the phone
-     * 	  name followed by the word the phone comes from (e.g., n_now for
-     * 	  the phone 'n' in the word 'now'). 
-     *
-     *   Invoke the Viterbi algorithm (via a viterbi class) that 
-     *   selects the proper units for the segment and adds that to
-     *   each segment item.
-     *
-     *   For each segment, create a unit and attach features based
-     *   upon the selected units.
-     *
-     * @param  utterance  the utterance to generate the Unit Relation
-     *
+     * @param utterance the utterance to generate the Unit Relation
      * @throws ProcessException if an IOException is thrown during the
-     *         processing of the utterance
-     *
+     *                          processing of the utterance
      */
     public void processUtterance(Utterance utterance) throws ProcessException {
         Viterbi vd;
@@ -251,7 +245,6 @@ public class ClusterUnitSelector implements UtteranceProcessor {
      * Strips quotes from the given string.
      *
      * @param s the string to strip quotes from
-     *
      * @return a string with all single quotes removed
      */
     private String stripQuotes(String s) {
@@ -277,7 +270,7 @@ public class ClusterUnitSelector implements UtteranceProcessor {
 
     /**
      * Provides support for the Viterbi Algorithm.
-     *
+     * <p>
      * Implementation Notes
      * <p>
      * For each candidate for the current unit, calculate the cost
@@ -287,17 +280,17 @@ public class ClusterUnitSelector implements UtteranceProcessor {
      * database, the cost is 0 (i.e., they were spoken together,
      * so they are a perfect match).
      * <p>
-     *
+     * <p>
      * Repeat the previous process for each candidate in the next
      * unit, creating a list of least cost paths between the
      * candidates between the current unit and the unit following
      * it.
      * <p>
-     *
+     * <p>
      * Toss out all candidates in the current unit that are not
      * included in a path.
      * <p>
-     *
+     * <p>
      * Move to the next unit and repeat the process.
      */
     static class Viterbi {
@@ -312,7 +305,6 @@ public class ClusterUnitSelector implements UtteranceProcessor {
          * Creates a Viterbi class to process the given utterance.
          * A queue of ViterbiPoints corresponding to the Items in the Relation segs
          * is built up.
-         *
          */
         public Viterbi(Relation segs, ClusterUnitDatabase db) {
             ViterbiPoint last = null;
@@ -356,7 +348,7 @@ public class ClusterUnitSelector implements UtteranceProcessor {
          * Sets the given feature to the given value.
          *
          * @param name the name of the feature
-         * @param obj the new value.
+         * @param obj  the new value.
          */
         public void setFeature(String name, Object obj) {
             f.setObject(name, obj);
@@ -366,7 +358,6 @@ public class ClusterUnitSelector implements UtteranceProcessor {
          * Gets the value for the given feature.
          *
          * @param name the name of the feature
-         *
          * @return the value of the feature
          */
         public Object getFeature(String name) {
@@ -437,7 +428,7 @@ public class ClusterUnitSelector implements UtteranceProcessor {
          * Try to add paths to the given point.
          *
          * @param point the point to add the paths to
-         * @param path the path
+         * @param path  the path
          */
         void addPaths(ViterbiPoint point, ViterbiPath path) {
             ViterbiPath nextPath;
@@ -457,7 +448,7 @@ public class ClusterUnitSelector implements UtteranceProcessor {
          * the candidate newPath.candidate, if it has a better
          * score than the previously best path leading to that candidate.
          *
-         * @param point where the path is added
+         * @param point   where the path is added
          * @param newPath the path to add if its score is best
          */
         void addPath(ViterbiPoint point, ViterbiPath newPath) {
@@ -480,8 +471,8 @@ public class ClusterUnitSelector implements UtteranceProcessor {
          *
          * @param a value to check
          * @param b value to check.
-         *
-         * return true if a is better than b.
+         *          <p>
+         *          return true if a is better than b.
          */
         private boolean isBetterThan(int a, int b) {
             if (bigIsGood) {
@@ -544,6 +535,7 @@ public class ClusterUnitSelector implements UtteranceProcessor {
          * This traverses a CART tree for target cluster selection as described in
          * the paper introducing the clunits algorithm. This corresponds to the
          * "target costs" described for general unit selection.
+         *
          * @return the first candidate in the queue of candidate units for this item.
          */
         private ViterbiCandidate getCandidate(Item item) {
@@ -646,9 +638,8 @@ public class ClusterUnitSelector implements UtteranceProcessor {
          * OPTIMAL_COUPLING set to 1. The join position is saved in the new path, as
          * the features "unit_prev_move" and "unit_this_move".
          *
-         * @param path the previous path, or null if this candidate starts a new path
+         * @param path      the previous path, or null if this candidate starts a new path
          * @param candidate the candidate to add to the path
-         *
          * @return a new path, consisting of this candidate appended to the previous path, and
          * with the cumulative (penalty) score calculated.
          */
@@ -746,9 +737,8 @@ public class ClusterUnitSelector implements UtteranceProcessor {
         /**
          * Find the optimal coupling frame for a pair of units.
          *
-         * @param u0  first unit to try
-         * @param u1  second unit to try
-         *
+         * @param u0 first unit to try
+         * @param u1 second unit to try
          * @return the cost for this coupling, including the best coupling frame
          */
         Cost getOptimalCouple(int u0, int u1) {
@@ -835,7 +825,6 @@ public class ClusterUnitSelector implements UtteranceProcessor {
          *
          * @param u0 the first unit to try
          * @param u1 the second unit to try
-         *
          * @return the distance between the two units
          */
         int getOptimalCoupleFrame(int u0, int u1) {
@@ -863,11 +852,10 @@ public class ClusterUnitSelector implements UtteranceProcessor {
         /**
          * Get the 'distance' between the frames a and b.
          *
-         * @param a first frame
-         * @param b second frame
+         * @param a           first frame
+         * @param b           second frame
          * @param joinWeights the weights used in comparison
-         * @param order number of compares
-         *
+         * @param order       number of compares
          * @return the distance between the frames
          */
         public int getFrameDistance(int a, int b, int[] joinWeights, int order) {
@@ -1011,7 +999,7 @@ public class ClusterUnitSelector implements UtteranceProcessor {
         /**
          * Sets a feature with the given name to the given value.
          *
-         * @param name the name of the feature
+         * @param name  the name of the feature
          * @param value the new value for the feature
          */
         void setFeature(String name, Object value) {
@@ -1025,7 +1013,6 @@ public class ClusterUnitSelector implements UtteranceProcessor {
          * Retrieves a feature.
          *
          * @param name the name of the feature
-         *
          * @return the feature
          */
         Object getFeature(String name) {
@@ -1041,9 +1028,8 @@ public class ClusterUnitSelector implements UtteranceProcessor {
          * exsists.
          *
          * @param name the feature to look for
-         *
          * @return <code>true</code> if the feature is present;
-         * 	otherwise <code>false</code>.
+         * otherwise <code>false</code>.
          */
         boolean isPresent(String name) {
             if (f == null) {
@@ -1088,10 +1074,10 @@ class ClusterUnit implements com.sun.speech.freetts.Unit {
     /**
      * Contructs a cluster unit given.
      *
-     * @param db the database
-     * @param name the unitName
+     * @param db    the database
+     * @param name  the unitName
      * @param start the start
-     * @param end the end
+     * @param end   the end
      */
     public ClusterUnit(ClusterUnitDatabase db, String name, int start, int end) {
         this.db = db;
@@ -1141,7 +1127,6 @@ class ClusterUnit implements com.sun.speech.freetts.Unit {
      * Retrieves the nearest sample.
      *
      * @param index the ideal index
-     *
      * @return the nearest Sample
      */
     public Sample getNearestSample(float index) {

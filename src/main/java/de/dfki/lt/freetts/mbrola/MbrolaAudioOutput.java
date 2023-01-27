@@ -28,7 +28,6 @@ import com.sun.speech.freetts.audio.AudioPlayer;
  * </code> takes an utterance containing an open BufferedInputStream, from
  * which to read raw audio data provided by the external MBROLA binary. The
  * audio data is read and sent to the proper audio player.
- *
  */
 public class MbrolaAudioOutput implements UtteranceProcessor {
 
@@ -53,10 +52,9 @@ public class MbrolaAudioOutput implements UtteranceProcessor {
      * Utterance. The data is read from the open BufferedInputStream associated
      * with the Utterance, and written into the AudioPlayer.
      *
-     * @param  utterance  the utterance to generate waves
-     *
+     * @param utterance the utterance to generate waves
      * @throws ProcessException if an IOException is thrown during the
-     *         processing of the utterance
+     *                          processing of the utterance
      */
     public void processUtterance(Utterance utterance) throws ProcessException {
         if (LOGGER.isLoggable(Level.FINE)) {
@@ -115,7 +113,6 @@ public class MbrolaAudioOutput implements UtteranceProcessor {
     }
 
     /**
-     *
      * Returns the string form of this object
      *
      * @return the string form of this object

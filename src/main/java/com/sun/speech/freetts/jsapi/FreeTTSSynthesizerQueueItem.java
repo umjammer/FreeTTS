@@ -44,7 +44,7 @@ public class FreeTTSSynthesizerQueueItem extends BaseSynthesizerQueueItem
      * Returns <code>true</code> if the item is an input stream
      *
      * @return true if the item is an input stream;
-     *   otherwise, returns <code> false </code>
+     * otherwise, returns <code> false </code>
      */
     public boolean isStream() {
         return false;
@@ -64,7 +64,7 @@ public class FreeTTSSynthesizerQueueItem extends BaseSynthesizerQueueItem
      * (Java Speech Markup Language text).
      *
      * @return <code> true </code> if the item is a document;
-     *   otherwise, returns <code> false </code>
+     * otherwise, returns <code> false </code>
      */
     public boolean isDocument() {
         return super.getDocument() != null;

@@ -41,10 +41,9 @@ public class PostLexicalAnalyzer implements UtteranceProcessor {
     /**
      * Performs the post lexical processing.
      *
-     * @param  utterance  the utterance to process
-     *
+     * @param utterance the utterance to process
      * @throws ProcessException if an error occurs while
-     *         processing of the utterance
+     *                          processing of the utterance
      */
     public void processUtterance(Utterance utterance) throws ProcessException {
         fixApostrophe(utterance);
@@ -101,7 +100,7 @@ public class PostLexicalAnalyzer implements UtteranceProcessor {
      * the following word starts with a vowel. "The every" is a good
      * example.
      *
-     * @param  utterance  the utterance to process
+     * @param utterance the utterance to process
      */
     private void fixTheIy(Utterance utterance) {
         Voice voice = utterance.getVoice();

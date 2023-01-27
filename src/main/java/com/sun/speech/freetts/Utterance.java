@@ -52,7 +52,7 @@ public class Utterance implements FeatureSet, Serializable {
     /**
      * Creates an utterance with the given set of tokenized text.
      *
-     * @param voice the voice associated with the utterance
+     * @param voice     the voice associated with the utterance
      * @param tokenList the list of tokens for this utterance
      */
     public Utterance(Voice voice, List<Token> tokenList) {
@@ -83,7 +83,6 @@ public class Utterance implements FeatureSet, Serializable {
      * utterance.
      *
      * @param name the name of the new relation
-     *
      * @return the newly created relation
      */
     public Relation createRelation(String name) {
@@ -97,7 +96,6 @@ public class Utterance implements FeatureSet, Serializable {
      * Retrieves a relation from this utterance.
      *
      * @param name the name of the Relation
-     *
      * @return the relation or null if the relation is not found
      */
     public Relation getRelation(String name) {
@@ -126,9 +124,9 @@ public class Utterance implements FeatureSet, Serializable {
     /**
      * Dumps this utterance in textual form.
      *
-     * @param output where to send the formatted output
-     * @param pad the initial padding
-     * @param title the title to print when dumping out the utterance
+     * @param output        where to send the formatted output
+     * @param pad           the initial padding
+     * @param title         the title to print when dumping out the utterance
      * @param justRelations if true don't print voice features
      */
     public void dump(PrintWriter output, int pad, String title,
@@ -146,8 +144,8 @@ public class Utterance implements FeatureSet, Serializable {
      * Dumps this utterance in textual form.
      *
      * @param output where to send the formatted output
-     * @param pad the initial padding
-     * @param title the title to print when dumping out the utterance
+     * @param pad    the initial padding
+     * @param title  the title to print when dumping out the utterance
      */
     public void dump(PrintWriter output, int pad, String title) {
         dump(output, pad, title, false);
@@ -157,7 +155,7 @@ public class Utterance implements FeatureSet, Serializable {
      * Dumps this utterance in textual form.
      *
      * @param output where to send the formatted output
-     * @param title the title to print when dumping out the utterance
+     * @param title  the title to print when dumping out the utterance
      */
     public void dump(PrintWriter output, String title) {
         dump(output, 0, title, false);
@@ -174,6 +172,7 @@ public class Utterance implements FeatureSet, Serializable {
 
     /**
      * Dumps the utterance in textual form
+     *
      * @param title the title to print when dumping out the utterance
      */
     public void dumpRelations(String title) {
@@ -211,12 +210,10 @@ public class Utterance implements FeatureSet, Serializable {
      * attempts to retrieve it from the voice.
      *
      * @param name the name of the feature
-     *
      * @return the value associated with the name or null if the value
-     *   is not found
-     *
+     * is not found
      * @throws ClassCastException if the associated value is not a
-     *   String
+     *                            String
      */
     public String getString(String name) {
         if (!features.isPresent(name)) {
@@ -232,12 +229,10 @@ public class Utterance implements FeatureSet, Serializable {
      * attempts to retrieve it from the voice.
      *
      * @param name the name of the feature
-     *
      * @return the value associated with the name or null if the value
-     *   is not found
-     *
+     * is not found
      * @throws ClassCastException if the associated value is not an
-     *   int
+     *                            int
      */
     public int getInt(String name) {
         if (!features.isPresent(name)) {
@@ -253,12 +248,10 @@ public class Utterance implements FeatureSet, Serializable {
      * attempts to retrieve it from the voice.
      *
      * @param name the name of the feature
-     *
      * @return the value associated with the name or null if the value
-     *   is not found
-     *
+     * is not found
      * @throws ClassCastException if the associated value is not a
-     *   float
+     *                            float
      */
     public float getFloat(String name) {
         if (!features.isPresent(name)) {
@@ -274,9 +267,8 @@ public class Utterance implements FeatureSet, Serializable {
      * attempts to retrieve it from the voice.
      *
      * @param name the name of the feature
-     *
      * @return the value associated with the name or null if the value
-     *   is not found
+     * is not found
      */
     @Override
     public Object getObject(String name) {
@@ -290,7 +282,7 @@ public class Utterance implements FeatureSet, Serializable {
     /**
      * Convenience method that sets the named feature as an int.
      *
-     * @param name the name of the feature
+     * @param name  the name of the feature
      * @param value the value of the feature
      */
     @Override
@@ -301,7 +293,7 @@ public class Utterance implements FeatureSet, Serializable {
     /**
      * Convenience method that sets the named feature as a float.
      *
-     * @param name the name of the feature
+     * @param name  the name of the feature
      * @param value the value of the feature
      */
     @Override
@@ -312,7 +304,7 @@ public class Utterance implements FeatureSet, Serializable {
     /**
      * Convenience method that sets the named feature as a String.
      *
-     * @param name the name of the feature
+     * @param name  the name of the feature
      * @param value the value of the feature
      */
     @Override
@@ -323,7 +315,7 @@ public class Utterance implements FeatureSet, Serializable {
     /**
      * Sets the named feature.
      *
-     * @param name the name of the feature
+     * @param name  the name of the feature
      * @param value the value of the feature
      */
     @Override
@@ -335,11 +327,10 @@ public class Utterance implements FeatureSet, Serializable {
      * Returns the Item in the given Relation associated with the given time.
      *
      * @param relation the name of the relation
-     * @param time the time
-     *
+     * @param time     the time
      * @throws IllegalStateException if the Segment durations
-     *   have not been calculated in the Utterance or if the
-     *   given relation is not present in the Utterance
+     *                               have not been calculated in the Utterance or if the
+     *                               given relation is not present in the Utterance
      */
     public Item getItem(String relation, float time) {
 
@@ -429,7 +420,6 @@ public class Utterance implements FeatureSet, Serializable {
      * Sets the input text for this utterance
      *
      * @param tokenList the set of tokens for this utterance
-     *
      */
     private void setInputText(List<Token> tokenList) {
         StringBuilder str = new StringBuilder();
@@ -442,10 +432,9 @@ public class Utterance implements FeatureSet, Serializable {
     /**
      * Sets the token list for this utterance. Note that this could be
      * optimized by turning the token list directly into the token
-     * relation. 
+     * relation.
      *
      * @param tokenList the tokenList
-     *
      */
     private void setTokenList(List<Token> tokenList) {
         setInputText(tokenList);
@@ -477,7 +466,7 @@ public class Utterance implements FeatureSet, Serializable {
      * utterances.
      *
      * @return true if this is the first utterance in a series of
-     *     connected utterances.
+     * connected utterances.
      */
     public boolean isFirst() {
         return first;
@@ -497,7 +486,7 @@ public class Utterance implements FeatureSet, Serializable {
      * utterances.
      *
      * @return true if this is the last utterance in a series of
-     *     connected utterances.
+     * connected utterances.
      */
     public boolean isLast() {
         return last;

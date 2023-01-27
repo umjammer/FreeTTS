@@ -22,6 +22,7 @@ import org.jvoicexml.rtp.freetts.RtpServer;
 
 /**
  * Simple program to use FreeTTS as an RTP data source.
+ *
  * @author Dirk Schnelle
  */
 public class RtpServerDemo {
@@ -42,6 +43,7 @@ public class RtpServerDemo {
 
     /**
      * Starts the program
+     *
      * @param args none expected
      */
     public static void main(String[] args) {

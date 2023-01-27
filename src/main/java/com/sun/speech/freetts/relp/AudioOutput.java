@@ -24,7 +24,7 @@ import com.sun.speech.freetts.audio.AudioPlayer;
 
 /**
  * Supports generating audio output from an utterance. This is an
- * utterance processor. The primary method, <code> procesUtterance </code> 
+ * utterance processor. The primary method, <code> procesUtterance </code>
  * takes an utterance and hands it off to the LPCResult to be sent to the
  * proper audio player.
  *
@@ -44,12 +44,10 @@ public class AudioOutput implements UtteranceProcessor {
      * Generates audio waves for the given Utterance. The audio data
      * is decoded using the Linear Predictive Decoder
      *
-     * @param  utterance  the utterance to generate waves
-     *
-     * @see LPCResult
-     *
+     * @param utterance the utterance to generate waves
      * @throws ProcessException if an IOException is thrown during the
-     *         processing of the utterance
+     *                          processing of the utterance
+     * @see LPCResult
      */
     public void processUtterance(Utterance utterance) throws ProcessException {
         LPCResult lpcResult = (LPCResult) utterance.getObject("target_lpcres");
@@ -75,14 +73,13 @@ public class AudioOutput implements UtteranceProcessor {
 
 
     /**
-     * Gets the current audio format.  
+     * Gets the current audio format.
      * Given a sample info return an appropriate audio format. A cache
      * of common audio formats is used to reduce unnecessary object
      * creation. Note that this method always returns an AudioFormat
      * that uses 16-bit samples.
      *
      * @param sampleInfo the sample info
-     *
      * @return an audio format
      */
     private AudioFormat getAudioFormat(SampleInfo sampleInfo) {
@@ -97,7 +94,6 @@ public class AudioOutput implements UtteranceProcessor {
     }
 
     /**
-     *
      * Returns the string form of this object
      *
      * @return the string form of this object

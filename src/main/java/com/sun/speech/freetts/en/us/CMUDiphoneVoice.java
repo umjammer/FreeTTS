@@ -30,7 +30,7 @@ import de.dfki.lt.freetts.ConcatenativeVoice;
 
 
 /**
- * Defines an unlimited-domain diphone synthesis based voice 
+ * Defines an unlimited-domain diphone synthesis based voice
  */
 public class CMUDiphoneVoice extends CMUVoice implements ConcatenativeVoice {
 
@@ -48,18 +48,18 @@ public class CMUDiphoneVoice extends CMUVoice implements ConcatenativeVoice {
     /**
      * Creates a simple voice
      *
-     * @param name the name of the voice
-     * @param gender the gender of the voice
-     * @param age the age of the voice
-     * @param description a human-readable string providing a
-     * description that can be displayed for the users.
-     * @param locale the locale of the voice
-     * @param domain the domain of this voice.  For example,
+     * @param name         the name of the voice
+     * @param gender       the gender of the voice
+     * @param age          the age of the voice
+     * @param description  a human-readable string providing a
+     *                     description that can be displayed for the users.
+     * @param locale       the locale of the voice
+     * @param domain       the domain of this voice.  For example,
      * @param organization the organization which created the voice
-     * &quot;general&quot;, &quot;time&quot;, or
-     * &quot;weather&quot;.
-     * @param lexicon the lexicon to load
-     * @param database an url to the unit database file for this voice
+     *                     &quot;general&quot;, &quot;time&quot;, or
+     *                     &quot;weather&quot;.
+     * @param lexicon      the lexicon to load
+     * @param database     an url to the unit database file for this voice
      */
     public CMUDiphoneVoice(String name, Gender gender,
                            Age age, String description, Locale locale, String domain,
@@ -104,9 +104,8 @@ public class CMUDiphoneVoice extends CMUVoice implements ConcatenativeVoice {
      * Derived voices typically override this to customize behaviors.
      *
      * @return the Unit selector
-     *
      * @throws IOException if an IO error occurs while getting
-     *     processor
+     *                     processor
      */
     protected UtteranceProcessor getPostLexicalAnalyzer() throws IOException {
         return new CMUDiphoneVoicePostLexicalAnalyzer();
@@ -119,9 +118,8 @@ public class CMUDiphoneVoice extends CMUVoice implements ConcatenativeVoice {
      * pitchmarks.
      *
      * @return the pitchmark processor
-     *
      * @throws IOException if an IO error occurs while getting
-     *     processor
+     *                     processor
      */
     public UtteranceProcessor getPitchmarkGenerator() throws IOException {
         return new DiphonePitchmarkGenerator();
@@ -133,9 +131,8 @@ public class CMUDiphoneVoice extends CMUVoice implements ConcatenativeVoice {
      * This voice uses a relp.UnitConcatenator to concatenate units.
      *
      * @return the unit concatenator processor
-     *
      * @throws IOException if an IO error occurs while getting
-     *     processor
+     *                     processor
      */
     public UtteranceProcessor getUnitConcatenator() throws IOException {
         return new UnitConcatenator();
@@ -150,9 +147,8 @@ public class CMUDiphoneVoice extends CMUVoice implements ConcatenativeVoice {
      * diphone database has been specified then an Error is thrown.
      *
      * @return the unit selector processor
-     *
      * @throws IOException if an IO error occurs while getting
-     *     processor
+     *                     processor
      */
     public UtteranceProcessor getUnitSelector() throws IOException {
         return new DiphoneUnitSelector(getDatabase());
@@ -181,9 +177,10 @@ class CMUDiphoneVoicePostLexicalAnalyzer implements UtteranceProcessor {
 
     /**
      * performs the processing
-     * @param  utterance  the utterance to process/tokenize
+     *
+     * @param utterance the utterance to process/tokenize
      * @throws ProcessException if an IOException is thrown during the
-     *         processing of the utterance
+     *                          processing of the utterance
      */
     public void processUtterance(Utterance utterance) throws ProcessException {
         fixPhoneme_AH(utterance);
@@ -194,6 +191,7 @@ class CMUDiphoneVoicePostLexicalAnalyzer implements UtteranceProcessor {
     /**
      * Turns all AH phonemes into AA phonemes.
      * This should really be done in the index itself
+     *
      * @param utterance the utterance to fix
      */
     private void fixPhoneme_AH(Utterance utterance) {

@@ -42,7 +42,7 @@ import org.w3c.dom.Text;
  * Performs text-to-speech using a series of
  * <code>UtteranceProcessors</code>. It is the main conduit to the FreeTTS
  * speech synthesizer. It can perform TTS on ASCII text,
- * a JSML document, an <code>InputStream</code>, or a 
+ * a JSML document, an <code>InputStream</code>, or a
  * <code>FreeTTSSpeakable</code>, by invoking the method <code>speak</code>.
  *
  * <p>Before a Voice can perform TTS, it must have a
@@ -193,17 +193,17 @@ public abstract class Voice implements UtteranceProcessor, Dumpable {
     /**
      * Creates a new Voice like above, except that it also
      * stores the properties of the voice.
-     * @param name the name of the voice
-     * @param gender the gender of the voice
-     * @param age the age of the voice
-     * @param description a human-readable string providing a
-     * description that can be displayed for the users.
-     * @param locale the locale of the voice
-     * @param domain the domain of this voice.  For example,
-     * @param organization the organization which created the voice
-     * &quot;general&quot;, &quot;time&quot;, or
-     * &quot;weather&quot;.
      *
+     * @param name         the name of the voice
+     * @param gender       the gender of the voice
+     * @param age          the age of the voice
+     * @param description  a human-readable string providing a
+     *                     description that can be displayed for the users.
+     * @param locale       the locale of the voice
+     * @param domain       the domain of this voice.  For example,
+     * @param organization the organization which created the voice
+     *                     &quot;general&quot;, &quot;time&quot;, or
+     *                     &quot;weather&quot;.
      * @see #Voice()
      */
     public Voice(String name, Gender gender, Age age,
@@ -223,9 +223,8 @@ public abstract class Voice implements UtteranceProcessor, Dumpable {
      * Speaks the given text.
      *
      * @param text the text to speak
-     *
      * @return <code>true</code> if the given text is spoken properly;
-     *   otherwise <code>false</code>
+     * otherwise <code>false</code>
      */
     public boolean speak(String text) {
         return speak(new FreeTTSSpeakableImpl(text));
@@ -235,9 +234,8 @@ public abstract class Voice implements UtteranceProcessor, Dumpable {
      * Speaks the given document.
      *
      * @param doc the JSML document to speak
-     *
      * @return <code>true</code> if the given document is spoken properly;
-     *   otherwise <code>false</code>
+     * otherwise <code>false</code>
      */
     public boolean speak(Document doc) {
         return speak(new FreeTTSSpeakableImpl(doc));
@@ -247,9 +245,8 @@ public abstract class Voice implements UtteranceProcessor, Dumpable {
      * Speaks the input stream.
      *
      * @param inputStream the inputStream to speak
-     *
      * @return <code>true</code> if the given input stream is spoken properly;
-     *   otherwise <code>false</code>
+     * otherwise <code>false</code>
      */
     public boolean speak(InputStream inputStream) {
         return speak(new FreeTTSSpeakableImpl(inputStream));
@@ -261,9 +258,8 @@ public abstract class Voice implements UtteranceProcessor, Dumpable {
      * spoken or has been cancelled.
      *
      * @param speakable the item to speak
-     *
      * @return <code>true</code> if the utterance was spoken properly,
-     *         <code>false</code> otherwise
+     * <code>false</code> otherwise
      */
     public boolean speak(FreeTTSSpeakable speakable) {
         if (LOGGER.isLoggable(Level.FINE)) {
@@ -351,7 +347,7 @@ public abstract class Voice implements UtteranceProcessor, Dumpable {
      * Returns true if this voice is loaded.
      *
      * @return <code>true</code> if the voice is loaded;
-     *   otherwise <code>false</code>
+     * otherwise <code>false</code>
      */
     public boolean isLoaded() {
         return loaded;
@@ -361,7 +357,7 @@ public abstract class Voice implements UtteranceProcessor, Dumpable {
      * Sets the loaded state
      *
      * @param loaded the new loaded state
-     *   otherwise <code>false</code>
+     *               otherwise <code>false</code>
      */
     protected void setLoaded(boolean loaded) {
         this.loaded = loaded;
@@ -374,9 +370,8 @@ public abstract class Voice implements UtteranceProcessor, Dumpable {
      * the Voice.
      *
      * @param u the Utterance to process
-     *
      * @throws ProcessException if an exception occurred while performing
-     *   operations on the Utterance
+     *                          operations on the Utterance
      */
     public void processUtterance(Utterance u) throws ProcessException {
         UtteranceProcessor[] processors;
@@ -492,10 +487,9 @@ public abstract class Voice implements UtteranceProcessor, Dumpable {
      * not be output.
      *
      * @param utterance the utterance to be output
-     * @param timer the timer for gathering performance metrics
-     *
+     * @param timer     the timer for gathering performance metrics
      * @return true if the utterance was output properly; otherwise
-     *    false
+     * false
      */
     private boolean outputUtterance(Utterance utterance, BulkTimer timer) {
         boolean ok = true;
@@ -556,11 +550,10 @@ public abstract class Voice implements UtteranceProcessor, Dumpable {
      * Runs the given utterance processor.
      *
      * @param processor the processor to run.   If the processor
-     *    is null, it is ignored
+     *                  is null, it is ignored
      * @param utterance the utterance to process
-     *
      * @throws ProcessException if an exceptin occurs while processing
-     *     the utterance
+     *                          the utterance
      */
     private void runProcessor(UtteranceProcessor processor, Utterance utterance, BulkTimer timer)
             throws ProcessException {
@@ -627,8 +620,8 @@ public abstract class Voice implements UtteranceProcessor, Dumpable {
             getAudioPlayer().showMetrics();
             long totalMemory = Runtime.getRuntime().totalMemory();
             LOGGER.info("Memory Use    : "
-                            + (totalMemory - Runtime.getRuntime().freeMemory()) / 1024
-                            + "k  of " + totalMemory / 1024 + "k");
+                    + (totalMemory - Runtime.getRuntime().freeMemory()) / 1024
+                    + "k  of " + totalMemory / 1024 + "k");
         }
     }
 
@@ -643,12 +636,12 @@ public abstract class Voice implements UtteranceProcessor, Dumpable {
      * output queue may be shared by a number of voices.
      *
      * <p>Utterances are placed on the
-     *    queue to be output by an output thread. This queue is
-     *    usually created via a call to 'createOutputThread' which
-     *    creates a thread that waits on the queue and sends the
-     *    output to the audio player associated with this voice. If
-     *    the queue is null, the output is rendered in the calling
-     *    thread.
+     * queue to be output by an output thread. This queue is
+     * usually created via a call to 'createOutputThread' which
+     * creates a thread that waits on the queue and sends the
+     * output to the audio player associated with this voice. If
+     * the queue is null, the output is rendered in the calling
+     * thread.
      *
      * @param queue the output queue
      */
@@ -686,7 +679,6 @@ public abstract class Voice implements UtteranceProcessor, Dumpable {
      * sophisticated logic to be done).
      *
      * @param dom the jsml document
-     *
      * @return the document as a string.
      */
     private String documentToString(Document dom) {
@@ -698,7 +690,7 @@ public abstract class Voice implements UtteranceProcessor, Dumpable {
     /**
      * Appends the text for this node to the given StringBuffer.
      *
-     * @param n the node to traverse in depth-first order
+     * @param n   the node to traverse in depth-first order
      * @param buf the buffer to append text to
      */
     private void linearize(Node n, StringBuffer buf) {
@@ -719,11 +711,10 @@ public abstract class Voice implements UtteranceProcessor, Dumpable {
      * be needed to undo the effects of this node after it is
      * processed.
      *
-     * @param n the node to traverse in depth-first order
+     * @param n   the node to traverse in depth-first order
      * @param buf the buffer to append text to
-     *
      * @return a <code>String</code> containing text to undo the
-     *   effects of the node
+     * effects of the node
      */
     protected StringBuffer processNode(Node n, StringBuffer buf) {
         StringBuffer endText = null;
@@ -799,8 +790,8 @@ public abstract class Voice implements UtteranceProcessor, Dumpable {
      * Dumps the voice in textual form.
      *
      * @param output where to send the formatted output
-     * @param pad the initial padding
-     * @param title the title to print when dumping out 
+     * @param pad    the initial padding
+     * @param title  the title to print when dumping out
      */
     public void dump(PrintWriter output, int pad, String title) {
         Utilities.dump(output, pad, title);
@@ -813,8 +804,8 @@ public abstract class Voice implements UtteranceProcessor, Dumpable {
      * Dumps the voice processors.
      *
      * @param output where to send the formatted output
-     * @param pad the initial padding
-     * @param title the title to print when dumping out 
+     * @param pad    the initial padding
+     * @param title  the title to print when dumping out
      */
     public void dumpProcessors(PrintWriter output, int pad, String title) {
         UtteranceProcessor[] processors;
@@ -836,9 +827,8 @@ public abstract class Voice implements UtteranceProcessor, Dumpable {
      * Returns a language/voice specific Feature Processor.
      *
      * @param name the name of the processor
-     *
      * @return the processor associated with the name or null if none
-     *   could be found
+     * could be found
      */
     public FeatureProcessor getFeatureProcessor(String name) {
         return (FeatureProcessor) featureProcessors.get(name);
@@ -849,7 +839,7 @@ public abstract class Voice implements UtteranceProcessor, Dumpable {
      * FeatureProcessors supported by this voice.
      *
      * @param name the name of the processor
-     * @param fp  the processor
+     * @param fp   the processor
      */
     public void addFeatureProcessor(String name, FeatureProcessor fp) {
         featureProcessors.put(name, fp);
@@ -960,9 +950,8 @@ public abstract class Voice implements UtteranceProcessor, Dumpable {
     /**
      * Given a phoneme and a feature name, returns the feature.
      *
-     * @param phone the phoneme of interest
+     * @param phone       the phoneme of interest
      * @param featureName the name of the feature of interest
-     *
      * @return the feature with the given name
      */
     public String getPhoneFeature(String phone, String featureName) {
@@ -1159,9 +1148,9 @@ public abstract class Voice implements UtteranceProcessor, Dumpable {
      * the audio player for this voice to the default audio player
      * if the audio player has not yet been set.
      *
+     * @return the default AudioPlayer
      * @see #DEFAULT_AUDIO_PLAYER
      * @see #getAudioPlayer
-     * @return the default AudioPlayer
      */
     public AudioPlayer getDefaultAudioPlayer() throws InstantiationException {
         if (defaultAudioPlayer != null) {
@@ -1186,8 +1175,8 @@ public abstract class Voice implements UtteranceProcessor, Dumpable {
      * audio player has not yet been set, the value will default
      * to the return value of getDefaultAudioPlayer.
      *
-     * @see #getDefaultAudioPlayer
      * @return the audio player
+     * @see #getDefaultAudioPlayer
      */
     public AudioPlayer getAudioPlayer() {
         if (audioPlayer == null) {
@@ -1314,8 +1303,8 @@ public abstract class Voice implements UtteranceProcessor, Dumpable {
      * Set the domain of this voice.
      *
      * @param domain the domain of this voice.  For example,
-     * &quot;general&quot;, &quot;time&quot;, or
-     * &quot;weather&quot;.
+     *               &quot;general&quot;, &quot;time&quot;, or
+     *               &quot;weather&quot;.
      */
     protected void setDomain(String domain) {
         this.domain = domain;
@@ -1377,9 +1366,8 @@ public abstract class Voice implements UtteranceProcessor, Dumpable {
      * Derived voices typically override this to customize behaviors.
      *
      * @return the audio output processor
-     *
      * @throws IOException if an IO error occurs while getting
-     *     processor
+     *                     processor
      */
     protected abstract UtteranceProcessor getAudioOutput() throws IOException;
 
@@ -1452,7 +1440,7 @@ public abstract class Voice implements UtteranceProcessor, Dumpable {
                     utterance.setFirst(first);
                     first = false;
                     boolean isLast = (!tok.hasMoreTokens() &&
-                                    (savedToken == null || savedToken.getWord().length() == 0));
+                            (savedToken == null || savedToken.getWord().length() == 0));
                     utterance.setLast(isLast);
                     return utterance;
                 }

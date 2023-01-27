@@ -99,7 +99,7 @@ public class PlayerModelImpl implements PlayerModel {
     }
 
     /**
-     * Returns a "no synthesizer" message, and asks 
+     * Returns a "no synthesizer" message, and asks
      * the user to check if the "speech.properties" file is
      * at <code>user.home</code> or <code>java.home/lib</code>.
      *
@@ -202,7 +202,7 @@ public class PlayerModelImpl implements PlayerModel {
      * Plays the text in the given File.
      *
      * @param inStream the File to play
-     * @param type the file type
+     * @param type     the file type
      */
     private void playInputStream(InputStream inStream, PlayableType type) {
         playingFile = true;
@@ -341,7 +341,6 @@ public class PlayerModelImpl implements PlayerModel {
      * Returns the monitor of the synthesizer at the given index.
      *
      * @param index the position of the synthesizer in the synthesizer list
-     *
      * @return the monitor of the specified synthesizer
      */
     public Monitor getMonitor(int index) {
@@ -454,7 +453,6 @@ public class PlayerModelImpl implements PlayerModel {
      * Sets the volume, in the range of 0 to 10.
      *
      * @param volume the new volume
-     *
      * @return true if new volume is set; false otherwise
      */
     public boolean setVolume(float volume) {
@@ -496,7 +494,6 @@ public class PlayerModelImpl implements PlayerModel {
      * Sets the speaking rate in terms of words per minute.
      *
      * @param wordsPerMin the new speaking rate
-     *
      * @return the speaking rate, or -1 if unknown or an error occurred
      */
     public boolean setSpeakingRate(float wordsPerMin) {
@@ -530,7 +527,6 @@ public class PlayerModelImpl implements PlayerModel {
      * Sets the baseline pitch for the current synthesis voice.
      *
      * @param pitch the baseline pitch
-     *
      * @return true if new pitch is set; false otherwise
      */
     @Override
@@ -563,7 +559,6 @@ public class PlayerModelImpl implements PlayerModel {
      * Sets the pitch range for the current synthesis voice.
      *
      * @param range the pitch range
-     *
      * @return true if new range is set; false otherwise
      */
     @Override
@@ -677,10 +672,10 @@ class MyVoice extends Voice {
     /**
      * Constructor provided with voice name, gender, age and style.
      *
-     * @param name the name of the person who owns this Voice
+     * @param name   the name of the person who owns this Voice
      * @param gender the gender of the person
-     * @param age the age of the person
-     * @param style the style of the person
+     * @param age    the age of the person
+     * @param style  the style of the person
      */
     public MyVoice(String name, int gender, int age, String style) {
         super(name, gender, age, style);
@@ -842,8 +837,8 @@ class SynthesizerLoader extends Thread {
      * Constructs a SynthesizerLoaded which loads the given Synthesizer.
      *
      * @param synthesizer the Synthesizer to load
-     * @param modeDesc the MySynthesizerModeDesc from which we can retrieve
-     *    the PlayerModel
+     * @param modeDesc    the MySynthesizerModeDesc from which we can retrieve
+     *                    the PlayerModel
      */
     public SynthesizerLoader(Synthesizer synthesizer, MySynthesizerModeDesc modeDesc) {
         this.synthesizer = synthesizer;

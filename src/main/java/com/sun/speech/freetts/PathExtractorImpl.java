@@ -31,8 +31,8 @@ import com.sun.speech.freetts.util.Utilities;
  *   com.sun.speech.freetts.interpretCartPaths - default false
  *   com.sun.speech.freetts.lazyCartCompile - default true
  * </pre>
- *   com.sun.speech.freetts.interpretCartPaths
- *
+ * com.sun.speech.freetts.interpretCartPaths
+ * <p>
  * Instances of this class will optionally pre-compile the paths.
  * Pre-compiling paths reduces the processing time and objects needed
  * to extract a feature or an item based upon a path.
@@ -98,6 +98,7 @@ public class PathExtractorImpl implements PathExtractor {
 
     /**
      * Finds the item associated with this Path.
+     *
      * @param item the item to start at
      * @return the item associated with the path or null
      */
@@ -147,6 +148,7 @@ public class PathExtractorImpl implements PathExtractor {
 
     /**
      * Finds the feature associated with this Path.
+     *
      * @param item the item to start at
      * @return the feature associated or "0"  if the
      * feature was not found.
@@ -190,6 +192,7 @@ public class PathExtractorImpl implements PathExtractor {
 
     /**
      * Compiles the given path into the compiled form
+     *
      * @param path the path to compile
      * @return the compiled form which is in the form
      * of an array path traversal enums and associated strings
@@ -252,6 +255,7 @@ class OpEnum {
     /**
      * Creates a new OpEnum. There is a limited
      * set of OpEnums
+     *
      * @param name the path name for this Enum
      */
     private OpEnum(String name) {
@@ -262,6 +266,7 @@ class OpEnum {
     /**
      * gets an OpEnum that's associated with
      * the given name.
+     *
      * @param name the name of the OpEnum of interest
      */
     public static OpEnum getInstance(String name) {

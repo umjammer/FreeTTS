@@ -72,12 +72,10 @@ abstract public class BaseSynthesizer extends BaseEngine
      *
      * @param jsmlText the JSML text to speak
      * @param listener the listener to be notified as the
-     *   <code>jsmlText</code> is processed
-     *
-     * @throws JSMLException if the JSML text contains errors
-     * @throws EngineStateError
-     *   if this <code>Synthesizer</code> in the <code>DEALLOCATED</code> or
-     *   <code>DEALLOCATING_RESOURCES</code> states
+     *                 <code>jsmlText</code> is processed
+     * @throws JSMLException    if the JSML text contains errors
+     * @throws EngineStateError if this <code>Synthesizer</code> in the <code>DEALLOCATED</code> or
+     *                          <code>DEALLOCATING_RESOURCES</code> states
      */
     public void speak(Speakable jsmlText, SpeakableListener listener) throws JSMLException, EngineStateError {
         checkEngineState(DEALLOCATED | DEALLOCATING_RESOURCES);
@@ -89,18 +87,14 @@ abstract public class BaseSynthesizer extends BaseEngine
     /**
      * Speaks JSML text provided as a <code>URL</code>.
      *
-     * @param jsmlURL the <code>URL</code> containing JSML text
+     * @param jsmlURL  the <code>URL</code> containing JSML text
      * @param listener the listener to be notified as the
-     *   JSML text is processed
-     *
-     * @throws EngineStateError
-     *   if this <code>Synthesizer</code> in the <code>DEALLOCATED</code> or
-     *   <code>DEALLOCATING_RESOURCES</code> states
-     * @throws IOException
-     *    if errors are encountered with the <code>JSMLurl</code>
-     * @throws JSMLException if the JSML text contains errors
-     * @throws MalformedURLException
-     *    if errors are encountered with the <code>JSMLurl</code>
+     *                 JSML text is processed
+     * @throws EngineStateError      if this <code>Synthesizer</code> in the <code>DEALLOCATED</code> or
+     *                               <code>DEALLOCATING_RESOURCES</code> states
+     * @throws IOException           if errors are encountered with the <code>JSMLurl</code>
+     * @throws JSMLException         if the JSML text contains errors
+     * @throws MalformedURLException if errors are encountered with the <code>JSMLurl</code>
      */
     public void speak(URL jsmlURL, SpeakableListener listener) throws JSMLException, MalformedURLException,
             IOException, EngineStateError {
@@ -115,12 +109,10 @@ abstract public class BaseSynthesizer extends BaseEngine
      *
      * @param jsmlText a <code>String</code> containing JSML.
      * @param listener the listener to be notified as the
-     *   JSML text is processed
-     *
-     * @throws EngineStateError
-     *   if this <code>Synthesizer</code> in the <code>DEALLOCATED</code> or
-     *   <code>DEALLOCATING_RESOURCES</code> states
-     * @throws JSMLException if the JSML text contains errors
+     *                 JSML text is processed
+     * @throws EngineStateError if this <code>Synthesizer</code> in the <code>DEALLOCATED</code> or
+     *                          <code>DEALLOCATING_RESOURCES</code> states
+     * @throws JSMLException    if the JSML text contains errors
      */
     public void speak(String jsmlText, SpeakableListener listener) throws JSMLException, EngineStateError {
         checkEngineState(DEALLOCATED | DEALLOCATING_RESOURCES);
@@ -133,13 +125,11 @@ abstract public class BaseSynthesizer extends BaseEngine
      * Speaks a plain text <code>String</code>.  No JSML parsing is
      * performed.
      *
-     * @param text a <code>String</code> containing plain text.
+     * @param text     a <code>String</code> containing plain text.
      * @param listener the listener to be notified as the
-     *   text is processed
-     *
-     * @throws EngineStateError
-     *   if this <code>Synthesizer</code> in the <code>DEALLOCATED</code> or
-     *   <code>DEALLOCATING_RESOURCES</code> states
+     *                 text is processed
+     * @throws EngineStateError if this <code>Synthesizer</code> in the <code>DEALLOCATED</code> or
+     *                          <code>DEALLOCATING_RESOURCES</code> states
      */
     public void speakPlainText(String text, SpeakableListener listener) throws EngineStateError {
         checkEngineState(DEALLOCATED | DEALLOCATING_RESOURCES);
@@ -157,9 +147,8 @@ abstract public class BaseSynthesizer extends BaseEngine
      * in the given bit pattern.
      *
      * @param state the bit pattern of states
-     *
      * @return a String of the names of all the states implied
-     *   in the given bit pattern.
+     * in the given bit pattern.
      */
     protected String stateToString(long state) {
         StringBuilder buf = new StringBuilder();
@@ -175,22 +164,16 @@ abstract public class BaseSynthesizer extends BaseEngine
      * event.
      *
      * @param item the item to add to the queue
-     *
      */
     abstract protected void appendQueue(BaseSynthesizerQueueItem item);
 
     /**
      * Optional method that converts a text string to a phoneme string.
      *
-     * @param text
-     *   plain text to be converted to phonemes
-     *
-     * @return
-     *   IPA phonemic representation of text or <code>null</code>
-     *
-     * @throws EngineStateError
-     *   if this <code>Synthesizer</code> in the <code>DEALLOCATED</code> or
-     *   <code>DEALLOCATING_RESOURCES</code> states
+     * @param text plain text to be converted to phonemes
+     * @return IPA phonemic representation of text or <code>null</code>
+     * @throws EngineStateError if this <code>Synthesizer</code> in the <code>DEALLOCATED</code> or
+     *                          <code>DEALLOCATING_RESOURCES</code> states
      */
     public String phoneme(String text) throws EngineStateError {
         checkEngineState(DEALLOCATED | DEALLOCATING_RESOURCES);
@@ -205,45 +188,36 @@ abstract public class BaseSynthesizer extends BaseEngine
     /**
      * Returns an enumeration of the queue.
      *
-     * @return
-     *   an <code>Enumeration</code> of the speech output queue or
-     *   <code>null</code>.
-     *
-     * @throws EngineStateError
-     *   if this <code>Synthesizer</code> in the <code>DEALLOCATED</code> or
-     *   <code>DEALLOCATING_RESOURCES</code> states
+     * @return an <code>Enumeration</code> of the speech output queue or
+     * <code>null</code>.
+     * @throws EngineStateError if this <code>Synthesizer</code> in the <code>DEALLOCATED</code> or
+     *                          <code>DEALLOCATING_RESOURCES</code> states
      */
     abstract public Enumeration<?> enumerateQueue() throws EngineStateError;
 
     /**
      * Cancels the item at the top of the queue.
      *
-     * @throws EngineStateError
-     *   if this <code>Synthesizer</code> in the <code>DEALLOCATED</code> or
-     *   <code>DEALLOCATING_RESOURCES</code> states
+     * @throws EngineStateError if this <code>Synthesizer</code> in the <code>DEALLOCATED</code> or
+     *                          <code>DEALLOCATING_RESOURCES</code> states
      */
     abstract public void cancel() throws EngineStateError;
 
     /**
      * Cancels a specific object on the queue.
      *
-     * @param source
-     *    object to be removed from the speech output queue
-     *
-     * @throws IllegalArgumentException
-     *  if the source object is not found in the speech output queue.
-     * @throws EngineStateError
-     *   if this <code>Synthesizer</code> in the <code>DEALLOCATED</code> or
-     *   <code>DEALLOCATING_RESOURCES</code> states
+     * @param source object to be removed from the speech output queue
+     * @throws IllegalArgumentException if the source object is not found in the speech output queue.
+     * @throws EngineStateError         if this <code>Synthesizer</code> in the <code>DEALLOCATED</code> or
+     *                                  <code>DEALLOCATING_RESOURCES</code> states
      */
     abstract public void cancel(Object source) throws IllegalArgumentException, EngineStateError;
 
     /**
      * Cancels all items on the output queue.
      *
-     * @throws EngineStateError
-     *   if this <code>Synthesizer</code> in the <code>DEALLOCATED</code> or
-     *   <code>DEALLOCATING_RESOURCES</code> states
+     * @throws EngineStateError if this <code>Synthesizer</code> in the <code>DEALLOCATED</code> or
+     *                          <code>DEALLOCATING_RESOURCES</code> states
      */
     abstract public void cancelAll() throws EngineStateError;
 
@@ -255,7 +229,7 @@ abstract public class BaseSynthesizer extends BaseEngine
      * method, an application does not need to cast the return value.
      *
      * @return the <code>SynthesizerProperties</code> object for this
-     *   <code>Synthesizer</code>
+     * <code>Synthesizer</code>
      */
     public SynthesizerProperties getSynthesizerProperties() {
         checkEngineState(DEALLOCATED | DEALLOCATING_RESOURCES);
@@ -266,7 +240,6 @@ abstract public class BaseSynthesizer extends BaseEngine
      * Adds a <code>SpeakableListener</code> to this <code>Synthesizer</code>.
      *
      * @param listener the listener to add
-     *
      * @see #removeSpeakableListener
      */
     public void addSpeakableListener(SpeakableListener listener) {
@@ -280,7 +253,6 @@ abstract public class BaseSynthesizer extends BaseEngine
      * <code>Synthesizer</code>.
      *
      * @param listener the listener to remove
-     *
      * @see #addSpeakableListener
      */
     public void removeSpeakableListener(SpeakableListener listener) {
@@ -295,7 +267,7 @@ abstract public class BaseSynthesizer extends BaseEngine
      * from the default voice.  Override to set engine-specific defaults.
      *
      * @return a <code>BaseEngineProperties</code> object specific to
-     *   a subclass.
+     * a subclass.
      */
     protected BaseEngineProperties createEngineProperties() {
         SynthesizerModeDesc desc = (SynthesizerModeDesc) engineModeDesc;
@@ -317,6 +289,7 @@ abstract public class BaseSynthesizer extends BaseEngine
      * Factory method that creates a <code>BaseSynthesizerQueueItem</code>.
      * Override if the synthesizer specializes the
      * <code>BaseSynthesizerQueueItem</code> class.
+     *
      * @return the created queue item
      */
     protected BaseSynthesizerQueueItem createQueueItem() {
@@ -339,13 +312,11 @@ abstract public class BaseSynthesizer extends BaseEngine
      * by <code>dispatchSpeechEvent</code> as a result of this action.
      *
      * @param topOfQueueChanged <code>true</code> if the top of the
-     *   queue has changed
-     * @param oldState the old state of this <code>Synthesizer</code>
-     * @param newState the new state of this <code>Synthesizer</code>
-     *
+     *                          queue has changed
+     * @param oldState          the old state of this <code>Synthesizer</code>
+     * @param newState          the new state of this <code>Synthesizer</code>
      * @see #fireQueueUpdated
      * @see #dispatchSpeechEvent
-     *
      */
     public void postQueueUpdated(boolean topOfQueueChanged,
                                  long oldState, long newState) {
@@ -362,7 +333,6 @@ abstract public class BaseSynthesizer extends BaseEngine
      * event to all <code>SynthesizerListeners</code>.
      *
      * @param event the <code>QUEUE_UPDATED</code> event
-     *
      * @see #postQueueUpdated
      * @see #dispatchSpeechEvent
      */
@@ -386,7 +356,6 @@ abstract public class BaseSynthesizer extends BaseEngine
      *
      * @param oldState the old state of this <code>Synthesizer</code>
      * @param newState the new state of this <code>Synthesizer</code>
-     *
      * @see #fireQueueEmptied
      * @see #dispatchSpeechEvent
      */
@@ -404,7 +373,6 @@ abstract public class BaseSynthesizer extends BaseEngine
      * event to all <code>SynthesizerListeners</code>.
      *
      * @param event the <code>QUEUE_EMPTIED</code> event
-     *
      * @see #postQueueEmptied
      * @see #dispatchSpeechEvent
      */
@@ -427,7 +395,6 @@ abstract public class BaseSynthesizer extends BaseEngine
      * via the various post methods of this class.
      *
      * @param event the <code>SpeechEvent</code> to dispatch
-     *
      * @see #postQueueUpdated
      * @see #postQueueEmptied
      */

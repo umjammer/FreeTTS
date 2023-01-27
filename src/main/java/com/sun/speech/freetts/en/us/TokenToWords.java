@@ -27,7 +27,7 @@ import com.sun.speech.freetts.util.Utilities;
 
 
 /**
- * Converts the Tokens (in US English words) in an 
+ * Converts the Tokens (in US English words) in an
  * Utterance into a list of words. It puts the produced list back
  * into the Utterance. Usually, the tokens that gets expanded are numbers
  * like "23" (to "twenty" "three").
@@ -135,107 +135,107 @@ public class TokenToWords implements UtteranceProcessor {
 
     // List of US states abbreviations and their full names
     private static final String[][] usStates = {
-                    {"AL", "ambiguous", "alabama"},
-                    {"Al", "ambiguous", "alabama"},
-                    {"Ala", "", "alabama"},
-                    {"AK", "", "alaska"},
-                    {"Ak", "", "alaska"},
-                    {"AZ", "", "arizona"},
-                    {"Az", "", "arizona"},
-                    {"CA", "", "california"},
-                    {"Ca", "", "california"},
-                    {"Cal", "ambiguous", "california"},
-                    {"Calif", "", "california"},
-                    {"CO", "ambiguous", "colorado"},
-                    {"Co", "ambiguous", "colorado"},
-                    {"Colo", "", "colorado"},
-                    {"DC", "", "d", "c"},
-                    {"DE", "", "delaware"},
-                    {"De", "ambiguous", "delaware"},
-                    {"Del", "ambiguous", "delaware"},
-                    {"FL", "", "florida"},
-                    {"Fl", "ambiguous", "florida"},
-                    {"Fla", "", "florida"},
-                    {"GA", "", "georgia"},
-                    {"Ga", "", "georgia"},
-                    {"HI", "ambiguous", "hawaii"},
-                    {"Hi", "ambiguous", "hawaii"},
-                    {"IA", "", "iowa"},
-                    {"Ia", "ambiguous", "iowa"},
-                    {"IN", "ambiguous", "indiana"},
-                    {"In", "ambiguous", "indiana"},
-                    {"Ind", "ambiguous", "indiana"},
-                    {"ID", "ambiguous", "idaho"},
-                    {"IL", "ambiguous", "illinois"},
-                    {"Il", "ambiguous", "illinois"},
-                    {"ILL", "ambiguous", "illinois"},
-                    {"KS", "", "kansas"},
-                    {"Ks", "", "kansas"},
-                    {"Kans", "", "kansas"},
-                    {"KY", "ambiguous", "kentucky"},
-                    {"Ky", "ambiguous", "kentucky"},
-                    {"LA", "ambiguous", "louisiana"},
-                    {"La", "ambiguous", "louisiana"},
-                    {"Lou", "ambiguous", "louisiana"},
-                    {"Lous", "ambiguous", "louisiana"},
-                    {"MA", "ambiguous", "massachusetts"},
-                    {"Mass", "ambiguous", "massachusetts"},
-                    {"Ma", "ambiguous", "massachusetts"},
-                    {"MD", "ambiguous", "maryland"},
-                    {"Md", "ambiguous", "maryland"},
-                    {"ME", "ambiguous", "maine"},
-                    {"Me", "ambiguous", "maine"},
-                    {"MI", "", "michigan"},
-                    {"Mi", "ambiguous", "michigan"},
-                    {"Mich", "ambiguous", "michigan"},
-                    {"MN", "ambiguous", "minnestota"},
-                    {"Minn", "ambiguous", "minnestota"},
-                    {"MS", "ambiguous", "mississippi"},
-                    {"Miss", "ambiguous", "mississippi"},
-                    {"MT", "ambiguous", "montanna"},
-                    {"Mt", "ambiguous", "montanna"},
-                    {"MO", "ambiguous", "missouri"},
-                    {"Mo", "ambiguous", "missouri"},
-                    {"NC", "ambiguous", "north", "carolina"},
-                    {"ND", "ambiguous", "north", "dakota"},
-                    {"NE", "ambiguous", "nebraska"},
-                    {"Ne", "ambiguous", "nebraska"},
-                    {"Neb", "ambiguous", "nebraska"},
-                    {"NH", "ambiguous", "new", "hampshire"},
-                    {"NV", "", "nevada"},
-                    {"Nev", "", "nevada"},
-                    {"NY", "", "new", "york"},
-                    {"OH", "ambiguous", "ohio"},
-                    {"OK", "ambiguous", "oklahoma"},
-                    {"Okla", "", "oklahoma"},
-                    {"OR", "ambiguous", "oregon"},
-                    {"Or", "ambiguous", "oregon"},
-                    {"Ore", "ambiguous", "oregon"},
-                    {"PA", "ambiguous", "pennsylvania"},
-                    {"Pa", "ambiguous", "pennsylvania"},
-                    {"Penn", "ambiguous", "pennsylvania"},
-                    {"RI", "ambiguous", "rhode", "island"},
-                    {"SC", "ambiguous", "south", "carlolina"},
-                    {"SD", "ambiguous", "south", "dakota"},
-                    {"TN", "ambiguous", "tennesee"},
-                    {"Tn", "ambiguous", "tennesee"},
-                    {"Tenn", "ambiguous", "tennesee"},
-                    {"TX", "ambiguous", "texas"},
-                    {"Tx", "ambiguous", "texas"},
-                    {"Tex", "ambiguous", "texas"},
-                    {"UT", "ambiguous", "utah"},
-                    {"VA", "ambiguous", "virginia"},
-                    {"WA", "ambiguous", "washington"},
-                    {"Wa", "ambiguous", "washington"},
-                    {"Wash", "ambiguous", "washington"},
-                    {"WI", "ambiguous", "wisconsin"},
-                    {"Wi", "ambiguous", "wisconsin"},
-                    {"WV", "ambiguous", "west", "virginia"},
-                    {"WY", "ambiguous", "wyoming"},
-                    {"Wy", "ambiguous", "wyoming"},
-                    {"Wyo", "", "wyoming"},
-                    {"PR", "ambiguous", "puerto", "rico"}
-            };
+            {"AL", "ambiguous", "alabama"},
+            {"Al", "ambiguous", "alabama"},
+            {"Ala", "", "alabama"},
+            {"AK", "", "alaska"},
+            {"Ak", "", "alaska"},
+            {"AZ", "", "arizona"},
+            {"Az", "", "arizona"},
+            {"CA", "", "california"},
+            {"Ca", "", "california"},
+            {"Cal", "ambiguous", "california"},
+            {"Calif", "", "california"},
+            {"CO", "ambiguous", "colorado"},
+            {"Co", "ambiguous", "colorado"},
+            {"Colo", "", "colorado"},
+            {"DC", "", "d", "c"},
+            {"DE", "", "delaware"},
+            {"De", "ambiguous", "delaware"},
+            {"Del", "ambiguous", "delaware"},
+            {"FL", "", "florida"},
+            {"Fl", "ambiguous", "florida"},
+            {"Fla", "", "florida"},
+            {"GA", "", "georgia"},
+            {"Ga", "", "georgia"},
+            {"HI", "ambiguous", "hawaii"},
+            {"Hi", "ambiguous", "hawaii"},
+            {"IA", "", "iowa"},
+            {"Ia", "ambiguous", "iowa"},
+            {"IN", "ambiguous", "indiana"},
+            {"In", "ambiguous", "indiana"},
+            {"Ind", "ambiguous", "indiana"},
+            {"ID", "ambiguous", "idaho"},
+            {"IL", "ambiguous", "illinois"},
+            {"Il", "ambiguous", "illinois"},
+            {"ILL", "ambiguous", "illinois"},
+            {"KS", "", "kansas"},
+            {"Ks", "", "kansas"},
+            {"Kans", "", "kansas"},
+            {"KY", "ambiguous", "kentucky"},
+            {"Ky", "ambiguous", "kentucky"},
+            {"LA", "ambiguous", "louisiana"},
+            {"La", "ambiguous", "louisiana"},
+            {"Lou", "ambiguous", "louisiana"},
+            {"Lous", "ambiguous", "louisiana"},
+            {"MA", "ambiguous", "massachusetts"},
+            {"Mass", "ambiguous", "massachusetts"},
+            {"Ma", "ambiguous", "massachusetts"},
+            {"MD", "ambiguous", "maryland"},
+            {"Md", "ambiguous", "maryland"},
+            {"ME", "ambiguous", "maine"},
+            {"Me", "ambiguous", "maine"},
+            {"MI", "", "michigan"},
+            {"Mi", "ambiguous", "michigan"},
+            {"Mich", "ambiguous", "michigan"},
+            {"MN", "ambiguous", "minnestota"},
+            {"Minn", "ambiguous", "minnestota"},
+            {"MS", "ambiguous", "mississippi"},
+            {"Miss", "ambiguous", "mississippi"},
+            {"MT", "ambiguous", "montanna"},
+            {"Mt", "ambiguous", "montanna"},
+            {"MO", "ambiguous", "missouri"},
+            {"Mo", "ambiguous", "missouri"},
+            {"NC", "ambiguous", "north", "carolina"},
+            {"ND", "ambiguous", "north", "dakota"},
+            {"NE", "ambiguous", "nebraska"},
+            {"Ne", "ambiguous", "nebraska"},
+            {"Neb", "ambiguous", "nebraska"},
+            {"NH", "ambiguous", "new", "hampshire"},
+            {"NV", "", "nevada"},
+            {"Nev", "", "nevada"},
+            {"NY", "", "new", "york"},
+            {"OH", "ambiguous", "ohio"},
+            {"OK", "ambiguous", "oklahoma"},
+            {"Okla", "", "oklahoma"},
+            {"OR", "ambiguous", "oregon"},
+            {"Or", "ambiguous", "oregon"},
+            {"Ore", "ambiguous", "oregon"},
+            {"PA", "ambiguous", "pennsylvania"},
+            {"Pa", "ambiguous", "pennsylvania"},
+            {"Penn", "ambiguous", "pennsylvania"},
+            {"RI", "ambiguous", "rhode", "island"},
+            {"SC", "ambiguous", "south", "carlolina"},
+            {"SD", "ambiguous", "south", "dakota"},
+            {"TN", "ambiguous", "tennesee"},
+            {"Tn", "ambiguous", "tennesee"},
+            {"Tenn", "ambiguous", "tennesee"},
+            {"TX", "ambiguous", "texas"},
+            {"Tx", "ambiguous", "texas"},
+            {"Tex", "ambiguous", "texas"},
+            {"UT", "ambiguous", "utah"},
+            {"VA", "ambiguous", "virginia"},
+            {"WA", "ambiguous", "washington"},
+            {"Wa", "ambiguous", "washington"},
+            {"Wash", "ambiguous", "washington"},
+            {"WI", "ambiguous", "wisconsin"},
+            {"Wi", "ambiguous", "wisconsin"},
+            {"WV", "ambiguous", "west", "virginia"},
+            {"WY", "ambiguous", "wyoming"},
+            {"Wy", "ambiguous", "wyoming"},
+            {"Wyo", "", "wyoming"},
+            {"PR", "ambiguous", "puerto", "rico"}
+    };
 
     // Again hashtable for constant time searching
     private static Map<String, String[]> usStatesHash = new HashMap<>();
@@ -281,12 +281,11 @@ public class TokenToWords implements UtteranceProcessor {
     }
 
     /**
-     *  process the utterance
+     * process the utterance
      *
-     * @param  utterance  the utterance contain the tokens
-     *
+     * @param utterance the utterance contain the tokens
      * @throws ProcessException if an IOException is thrown during the
-     *         processing of the utterance
+     *                          processing of the utterance
      */
     public void processUtterance(Utterance utterance) throws ProcessException {
         Relation tokenRelation;
@@ -312,7 +311,6 @@ public class TokenToWords implements UtteranceProcessor {
      * Returns true if the given token matches part of a phone number
      *
      * @param tokenVal the string value of the token
-     *
      * @return true or false
      */
     private boolean matchesPartPhoneNumber(String tokenVal) {
@@ -341,9 +339,8 @@ public class TokenToWords implements UtteranceProcessor {
     /**
      * Returns true if the given string is in the given string array.
      *
-     * @param value the string to check
+     * @param value       the string to check
      * @param stringArray the array to check
-     *
      * @return true if the string is in the array, false otherwise
      */
     private static boolean inStringArray(String value, String[] stringArray) {
@@ -358,9 +355,8 @@ public class TokenToWords implements UtteranceProcessor {
     /**
      * Converts the given Token into (word) Items in the WordRelation.
      *
-     * @param  tokenVal the String value of the token, which may or may not be
-     *                  same as the one in called "name" in flite
-     *
+     * @param tokenVal the String value of the token, which may or may not be
+     *                 same as the one in called "name" in flite
      */
     private void tokenToWords(String tokenVal) {
 
@@ -556,7 +552,7 @@ public class TokenToWords implements UtteranceProcessor {
      * Convert the given digit token with dashes (e.g. 999-999-999)
      * into (word) Items in the WordRelation.
      *
-     * @param tokenVal  the digit string
+     * @param tokenVal the digit string
      */
     private void digitsDashToWords(String tokenVal) {
         int tokenLength = tokenVal.length();
@@ -574,7 +570,7 @@ public class TokenToWords implements UtteranceProcessor {
     /**
      * Convert the given digit token into (word) Items in the WordRelation.
      *
-     * @param tokenVal  the digit string
+     * @param tokenVal the digit string
      */
     private void digitsToWords(String tokenVal) {
         FeatureSet featureSet = tokenItem.getFeatures();
@@ -644,9 +640,8 @@ public class TokenToWords implements UtteranceProcessor {
      * Returns true if the given key is in the kingSectionLikeHash
      * Hashtable, and the value is the same as the given value.
      *
-     * @param key key to look for in the hashtable
+     * @param key   key to look for in the hashtable
      * @param value the value to match
-     *
      * @return true if it matches, or false if it does not or if
      * the key is not mapped to any value in the hashtable.
      */
@@ -664,7 +659,6 @@ public class TokenToWords implements UtteranceProcessor {
      * in a king-like context, e.g., "King" or "Louis".
      *
      * @param tokenItem the token item to check
-     *
      * @return true or false
      */
     public static boolean kingLike(Item tokenItem) {
@@ -682,7 +676,6 @@ public class TokenToWords implements UtteranceProcessor {
      * in a section-like context, e.g., "chapter" or "act".
      *
      * @param tokenItem the token item to check
-     *
      * @return true or false
      */
     public static boolean sectionLike(Item tokenItem) {
@@ -921,7 +914,6 @@ public class TokenToWords implements UtteranceProcessor {
      * This method is originally called us_aswd() in Flite 1.1.
      *
      * @param word the word to test
-     *
      * @return true if the word is pronounceable, false otherwise
      */
     public boolean isPronounceable(String word) {
@@ -992,10 +984,9 @@ public class TokenToWords implements UtteranceProcessor {
      * Determines if the given input matches the given Pattern.
      *
      * @param pattern the pattern to match
-     * @param input the string to test
-     *
+     * @param input   the string to test
      * @return <code>true</code> if the input string matches the given Pattern;
-     *         <code>false</code> otherwise
+     * <code>false</code> otherwise
      */
     private static boolean matches(Pattern pattern, String input) {
         Matcher m = pattern.matcher(input);
@@ -1007,15 +998,15 @@ public class TokenToWords implements UtteranceProcessor {
      * input text is splittable. A character is splittable if:
      * <p>
      * 1) the character and the following character are not letters
-     *    in the English alphabet (A-Z and a-z)
+     * in the English alphabet (A-Z and a-z)
      * <p>
      * 2) the character and the following character are not digits (0-9)
      * <p>
-     * @param text the text containing the character of interest
-     * @param index the index of the character of interest
      *
+     * @param text  the text containing the character of interest
+     * @param index the index of the character of interest
      * @return true if the position of the given text is splittable
-     *         false otherwise
+     * false otherwise
      */
     private static boolean isTextSplitable(String text, int index) {
 
@@ -1032,7 +1023,6 @@ public class TokenToWords implements UtteranceProcessor {
      * Returns true if the given character is a letter (a-z or A-Z).
      *
      * @param ch the character to test
-     *
      * @return true or false
      */
     private static boolean isLetter(char ch) {
@@ -1043,7 +1033,6 @@ public class TokenToWords implements UtteranceProcessor {
      * Returns true if the given character is an uppercase letter (A-Z).
      *
      * @param ch the character to test
-     *
      * @return true or false
      */
     private static boolean isUppercaseLetter(char ch) {
@@ -1054,7 +1043,6 @@ public class TokenToWords implements UtteranceProcessor {
      * Returns true if the given character is a lowercase letter (a-z).
      *
      * @param ch the character to test
-     *
      * @return true or false
      */
     private static boolean isLowercaseLetter(char ch) {

@@ -31,7 +31,7 @@ import java.util.StringTokenizer;
  * word pos
  * ...
  * </pre>
- *
+ * <p>
  * Where <code>word</code> is the word and <code>pos</code> is the
  * part of speech for the word.  The part of speech is implementation
  * dependent.
@@ -56,9 +56,8 @@ public class PartOfSpeechImpl implements PartOfSpeech {
     /**
      * Creates a new PartOfSpeechImpl by reading from the given URL.
      *
-     * @param url the input source
+     * @param url                 the input source
      * @param defaultPartOfSpeech the default part of speech
-     *
      * @throws IOException if an error occurs
      */
     public PartOfSpeechImpl(URL url, String defaultPartOfSpeech) throws IOException {
@@ -102,7 +101,6 @@ public class PartOfSpeechImpl implements PartOfSpeech {
      * <code>defaultPartOfSpeech</code> parameter passed to the constructor.
      *
      * @param word the word to classify
-     *
      * @return an implementation dependent part of speech for the word
      */
     public String getPartOfSpeech(String word) {

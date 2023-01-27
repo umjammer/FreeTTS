@@ -75,8 +75,8 @@ public class Client {
     /**
      * Connects this client to the server.
      *
-     * @return  <code>true</code>  if successfully connected
-     *          <code>false</code>  if failed to connect
+     * @return <code>true</code>  if successfully connected
+     * <code>false</code>  if failed to connect
      */
     private boolean connect() {
         try {
@@ -177,9 +177,8 @@ public class Client {
      * Sends a TTS request on the given text.
      *
      * @param text the text to do TTS on
-     *
      * @return <code>true</code> if the TTS transaction was successful
-     *         <code>false</code> if an error occurred
+     * <code>false</code> if an error occurred
      */
     private boolean sendTTSRequest(String text) {
 

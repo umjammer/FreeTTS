@@ -68,7 +68,7 @@ public class SynthesizerMonitor extends EngineMonitor {
      * by adding synthesizer queue state.
      *
      * @return the panel containing the labels for representing the
-     *   current engine state.
+     * current engine state.
      */
     public Component getStatePanel() {
         if (statePanel == null) {
@@ -105,7 +105,6 @@ public class SynthesizerMonitor extends EngineMonitor {
      * Counts the number of elements in the enumeration.
      *
      * @param e the enumeration
-     *
      * @return the number of elements in the enumeration
      */
     private int countElements(Enumeration<?> e) {

@@ -29,7 +29,6 @@ import com.sun.speech.freetts.util.WaveUtils;
 
 /**
  * Contains the result of linear predictive coding processing.
- *
  */
 public class LPCResult {
 
@@ -79,7 +78,7 @@ public class LPCResult {
     /**
      * Resets the number of frames in this LPCResult.
      *
-     * @param numberOfFrames  the number of frames in this LPC result
+     * @param numberOfFrames the number of frames in this LPC result
      */
     public void resizeFrames(int numberOfFrames) {
         times = new int[numberOfFrames];
@@ -92,7 +91,7 @@ public class LPCResult {
      * Resets the number of residuals, and initialize all of them to 255
      * (which is 0 for mulaw).
      *
-     * @param numberOfSamples  the number of samples in this LPC result
+     * @param numberOfSamples the number of samples in this LPC result
      */
     public void resizeResiduals(int numberOfSamples) {
         residuals = new byte[numberOfSamples];
@@ -101,10 +100,10 @@ public class LPCResult {
     /**
      * A convenience method for setting the LPC values.
      *
-     * @param numberOfChannels  the number of channels
-     * @param sampleRate  the sample rate
-     * @param lpcMin  the LPC minimum
-     * @param lpcRange  the LPC range
+     * @param numberOfChannels the number of channels
+     * @param sampleRate       the sample rate
+     * @param lpcMin           the LPC minimum
+     * @param lpcRange         the LPC range
      */
     public void setValues(int numberOfChannels,
                           int sampleRate,
@@ -117,14 +116,13 @@ public class LPCResult {
     }
 
     /**
-     * Returns the time difference of the frame at the given position 
+     * Returns the time difference of the frame at the given position
      * with the frame prior to that. If the frame at the given position is
      * the first frame (position 0), the time of that frame is returned.
      *
-     * @param frameIndex  the position of the frame
-     *
-     * @return the time difference of the frame at the given position 
-     *     with the frame prior to that
+     * @param frameIndex the position of the frame
+     * @return the time difference of the frame at the given position
+     * with the frame prior to that
      */
     public int getFrameShift(int frameIndex) {
         if (0 <= frameIndex && frameIndex < times.length) {
@@ -151,7 +149,6 @@ public class LPCResult {
      * Returns the frame at the given index.
      *
      * @param index the index of interest
-     *
      * @return the frame at the given index
      */
     public short[] getFrame(int index) {
@@ -264,7 +261,7 @@ public class LPCResult {
     /**
      * Sets the frame at the given index.
      *
-     * @param index the position of the frame to set
+     * @param index     the position of the frame to set
      * @param newFrames new frame data
      */
     public void setFrame(int index, short[] newFrames) {
@@ -331,9 +328,9 @@ public class LPCResult {
      * Copies the information in the given unit to the array of residuals,
      * starting at the given index, up until targetSize chars.
      *
-     * @param source  the unit that holds the information source 
-     * @param targetPosition  start position in the array of residuals
-     * @param targetSize  the maximum number of characters to copy
+     * @param source         the unit that holds the information source
+     * @param targetPosition start position in the array of residuals
+     * @param targetSize     the maximum number of characters to copy
      */
     public void copyResiduals(byte[] source,
                               int targetPosition,
@@ -356,9 +353,9 @@ public class LPCResult {
      * Copies the residual puse in the given unit to the array of residuals,
      * starting at the given index, up until targetSize chars.
      *
-     * @param source  the unit that holds the information source 
-     * @param targetPosition  start position in the array of residuals
-     * @param targetSize  the maximum number of characters to copy
+     * @param source         the unit that holds the information source
+     * @param targetPosition start position in the array of residuals
+     * @param targetSize     the maximum number of characters to copy
      */
     public void copyResidualsPulse(byte[] source,
                                    int targetPosition, int targetSize) {
@@ -376,7 +373,6 @@ public class LPCResult {
      * the high eight bits and return them
      *
      * @param val the 16 bit value
-     *
      * @return the high eight bits
      */
     private static byte hibyte(int val) {
@@ -388,7 +384,6 @@ public class LPCResult {
      * the low eight bits and return them
      *
      * @param val the 16 bit value
-     *
      * @return the low eight bits
      */
     private static byte lobyte(int val) {
@@ -400,8 +395,7 @@ public class LPCResult {
      * Synthesize a Wave  from this LPCResult
      *
      * @return the wave
-     * @exception IOException
-     *            if an error occurs while writing the audio data
+     * @throws IOException if an error occurs while writing the audio data
      */
     public boolean playWave(AudioPlayer player, Utterance utterance)
             throws IOException {
@@ -418,11 +412,11 @@ public class LPCResult {
      * get the samples for this utterance
      *
      * @param numberSamples the number of samples desirred
-     * @param utterance the utterance
-     *
-     * [[[ TODO: well there is a bunch of duplicated code here ..
-     *     these should be combined into one routine.
-     *  ]]]
+     * @param utterance     the utterance
+     *                      <p>
+     *                      [[[ TODO: well there is a bunch of duplicated code here ..
+     *                      these should be combined into one routine.
+     *                      ]]]
      */
     private byte[] getWaveSamples(int numberSamples,
                                   Utterance utterance) {
@@ -484,10 +478,9 @@ public class LPCResult {
     /**
      * Play the sample data on the given player
      *
-     * @param player where to send the audio
+     * @param player        where to send the audio
      * @param numberSamples the number of samples
-     * @exception IOException
-     *            if an error occurs while writing the audio data
+     * @throws IOException if an error occurs while writing the audio data
      */
     private boolean playWaveSamples(AudioPlayer player,
                                     FreeTTSSpeakable speakable,
@@ -646,7 +639,6 @@ public class LPCResult {
      * Dumps the wave data associated with this result
      *
      * @param path the path where the wave data is appended to
-     *
      * @throws IOException if an IO error occurs
      */
     public void dumpASCII(String path) throws IOException {
@@ -681,7 +673,7 @@ public class LPCResult {
 
     /**
      * A Wave is an immutable class that contains the AudioFormat and
-     * the actual wave samples, which currently is in the form 
+     * the actual wave samples, which currently is in the form
      * of AudioInputStream.
      */
     private static class Wave {
@@ -710,7 +702,7 @@ public class LPCResult {
          * Constructs a Wave with the given audio format and wave samples.
          *
          * @param audioFormat the audio format of the wave
-         * @param samples the wave samples
+         * @param samples     the wave samples
          */
         Wave(AudioFormat audioFormat, byte[] samples) {
             this.audioFormat = audioFormat;
@@ -720,6 +712,7 @@ public class LPCResult {
 
         /**
          * Dumps the wave out to the given stream
+         *
          * @param writer the output stream
          */
         public void dump(Writer writer) {
@@ -766,7 +759,6 @@ class FloatList {
      * Creates a circular list of nodes of the given size
      *
      * @param size the number of nodes in the list
-     *
      * @return an entry in the list.
      */
     static FloatList createList(int size) {
@@ -793,7 +785,7 @@ class FloatList {
      * prints out the contents of this list
      *
      * @param title the title of the dump
-     * @param list the list to dump
+     * @param list  the list to dump
      */
     static void dump(String title, FloatList list) {
         System.out.println(title);

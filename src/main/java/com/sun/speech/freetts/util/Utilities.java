@@ -34,7 +34,6 @@ public class Utilities {
      * spaces.
      *
      * @param padding the number of spaces in the string
-     *
      * @return a string of length 'padding' containg only the SPACE
      * char.
      */
@@ -54,9 +53,8 @@ public class Utilities {
      * Pads with spaces or truncates the given string to guarantee that it is
      * exactly the desired length.
      *
-     * @param string the string to be padded
+     * @param string    the string to be padded
      * @param minLength the desired length of the string
-     *
      * @return a string of length conntaining string
      * padded with whitespace or truncated
      */
@@ -74,9 +72,8 @@ public class Utilities {
     /**
      * Removes all instances of the specified character from the given String.
      *
-     * @param  fromString  the String to delete characters from
-     * @param  charToDelete  the character to delete from the given String
-     *
+     * @param fromString   the String to delete characters from
+     * @param charToDelete the character to delete from the given String
      * @return a String with all instances of the specified char deleted
      */
     public static String deleteChar(String fromString, char charToDelete) {
@@ -90,12 +87,12 @@ public class Utilities {
     }
 
     /**
-     * Dumps padded text. This is a simple tool for helping dump text 
+     * Dumps padded text. This is a simple tool for helping dump text
      * with padding to a Writer.
      *
-     * @param pw the stream to send the output
+     * @param pw      the stream to send the output
      * @param padding the number of spaces in the string
-     * @param string the string to output
+     * @param string  the string to output
      */
     public static void dump(PrintWriter pw, int padding, String string) {
         pw.print(pad(padding));
@@ -110,7 +107,6 @@ public class Utilities {
      *
      * @param url the url to open as a stream
      * @return the stream associated with the URL
-     *
      * @throws IOException if there is trouble creating the stream
      */
     public static InputStream getInputStream(URL url) throws IOException {
@@ -125,8 +121,7 @@ public class Utilities {
      * Outputs a string to the given stream.
      *
      * @param dos the stream
-     * @param s the string to output
-     *
+     * @param s   the string to output
      * @throws IOException if an I/O error occurs
      */
     public static void outString(DataOutputStream dos, String s)
@@ -141,9 +136,7 @@ public class Utilities {
      * Inputs a string from a DataInputStream.
      *
      * @param dis the stream
-     *
      * @return the string
-     *
      * @throws IOException if an I/O error occurs
      */
     public static String getString(DataInputStream dis) throws IOException {
@@ -159,9 +152,7 @@ public class Utilities {
      * Inputs a string from a ByteBuffer.
      *
      * @param bb the input byte buffer
-     *
      * @return the string
-     *
      * @throws IOException if an I/O error occurs
      */
     public static String getString(ByteBuffer bb) throws IOException {
@@ -178,13 +169,11 @@ public class Utilities {
      * Gets a property by name and returns its value. If the property
      * cannot be found, the default is returned
      *
-     * @param name the name of the property
-     *
+     * @param name         the name of the property
      * @param defaultValue the default value to use if the property
-     * cannot be found.
-     *
-     * @return the string value for the property, or the defaultValue if 
-     *  the property cannot be found
+     *                     cannot be found.
+     * @return the string value for the property, or the defaultValue if
+     * the property cannot be found
      */
     public static String getProperty(String name, String defaultValue) {
         String value;
@@ -197,14 +186,12 @@ public class Utilities {
     }
 
     /**
-     * Gets a boolean property by name. 
+     * Gets a boolean property by name.
      *
      * @param name the name of the property
-     *
      * @return If there is no property with the specified name, or
-     *  if the specified name is empty or null, then false is returned. 
-     *  otherwise the boolean value of the property is returned
-     *
+     * if the specified name is empty or null, then false is returned.
+     * otherwise the boolean value of the property is returned
      */
     public static boolean getBoolean(String name) {
         boolean value;
@@ -217,16 +204,13 @@ public class Utilities {
     }
 
     /**
-     * Gets a long property by name. 
+     * Gets a long property by name.
      *
-     * @param name the name of the property
-     *
+     * @param name         the name of the property
      * @param defaultValue the default value to use if the property
-     * cannot be found.
-     *
-     * @return the long value for the property, or the defaultValue if 
-     *  the property cannot be found
-     *
+     *                     cannot be found.
+     * @return the long value for the property, or the defaultValue if
+     * the property cannot be found
      */
     public static Long getLong(String name, long defaultValue) {
         long value;
@@ -239,16 +223,13 @@ public class Utilities {
     }
 
     /**
-     * Gets an Integer property by name. 
+     * Gets an Integer property by name.
      *
-     * @param name the name of the property
-     *
+     * @param name         the name of the property
      * @param defaultValue the default value to use if the property
-     * cannot be found.
-     *
-     * @return the Integer value for the property, or the defaultValue if 
-     *  the property cannot be found
-     *
+     *                     cannot be found.
+     * @return the Integer value for the property, or the defaultValue if
+     * the property cannot be found
      */
     public static Integer getInteger(String name, int defaultValue) {
         int value;

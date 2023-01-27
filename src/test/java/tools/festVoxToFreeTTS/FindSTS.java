@@ -3,21 +3,20 @@
  * Portions Copyright 1999-2003 Language Technologies Institute,
  * Carnegie Mellon University.
  * All Rights Reserved.  Use is subject to license terms.
- *
+ * <p>
  * See the file "license.terms" for information on usage and
  * redistribution of this file, and for a DISCLAIMER OF ALL
  * WARRANTIES.
- *
  */
 
 package tools.festVoxToFreeTTS;
 
-import java.io.FileInputStream;
 import java.io.DataInputStream;
-import java.io.OutputStreamWriter;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.FileNotFoundException;
+import java.io.OutputStreamWriter;
 
 
 /**
@@ -73,8 +72,8 @@ public strictfp class FindSTS {
 
                 // Verify STS data for sanity
                 Wave reconstructedWave = new
-                    Wave(wave.getSampleRate(), stsData, lpc,
-                            lpc_min, lpc_range);
+                        Wave(wave.getSampleRate(), stsData, lpc,
+                        lpc_min, lpc_range);
                 wave.compare(reconstructedWave);
 
                 // Save output
@@ -102,7 +101,7 @@ public strictfp class FindSTS {
      * @return an <code>STS</code> array containing the data
      */
     private static STS[] findSTS(Wave wave, LPC lpc, float lpc_min,
-            float lpc_range) {
+                                 float lpc_range) {
         int size;
         int start = 0;
         int end;
@@ -111,9 +110,9 @@ public strictfp class FindSTS {
 
         // read wave data into a special array.
         short[] waveData =
-            new short[wave.getNumSamples() + lpc.getNumChannels()];
+                new short[wave.getNumSamples() + lpc.getNumChannels()];
         System.arraycopy(wave.getSamples(), 0, waveData,
-                    lpc.getNumChannels(), wave.getNumSamples());
+                lpc.getNumChannels(), wave.getNumSamples());
 
         for (int i = 0; i < lpc.getNumFrames(); i++) {
             double[] resd;
@@ -135,8 +134,8 @@ public strictfp class FindSTS {
             frame = new int[lpc.getNumChannels() - 1];
             for (int j = 1; j < lpc.getNumChannels(); j++) {
                 frame[j - 1] = (int)
-                    ((((lpc.getFrameEntry(i, j) - lpc_min) / lpc_range))
-                     * (float) 65535.0);
+                        ((((lpc.getFrameEntry(i, j) - lpc_min) / lpc_range))
+                                * (float) 65535.0);
             }
 
             stsData[i] = new STS(frame, size, residual);
@@ -158,7 +157,7 @@ public strictfp class FindSTS {
      * @return sts residuals
      */
     private static short[] generateResiduals(short[] wave, int start,
-            float[] frame, int order, int size) {
+                                             float[] frame, int order, int size) {
         double r;
         short[] residual = new short[size];
         for (int i = 0; i < order; i++) {
@@ -172,7 +171,7 @@ public strictfp class FindSTS {
             r = wave[start + i];
             for (int j = 1; j < order; j++) {
                 r -= frame[j] * ((double) wave[start + (i - j)]);
-            } 
+            }
             residual[i] = Utility.shortToUlaw((short) r);
         }
         return residual;
@@ -190,7 +189,7 @@ public strictfp class FindSTS {
      *
      */
     private static void saveSTS(STS[] stsData, LPC lpc, Wave wave,
-            OutputStreamWriter osw, float lpc_min, float lpc_range) {
+                                OutputStreamWriter osw, float lpc_min, float lpc_range) {
         try {
             osw.write("( " + lpc.getNumFrames()
                     + " " + (lpc.getNumChannels() - 1)
@@ -198,7 +197,7 @@ public strictfp class FindSTS {
                     + " " + lpc_min
                     + " " + lpc_range
                     + ")\n");
-            for (int m=0, i=0; i < lpc.getNumFrames(); i++) {
+            for (int m = 0, i = 0; i < lpc.getNumFrames(); i++) {
                 osw.write("( " + lpc.getTime(i) + " (");
 
                 // Use the following line instead to compare against
@@ -213,8 +212,8 @@ public strictfp class FindSTS {
                         + stsData[i].getNumSamples()
                         + " ( ");
                 for (int j = 0; j < stsData[i].getNumSamples(); j++) {
-                        osw.write(" " +
-                                Integer.toString(stsData[i].getResidual(j)));
+                    osw.write(" " +
+                            Integer.toString(stsData[i].getResidual(j)));
                 }
                 osw.write(" ))\n");
             }
@@ -289,8 +288,7 @@ class LPC {
             } else {
                 loadTextData(dis);
             }
-        }
-        catch (IOException ioe) {
+        } catch (IOException ioe) {
             throw new Error("IO error while parsing lpc" + ioe.getMessage());
         }
     }
@@ -303,11 +301,11 @@ class LPC {
      * @throws IOException on ill-formatted input
      */
     private void loadTextData(DataInputStream dis) throws IOException {
-        for (int f=0; f < numFrames; f++) {
+        for (int f = 0; f < numFrames; f++) {
             times[f] = Float.parseFloat(Utility.readWord(dis));
             Utility.readWord(dis);  // can be only 1
-            for (int c=0; c < numChannels; c++) {
-                    frames[f][c] = Float.parseFloat(Utility.readWord(dis));
+            for (int c = 0; c < numChannels; c++) {
+                frames[f][c] = Float.parseFloat(Utility.readWord(dis));
             }
         }
     }
@@ -323,13 +321,13 @@ class LPC {
      */
     private void loadBinaryData(DataInputStream dis, boolean isBigEndian)
             throws IOException {
-        for (int f=0; f < numFrames; f++) {
+        for (int f = 0; f < numFrames; f++) {
             times[f] = Utility.readFloat(dis, isBigEndian);
 
             // Ignore the 'breaks' field
             Utility.readFloat(dis, isBigEndian);
 
-            for (int c=0; c < numChannels; c++) {
+            for (int c = 0; c < numChannels; c++) {
                 frames[f][c] = Utility.readFloat(dis, isBigEndian);
             }
         }
@@ -419,7 +417,7 @@ class Wave {
      *
      * @param dis DataInputStream to read data from
      */
-    public Wave (DataInputStream dis) {
+    public Wave(DataInputStream dis) {
         try {
             loadHeader(dis);
             if (dis.skipBytes(headerSize - 16) != (headerSize - 16)) {
@@ -466,7 +464,7 @@ class Wave {
         if (!checkChars(dis, "RIFF")) {
             throw new Error("Invalid wave file format.");
         }
-        numBytes = Utility.readInt(dis,false);
+        numBytes = Utility.readInt(dis, false);
         if (!checkChars(dis, "WAVEfmt ")) {
             throw new Error("Invalid wave file format.");
         }
@@ -480,7 +478,7 @@ class Wave {
         if (Utility.readShort(dis, false) != 1) {
             throw new Error("Only mono wave files supported.");
         }
-        
+
         sampleRate = Utility.readInt(dis, false);
         Utility.readInt(dis, false);
         Utility.readShort(dis, false);
@@ -496,7 +494,7 @@ class Wave {
      * @param lpc_range range of lpc values
      */
     public Wave(int sampleRate, STS[] stsData, LPC lpc, float lpc_min,
-            float lpc_range) {
+                float lpc_range) {
         // set number of samples and sample rate
         numSamples = 0;
         for (int i = 0; i < lpc.getNumFrames(); i++) {
@@ -541,8 +539,8 @@ class Wave {
             // Unpack the LPC coefficients
             for (int k = 0; k < lpcResNumChannels; k++) {
                 lpcCoefs[k] = (float)
-                    ((((double) lpcResFrames[i][k])/65535.0) * lpc_range)
-                    + lpc_min;
+                        ((((double) lpcResFrames[i][k]) / 65535.0) * lpc_range)
+                        + lpc_min;
             }
 
 
@@ -550,15 +548,15 @@ class Wave {
             for (int j = 0; j < pm_size_samps; j++, r++) {
                 outbuf[o] = Utility.ulawToShort(lpcResResidual[r/* /residual_fold */]);
 
-                cr = (o == 0 ? lpcResNumChannels : o-1);
+                cr = (o == 0 ? lpcResNumChannels : o - 1);
                 for (ci = 0; ci < lpcResNumChannels; ci++) {
-                        outbuf[o] += lpcCoefs[ci] * outbuf[cr];
-                        cr = (cr == 0 ? lpcResNumChannels : cr - 1);
+                    outbuf[o] += lpcCoefs[ci] * outbuf[cr];
+                    cr = (cr == 0 ? lpcResNumChannels : cr - 1);
                 }
                 samples[r] = (short) (outbuf[o]
-                    /* + pp * lpcres->post_emphasis)*/); // post_emphasis = 0
+                        /* + pp * lpcres->post_emphasis)*/); // post_emphasis = 0
                 // pp = outbuf[o];
-                o = (o == lpcResNumChannels ? 0 : o+1);
+                o = (o == lpcResNumChannels ? 0 : o + 1);
             }
         }
     }
@@ -583,8 +581,8 @@ class Wave {
             double r = 0;
             int i;
             for (i = 0; i < this.numSamples; i++) {
-                r += (double)((float)this.samples[i] - (float)wave2.samples[i])
-                    *(double)((float)this.samples[i] - (float)wave2.samples[i]);
+                r += (double) ((float) this.samples[i] - (float) wave2.samples[i])
+                        * (double) ((float) this.samples[i] - (float) wave2.samples[i]);
             }
             r /= this.numSamples;
             System.out.println("a/b diff " + StrictMath.sqrt(r));
@@ -660,7 +658,7 @@ class STS {
      * @param frame frame for this sts
      * @param numSamples number of samples this sts will contain
      * @param residual the residual for this sts
-     * 
+     *
      */
     public STS(int[] frame, int numSamples, short[] residual) {
         this.frame = new int[frame.length];
@@ -735,7 +733,7 @@ class Utility {
         // skip leading whitespace
         do {
             c = readChar(dis);
-        } while(Character.isWhitespace(c));
+        } while (Character.isWhitespace(c));
 
         // read the word
         do {
@@ -792,9 +790,9 @@ class Utility {
             throws IOException {
         float val;
         if (!isBigEndian) {
-            val =  readLittleEndianFloat(dis);
+            val = readLittleEndianFloat(dis);
         } else {
-            val =  dis.readFloat();
+            val = dis.readFloat();
         }
         return val;
     }
@@ -863,7 +861,7 @@ class Utility {
      * @throws IOException on error
      */
     public static short readShort(DataInputStream dis, boolean isBigEndian)
-        throws IOException {
+            throws IOException {
         if (!isBigEndian) {
             return readLittleEndianShort(dis);
         } else {
@@ -879,37 +877,37 @@ class Utility {
      * @return a short
      */
     public static short readLittleEndianShort(DataInputStream dis)
-        throws IOException {
-        short bits = (short)(0x0000ff & dis.readByte());
+            throws IOException {
+        short bits = (short) (0x0000ff & dis.readByte());
         bits = (short) (bits | (((short) (0x0000ff & dis.readByte())) << 8));
         return bits;
     }
 
     /**
      * Convert a short to ulaw format
-     * 
+     *
      * @param sample the short to convert
      *
      * @return a short containing an unsigned 8-bit quantity
      *          representing the ulaw
      */
     public static short shortToUlaw(short sample) {
-        int[] exp_lut = {0,0,1,1,2,2,2,2,3,3,3,3,3,3,3,3,
-                                   4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,
-                                   5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,
-                                   5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,
-                                   6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,
-                                   6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,
-                                   6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,
-                                   6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,
-                                   7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,
-                                   7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,
-                                   7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,
-                                   7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,
-                                   7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,
-                                   7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,
-                                   7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,
-                                   7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7};
+        int[] exp_lut = {0, 0, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3,
+                4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
+                5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5,
+                5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5,
+                6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6,
+                6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6,
+                6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6,
+                6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6,
+                7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7,
+                7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7,
+                7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7,
+                7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7,
+                7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7,
+                7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7,
+                7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7,
+                7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7};
 
         int sign, exponent, mantissa;
         short ulawbyte;
@@ -919,41 +917,41 @@ class Utility {
 
         /* Get the sample into sign-magnitude. */
         sign = (sample >> 8) & 0x80; /* set aside the sign */
-        if ( sign != 0 ) {
+        if (sign != 0) {
             sample = (short) -sample; /* get magnitude */
         }
-        if ( sample > CLIP ) sample = CLIP; /* clip the magnitude */
+        if (sample > CLIP) sample = CLIP; /* clip the magnitude */
 
         /* Convert from 16 bit linear to ulaw. */
         sample = (short) (sample + BIAS);
-        exponent = exp_lut[( sample >> 7 ) & 0xFF];
-        mantissa = ( sample >> ( exponent + 3 ) ) & 0x0F;
+        exponent = exp_lut[(sample >> 7) & 0xFF];
+        mantissa = (sample >> (exponent + 3)) & 0x0F;
         ulawbyte = (short)
-            ((~ ( sign | ( exponent << 4 ) | mantissa)) & 0x00FF);
-        if ( ulawbyte == 0 ) ulawbyte = 0x02; /* optional CCITT trap */
+                ((~(sign | (exponent << 4) | mantissa)) & 0x00FF);
+        if (ulawbyte == 0) ulawbyte = 0x02; /* optional CCITT trap */
         return ulawbyte;
     }
 
     /**
      * Convert a ulaw format to short
-     * 
+     *
      * @param ulawbyte a short containing an unsigned 8-but quantity
      *          representing a ulaw
      *
      * @return the short equivalent of the ulaw
      */
     public static short ulawToShort(short ulawbyte) {
-        int[] exp_lut = { 0, 132, 396, 924, 1980, 4092, 8316, 16764 };
+        int[] exp_lut = {0, 132, 396, 924, 1980, 4092, 8316, 16764};
         int sign, exponent, mantissa;
         short sample;
 
         ulawbyte = (short) (ulawbyte & 0x00FF);
         ulawbyte = (short) (~ulawbyte);
-        sign = ( ulawbyte & ((short) 0x80) );
-        exponent = ( (ulawbyte & (short) 0x00FF) >> 4 ) & 0x07;
+        sign = (ulawbyte & ((short) 0x80));
+        exponent = ((ulawbyte & (short) 0x00FF) >> 4) & 0x07;
         mantissa = ulawbyte & (short) 0x0F;
         sample = (short) (exp_lut[exponent] + (mantissa << (exponent + 3)));
-        if ( sign != 0 ) sample = (short) (-sample);
+        if (sign != 0) sample = (short) (-sample);
 
         return sample;
     }

@@ -34,7 +34,7 @@ public class JTime {
     Synthesizer synthesizer;
 
     /**
-     * Returns a "no synthesizer" message, and asks 
+     * Returns a "no synthesizer" message, and asks
      * the user to check if the "speech.properties" file is
      * at <code>user.home</code> or <code>java.home/lib</code>.
      *
@@ -63,7 +63,7 @@ public class JTime {
      * JSAPI mode name.  The currently supported domains are
      * "general," which means general purpose synthesis for tasks
      * such as reading e-mail, and "time" which means a domain that's
-     * only good for speaking the time of day. 
+     * only good for speaking the time of day.
      */
     public static void listAllVoices(String modeName) {
 
@@ -194,9 +194,8 @@ public class JTime {
      * 59.
      *
      * @param time the time in the form HH:MM
-     *
      * @throws IllegalArgumentException if time is not in the form
-     *   HH:MM
+     *                                  HH:MM
      */
     public void timeToSpeech(String time) {
         String theTime = TimeUtils.timeToString(time);
@@ -212,7 +211,7 @@ public class JTime {
      * Speaks the time given the hour and minute.
      *
      * @param hour the hour of the day (0 to 23)
-     * @param min the minute of the hour (0 to 59)
+     * @param min  the minute of the hour (0 to 59)
      */
     public void timeToSpeech(int hour, int min) {
         if (hour < 0 || hour > 23) {

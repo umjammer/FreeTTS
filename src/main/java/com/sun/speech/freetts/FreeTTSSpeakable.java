@@ -37,7 +37,7 @@ public interface FreeTTSSpeakable {
     void cancelled();
 
     /**
-     * Returns <code>true</code> if this queue item has been 
+     * Returns <code>true</code> if this queue item has been
      * processed.
      *
      * @return true if it has been processed
@@ -48,7 +48,7 @@ public interface FreeTTSSpeakable {
      * Waits for this speakable item to be completed.
      *
      * @return true if the item was completed successfully, false if
-     *   the speakable was cancelled or an error occurred.
+     * the speakable was cancelled or an error occurred.
      */
     boolean waitCompleted();
 

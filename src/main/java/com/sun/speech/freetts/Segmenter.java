@@ -40,13 +40,11 @@ public class Segmenter implements UtteranceProcessor {
      * <code>Relation.SEGMENT</code>.
      *
      * @param utterance the utterance to process/tokenize
-     *
+     * @throws ProcessException if an IOException is thrown during the
+     *                          processing of the utterance
      * @see Relation#SEGMENT
      * @see Relation#SYLLABLE
      * @see Relation#SYLLABLE_STRUCTURE
-     *
-     * @throws ProcessException if an IOException is thrown during the
-     *   processing of the utterance
      */
     public void processUtterance(Utterance utterance) throws ProcessException {
 
@@ -129,7 +127,6 @@ public class Segmenter implements UtteranceProcessor {
      * method if stresses are determined in other ways.
      *
      * @param phone the phone to check
-     *
      * @return true if the phone is stressed, otherwise false
      */
     protected boolean isStressed(String phone) {
@@ -142,7 +139,6 @@ public class Segmenter implements UtteranceProcessor {
      * should override this if another method is to be used.
      *
      * @param phone the phone to convert
-     *
      * @return de-stressed phone
      */
     protected String deStress(String phone) {

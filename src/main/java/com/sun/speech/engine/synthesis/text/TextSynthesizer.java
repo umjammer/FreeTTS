@@ -82,13 +82,10 @@ public class TextSynthesizer extends BaseSynthesizer {
     /**
      * Returns an enumeration of the queue.
      *
-     * @return
-     *   an <code>Enumeration</code> of the speech output queue or
-     *   <code>null</code>.
-     *
-     * @throws EngineStateError
-     *   if this <code>Synthesizer</code> in the <code>DEALLOCATED</code> or 
-     *   <code>DEALLOCATING_RESOURCES</code> states
+     * @return an <code>Enumeration</code> of the speech output queue or
+     * <code>null</code>.
+     * @throws EngineStateError if this <code>Synthesizer</code> in the <code>DEALLOCATED</code> or
+     *                          <code>DEALLOCATING_RESOURCES</code> states
      */
     @Override
     public Enumeration<?> enumerateQueue() throws EngineStateError {
@@ -101,7 +98,6 @@ public class TextSynthesizer extends BaseSynthesizer {
      * event.  Expects only <code>TextSynthesizerQueueItems</code>.
      *
      * @param item the item to add to the queue
-     *
      */
     @Override
     protected void appendQueue(BaseSynthesizerQueueItem item) {
@@ -111,9 +107,8 @@ public class TextSynthesizer extends BaseSynthesizer {
     /**
      * Cancels the item at the top of the queue.
      *
-     * @throws EngineStateError
-     *   if this <code>Synthesizer</code> in the <code>DEALLOCATED</code> or 
-     *   <code>DEALLOCATING_RESOURCES</code> states
+     * @throws EngineStateError if this <code>Synthesizer</code> in the <code>DEALLOCATED</code> or
+     *                          <code>DEALLOCATING_RESOURCES</code> states
      */
     @Override
     public void cancel() throws EngineStateError {
@@ -124,14 +119,10 @@ public class TextSynthesizer extends BaseSynthesizer {
     /**
      * Cancels a specific object on the queue.
      *
-     * @param source
-     *    object to be removed from the speech output queue
-     *
-     * @throws IllegalArgumentException
-     *  if the source object is not found in the speech output queue.
-     * @throws EngineStateError
-     *   if this <code>Synthesizer</code> in the <code>DEALLOCATED</code> or 
-     *   <code>DEALLOCATING_RESOURCES</code> states
+     * @param source object to be removed from the speech output queue
+     * @throws IllegalArgumentException if the source object is not found in the speech output queue.
+     * @throws EngineStateError         if this <code>Synthesizer</code> in the <code>DEALLOCATED</code> or
+     *                                  <code>DEALLOCATING_RESOURCES</code> states
      */
     @Override
     public void cancel(Object source) throws IllegalArgumentException, EngineStateError {
@@ -142,9 +133,8 @@ public class TextSynthesizer extends BaseSynthesizer {
     /**
      * Cancels all items on the output queue.
      *
-     * @throws EngineStateError
-     *   if this <code>Synthesizer</code> in the <code>DEALLOCATED</code> or 
-     *   <code>DEALLOCATING_RESOURCES</code> states
+     * @throws EngineStateError if this <code>Synthesizer</code> in the <code>DEALLOCATED</code> or
+     *                          <code>DEALLOCATING_RESOURCES</code> states
      */
     @Override
     public void cancelAll() throws EngineStateError {
@@ -177,7 +167,7 @@ public class TextSynthesizer extends BaseSynthesizer {
         protected boolean done = false;
 
         /**
-         * Internal speech output queue that will contain a set of 
+         * Internal speech output queue that will contain a set of
          * TextSynthesizerQueueItems.
          *
          * @see BaseSynthesizerQueueItem
@@ -201,7 +191,7 @@ public class TextSynthesizer extends BaseSynthesizer {
         int rate = 100;
 
         /**
-         * For the item at the top of the queue, the output command reflects 
+         * For the item at the top of the queue, the output command reflects
          * whether item should be PAUSE, RESUME, CANCEL.
          */
         protected int command;
@@ -466,7 +456,6 @@ public class TextSynthesizer extends BaseSynthesizer {
          * Starts outputting the item.  Returns the current command.
          *
          * @param item to be output
-         *
          * @return the current command
          */
         protected int outputItem(TextSynthesizerQueueItem item) {
@@ -557,8 +546,7 @@ public class TextSynthesizer extends BaseSynthesizer {
          * Determines if the next thing in line is a command.
          *
          * @param engineText the text containing embedded commands
-         * @param index the current index
-         *
+         * @param index      the current index
          * @return <code>true</code> if the next thing in line is a command
          */
         protected boolean isCommand(String engineText, int index) {
@@ -570,7 +558,7 @@ public class TextSynthesizer extends BaseSynthesizer {
             //
             for (int i = 0; i < TextSynthesizerQueueItem.ELEMENTS.length; i++) {
                 if (engineText.startsWith(TextSynthesizerQueueItem.COMMAND_PREFIX
-                                + TextSynthesizerQueueItem.ELEMENTS[i], index)) {
+                        + TextSynthesizerQueueItem.ELEMENTS[i], index)) {
                     return true;
                 }
             }
@@ -581,10 +569,9 @@ public class TextSynthesizer extends BaseSynthesizer {
          * Attempts to process a command starting at the next character
          * in the synthesizer text. Returns the new index.
          *
-         * @param item the current queue item
+         * @param item       the current queue item
          * @param engineText the text containing embedded commands
-         * @param index the current index
-         *
+         * @param index      the current index
          * @return the new index
          */
         protected int processCommand(TextSynthesizerQueueItem item, String engineText, int index) {
@@ -592,7 +579,7 @@ public class TextSynthesizer extends BaseSynthesizer {
             //
             for (int i = 0; i < TextSynthesizerQueueItem.ELEMENTS.length; i++) {
                 if (engineText.startsWith(TextSynthesizerQueueItem.COMMAND_PREFIX
-                                + TextSynthesizerQueueItem.ELEMENTS[i], index)) {
+                        + TextSynthesizerQueueItem.ELEMENTS[i], index)) {
                     int endIndex =
                             engineText.indexOf(TextSynthesizerQueueItem.COMMAND_SUFFIX, index + 1) + 1;
                     String commandText = engineText.substring(index, endIndex);
@@ -609,10 +596,9 @@ public class TextSynthesizer extends BaseSynthesizer {
          * Determines if there is whitespace at the current index.
          *
          * @param engineText the text containing embedded commands
-         * @param index the current index
-         *
+         * @param index      the current index
          * @return <code>true</code> if there is whitespace at the
-         *   current index
+         * current index
          */
         protected boolean isWhitespace(String engineText, int index) {
             return Character.isWhitespace(engineText.charAt(index));
@@ -625,8 +611,7 @@ public class TextSynthesizer extends BaseSynthesizer {
          * briefly to simulate the speaking rate.
          *
          * @param engineText the text containing embedded commands
-         * @param index the current index
-         *
+         * @param index      the current index
          * @return the new index
          */
         protected int processWhitespace(String engineText, int index) {
@@ -659,10 +644,9 @@ public class TextSynthesizer extends BaseSynthesizer {
          * Processes next set of characters in output up to whitespace
          * or next '/' that could indicate the start of a command.
          *
-         * @param item the current queue item
+         * @param item       the current queue item
          * @param engineText the text containing embedded commands
-         * @param index the current index
-         *
+         * @param index      the current index
          * @return the new index
          */
         protected int processNormalText(TextSynthesizerQueueItem item, String engineText, int index) {

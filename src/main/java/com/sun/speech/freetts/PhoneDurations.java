@@ -25,7 +25,6 @@ public interface PhoneDurations {
      * may return a default value.
      *
      * @param phone the phone to get duration information for
-     *
      * @return the duration information for the phone
      */
     PhoneDuration getPhoneDuration(String phone);

@@ -21,7 +21,7 @@ import com.sun.speech.freetts.ValidationException;
 
 /**
  * Represents a SynthesizerModeDesc for the
- * FreeTTSSynthesizer. A FreeTTSSynthesizerModeDesc adds 
+ * FreeTTSSynthesizer. A FreeTTSSynthesizerModeDesc adds
  * an audio player to the standard mode items.
  */
 public class FreeTTSSynthesizerModeDesc extends SynthesizerModeDesc
@@ -31,9 +31,9 @@ public class FreeTTSSynthesizerModeDesc extends SynthesizerModeDesc
      * Creates a fully-specified descriptor.
      * Any of the features may be <code>null</code>.
      *
-     * @param engineName  the name of the engine
+     * @param engineName the name of the engine
      * @param modeName   the name of the mode
-     * @param locale  the locale associated with this mode
+     * @param locale     the locale associated with this mode
      */
     public FreeTTSSynthesizerModeDesc(String engineName, String modeName,
                                       Locale locale) {
@@ -44,10 +44,10 @@ public class FreeTTSSynthesizerModeDesc extends SynthesizerModeDesc
      * Returns the valid voices in this synthesizer mode.
      *
      * @return an array of valid voices, if no valid voices, it will
-     *    return an array of size 0
+     * return an array of size 0
      */
     public javax.speech.synthesis.Voice[] getVoices() {
-        List< javax.speech.synthesis.Voice> voiceList = new LinkedList<>();
+        List<javax.speech.synthesis.Voice> voiceList = new LinkedList<>();
         javax.speech.synthesis.Voice[] voices = super.getVoices();
         int count = 0;
         for (javax.speech.synthesis.Voice voice : voices) {
@@ -73,7 +73,7 @@ public class FreeTTSSynthesizerModeDesc extends SynthesizerModeDesc
      * Returns false otherwise.
      *
      * @throws ValidationException if this FreeTTSSynthesizerModeDesc
-     *    is invalid
+     *                             is invalid
      */
     public void validate() throws ValidationException {
         javax.speech.synthesis.Voice[] voices = super.getVoices();
@@ -100,12 +100,11 @@ public class FreeTTSSynthesizerModeDesc extends SynthesizerModeDesc
      * descriptor.
      *
      * @return a synthesizer that mathes the mode
-     *
-     * @throws IllegalArgumentException  if the properties of this
-     * 		descriptor do not match any known engine or mode
-     * @throws EngineException if the engine could not be created
-     * @throws SecurityException if the caller does not have
-     * 		permission to use the speech engine
+     * @throws IllegalArgumentException if the properties of this
+     *                                  descriptor do not match any known engine or mode
+     * @throws EngineException          if the engine could not be created
+     * @throws SecurityException        if the caller does not have
+     *                                  permission to use the speech engine
      */
     public Engine createEngine()
             throws IllegalArgumentException, EngineException, SecurityException {

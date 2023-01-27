@@ -29,7 +29,7 @@ public class MixedVoices {
     }
 
     /**
-     * Returns a "no synthesizer" message, and asks 
+     * Returns a "no synthesizer" message, and asks
      * the user to check if the "speech.properties" file is
      * at <code>user.home</code> or <code>java.home/lib</code>.
      *

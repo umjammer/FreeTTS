@@ -18,14 +18,14 @@ import com.sun.speech.freetts.util.Utilities;
 
 
 /**
- * Shows this MbrolaVoice is valid (or usable). It tests for 
+ * Shows this MbrolaVoice is valid (or usable). It tests for
  * the following:
  *
  * <ol>
  * <li> Check that the "mbrola.base" System property is defined,
  *      and that directory exists.
  * <li> Check that the $(mbrola.base)/mbrola binary exists.
- * <li> Check that the transition table exists. It is assumed 
+ * <li> Check that the transition table exists. It is assumed
  *      to be at $(mbrola.base)/us1/us1mrpa.
  * <li> Check that its voice database exists.
  * </ol>

@@ -37,7 +37,7 @@ public class TextEngineCentral implements EngineCentral {
      * <code>TextSynthesizer</code>.
      *
      * @param require the required characteristics; <code>null</code>
-     *   always matches       
+     *                always matches
      */
     @SuppressWarnings("unchecked")
     public EngineList createEngineList(EngineModeDesc require) {

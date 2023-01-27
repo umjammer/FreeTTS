@@ -15,7 +15,7 @@ package com.sun.speech.freetts;
  * calls dumpVoices() or performs an equivalent operation.  All
  * subclasses of VoiceDirectory can be assumed to always be created by
  * the default constructor (no arguments).
- *
+ * <p>
  * Any jar file that has a subclass of VoiceDirectory must define
  * certain attributes in its Manifest.  "Main-class:" must refer to
  * the subclass of VoiceDirectory. "Class-Path:" lists the other jar
@@ -48,7 +48,6 @@ public abstract class VoiceDirectory {
      * directory to a String.
      *
      * @return a String containing the information
-     *
      * @see #main(String[] args)
      */
     public String toString() {

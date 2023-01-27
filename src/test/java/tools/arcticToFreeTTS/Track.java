@@ -2,11 +2,11 @@ package tools.arcticToFreeTTS;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
-import java.io.InputStreamReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.PrintStream;
-
 import java.util.StringTokenizer;
+
 
 public class Track {
 
@@ -15,7 +15,7 @@ public class Track {
     public int numChannels;
     public int sampleRate;
     public float min;
-    public float range;   
+    public float range;
     public Frame[] frames;
 
     /**
@@ -23,16 +23,16 @@ public class Track {
      * sts and mcep files.
      */
     public int startIndex;
-    
+
     static public final int STS = 1;
     static public final int MCEP = 2;
-    
+
     public Track(String filename, int type) throws IOException {
         this(filename, type, 0.0f, 0.0f);
     }
 
     public Track(String filename, int type, float min, float range)
-        throws IOException {
+            throws IOException {
         this.min = min;
         this.range = range;
         if (type == STS) {
@@ -43,7 +43,7 @@ public class Track {
             throw new Error("unknown type: " + type);
         }
     }
-    
+
     void readSTS(String filename) throws IOException {
         this.filename = filename;
         BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(filename)));
@@ -56,13 +56,13 @@ public class Track {
         sampleRate = Integer.parseInt(tokenizer.nextToken());
         min = Float.parseFloat(tokenizer.nextToken());
         range = Float.parseFloat(tokenizer.nextToken());
-        
+
         // Read in the STS frame data from the file.
         frames = new STSFrame[numFrames];
         for (int i = 0; i < numFrames; i++) {
             frames[i] = new STSFrame(numChannels, reader);
         }
-        
+
         reader.close();
     }
 
@@ -106,7 +106,7 @@ public class Track {
             }
             frames[i] = new Frame(pitchmarkTime, mcepParameters);
         }
-        
+
         reader.close();
     }
 
@@ -116,7 +116,7 @@ public class Track {
     public Frame[] getFrames() {
         return frames;
     }
-    
+
     /**
      * Finds the index of the frame closest to the given time.
      *
@@ -125,8 +125,8 @@ public class Track {
     public int findTrackFrameIndex(float time) {
         int frameNum = 0;
         while ((frameNum < (frames.length - 1))
-               && (Math.abs(time - frames[frameNum].pitchmarkTime)
-                   > Math.abs(time - frames[frameNum + 1].pitchmarkTime))) {
+                && (Math.abs(time - frames[frameNum].pitchmarkTime)
+                > Math.abs(time - frames[frameNum + 1].pitchmarkTime))) {
             frameNum++;
         }
         return frameNum;
@@ -140,12 +140,12 @@ public class Track {
             frame.dumpData(out);
         }
     }
-    
+
     /**
      * For testing.
-     *
-     *  args[0] = filename
-     *  args[1] = type (1 = STS, 2 = MCEP)
+     * <p>
+     * args[0] = filename
+     * args[1] = type (1 = STS, 2 = MCEP)
      */
     static public void main(String[] args) {
         try {

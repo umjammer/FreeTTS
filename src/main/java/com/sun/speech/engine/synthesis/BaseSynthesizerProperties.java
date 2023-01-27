@@ -17,15 +17,15 @@ import com.sun.speech.engine.BaseEngineProperties;
 
 
 /**
- * Supports the JSAPI 1.0 <code>SynthesizerProperties</code> 
+ * Supports the JSAPI 1.0 <code>SynthesizerProperties</code>
  * interface.  The properties of a <code>Synthesizer</code> are:
  *
  * <UL>
- *   <LI>Speaking voice,
- *   <LI>Baseline pitch,
- *   <LI>Pitch range,
- *   <LI>Speaking rate,
- *   <LI>Volume.
+ * <LI>Speaking voice,
+ * <LI>Baseline pitch,
+ * <LI>Pitch range,
+ * <LI>Speaking rate,
+ * <LI>Volume.
  * </UL>
  */
 public class BaseSynthesizerProperties extends BaseEngineProperties
@@ -96,11 +96,11 @@ public class BaseSynthesizerProperties extends BaseEngineProperties
      * Creates a new <code>BaseSynthesizerProperties</code> with the
      * given default values.
      *
-     * @param defaultVoice the default voice
-     * @param defaultPitch the default pitch
-     * @param defaultPitchRange the default pitch range
+     * @param defaultVoice        the default voice
+     * @param defaultPitch        the default pitch
+     * @param defaultPitchRange   the default pitch range
      * @param defaultSpeakingRate the default speaking rate
-     * @param defaultVolume the default volume
+     * @param defaultVolume       the default volume
      */
     public BaseSynthesizerProperties(Voice defaultVoice,
                                      float defaultPitch,
@@ -149,7 +149,6 @@ public class BaseSynthesizerProperties extends BaseEngineProperties
      * Gets the current synthesizer voice.
      *
      * @return the current synthesizer voice.
-     *
      * @see #setVoice
      */
     public Voice getVoice() {
@@ -160,11 +159,9 @@ public class BaseSynthesizerProperties extends BaseEngineProperties
      * Sets the current synthesizer voice.
      *
      * @param voice the new voice
-     *
-     * @see #getVoice
-     *
      * @throws PropertyVetoException if the voice cannot be set to
-     *   the given value
+     *                               the given value
+     * @see #getVoice
      */
     public void setVoice(Voice voice)
             throws PropertyVetoException {
@@ -178,7 +175,6 @@ public class BaseSynthesizerProperties extends BaseEngineProperties
      * Gets the baseline pitch for synthesis.
      *
      * @return the baseline pitch in Hertz
-     *
      * @see #setPitch
      */
     public float getPitch() {
@@ -189,11 +185,9 @@ public class BaseSynthesizerProperties extends BaseEngineProperties
      * Sets the baseline pitch for the current synthesis voice.
      *
      * @param hertz the new baseline pitch in Hertz
-     *
-     * @see #getPitch
-     *
      * @throws PropertyVetoException if the baseline pitch cannot be
-     *   set to the given value       
+     *                               set to the given value
+     * @see #getPitch
      */
     public void setPitch(float hertz)
             throws PropertyVetoException {
@@ -206,9 +200,7 @@ public class BaseSynthesizerProperties extends BaseEngineProperties
      * Gets the pitch range for synthesis.
      *
      * @return the current pitch range in Hertz
-     *
      * @see #setPitchRange
-     *
      */
     public float getPitchRange() {
         return currentPitchRange;
@@ -218,11 +210,9 @@ public class BaseSynthesizerProperties extends BaseEngineProperties
      * Sets the pitch range for the current synthesis voice.
      *
      * @param hertz the new range in Hertz
-     *
-     * @see #getPitchRange
-     *
      * @throws PropertyVetoException if the pitch range cannot be set
-     *   to the given value
+     *                               to the given value
+     * @see #getPitchRange
      */
     public void setPitchRange(float hertz)
             throws PropertyVetoException {
@@ -235,7 +225,6 @@ public class BaseSynthesizerProperties extends BaseEngineProperties
      * Gets the current target speaking rate in words per minute.
      *
      * @return the current target speaking rate in words per minute.
-     *
      * @see #getSpeakingRate
      */
     public float getSpeakingRate() {
@@ -246,10 +235,8 @@ public class BaseSynthesizerProperties extends BaseEngineProperties
      * Sets the target speaking rate in words per minute.
      *
      * @param wpm the new speaking rate in words per minute
-     *
      * @throws PropertyVetoException if the speaking rate cannot be
-     *   set to the given value
-     *
+     *                               set to the given value
      * @see #getSpeakingRate
      */
     public void setSpeakingRate(float wpm)
@@ -264,8 +251,7 @@ public class BaseSynthesizerProperties extends BaseEngineProperties
      * Gets the current volume.
      *
      * @return the current volume expressed as a <code>float</code>
-     *   0.0 and 1.0, inclusive
-     *
+     * 0.0 and 1.0, inclusive
      * @see #setVolume
      */
     public float getVolume() {
@@ -276,12 +262,10 @@ public class BaseSynthesizerProperties extends BaseEngineProperties
      * Sets the volume.
      *
      * @param volume the new volume expressed as a <code>float</code>
-     *   0.0 and 1.0, inclusive
-     *
-     * @see #getVolume
-     *
+     *               0.0 and 1.0, inclusive
      * @throws PropertyVetoException if the volume cannot be
-     *   set to the given value
+     *                               set to the given value
+     * @see #getVolume
      */
     public void setVolume(float volume)
             throws PropertyVetoException {

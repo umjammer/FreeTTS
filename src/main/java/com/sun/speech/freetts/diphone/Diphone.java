@@ -37,8 +37,8 @@ public class Diphone {
     /**
      * Creates a diphone with the given name, samples and midpoint.
      *
-     * @param name the name of the diphone
-     * @param samples the set of samples for the diphone
+     * @param name     the name of the diphone
+     * @param samples  the set of samples for the diphone
      * @param midPoint the index of the sample midpoint
      */
     public Diphone(String name, Sample[] samples, int midPoint) {
@@ -59,7 +59,8 @@ public class Diphone {
     /**
      * Constructor to be used only by subclasses who do not use the
      * variables except for the name
-     * @param name the name of the diphone 
+     *
+     * @param name the name of the diphone
      */
     protected Diphone(String name) {
         this.name = name;
@@ -82,7 +83,6 @@ public class Diphone {
      * Returns a particular sample.
      *
      * @param which which sample to return
-     *
      * @return the desired sample
      */
     public Sample getSamples(int which) {
@@ -90,7 +90,7 @@ public class Diphone {
     }
 
     /**
-     * Gets the name of the diphone. 
+     * Gets the name of the diphone.
      *
      * @return the name of the diphone
      */
@@ -122,12 +122,11 @@ public class Diphone {
     /**
      * Returns the sample that is closest to uIndex.
      *
-     * @param uIndex the desired index
+     * @param uIndex   the desired index
      * @param unitPart do we want the first have (1) or the second
-     * 		half (2)
-     *
+     *                 half (2)
      * @return the sample nearest to the given index in the given
-     * 		part
+     * part
      */
     public Sample nearestSample(float uIndex, int unitPart) {
         int i, iSize = 0, nSize;
@@ -152,7 +151,6 @@ public class Diphone {
      * diphone.
      *
      * @param unitPart indicates which part is of interest (1 or 2)
-     *
      * @return the number of residuals in the specified part
      */
     public int getUnitSize(int unitPart) {
@@ -178,7 +176,6 @@ public class Diphone {
      * Dumps the diphone to the given channel.
      *
      * @param bb the ByteBuffer to write to
-     *
      * @throws IOException if IO error occurs
      */
     public void dumpBinary(ByteBuffer bb) throws IOException {
@@ -200,7 +197,6 @@ public class Diphone {
      * Dumps the diphone to the given channel.
      *
      * @param os the DataOutputStream to write to
-     *
      * @throws IOException if IO error occurs
      */
     public void dumpBinary(DataOutputStream os) throws IOException {
@@ -223,9 +219,8 @@ public class Diphone {
      * testing databases. This is not the same as "equals"
      *
      * @param other the diphone to compare this one to
-     *
      * @return <code>true</code> if the diphones match; otherwise
-     * 		<code>false</code> 
+     * <code>false</code>
      */
     boolean compare(Diphone other) {
         if (!name.equals(other.getName())) {
@@ -252,9 +247,7 @@ public class Diphone {
      * Loads a new diphone from  the given buffer.
      *
      * @param bb the byte buffer to load the diphone from
-     *
      * @return the new diphone
-     *
      * @throws IOException if IO error occurs
      */
     public static Diphone loadBinary(ByteBuffer bb) throws IOException {
@@ -306,9 +299,7 @@ public class Diphone {
      * Loads a new  diphone from  the given DataInputStream.
      *
      * @param dis the datainput stream to load the diphone from
-     *
      * @return the new diphone
-     *
      * @throws IOException if IO error occurs
      */
     public static Diphone loadBinary(DataInputStream dis) throws IOException {

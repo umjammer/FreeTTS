@@ -22,7 +22,6 @@ import java.nio.ByteBuffer;
  * Describes global sample parameters. A sample info is generally added
  * to an utterance to describe the type of unit data that has been
  * generated.
- *
  */
 public class SampleInfo {
     public final static String UTT_NAME = "SampleInfo";
@@ -37,11 +36,11 @@ public class SampleInfo {
     /**
      * Creates a new sample info.
      *
-     * @param sampleRate the sample rate
+     * @param sampleRate       the sample rate
      * @param numberOfChannels the number of channels
-     * @param residualFold the residual fold
-     * @param coeffMin the minimum coefficient
-     * @param coeffRange the range of coefficients
+     * @param residualFold     the residual fold
+     * @param coeffMin         the minimum coefficient
+     * @param coeffRange       the range of coefficients
      */
     public SampleInfo(int sampleRate, int numberOfChannels,
                       int residualFold, float coeffMin,
@@ -58,7 +57,6 @@ public class SampleInfo {
      * Constructs a sample info from the given byte buffer.
      *
      * @param bb the byte buffer
-     *
      * @throws IOException if an input error occurs
      */
     public SampleInfo(ByteBuffer bb) throws IOException {
@@ -74,7 +72,6 @@ public class SampleInfo {
      * Constructs a sample info from the given input stream
      *
      * @param is the input stream
-     *
      * @throws IOException if an input error occurs
      */
     public SampleInfo(DataInputStream is) throws IOException {
@@ -146,7 +143,6 @@ public class SampleInfo {
      * to the given output stream
      *
      * @param os the output stream
-     *
      * @throws IOException if an error occurs
      */
     public void dumpBinary(DataOutputStream os) throws IOException {
