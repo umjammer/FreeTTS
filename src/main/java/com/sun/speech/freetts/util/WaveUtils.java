@@ -16,7 +16,8 @@ package com.sun.speech.freetts.util;
  */
 public class WaveUtils {
 
-    private static int[] exp_lut2 = {0, 0, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3,
+    private static int[] exp_lut2 = {
+            0, 0, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3,
             4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
             5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5,
             5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5,
@@ -31,14 +32,14 @@ public class WaveUtils {
             7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7,
             7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7,
             7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7,
-            7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7};
+            7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7
+    };
 
     private static final boolean ZEROTRAP = true;
     private static final int CLIP = 32625;
     private static final int BIAS = 0x84;
 
-    private final static int[] expLut = {0, 132, 396, 924, 1980, 4092,
-            8316, 16764};
+    private final static int[] expLut = {0, 132, 396, 924, 1980, 4092, 8316, 16764};
 
     /**
      * Converts a raw short to ulaw.
@@ -131,5 +132,4 @@ public class WaveUtils {
             System.out.println("" + i + "=" + ulawToShort((short) i));
         }
     }
-
 }

@@ -21,6 +21,7 @@ import java.net.URL;
 import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.logging.Logger;
 import javax.speech.AudioException;
 import javax.speech.Central;
 import javax.speech.Engine;
@@ -41,6 +42,9 @@ import javax.swing.ListModel;
  */
 public class PlayerModelImpl implements PlayerModel {
 
+    /** Logger instance. */
+    private static final Logger logger = Logger.getLogger(PlayerModelImpl.class.getName());
+
     private Synthesizer synthesizer;
     private Monitor monitor;
     private boolean monitorVisible = false;
@@ -51,9 +55,7 @@ public class PlayerModelImpl implements PlayerModel {
     private DefaultComboBoxModel<Object> synthesizerList;
     private DefaultComboBoxModel<Object> voiceList;
     private float volume = -1;
-    private static boolean debug = false;
     private Set<Synthesizer> loadedSynthesizers;
-
 
     /**
      * Constructs a default PlayerModelImpl.
@@ -65,19 +67,18 @@ public class PlayerModelImpl implements PlayerModel {
         loadedSynthesizers = new HashSet<>();
     }
 
-
     /**
      * Creates a FreeTTS synthesizer.
      */
+    @Override
     public void createSynthesizers() {
         try {
             EngineList list = Central.availableSynthesizers(null);
             Enumeration<?> e = list.elements();
 
             while (e.hasMoreElements()) {
-                MySynthesizerModeDesc myModeDesc =
-                        new MySynthesizerModeDesc((SynthesizerModeDesc) e.nextElement(), this);
-                debugPrint(myModeDesc.getEngineName() + " " +
+                MySynthesizerModeDesc myModeDesc = new MySynthesizerModeDesc((SynthesizerModeDesc) e.nextElement(), this);
+                logger.fine(myModeDesc.getEngineName() + " " +
                         myModeDesc.getLocale() + " " +
                         myModeDesc.getModeName() + " " +
                         myModeDesc.getRunning());
@@ -87,10 +88,10 @@ public class PlayerModelImpl implements PlayerModel {
             if (synthesizerList.getSize() > 0) {
                 setSynthesizer(0);
             } else {
-                System.err.println(noSynthesizerMessage());
+                logger.info(noSynthesizerMessage());
             }
             if (synthesizer == null) {
-                System.err.println("PlayerModelImpl: Can't find synthesizer");
+                logger.info("PlayerModelImpl: Can't find synthesizer");
                 System.exit(1);
             }
         } catch (Exception e) {
@@ -106,8 +107,7 @@ public class PlayerModelImpl implements PlayerModel {
      * @return a no synthesizer message
      */
     static private String noSynthesizerMessage() {
-        String message =
-                "No synthesizer created.  This may be the result of any\n" +
+        String message = "No synthesizer created.  This may be the result of any\n" +
                         "number of problems.  It's typically due to a missing\n" +
                         "\"speech.properties\" file that should be at either of\n" +
                         "these locations: \n\n";
@@ -127,14 +127,14 @@ public class PlayerModelImpl implements PlayerModel {
      *
      * @param playable the Playable object to play
      */
+    @Override
     public void play(Playable playable) {
         if (playable != null) {
             if (playable.getType() == PlayableType.TEXT) {
                 play(playable.getText());
             } else if (playable.getType() == PlayableType.JSML) {
                 playJSML(playable.getText());
-            } else if (playable.getType() == PlayableType.TEXT_FILE ||
-                    playable.getType() == PlayableType.JSML_FILE) {
+            } else if (playable.getType() == PlayableType.TEXT_FILE || playable.getType() == PlayableType.JSML_FILE) {
                 playFile(playable.getFile(), playable.getType());
             } else if (playable.getType() == PlayableType.URL) {
                 try {
@@ -146,15 +146,15 @@ public class PlayerModelImpl implements PlayerModel {
         }
     }
 
-
     /**
      * Performs TTS on the object at the given index of the play list.
      *
      * @param index index of the object in the playlist to play
      */
+    @Override
     public void play(int index) {
         if (0 <= index && index < playList.getSize()) {
-            Playable playable = (Playable) playList.getElementAt(index);
+            Playable playable = playList.getElementAt(index);
             if (playable != null) {
                 play(playable);
             }
@@ -208,12 +208,10 @@ public class PlayerModelImpl implements PlayerModel {
         playingFile = true;
         if (inStream != null) {
             try {
-                BufferedReader reader = new BufferedReader
-                        (new InputStreamReader(inStream));
+                BufferedReader reader = new BufferedReader(new InputStreamReader(inStream));
                 String line;
                 if (type == PlayableType.TEXT_FILE) {
-                    while (!isStopped() &&
-                            (line = reader.readLine()) != null) {
+                    while (!isStopped() && (line = reader.readLine()) != null) {
                         if (line.length() > 0) {
                             play(line);
                         }
@@ -253,6 +251,7 @@ public class PlayerModelImpl implements PlayerModel {
      *
      * @return true if the player is paused, false otherwise
      */
+    @Override
     public synchronized boolean isPaused() {
         return paused;
     }
@@ -260,6 +259,7 @@ public class PlayerModelImpl implements PlayerModel {
     /**
      * Pauses the player.
      */
+    @Override
     public synchronized void pause() {
         paused = true;
         synthesizer.pause();
@@ -268,6 +268,7 @@ public class PlayerModelImpl implements PlayerModel {
     /**
      * Resumes the player.
      */
+    @Override
     public synchronized void resume() {
         paused = false;
         try {
@@ -280,6 +281,7 @@ public class PlayerModelImpl implements PlayerModel {
     /**
      * Stops the player if it is playing.
      */
+    @Override
     public synchronized void stop() {
         if (playingFile) {
             stopped = true;
@@ -290,6 +292,7 @@ public class PlayerModelImpl implements PlayerModel {
     /**
      * Cancels the currently playing item.
      */
+    @Override
     public void cancel() {
         synthesizer.cancel();
     }
@@ -297,6 +300,7 @@ public class PlayerModelImpl implements PlayerModel {
     /**
      * Close this playable
      */
+    @Override
     public void close() {
         for (Synthesizer loadedSynthesizer : loadedSynthesizers) {
             try {
@@ -321,6 +325,7 @@ public class PlayerModelImpl implements PlayerModel {
      *
      * @param visible true to set the Monitor as visible
      */
+    @Override
     public void setMonitorVisible(boolean visible) {
         monitorVisible = visible;
         if (monitor != null) {
@@ -333,6 +338,7 @@ public class PlayerModelImpl implements PlayerModel {
      *
      * @return true if the monitor is visible, false otherwise
      */
+    @Override
     public boolean isMonitorVisible() {
         return monitorVisible;
     }
@@ -343,6 +349,7 @@ public class PlayerModelImpl implements PlayerModel {
      * @param index the position of the synthesizer in the synthesizer list
      * @return the monitor of the specified synthesizer
      */
+    @Override
     public Monitor getMonitor(int index) {
         MySynthesizerModeDesc myModeDesc = (MySynthesizerModeDesc)
                 synthesizerList.getElementAt(index);
@@ -359,6 +366,7 @@ public class PlayerModelImpl implements PlayerModel {
      *
      * @return the monitor of the current synthesizer
      */
+    @Override
     public Monitor getMonitor() {
         return monitor;
     }
@@ -368,6 +376,7 @@ public class PlayerModelImpl implements PlayerModel {
      *
      * @param monitor the current monitor
      */
+    @Override
     public void setMonitor(Monitor monitor) {
         this.monitor = monitor;
     }
@@ -377,6 +386,7 @@ public class PlayerModelImpl implements PlayerModel {
      *
      * @param index index of the synthesizer in the list
      */
+    @Override
     public void setSynthesizer(int index) {
         MySynthesizerModeDesc myModeDesc = (MySynthesizerModeDesc) synthesizerList.getElementAt(index);
         if (myModeDesc != null) {
@@ -389,12 +399,12 @@ public class PlayerModelImpl implements PlayerModel {
             if (synthesizer == null) {
                 synthesizer = myModeDesc.createSynthesizer();
                 if (synthesizer == null) {
-                    debugPrint("still null");
+                    logger.fine("still null");
                 } else {
-                    debugPrint("created");
+                    logger.fine("created");
                 }
             } else {
-                debugPrint("not null");
+                logger.fine("not null");
             }
             monitor = myModeDesc.getMonitor();
             if (myModeDesc.isSynthesizerLoaded()) {
@@ -413,6 +423,7 @@ public class PlayerModelImpl implements PlayerModel {
      *
      * @param index the index of the voice
      */
+    @Override
     public void setVoice(int index) {
         try {
             Voice voice = (Voice) voiceList.getElementAt(index);
@@ -435,6 +446,7 @@ public class PlayerModelImpl implements PlayerModel {
      *
      * @return the volume, or -1 if unknown, or an error occurred
      */
+    @Override
     public float getVolume() {
         try {
             float adjustedVolume = synthesizer.getSynthesizerProperties().getVolume();
@@ -455,6 +467,7 @@ public class PlayerModelImpl implements PlayerModel {
      * @param volume the new volume
      * @return true if new volume is set; false otherwise
      */
+    @Override
     public boolean setVolume(float volume) {
         try {
             float adjustedVolume = (float) (volume / 20 + 0.5);
@@ -482,6 +495,7 @@ public class PlayerModelImpl implements PlayerModel {
      *
      * @return the speaking rate, or -1 if unknown or an error occurred
      */
+    @Override
     public float getSpeakingRate() {
         if (synthesizer != null) {
             return synthesizer.getSynthesizerProperties().getSpeakingRate();
@@ -496,6 +510,7 @@ public class PlayerModelImpl implements PlayerModel {
      * @param wordsPerMin the new speaking rate
      * @return the speaking rate, or -1 if unknown or an error occurred
      */
+    @Override
     public boolean setSpeakingRate(float wordsPerMin) {
         float oldSpeed = getSpeakingRate();
         SynthesizerProperties properties =
@@ -599,6 +614,7 @@ public class PlayerModelImpl implements PlayerModel {
      *
      * @return the play list
      */
+    @Override
     public ListModel<Playable> getPlayList() {
         return playList;
     }
@@ -608,6 +624,7 @@ public class PlayerModelImpl implements PlayerModel {
      *
      * @return the list of voices
      */
+    @Override
     public ListModel<Object> getVoiceList() {
         return voiceList;
     }
@@ -617,6 +634,7 @@ public class PlayerModelImpl implements PlayerModel {
      *
      * @return the synthesizer list
      */
+    @Override
     public ListModel<Object> getSynthesizerList() {
         return synthesizerList;
     }
@@ -626,6 +644,7 @@ public class PlayerModelImpl implements PlayerModel {
      *
      * @return the Playable object
      */
+    @Override
     public Object getPlayableAt(int index) {
         return null;
     }
@@ -635,6 +654,7 @@ public class PlayerModelImpl implements PlayerModel {
      *
      * @param playable the Playable object to add
      */
+    @Override
     public void addPlayable(Playable playable) {
         playList.addElement(playable);
     }
@@ -644,20 +664,10 @@ public class PlayerModelImpl implements PlayerModel {
      *
      * @param index the index of the Playable to remove
      */
+    @Override
     public void removePlayableAt(int index) {
         if (index < playList.getSize()) {
             playList.removeElementAt(index);
-        }
-    }
-
-    /**
-     * Prints debug statements.
-     *
-     * @param statement debug statements
-     */
-    public static void debugPrint(String statement) {
-        if (debug) {
-            System.out.println(statement);
         }
     }
 }
@@ -698,6 +708,9 @@ class MyVoice extends Voice {
  */
 class MySynthesizerModeDesc extends SynthesizerModeDesc {
 
+    /** Logger instance. */
+    private static final Logger logger = Logger.getLogger(MySynthesizerModeDesc.class.getName());
+
     private PlayerModel playerModel;
     private Synthesizer synthesizer = null;
     private Monitor monitor = null;
@@ -735,7 +748,7 @@ class MySynthesizerModeDesc extends SynthesizerModeDesc {
      * @return a Synthesizer
      */
     public synchronized Synthesizer getSynthesizer() {
-        debugPrint("MyModeDesc.getSynthesizer(): " + getEngineName());
+        logger.fine("MyModeDesc.getSynthesizer(): " + getEngineName());
         return synthesizer;
     }
 
@@ -746,7 +759,7 @@ class MySynthesizerModeDesc extends SynthesizerModeDesc {
      */
     public Synthesizer createSynthesizer() {
         try {
-            debugPrint("Creating " + getEngineName() + "...");
+            logger.fine("Creating " + getEngineName() + "...");
             synthesizer = Central.createSynthesizer(this);
 
             if (synthesizer == null) {
@@ -755,7 +768,7 @@ class MySynthesizerModeDesc extends SynthesizerModeDesc {
                 synthesizer.allocate();
                 synthesizer.resume();
                 monitor = new Monitor(synthesizer, getEngineName());
-                debugPrint("...created monitor");
+                logger.fine("...created monitor");
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -771,7 +784,7 @@ class MySynthesizerModeDesc extends SynthesizerModeDesc {
     public Synthesizer loadSynthesizer() {
         try {
             if (!synthesizerLoaded) {
-                debugPrint("Loading " + getEngineName() + "...");
+                logger.fine("Loading " + getEngineName() + "...");
                 synthesizerLoaded = true;
                 SynthesizerLoader loader = new SynthesizerLoader
                         (synthesizer, this);
@@ -812,15 +825,6 @@ class MySynthesizerModeDesc extends SynthesizerModeDesc {
     public String toString() {
         return getEngineName();
     }
-
-    /**
-     * Prints debug statements.
-     *
-     * @param statement debug statements
-     */
-    private void debugPrint(String statement) {
-        PlayerModelImpl.debugPrint(statement);
-    }
 }
 
 
@@ -849,6 +853,7 @@ class SynthesizerLoader extends Thread {
     /**
      * Implements the <code>run()</code> method of the Thread class.
      */
+    @Override
     public void run() {
         try {
             System.out.println("allocating...");

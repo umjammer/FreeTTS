@@ -66,8 +66,7 @@ public class USEnglish {
     /** default number time regular expression */
     public static final String RX_DEFAULT_NUMBER_TIME = "((0[0-2])|(1[0-9])):([0-5][0-9])";
     /** default Roman numerals regular expression */
-    public static final String RX_DEFAULT_ROMAN_NUMBER =
-            "(II?I?|IV|VI?I?I?|IX|X[VIX]*)";
+    public static final String RX_DEFAULT_ROMAN_NUMBER = "(II?I?|IV|VI?I?I?|IX|X[VIX]*)";
     /** default drst "Dr. St" regular expression */
     public static final String RX_DEFAULT_DRST = "([dD][Rr]|[Ss][Tt])";
     /** default numess */
@@ -76,12 +75,9 @@ public class USEnglish {
     public static final String RX_DEFAULT_SEVEN_DIGIT_PHONE_NUMBER =
             "[0-9][0-9][0-9]-[0-9][0-9][0-9][0-9]";
     /** default 4-digit number */
-    public static final String RX_DEFAULT_FOUR_DIGIT =
-            "[0-9][0-9][0-9][0-9]";
+    public static final String RX_DEFAULT_FOUR_DIGIT = "[0-9][0-9][0-9][0-9]";
     /** default 3-digit number */
-    public static final String RX_DEFAULT_THREE_DIGIT =
-            "[0-9][0-9][0-9]";
-
+    public static final String RX_DEFAULT_THREE_DIGIT = "[0-9][0-9][0-9]";
 
     /** whitespace regular expression pattern */
     public static String RX_WHITESPACE = RX_DEFAULT_US_EN_WHITESPACE;
@@ -132,7 +128,6 @@ public class USEnglish {
     /** 3-digit number */
     public static final String RX_THREE_DIGIT = RX_DEFAULT_THREE_DIGIT;
 
-
     // the following symbols are from lang/usenglish/us_text.c
 
     /** punctuation regular expression pattern */
@@ -143,7 +138,6 @@ public class USEnglish {
     public static final String SINGLE_CHAR_SYMBOLS = "";
     /** whitespace symbols  regular expression pattern */
     public static final String WHITESPACE_SYMBOLS = " \t\n\r";
-
 
     /**
      * Not constructable

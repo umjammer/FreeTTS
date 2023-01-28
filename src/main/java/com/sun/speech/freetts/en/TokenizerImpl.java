@@ -37,8 +37,7 @@ public class TokenizerImpl implements Tokenizer {
     public static final String DEFAULT_PREPUNCTUATION_SYMBOLS = "\"'`({[";
 
     /** A string containing the default post-punctuation characters. */
-    public static final String DEFAULT_POSTPUNCTUATION_SYMBOLS
-            = "\"'`.,:;!?(){}[]";
+    public static final String DEFAULT_POSTPUNCTUATION_SYMBOLS = "\"'`.,:;!?(){}[]";
 
 
     /** The line number. */
@@ -105,16 +104,15 @@ public class TokenizerImpl implements Tokenizer {
         setInputReader(file);
     }
 
-
     /**
      * Sets the whitespace symbols of this Tokenizer to the given symbols.
      *
      * @param symbols the whitespace symbols
      */
+    @Override
     public void setWhitespaceSymbols(String symbols) {
         whitespaceSymbols = symbols;
     }
-
 
     /**
      * Sets the single character symbols of this Tokenizer to the given
@@ -122,10 +120,10 @@ public class TokenizerImpl implements Tokenizer {
      *
      * @param symbols the single character symbols
      */
+    @Override
     public void setSingleCharSymbols(String symbols) {
         singleCharSymbols = symbols;
     }
-
 
     /**
      * Sets the prepunctuation symbols of this Tokenizer to the given
@@ -133,10 +131,10 @@ public class TokenizerImpl implements Tokenizer {
      *
      * @param symbols the prepunctuation symbols
      */
+    @Override
     public void setPrepunctuationSymbols(String symbols) {
         prepunctuationSymbols = symbols;
     }
-
 
     /**
      * Sets the postpunctuation symbols of this Tokenizer to the given
@@ -144,16 +142,17 @@ public class TokenizerImpl implements Tokenizer {
      *
      * @param symbols the postpunctuation symbols
      */
+    @Override
     public void setPostpunctuationSymbols(String symbols) {
         postpunctuationSymbols = symbols;
     }
-
 
     /**
      * Sets the text to tokenize.
      *
      * @param inputString the string to tokenize
      */
+    @Override
     public void setInputText(String inputString) {
         inputText = inputString;
         currentPosition = 0;
@@ -168,11 +167,11 @@ public class TokenizerImpl implements Tokenizer {
      *
      * @param reader the input source
      */
+    @Override
     public void setInputReader(Reader reader) {
         this.reader = reader;
         getNextChar();
     }
-
 
     /**
      * Returns the next token.
@@ -180,6 +179,7 @@ public class TokenizerImpl implements Tokenizer {
      * @return the next token if it exists,
      * <code>null</code> if no more tokens
      */
+    @Override
     public Token getNextToken() {
         lastToken = token;
         token = new Token();
@@ -210,7 +210,6 @@ public class TokenizerImpl implements Tokenizer {
         return token;
     }
 
-
     /**
      * Returns <code>true</code> if there are more tokens,
      * <code>false</code> otherwise.
@@ -218,11 +217,11 @@ public class TokenizerImpl implements Tokenizer {
      * @return <code>true</code> if there are more tokens
      * <code>false</code> otherwise
      */
+    @Override
     public boolean hasMoreTokens() {
         int nextChar = currentChar;
         return (nextChar != EOF);
     }
-
 
     /**
      * Advances the currentPosition pointer by 1 (if not exceeding
@@ -259,7 +258,6 @@ public class TokenizerImpl implements Tokenizer {
         }
         return currentChar;
     }
-
 
     /**
      * Starting from the current position of the input text,
@@ -307,8 +305,7 @@ public class TokenizerImpl implements Tokenizer {
      * @return a string of characters from the current position until
      * it encounters characters in endingCharClass
      */
-    private String getTokenByCharClass(String charClass,
-                                       boolean containThisCharClass) {
+    private String getTokenByCharClass(String charClass, boolean containThisCharClass) {
         StringBuilder buffer = new StringBuilder();
 
         // if we want the returned string to contain chars in charClass, then
@@ -340,9 +337,7 @@ public class TokenizerImpl implements Tokenizer {
         int tokenLength = tokenWord.length();
         int position = tokenLength - 1;
 
-        while (position > 0
-                && postpunctuationSymbols.indexOf(tokenWord
-                .charAt(position)) != -1) {
+        while (position > 0 && postpunctuationSymbols.indexOf(tokenWord.charAt(position)) != -1) {
             position--;
         }
 
@@ -363,6 +358,7 @@ public class TokenizerImpl implements Tokenizer {
      * @return <code>true</code> if there were errors;
      * <code>false</code> otherwise
      */
+    @Override
     public boolean hasErrors() {
         return errorDescription != null;
     }
@@ -374,6 +370,7 @@ public class TokenizerImpl implements Tokenizer {
      *
      * @return a description of the last error that occurred.
      */
+    @Override
     public String getErrorDescription() {
         return errorDescription;
     }
@@ -383,6 +380,7 @@ public class TokenizerImpl implements Tokenizer {
      *
      * @return <code>true</code> if a new sentence should be started
      */
+    @Override
     public boolean isBreak() {
         String tokenWhiteSpace = token.getWhitespace();
         String lastTokenPostpunctuation = null;
@@ -392,8 +390,7 @@ public class TokenizerImpl implements Tokenizer {
 
         if (lastToken == null || token == null) {
             return false;
-        } else if (tokenWhiteSpace.indexOf('\n') != tokenWhiteSpace
-                .lastIndexOf('\n')) {
+        } else if (tokenWhiteSpace.indexOf('\n') != tokenWhiteSpace.lastIndexOf('\n')) {
             return true;
         } else if (lastTokenPostpunctuation.indexOf(':') != -1
                 || lastTokenPostpunctuation.indexOf('?') != -1
@@ -407,11 +404,9 @@ public class TokenizerImpl implements Tokenizer {
             String lastWord = lastToken.getWord();
             int lastWordLength = lastWord.length();
 
-            if (lastTokenPostpunctuation.indexOf('.') != -1
-                    &&
+            if (lastTokenPostpunctuation.indexOf('.') != -1 &&
                     /* next word starts with a capital */
-                    Character.isUpperCase(token.getWord().charAt(0))
-                    &&
+                    Character.isUpperCase(token.getWord().charAt(0)) &&
                     /* last word isn't an abbreviation */
                     !(Character.isUpperCase(lastWord.charAt(lastWordLength - 1))
                             || (lastWordLength < 4

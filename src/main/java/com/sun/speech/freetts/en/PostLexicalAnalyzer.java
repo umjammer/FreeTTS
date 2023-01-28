@@ -25,6 +25,7 @@ import com.sun.speech.freetts.Voice;
  * Annotates the utterance with post lexical information.
  */
 public class PostLexicalAnalyzer implements UtteranceProcessor {
+
     private static final PathExtractor wordPath =
             new PathExtractorImpl("R:SylStructure.parent.parent.name", true);
     private static final PathExtractor P_PH_VC =
@@ -45,6 +46,7 @@ public class PostLexicalAnalyzer implements UtteranceProcessor {
      * @throws ProcessException if an error occurs while
      *                          processing of the utterance
      */
+    @Override
     public void processUtterance(Utterance utterance) throws ProcessException {
         fixApostrophe(utterance);
         fixTheIy(utterance);
@@ -72,8 +74,7 @@ public class PostLexicalAnalyzer implements UtteranceProcessor {
                 } else if (voice.getPhoneFeature(pname, "cvox").equals("-")) {
                     item.getFeatures().setString("name", "s");
                 }
-            } else if (word.equals("'ve") ||
-                    word.equals("'ll") || word.equals("'d")) {
+            } else if (word.equals("'ve") || word.equals("'ll") || word.equals("'d")) {
                 if ("-".equals(P_PH_VC.findFeature(item))) {
                     prependSchwa(item);
                 }
@@ -90,8 +91,7 @@ public class PostLexicalAnalyzer implements UtteranceProcessor {
     private static void prependSchwa(Item item) {
         Item schwa = item.prependItem(null);
         schwa.getFeatures().setString("name", "ax");
-        item.getItemAs(
-                Relation.SYLLABLE_STRUCTURE).prependItem(schwa);
+        item.getItemAs(Relation.SYLLABLE_STRUCTURE).prependItem(schwa);
     }
 
 
@@ -109,8 +109,7 @@ public class PostLexicalAnalyzer implements UtteranceProcessor {
 
             if ("ax".equals(item.toString())) {
                 String word = wordPath.findFeature(item).toString();
-                if ("the".equals(word) &&
-                        ("+".equals(N_PH_VC.findFeature(item)))) {
+                if ("the".equals(word) && ("+".equals(N_PH_VC.findFeature(item)))) {
                     item.getFeatures().setString("name", "iy");
                 }
             }

@@ -102,6 +102,7 @@ public class PathExtractorImpl implements PathExtractor {
      * @param item the item to start at
      * @return the item associated with the path or null
      */
+    @Override
     public Item findItem(Item item) {
 
         if (INTERPRET_PATHS) {
@@ -153,6 +154,7 @@ public class PathExtractorImpl implements PathExtractor {
      * @return the feature associated or "0"  if the
      * feature was not found.
      */
+    @Override
     public Object findFeature(Item item) {
 
         if (INTERPRET_PATHS) {

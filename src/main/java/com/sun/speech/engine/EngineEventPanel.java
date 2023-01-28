@@ -22,6 +22,7 @@ import javax.swing.JTextArea;
  * for debugging and testing purposes.
  */
 public class EngineEventPanel extends JPanel {
+
     /**
      * The area where engine events are posted.
      */

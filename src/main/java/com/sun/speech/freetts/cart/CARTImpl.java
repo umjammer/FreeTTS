@@ -84,9 +84,10 @@ import com.sun.speech.freetts.util.Utilities;
  * value of the node is the interpretation result.
  */
 public class CARTImpl implements CART {
+
     /** Logger instance. */
-    private static final Logger LOGGER =
-            Logger.getLogger(CARTImpl.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(CARTImpl.class.getName());
+
     /**
      * Entry in file represents the total number of nodes in the
      * file.  This should be at the top of the file.  The format
@@ -112,7 +113,6 @@ public class CARTImpl implements CART {
      * OPERAND_MATCHES
      */
     final static String OPERAND_MATCHES = "MATCHES";
-
 
     /**
      * The CART. Entries can be DecisionNode or LeafNode.  An
@@ -181,6 +181,7 @@ public class CARTImpl implements CART {
      * @param os the output stream
      * @throws IOException if an error occurs during output
      */
+    @Override
     public void dumpBinary(DataOutputStream os) throws IOException {
         os.writeInt(cart.length);
         for (Node node : cart) {
@@ -308,25 +309,16 @@ public class CARTImpl implements CART {
      * @param currentNode the index of the current node we're looking at
      * @return the node
      */
-    protected Node getNode(String type,
-                           StringTokenizer tokenizer,
-                           int currentNode) {
+    protected Node getNode(String type, StringTokenizer tokenizer, int currentNode) {
         if (type.equals(NODE)) {
             String feature = tokenizer.nextToken();
             String operand = tokenizer.nextToken();
             Object value = parseValue(tokenizer.nextToken());
             int qfalse = Integer.parseInt(tokenizer.nextToken());
             if (operand.equals(OPERAND_MATCHES)) {
-                return new MatchingNode(feature,
-                        value.toString(),
-                        currentNode + 1,
-                        qfalse);
+                return new MatchingNode(feature, value.toString(), currentNode + 1, qfalse);
             } else {
-                return new ComparisonNode(feature,
-                        value,
-                        operand,
-                        currentNode + 1,
-                        qfalse);
+                return new ComparisonNode(feature, value, operand, currentNode + 1, qfalse);
             }
         } else if (type.equals(LEAF)) {
             return new LeafNode(parseValue(tokenizer.nextToken()));
@@ -374,6 +366,7 @@ public class CARTImpl implements CART {
      * @param item the item to analyze
      * @return the interpretation
      */
+    @Override
     public Object interpret(Item item) {
         int nodeIndex = 0;
         DecisionNode decision;
@@ -392,6 +385,7 @@ public class CARTImpl implements CART {
      * A node for the CART.
      */
     static abstract class Node {
+
         /**
          * The value of this node.
          */
@@ -453,6 +447,7 @@ public class CARTImpl implements CART {
      * A decision node that determines the next Node to go to in the CART.
      */
     abstract static class DecisionNode extends Node {
+
         /**
          * The feature used to find a value from an Item.
          */
@@ -475,7 +470,6 @@ public class CARTImpl implements CART {
             return path.toString();
         }
 
-
         /**
          * Find the feature associated with this DecisionNode
          * and the given item
@@ -486,7 +480,6 @@ public class CARTImpl implements CART {
         public Object findFeature(Item item) {
             return path.findFeature(item);
         }
-
 
         /**
          * Returns the next node based upon the
@@ -507,10 +500,7 @@ public class CARTImpl implements CART {
          * @param qtrue   the Node index to go to if the comparison matches
          * @param qfalse  the Node machine index to go to upon no match
          */
-        public DecisionNode(String feature,
-                            Object value,
-                            int qtrue,
-                            int qfalse) {
+        public DecisionNode(String feature, Object value, int qtrue, int qfalse) {
             super(value);
             this.path = new PathExtractorImpl(feature, true);
             this.qtrue = qtrue;
@@ -528,6 +518,7 @@ public class CARTImpl implements CART {
      * A decision Node that compares two values.
      */
     static class ComparisonNode extends DecisionNode {
+
         /**
          * LESS_THAN
          */
@@ -583,12 +574,12 @@ public class CARTImpl implements CART {
          *
          * @param val the value to compare
          */
+        @Override
         public int getNextNode(Object val) {
             boolean yes;
             int ret;
 
-            if (comparisonType.equals(LESS_THAN)
-                    || comparisonType.equals(GREATER_THAN)) {
+            if (comparisonType.equals(LESS_THAN) || comparisonType.equals(GREATER_THAN)) {
                 float cart_fval;
                 float fval;
                 if (value instanceof Float) {
@@ -625,8 +616,7 @@ public class CARTImpl implements CART {
         }
 
         private String trace(Object value, boolean match, int next) {
-            return
-                    "NODE " + getFeature() + " ["
+            return "NODE " + getFeature() + " ["
                             + value + "] "
                             + comparisonType + " ["
                             + getValue() + "] "
@@ -638,8 +628,7 @@ public class CARTImpl implements CART {
          * Get a string representation of this Node.
          */
         public String toString() {
-            return
-                    "NODE " + getFeature() + " "
+            return "NODE " + getFeature() + " "
                             + comparisonType + " "
                             + getValueString() + " "
                             + qtrue + " "
@@ -651,6 +640,7 @@ public class CARTImpl implements CART {
      * A Node that checks for a regular expression match.
      */
     static class MatchingNode extends DecisionNode {
+
         Pattern pattern;
 
         /**
@@ -674,10 +664,9 @@ public class CARTImpl implements CART {
          *
          * @param val the value to compare -- this must be a String
          */
+        @Override
         public int getNextNode(Object val) {
-            return pattern.matcher((String) val).matches()
-                    ? qtrue
-                    : qfalse;
+            return pattern.matcher((String) val).matches() ? qtrue : qfalse;
         }
 
         /**
@@ -685,8 +674,7 @@ public class CARTImpl implements CART {
          */
         public String toString() {
             String buf = NODE + " " + getFeature() + " " + OPERAND_MATCHES + getValueString() + " " +
-                    qtrue + " " +
-                    qfalse;
+                    qtrue + " " + qfalse;
             return buf;
         }
     }

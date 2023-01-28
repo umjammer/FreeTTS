@@ -23,6 +23,7 @@ import com.sun.speech.freetts.util.Utilities;
  * Streams audio to multiple files, one per utterance.
  */
 public class MultiFileAudioPlayer implements AudioPlayer {
+
     private AudioFormat currentFormat = null;
     private int fileCount = 0;
     private String baseName;
@@ -38,8 +39,7 @@ public class MultiFileAudioPlayer implements AudioPlayer {
      * base name is "freetts".
      */
     public MultiFileAudioPlayer() {
-        this(Utilities.getProperty(
-                        "com.sun.speech.freetts.AudioPlayer.baseName", "freetts"),
+        this(Utilities.getProperty("com.sun.speech.freetts.AudioPlayer.baseName", "freetts"),
                 AudioFileFormat.Type.WAVE);
     }
 
@@ -61,43 +61,46 @@ public class MultiFileAudioPlayer implements AudioPlayer {
      * @throws UnsupportedOperationException if the line cannot be opened with
      *                                       the given format
      */
+    @Override
     public synchronized void setAudioFormat(AudioFormat format) {
         currentFormat = format;
     }
-
 
     /**
      * Gets the audio format for this player
      *
      * @return format the audio format
      */
+    @Override
     public AudioFormat getAudioFormat() {
         return currentFormat;
     }
 
-
     /**
      * Pauses audio output
      */
+    @Override
     public void pause() {
     }
 
     /**
      * Resumes audio output
      */
+    @Override
     public synchronized void resume() {
     }
 
     /**
      * Starts the first sample timer
      */
+    @Override
     public void startFirstSampleTimer() {
     }
-
 
     /**
      * Cancels currently playing audio
      */
+    @Override
     public synchronized void cancel() {
     }
 
@@ -106,12 +109,14 @@ public class MultiFileAudioPlayer implements AudioPlayer {
      * (such as all output associated with a single FreeTTSSpeakable)
      * should be grouped between a reset/drain pair.
      */
+    @Override
     public synchronized void reset() {
     }
 
     /**
      * Closes this audio player
      */
+    @Override
     public synchronized void close() {
     }
 
@@ -120,6 +125,7 @@ public class MultiFileAudioPlayer implements AudioPlayer {
      *
      * @return the current volume (between 0 and 1)
      */
+    @Override
     public float getVolume() {
         return 1.0f;
     }
@@ -129,9 +135,9 @@ public class MultiFileAudioPlayer implements AudioPlayer {
      *
      * @param volume the current volume (between 0 and 1)
      */
+    @Override
     public void setVolume(float volume) {
     }
-
 
     /**
      * Starts the output of a set of data. Audio data for a single
@@ -139,6 +145,7 @@ public class MultiFileAudioPlayer implements AudioPlayer {
      *
      * @param size the size of data between now and the end
      */
+    @Override
     public void begin(int size) {
         outputData = new byte[size];
         curIndex = 0;
@@ -169,6 +176,7 @@ public class MultiFileAudioPlayer implements AudioPlayer {
      * @return true if the audio played to completion, false if
      * the audio was stopped
      */
+    @Override
     public boolean drain() {
         return true;
     }
@@ -178,17 +186,17 @@ public class MultiFileAudioPlayer implements AudioPlayer {
      *
      * @return the amount of audio in milliseconds
      */
+    @Override
     public synchronized long getTime() {
         return -1L;
     }
 
-
     /**
      * Resets the audio clock
      */
+    @Override
     public synchronized void resetTime() {
     }
-
 
     /**
      * Writes the given bytes to the audio stream
@@ -197,6 +205,7 @@ public class MultiFileAudioPlayer implements AudioPlayer {
      * @return <code>true</code> of the write completed successfully,
      * <code> false </code>if the write was cancelled.
      */
+    @Override
     public boolean write(byte[] audioData) {
         return write(audioData, 0, audioData.length);
     }
@@ -210,6 +219,7 @@ public class MultiFileAudioPlayer implements AudioPlayer {
      * @return <code>true</code> of the write completed successfully,
      * <code> false </code>if the write was cancelled.
      */
+    @Override
     public boolean write(byte[] bytes, int offset, int size) {
         System.arraycopy(bytes, offset, outputData, curIndex, size);
         curIndex += size;
@@ -225,10 +235,10 @@ public class MultiFileAudioPlayer implements AudioPlayer {
         return "FileAudioPlayer";
     }
 
-
     /**
      * Shows metrics for this audio player
      */
+    @Override
     public void showMetrics() {
     }
 }

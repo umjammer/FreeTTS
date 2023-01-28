@@ -64,8 +64,7 @@ public class CMUDiphoneVoice extends CMUVoice implements ConcatenativeVoice {
     public CMUDiphoneVoice(String name, Gender gender,
                            Age age, String description, Locale locale, String domain,
                            String organization, CMULexicon lexicon, URL database) {
-        super(name, gender, age, description, locale,
-                domain, organization, lexicon);
+        super(name, gender, age, description, locale, domain, organization, lexicon);
         setRate(150f);
         setPitch(100F);
         setPitchRange(11F);
@@ -78,6 +77,7 @@ public class CMUDiphoneVoice extends CMUVoice implements ConcatenativeVoice {
      *
      * @return an url to the database
      */
+    @Override
     public URL getDatabase() {
         if (database == null) {
             /* This is merely for backwards compatibility with
@@ -95,6 +95,7 @@ public class CMUDiphoneVoice extends CMUVoice implements ConcatenativeVoice {
      *
      * @throws IOException if an I/O error occurs
      */
+    @Override
     protected void setupFeatureSet() throws IOException {
         super.setupFeatureSet();
     }
@@ -107,6 +108,7 @@ public class CMUDiphoneVoice extends CMUVoice implements ConcatenativeVoice {
      * @throws IOException if an IO error occurs while getting
      *                     processor
      */
+    @Override
     protected UtteranceProcessor getPostLexicalAnalyzer() throws IOException {
         return new CMUDiphoneVoicePostLexicalAnalyzer();
     }
@@ -121,6 +123,7 @@ public class CMUDiphoneVoice extends CMUVoice implements ConcatenativeVoice {
      * @throws IOException if an IO error occurs while getting
      *                     processor
      */
+    @Override
     public UtteranceProcessor getPitchmarkGenerator() throws IOException {
         return new DiphonePitchmarkGenerator();
     }
@@ -134,10 +137,10 @@ public class CMUDiphoneVoice extends CMUVoice implements ConcatenativeVoice {
      * @throws IOException if an IO error occurs while getting
      *                     processor
      */
+    @Override
     public UtteranceProcessor getUnitConcatenator() throws IOException {
         return new UnitConcatenator();
     }
-
 
     /**
      * Returns the unit selector to be used by this voice.
@@ -150,10 +153,10 @@ public class CMUDiphoneVoice extends CMUVoice implements ConcatenativeVoice {
      * @throws IOException if an IO error occurs while getting
      *                     processor
      */
+    @Override
     public UtteranceProcessor getUnitSelector() throws IOException {
         return new DiphoneUnitSelector(getDatabase());
     }
-
 
     /**
      * Converts this object to a string
@@ -172,8 +175,8 @@ public class CMUDiphoneVoice extends CMUVoice implements ConcatenativeVoice {
  * processing.
  */
 class CMUDiphoneVoicePostLexicalAnalyzer implements UtteranceProcessor {
-    UtteranceProcessor englishPostLex =
-            new com.sun.speech.freetts.en.PostLexicalAnalyzer();
+
+    UtteranceProcessor englishPostLex = new com.sun.speech.freetts.en.PostLexicalAnalyzer();
 
     /**
      * performs the processing
@@ -182,11 +185,11 @@ class CMUDiphoneVoicePostLexicalAnalyzer implements UtteranceProcessor {
      * @throws ProcessException if an IOException is thrown during the
      *                          processing of the utterance
      */
+    @Override
     public void processUtterance(Utterance utterance) throws ProcessException {
         fixPhoneme_AH(utterance);
         englishPostLex.processUtterance(utterance);
     }
-
 
     /**
      * Turns all AH phonemes into AA phonemes.
@@ -195,9 +198,7 @@ class CMUDiphoneVoicePostLexicalAnalyzer implements UtteranceProcessor {
      * @param utterance the utterance to fix
      */
     private void fixPhoneme_AH(Utterance utterance) {
-        for (Item item = utterance.getRelation(Relation.SEGMENT).getHead();
-             item != null;
-             item = item.getNext()) {
+        for (Item item = utterance.getRelation(Relation.SEGMENT).getHead(); item != null; item = item.getNext()) {
             if (item.getFeatures().getString("name").equals("ah")) {
                 item.getFeatures().setString("name", "aa");
             }

@@ -18,6 +18,7 @@ package com.sun.speech.freetts;
  * @see Voice
  */
 public class Gender implements Comparable<Gender> {
+
     private final String name;
 
     // Ordinal of next created
@@ -42,6 +43,7 @@ public class Gender implements Comparable<Gender> {
     /**
      * Compare two genders.  If either is DONT_CARE, then returns 0.
      */
+    @Override
     public int compareTo(Gender gender) {
         if ((gender == DONT_CARE) || (this == DONT_CARE)) {
             return 0;

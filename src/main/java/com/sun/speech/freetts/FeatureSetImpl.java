@@ -43,6 +43,7 @@ public class FeatureSetImpl implements FeatureSet {
      * @param name the name of the feature of interest
      * @return true if the named feature is present
      */
+    @Override
     public boolean isPresent(String name) {
         return featureMap.containsKey(name);
     }
@@ -53,6 +54,7 @@ public class FeatureSetImpl implements FeatureSet {
      *
      * @param name the name of the feature of interest
      */
+    @Override
     public void remove(String name) {
         featureMap.remove(name);
     }
@@ -66,6 +68,7 @@ public class FeatureSetImpl implements FeatureSet {
      * @throws ClassCastException if the associated value is not a
      *                            String
      */
+    @Override
     public String getString(String name) {
         return (String) getObject(name);
     }
@@ -78,6 +81,7 @@ public class FeatureSetImpl implements FeatureSet {
      * is not found
      * @throws ClassCastException if the associated value is not an int.
      */
+    @Override
     public int getInt(String name) {
         return (Integer) getObject(name);
     }
@@ -91,6 +95,7 @@ public class FeatureSetImpl implements FeatureSet {
      * @throws ClassCastException if the associated value is not a
      *                            float
      */
+    @Override
     public float getFloat(String name) {
         return (Float) getObject(name);
     }
@@ -102,6 +107,7 @@ public class FeatureSetImpl implements FeatureSet {
      * @return the value associated with the name or null if the value
      * is not found
      */
+    @Override
     public Object getObject(String name) {
         return featureMap.get(name);
     }
@@ -112,6 +118,7 @@ public class FeatureSetImpl implements FeatureSet {
      * @param name  the name of the feature
      * @param value the value of the feature
      */
+    @Override
     public void setInt(String name, int value) {
         setObject(name, value);
     }
@@ -122,6 +129,7 @@ public class FeatureSetImpl implements FeatureSet {
      * @param name  the name of the feature
      * @param value the value of the feature
      */
+    @Override
     public void setFloat(String name, float value) {
         setObject(name, value);
     }
@@ -132,6 +140,7 @@ public class FeatureSetImpl implements FeatureSet {
      * @param name  the name of the feature
      * @param value the value of the feature
      */
+    @Override
     public void setString(String name, String value) {
         setObject(name, value);
     }
@@ -142,6 +151,7 @@ public class FeatureSetImpl implements FeatureSet {
      * @param name  the name of the feature
      * @param value the value of the feature
      */
+    @Override
     public void setObject(String name, Object value) {
         featureMap.put(name, value);
     }
@@ -154,6 +164,7 @@ public class FeatureSetImpl implements FeatureSet {
      * @param pad    the padding
      * @param title  the title
      */
+    @Override
     public void dump(PrintWriter output, int pad, String title) {
         dump(output, pad, title, false);
     }
@@ -166,8 +177,7 @@ public class FeatureSetImpl implements FeatureSet {
      * @param title    the title
      * @param showName if <code>true</code>, include the feature name
      */
-    public void dump(PrintWriter output, int pad, String title,
-                     boolean showName) {
+    public void dump(PrintWriter output, int pad, String title, boolean showName) {
         List<String> keys = new ArrayList<>(featureMap.keySet());
 
         if (formatter == null) {
@@ -190,8 +200,7 @@ public class FeatureSetImpl implements FeatureSet {
             } else {
                 if (value instanceof Float) {
                     Float fval = (Float) value;
-                    Utilities.dump(output, pad + 4, key + "=" +
-                            formatter.format(fval.floatValue()));
+                    Utilities.dump(output, pad + 4, key + "=" + formatter.format(fval.floatValue()));
                 } else {
                     Utilities.dump(output, pad + 4, key + "=" + value);
                 }

@@ -30,8 +30,10 @@ import java.util.regex.Pattern;
  */
 public class FreeTTSTime extends FreeTTS {
 
-    private final static String VERSION =
-            "FreeTTSTime Version 1.1, August  1, 2003";
+    /** Logger instance. */
+    private static final Logger logger = Logger.getLogger(FreeTTSTime.class.getName());
+
+    private final static String VERSION = "FreeTTSTime Version 1.1, August  1, 2003";
 
     /**
      * Class constructor.
@@ -48,7 +50,6 @@ public class FreeTTSTime extends FreeTTS {
     public FreeTTSTime(Voice voice) {
         super(voice);
     }
-
 
     /**
      * Prints the usage message for FreeTTSTime.
@@ -90,13 +91,11 @@ public class FreeTTSTime extends FreeTTS {
             while (true) {
                 String time;
                 BufferedReader reader;
-                reader = new BufferedReader(
-                        new InputStreamReader(System.in));
+                reader = new BufferedReader(new InputStreamReader(System.in));
                 System.out.print("Enter time: ");
                 System.out.flush();
                 time = reader.readLine();
-                if ((time == null) || (time.length() == 0)
-                        || time.equals("quit")) {
+                if ((time == null) || (time.length() == 0) || time.equals("quit")) {
                     freetts.shutdown();
                     System.exit(0);
                 } else {
@@ -118,9 +117,7 @@ public class FreeTTSTime extends FreeTTS {
      * @return a string phrase
      */
     private static String timeApprox(int hour, int min) {
-        int mm;
-
-        mm = min % 5;
+        int mm = min % 5;
 
         if ((mm == 0) || (mm == 4)) {
             return "exactly";
@@ -142,9 +139,7 @@ public class FreeTTSTime extends FreeTTS {
      * @return a string phrase.
      */
     private static String timeMin(int hour, int min) {
-        int mm;
-
-        mm = min / 5;
+        int mm = min / 5;
         if ((min % 5) > 2) {
             mm += 1;
         }
@@ -191,9 +186,7 @@ public class FreeTTSTime extends FreeTTS {
      * @return a string phrase.
      */
     private static String timeHour(int hour, int min) {
-        int hh;
-
-        hh = hour;
+        int hh = hour;
         if (min > 32) { // PBL: fixed from flite_time
             hh += 1;
         }
@@ -293,7 +286,6 @@ public class FreeTTSTime extends FreeTTS {
         return theTime;
     }
 
-
     /**
      * Speaks the given time. Time should be in the exact form
      * HH:MM where HH is the hour 00 to 23, and MM is the minute 00 to
@@ -330,7 +322,6 @@ public class FreeTTSTime extends FreeTTS {
         textToSpeech(theTime);
     }
 
-
     /**
      * Speaks the given time.  Prints an error message if the time
      * is ill-formed.
@@ -345,7 +336,7 @@ public class FreeTTSTime extends FreeTTS {
                 timeToSpeech(time);
             }
         } catch (IllegalArgumentException iae) {
-            System.err.println("Bad time format");
+            logger.info("Bad time format");
         }
     }
 
@@ -483,8 +474,7 @@ public class FreeTTSTime extends FreeTTS {
             voiceName = "alan";
         }
 
-        FreeTTSTime freetts = new
-                FreeTTSTime(VoiceManager.getInstance().getVoice(voiceName));
+        FreeTTSTime freetts = new FreeTTSTime(VoiceManager.getInstance().getVoice(voiceName));
         Voice voice = freetts.getVoice();
 
         if (setMetrics) {
@@ -551,5 +541,3 @@ public class FreeTTSTime extends FreeTTS {
         System.exit(0);
     }
 }
-
-  

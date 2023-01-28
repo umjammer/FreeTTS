@@ -28,8 +28,7 @@ import com.sun.speech.engine.BaseEngineProperties;
  * <LI>Volume.
  * </UL>
  */
-public class BaseSynthesizerProperties extends BaseEngineProperties
-        implements SynthesizerProperties {
+public class BaseSynthesizerProperties extends BaseEngineProperties implements SynthesizerProperties {
 
     /**
      * The default voice.
@@ -133,6 +132,7 @@ public class BaseSynthesizerProperties extends BaseEngineProperties
     /**
      * Resets all properties to their default values.
      */
+    @Override
     public void reset() {
         try {
             setVoice(defaultVoice);
@@ -151,6 +151,7 @@ public class BaseSynthesizerProperties extends BaseEngineProperties
      * @return the current synthesizer voice.
      * @see #setVoice
      */
+    @Override
     public Voice getVoice() {
         return (Voice) (currentVoice.clone());
     }
@@ -163,6 +164,7 @@ public class BaseSynthesizerProperties extends BaseEngineProperties
      *                               the given value
      * @see #getVoice
      */
+    @Override
     public void setVoice(Voice voice)
             throws PropertyVetoException {
         // [[[TODO: Need to check that the voice is legal.]]]
@@ -177,6 +179,7 @@ public class BaseSynthesizerProperties extends BaseEngineProperties
      * @return the baseline pitch in Hertz
      * @see #setPitch
      */
+    @Override
     public float getPitch() {
         return currentPitch;
     }
@@ -189,6 +192,7 @@ public class BaseSynthesizerProperties extends BaseEngineProperties
      *                               set to the given value
      * @see #getPitch
      */
+    @Override
     public void setPitch(float hertz)
             throws PropertyVetoException {
         float oldPitch = currentPitch;
@@ -202,6 +206,7 @@ public class BaseSynthesizerProperties extends BaseEngineProperties
      * @return the current pitch range in Hertz
      * @see #setPitchRange
      */
+    @Override
     public float getPitchRange() {
         return currentPitchRange;
     }
@@ -214,6 +219,7 @@ public class BaseSynthesizerProperties extends BaseEngineProperties
      *                               to the given value
      * @see #getPitchRange
      */
+    @Override
     public void setPitchRange(float hertz)
             throws PropertyVetoException {
         float oldRange = currentPitchRange;
@@ -227,6 +233,7 @@ public class BaseSynthesizerProperties extends BaseEngineProperties
      * @return the current target speaking rate in words per minute.
      * @see #getSpeakingRate
      */
+    @Override
     public float getSpeakingRate() {
         return currentSpeakingRate;
     }
@@ -239,6 +246,7 @@ public class BaseSynthesizerProperties extends BaseEngineProperties
      *                               set to the given value
      * @see #getSpeakingRate
      */
+    @Override
     public void setSpeakingRate(float wpm)
             throws PropertyVetoException {
         float oldRate = currentSpeakingRate;
@@ -254,6 +262,7 @@ public class BaseSynthesizerProperties extends BaseEngineProperties
      * 0.0 and 1.0, inclusive
      * @see #setVolume
      */
+    @Override
     public float getVolume() {
         return currentVolume;
     }
@@ -267,6 +276,7 @@ public class BaseSynthesizerProperties extends BaseEngineProperties
      *                               set to the given value
      * @see #getVolume
      */
+    @Override
     public void setVolume(float volume)
             throws PropertyVetoException {
         if (volume > 1.0f)

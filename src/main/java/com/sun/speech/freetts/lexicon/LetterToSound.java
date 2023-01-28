@@ -16,6 +16,7 @@ package com.sun.speech.freetts.lexicon;
  * phone list is implementation dependent.
  */
 public interface LetterToSound {
+
     /**
      * Calculate the phone list for a given word.  If a phone list
      * cannot be determined, <code>null</code> is returned.  The phone

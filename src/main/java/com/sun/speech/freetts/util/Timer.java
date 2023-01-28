@@ -15,10 +15,9 @@ import java.text.DecimalFormat;
  * Keeps track of execution times.
  */
 public class Timer {
-    private final static DecimalFormat timeFormatter
-            = new DecimalFormat("###0.0000");
-    private final static DecimalFormat percentFormatter
-            = new DecimalFormat("###0.00%");
+
+    private final static DecimalFormat timeFormatter = new DecimalFormat("###0.0000");
+    private final static DecimalFormat percentFormatter = new DecimalFormat("###0.00%");
     private String name;
     private long startTime;
     private long curTime;
@@ -142,12 +141,10 @@ public class Timer {
             } else if (count > 1) {
                 System.out.println(" Min Time: " + fmtTime(minTime));
                 System.out.println(" Max Time: " + fmtTime(maxTime));
-                System.out.println(" Avg Time: "
-                        + fmtTime(sum / count / 1000.0));
+                System.out.println(" Avg Time: " + fmtTime(sum / count / 1000.0));
                 System.out.println(" Tot Time: " + fmtTime(sum / 1000.0));
                 if (overall != 0) {
-                    System.out.println(" Percent:  "
-                            + percentFormatter.format(sum / overall));
+                    System.out.println(" Percent:  " + percentFormatter.format(sum / overall));
                 }
             }
         }
@@ -161,8 +158,7 @@ public class Timer {
      *              display
      */
     public static void showTimesShortTitle(String title) {
-        String titleBar =
-                "# ----------------------------- " + title +
+        String titleBar = "# ----------------------------- " + title +
                         "----------------------------------------------------------- ";
         System.out.println(Utilities.pad(titleBar, 78));
         System.out.print(Utilities.pad("# Name", 15) + " ");

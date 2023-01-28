@@ -24,8 +24,7 @@ import com.sun.speech.freetts.ValidationException;
  * FreeTTSSynthesizer. A FreeTTSSynthesizerModeDesc adds
  * an audio player to the standard mode items.
  */
-public class FreeTTSSynthesizerModeDesc extends SynthesizerModeDesc
-        implements EngineCreate {
+public class FreeTTSSynthesizerModeDesc extends SynthesizerModeDesc implements EngineCreate {
 
     /**
      * Creates a fully-specified descriptor.
@@ -35,8 +34,7 @@ public class FreeTTSSynthesizerModeDesc extends SynthesizerModeDesc
      * @param modeName   the name of the mode
      * @param locale     the locale associated with this mode
      */
-    public FreeTTSSynthesizerModeDesc(String engineName, String modeName,
-                                      Locale locale) {
+    public FreeTTSSynthesizerModeDesc(String engineName, String modeName, Locale locale) {
         super(engineName, modeName, locale, Boolean.FALSE, null);
     }
 
@@ -46,6 +44,7 @@ public class FreeTTSSynthesizerModeDesc extends SynthesizerModeDesc
      * @return an array of valid voices, if no valid voices, it will
      * return an array of size 0
      */
+    @Override
     public javax.speech.synthesis.Voice[] getVoices() {
         List<javax.speech.synthesis.Voice> voiceList = new LinkedList<>();
         javax.speech.synthesis.Voice[] voices = super.getVoices();
@@ -90,8 +89,7 @@ public class FreeTTSSynthesizerModeDesc extends SynthesizerModeDesc
             }
         }
         if (invalidCount == voices.length) {
-            throw new ValidationException
-                    (validationMessage + getModeName() + " has no valid voices.");
+            throw new ValidationException(validationMessage + getModeName() + " has no valid voices.");
         }
     }
 
@@ -106,10 +104,9 @@ public class FreeTTSSynthesizerModeDesc extends SynthesizerModeDesc
      * @throws SecurityException        if the caller does not have
      *                                  permission to use the speech engine
      */
-    public Engine createEngine()
-            throws IllegalArgumentException, EngineException, SecurityException {
+    @Override
+    public Engine createEngine() throws IllegalArgumentException, EngineException, SecurityException {
         FreeTTSSynthesizer s = new FreeTTSSynthesizer(this);
         return s;
     }
-
 }

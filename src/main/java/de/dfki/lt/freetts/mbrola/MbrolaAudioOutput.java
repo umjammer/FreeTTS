@@ -56,6 +56,7 @@ public class MbrolaAudioOutput implements UtteranceProcessor {
      * @throws ProcessException if an IOException is thrown during the
      *                          processing of the utterance
      */
+    @Override
     public void processUtterance(Utterance utterance) throws ProcessException {
         if (LOGGER.isLoggable(Level.FINE)) {
             LOGGER.fine("=== " + utterance.getString("input_text"));

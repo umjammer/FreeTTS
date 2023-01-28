@@ -12,12 +12,17 @@
 package com.sun.speech.freetts;
 
 import java.io.PrintWriter;
+import java.util.logging.Logger;
 
 
 /**
  * Contains the information that is shared between multiple items.
  */
 public class ItemContents {
+
+    /** Logger instance. */
+    private static final Logger logger = Logger.getLogger(ItemContents.class.getName());
+
     private FeatureSetImpl features;
     private FeatureSetImpl relations;
 
@@ -39,8 +44,7 @@ public class ItemContents {
      * @param item         the item reference in the relation
      */
     public void addItemRelation(String relationName, Item item) {
-//        System.out.println("AddItemRelation: " + relationName
-//                + " item: " + item);
+logger.finer("AddItemRelation: " + relationName + " item: " + item);
         relations.setObject(relationName, item);
     }
 

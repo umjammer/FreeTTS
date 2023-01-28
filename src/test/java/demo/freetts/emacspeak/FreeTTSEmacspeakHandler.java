@@ -43,6 +43,7 @@ public class FreeTTSEmacspeakHandler extends EmacspeakProtocolHandler {
      *
      * @param input the input text to speak.
      */
+    @Override
     public void speak(String input) {
         // split around "[*]"
         String[] parts = input.split(PARENS_STAR_REGEX);
@@ -55,6 +56,7 @@ public class FreeTTSEmacspeakHandler extends EmacspeakProtocolHandler {
     /**
      * Removes all the queued text.
      */
+    @Override
     public void cancelAll() {
         speakCommandHandler.removeAll();
     }
@@ -65,6 +67,7 @@ public class FreeTTSEmacspeakHandler extends EmacspeakProtocolHandler {
      *
      * @param wpm the new speaking rate (words per minute)
      */
+    @Override
     public void setRate(float wpm) {
         speakCommandHandler.setRate(wpm);
     }
@@ -95,6 +98,7 @@ public class FreeTTSEmacspeakHandler extends EmacspeakProtocolHandler {
         /**
          * Implements the run() method of the Thread class.
          */
+        @Override
         public void run() {
             while (!getSocket().isClosed() || commandList.size() > 0) {
                 String firstCommand = null;

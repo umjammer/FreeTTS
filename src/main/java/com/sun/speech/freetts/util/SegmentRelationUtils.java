@@ -38,8 +38,7 @@ public class SegmentRelationUtils {
         // the front; otherwise, start search from end
         // this might not be the best strategy though
 
-        float lastSegmentEndTime = SegmentRelationUtils.getSegmentEnd
-                (lastSegment);
+        float lastSegmentEndTime = SegmentRelationUtils.getSegmentEnd(lastSegment);
 
         if (time < 0 || lastSegmentEndTime < time) {
             return null;
@@ -73,8 +72,7 @@ public class SegmentRelationUtils {
     public static Item findFromFront(Relation segmentRelation, float time) {
         Item item = segmentRelation.getHead();
 
-        while (item != null &&
-                time > SegmentRelationUtils.getSegmentEnd(item)) {
+        while (item != null && time > SegmentRelationUtils.getSegmentEnd(item)) {
             item = item.getNext();
         }
 

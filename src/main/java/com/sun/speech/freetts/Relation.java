@@ -22,6 +22,7 @@ import com.sun.speech.freetts.util.Utilities;
  * added to an {@link Utterance} via an {@link UtteranceProcessor}.
  */
 public class Relation implements Dumpable {
+
     private String name;
     private Utterance owner;
     private Item head;
@@ -193,7 +194,6 @@ public class Relation implements Dumpable {
         return newItem;
     }
 
-
     /**
      * Returns the utterance that contains this relation.
      *
@@ -203,7 +203,6 @@ public class Relation implements Dumpable {
         return owner;
     }
 
-
     /**
      * Dumps this relation to the print writer.
      *
@@ -211,6 +210,7 @@ public class Relation implements Dumpable {
      * @param pad   the padding
      * @param title the title for the dump
      */
+    @Override
     public void dump(PrintWriter pw, int pad, String title) {
         Utilities.dump(pw, pad, "========= Relation: " + title + " =========");
         Item item = head;

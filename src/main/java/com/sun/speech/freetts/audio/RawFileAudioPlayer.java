@@ -36,8 +36,7 @@ public class RawFileAudioPlayer implements AudioPlayer {
      * base name is "freetts".
      */
     public RawFileAudioPlayer() throws IOException {
-        this(Utilities.getProperty(
-                "com.sun.speech.freetts.AudioPlayer.baseName", "freetts")
+        this(Utilities.getProperty("com.sun.speech.freetts.AudioPlayer.baseName", "freetts")
                 + ".raw");
     }
 
@@ -55,6 +54,7 @@ public class RawFileAudioPlayer implements AudioPlayer {
      *
      * @param format the audio format
      */
+    @Override
     public void setAudioFormat(AudioFormat format) {
         this.audioFormat = format;
     }
@@ -64,6 +64,7 @@ public class RawFileAudioPlayer implements AudioPlayer {
      *
      * @return the current audio format.
      */
+    @Override
     public AudioFormat getAudioFormat() {
         return audioFormat;
     }
@@ -72,48 +73,49 @@ public class RawFileAudioPlayer implements AudioPlayer {
      * Cancels all queued output. Current 'write' call will return
      * false
      */
+    @Override
     public void cancel() {
     }
-
 
     /**
      * Pauses the audio output
      */
+    @Override
     public void pause() {
     }
-
 
     /**
      * Prepares for another batch of output. Larger groups of output
      * (such as all output associated with a single FreeTTSSpeakable)
      * should be grouped between a reset/drain pair.
      */
+    @Override
     public void reset() {
     }
-
 
     /**
      * Resumes audio output
      */
+    @Override
     public void resume() {
     }
-
 
     /**
      * Waits for all audio playback to stop, and closes this AudioPlayer.
      */
+    @Override
     public void close() throws IOException {
         os.flush();
         os.close();
         System.out.println("Wrote synthesized speech to " + path);
     }
 
-
     /**
      * Returns the current volume.
      *
      * @return the current volume (between 0 and 1)
      */
+    @Override
     public float getVolume() {
         return volume;
     }
@@ -123,35 +125,35 @@ public class RawFileAudioPlayer implements AudioPlayer {
      *
      * @param volume the current volume (between 0 and 1)
      */
+    @Override
     public void setVolume(float volume) {
         this.volume = volume;
     }
-
 
     @Override
     public boolean write(byte[] audioData) throws IOException {
         return write(audioData, 0, audioData.length);
     }
 
-
     /**
      * Starts the output of a set of data
      *
      * @param size the size of data between now and the end
      */
+    @Override
     public void begin(int size) {
     }
 
     /**
      * Marks the end of a set of data
      */
+    @Override
     public boolean end() {
         return true;
     }
 
     @Override
-    public boolean write(byte[] bytes, int offset, int size)
-            throws IOException {
+    public boolean write(byte[] bytes, int offset, int size) throws IOException {
         os.write(bytes, offset, size);
         return true;
     }
@@ -159,6 +161,7 @@ public class RawFileAudioPlayer implements AudioPlayer {
     /**
      * Starts the first sample timer
      */
+    @Override
     public void startFirstSampleTimer() {
     }
 
@@ -168,6 +171,7 @@ public class RawFileAudioPlayer implements AudioPlayer {
      * @return <code>true</code> if the audio played to completion,
      * <code> false </code>if the audio was stopped
      */
+    @Override
     public boolean drain() {
         return true;
     }
@@ -178,20 +182,22 @@ public class RawFileAudioPlayer implements AudioPlayer {
      *
      * @return the amount of audio in milliseconds
      */
+    @Override
     public long getTime() {
         return -1L;
     }
 
-
     /**
      * Resets the audio clock
      */
+    @Override
     public void resetTime() {
     }
 
     /**
      * Shows metrics for this audio player
      */
+    @Override
     public void showMetrics() {
     }
 }

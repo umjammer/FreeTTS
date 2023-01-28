@@ -39,9 +39,9 @@ import de.dfki.lt.freetts.ClusterUnitNamer;
  * Segment Relation.
  */
 public class ClusterUnitSelector implements UtteranceProcessor {
+
     /** Logger instance. */
-    private static final Logger LOGGER =
-            Logger.getLogger(ClusterUnitSelector.class.getName());
+    private static final Logger logger = Logger.getLogger(ClusterUnitSelector.class.getName());
 
     private final static PathExtractor DNAME = new PathExtractorImpl(
             "R:SylStructure.parent.parent.name", true);
@@ -84,7 +84,6 @@ public class ClusterUnitSelector implements UtteranceProcessor {
 
     }
 
-
     /**
      * Get the sample info for the underlying database.
      *
@@ -120,12 +119,12 @@ public class ClusterUnitSelector implements UtteranceProcessor {
      * @throws ProcessException if an IOException is thrown during the
      *                          processing of the utterance
      */
+    @Override
     public void processUtterance(Utterance utterance) throws ProcessException {
         Viterbi vd;
         Relation segs = utterance.getRelation(Relation.SEGMENT);
 
-        utterance.setObject(SampleInfo.UTT_NAME,
-                clunitDB.getSampleInfo());
+        utterance.setObject(SampleInfo.UTT_NAME, clunitDB.getSampleInfo());
         utterance.setObject("sts_list", clunitDB.getSts());
 
         vd = new Viterbi(segs, clunitDB);
@@ -141,7 +140,7 @@ public class ClusterUnitSelector implements UtteranceProcessor {
         // Now associate the candidate units in the best path
         // with the items in the segment relation.
         if (!vd.result("selected_unit")) {
-            LOGGER.severe("clunits: can't find path");
+            logger.severe("clunits: can't find path");
             throw new Error();
         }
 
@@ -172,16 +171,14 @@ public class ClusterUnitSelector implements UtteranceProcessor {
                 unitStart = clunitDB.getStart(unitEntry);
             }
 
-            if (s.getNext() != null &&
-                    s.getNext().getFeatures().isPresent("unit_prev_move")) {
+            if (s.getNext() != null && s.getNext().getFeatures().isPresent("unit_prev_move")) {
                 unitEnd = s.getNext().getFeatures().getInt("unit_prev_move");
             } else {
                 unitEnd = clunitDB.getEnd(unitEntry);
             }
 
             unitFeatureSet.setInt("unit_entry", unitEntry);
-            ClusterUnit clunit = new ClusterUnit(clunitDB,
-                    clunitName, unitStart, unitEnd);
+            ClusterUnit clunit = new ClusterUnit(clunitDB, clunitName, unitStart, unitEnd);
             unitFeatureSet.setObject("unit", clunit);
             if (true) {
                 unitFeatureSet.setInt("unit_start", clunit.getStart());
@@ -189,15 +186,13 @@ public class ClusterUnitSelector implements UtteranceProcessor {
                 unitFeatureSet.setInt("instance", unitEntry - clunitDB.getUnitIndex(clunitName, 0));
             } // add the rest of these things for debugging.
 
-            if (LOGGER.isLoggable(Level.FINE)) {
-                LOGGER.fine(" sr " + clunitDB.getSampleInfo().getSampleRate() + " " +
+            if (logger.isLoggable(Level.FINE)) {
+                logger.fine(" sr " + clunitDB.getSampleInfo().getSampleRate() + " " +
                         s.getFeatures().getFloat("end") + " " +
-                        (int) (s.getFeatures().getFloat("end") *
-                                clunitDB.getSampleInfo().getSampleRate()));
+                        (int) (s.getFeatures().getFloat("end") * clunitDB.getSampleInfo().getSampleRate()));
             }
             unitFeatureSet.setInt("target_end",
-                    (int) (s.getFeatures().getFloat("end")
-                            * clunitDB.getSampleInfo().getSampleRate()));
+                    (int) (s.getFeatures().getFloat("end") * clunitDB.getSampleInfo().getSampleRate()));
 
             // Associate debug info about unit origin if available:
             UnitOriginInfo unitOrigin = clunitDB.getUnitOriginInfo(unitEntry);
@@ -206,10 +201,8 @@ public class ClusterUnitSelector implements UtteranceProcessor {
                 unitFeatureSet.setFloat("origin_start", unitOrigin.originStart);
                 unitFeatureSet.setFloat("origin_end", unitOrigin.originEnd);
             }
-
         }
     }
-
 
     /**
      * Sets the cluster unit name given the segment.
@@ -240,7 +233,6 @@ public class ClusterUnitSelector implements UtteranceProcessor {
         seg.getFeatures().setString("clunit_name", cname);
     }
 
-
     /**
      * Strips quotes from the given string.
      *
@@ -257,7 +249,6 @@ public class ClusterUnitSelector implements UtteranceProcessor {
         }
         return sb.toString();
     }
-
 
     /**
      * Retrieves the string representation of this object.
@@ -331,15 +322,15 @@ public class ClusterUnitSelector implements UtteranceProcessor {
                 }
             }
 
-            if (LOGGER.isLoggable(Level.FINE)) {
-                LOGGER.fine("num states " + numStates);
+            if (logger.isLoggable(Level.FINE)) {
+                logger.fine("num states " + numStates);
             }
 
-            if (numStates == 0) {        // its a  general beam search
+            if (numStates == 0) { // its a  general beam search
                 timeline.paths = new ViterbiPath();
             }
 
-            if (numStates == -1) {    // dynamic number of states (# cands)
+            if (numStates == -1) { // dynamic number of states (# cands)
                 timeline.initPathArray(1);
             }
         }
@@ -382,8 +373,8 @@ public class ClusterUnitSelector implements UtteranceProcessor {
             for (ViterbiPoint p = timeline; p.next != null; p = p.next) {
                 // The candidates for the current item:
                 p.cands = getCandidate(p.item);
-                if (LOGGER.isLoggable(Level.FINE)) {
-                    LOGGER.fine("decode " + p.cands);
+                if (logger.isLoggable(Level.FINE)) {
+                    logger.fine("decode " + p.cands);
                 }
                 if (numStates != 0) {
                     if (numStates == -1) {
@@ -417,12 +408,10 @@ public class ClusterUnitSelector implements UtteranceProcessor {
                         }
                     }
                 } else {
-                    System.err.println(
-                            "Viterbi.decode: general beam search not implemented");
+                    System.err.println("Viterbi.decode: general beam search not implemented");
                 }
             }
         }
-
 
         /**
          * Try to add paths to the given point.
@@ -455,8 +444,7 @@ public class ClusterUnitSelector implements UtteranceProcessor {
             if (point.statePaths[newPath.state] == null) {
                 // we don't have one yet, so this is best
                 point.statePaths[newPath.state] = newPath;
-            } else if (isBetterThan(newPath.score,
-                    point.statePaths[newPath.state].score)) {
+            } else if (isBetterThan(newPath.score, point.statePaths[newPath.state].score)) {
                 // its better than what we already have
                 point.statePaths[newPath.state] = newPath;
             } else {
@@ -503,8 +491,7 @@ public class ClusterUnitSelector implements UtteranceProcessor {
 
             for (; path != null; path = path.from) {
                 if (path.candidate != null) {
-                    path.candidate.item.getFeatures().setObject(feature,
-                            path.candidate.value);
+                    path.candidate.item.getFeatures().setObject(feature, path.candidate.value);
                 }
             }
             return true;
@@ -524,8 +511,7 @@ public class ClusterUnitSelector implements UtteranceProcessor {
 
             for (; path != null; path = path.from) {
                 if (path.candidate != null && path.isPresent(feature)) {
-                    path.candidate.item.getFeatures().setObject(feature,
-                            path.getFeature(feature));
+                    path.candidate.item.getFeatures().setObject(feature, path.getFeature(feature));
                 }
             }
         }
@@ -563,8 +549,8 @@ public class ClusterUnitSelector implements UtteranceProcessor {
                 p.setInt(clunitDB.getUnitIndex(unitType, j));
                 all = p;
                 // this is OK
-                if (LOGGER.isLoggable(Level.FINE)) {
-                    LOGGER.fine("    gc adding " + j);
+                if (logger.isLoggable(Level.FINE)) {
+                    logger.fine("    gc adding " + j);
                 }
             }
 
@@ -576,20 +562,16 @@ public class ClusterUnitSelector implements UtteranceProcessor {
             // are added. A high setting will add candidates which don't fit the
             // target well, but which can be smoothly concatenated with the context.
             // In a sense, this means trading target costs against join costs.
-            if (clunitDB.getExtendSelections() > 0 &&
-                    item.getPrevious() != null) {
+            if (clunitDB.getExtendSelections() > 0 && item.getPrevious() != null) {
                 // Get the candidates for the preceding (segment) item
-                ViterbiCandidate lc = (ViterbiCandidate) (item.
-                        getPrevious().getFeatures().getObject("clunit_cands"));
-                if (LOGGER.isLoggable(Level.FINE)) {
-                    LOGGER.fine("      lc " + lc);
+                ViterbiCandidate lc = (ViterbiCandidate) (item.getPrevious().getFeatures().getObject("clunit_cands"));
+                if (logger.isLoggable(Level.FINE)) {
+                    logger.fine("      lc " + lc);
                 }
-                for (int e = 0; lc != null &&
-                        (e < clunitDB.getExtendSelections());
-                     lc = lc.next) {
+                for (int e = 0; lc != null && (e < clunitDB.getExtendSelections()); lc = lc.next) {
                     int nu = clunitDB.getNextUnit(lc.ival);
-                    if (LOGGER.isLoggable(Level.FINE)) {
-                        LOGGER.fine("      e: " + e + " nu: " + nu);
+                    if (logger.isLoggable(Level.FINE)) {
+                        logger.fine("      e: " + e + " nu: " + nu);
                     }
                     if (nu == ClusterUnitDatabase.CLUNIT_NONE) {
                         continue;
@@ -597,8 +579,8 @@ public class ClusterUnitSelector implements UtteranceProcessor {
 
                     // Look through the list of candidates for the current item:
                     for (gt = all; gt != null; gt = gt.next) {
-                        if (LOGGER.isLoggable(Level.FINE)) {
-                            LOGGER.fine("       gt " + gt.ival + " nu " + nu);
+                        if (logger.isLoggable(Level.FINE)) {
+                            logger.fine("       gt " + gt.ival + " nu " + nu);
                         }
                         if (nu == gt.ival) {
                             // The unit following one of the candidates for the preceding
@@ -607,10 +589,9 @@ public class ClusterUnitSelector implements UtteranceProcessor {
                         }
                     }
 
-                    if (LOGGER.isLoggable(Level.FINE)) {
-                        LOGGER.fine("nu " + clunitDB.getUnit(nu).getName() + " all " +
-                                clunitDB.getUnit(all.ival).getName() +
-                                " " + all.ival);
+                    if (logger.isLoggable(Level.FINE)) {
+                        logger.fine("nu " + clunitDB.getUnit(nu).getName() + " all " +
+                                clunitDB.getUnit(all.ival).getName() + " " + all.ival);
                     }
                     if ((gt == null) && clunitDB.isUnitTypeEqual(nu, all.ival)) {
                         // nu is of the right unit type and is not yet one of the candidates.
@@ -643,8 +624,7 @@ public class ClusterUnitSelector implements UtteranceProcessor {
          * @return a new path, consisting of this candidate appended to the previous path, and
          * with the cumulative (penalty) score calculated.
          */
-        private ViterbiPath getPath(ViterbiPath path,
-                                    ViterbiCandidate candidate) {
+        private ViterbiPath getPath(ViterbiPath path, ViterbiCandidate candidate) {
             int cost;
             ViterbiPath newPath = new ViterbiPath();
 
@@ -679,8 +659,8 @@ public class ClusterUnitSelector implements UtteranceProcessor {
                 }
             }
 
-            // cost *= clunitDB.getContinuityWeight();
-            cost *= 5;    // magic number ("continuity weight") from flite
+//            cost *= clunitDB.getContinuityWeight();
+            cost *= 5; // magic number ("continuity weight") from flite
             // TODO: remove the state attribute from ViterbiPath, as it is simply path.candidate.pos!
             newPath.state = candidate.pos;
             if (path == null) {
@@ -715,17 +695,15 @@ public class ClusterUnitSelector implements UtteranceProcessor {
             t = lastPoint;
 
             if (numStates != 0) {
-                if (LOGGER.isLoggable(Level.FINE)) {
-                    LOGGER.fine("fbp ns " + numStates + " t "
-                            + t.numStates + " best " + best);
+                if (logger.isLoggable(Level.FINE)) {
+                    logger.fine("fbp ns " + numStates + " t " + t.numStates + " best " + best);
                 }
                 // All paths end in lastPoint, and take into account
                 // previous path segment's scores. Therefore, it is
                 // sufficient to find the best path from among the
                 // paths for lastPoint.
                 for (int i = 0; i < t.numStates; i++) {
-                    if (t.statePaths[i] != null &&
-                            (isBetterThan(t.statePaths[i].score, best))) {
+                    if (t.statePaths[i] != null && (isBetterThan(t.statePaths[i].score, best))) {
                         best = t.statePaths[i].score;
                         bestPath = t.statePaths[i];
                     }
@@ -757,13 +735,10 @@ public class ClusterUnitSelector implements UtteranceProcessor {
                 return cost;
             }
 
-
             // If u1 does not have a previous unit, or that previous
             // unit does not belong to the same phone, the optimal
             // couple frame must be found between u0 and u1.
-            if (u1_p == ClusterUnitDatabase.CLUNIT_NONE ||
-                    clunitDB.getPhone(u0) !=
-                            clunitDB.getPhone(u1_p)) {
+            if (u1_p == ClusterUnitDatabase.CLUNIT_NONE || clunitDB.getPhone(u0) != clunitDB.getPhone(u1_p)) {
                 cost.cost = 10 * getOptimalCoupleFrame(u0, u1);
                 return cost;
             }
@@ -797,12 +772,10 @@ public class ClusterUnitSelector implements UtteranceProcessor {
             for (i = 0; i < fcount; ++i) {
                 a = clunitDB.getStart(u0) + u0_st + i;
                 b = clunitDB.getStart(u1_p) + u1_p_st + i;
-                dist = getFrameDistance(a, b,
-                        clunitDB.getJoinWeights(),
+                dist = getFrameDistance(a, b, clunitDB.getJoinWeights(),
                         clunitDB.getMcep().getSampleInfo().getNumberOfChannels())
                         + Math.abs(clunitDB.getSts().getFrameSize(a) -
-                        clunitDB.getSts().getFrameSize(b)) *
-                        clunitDB.getContinuityWeight();
+                        clunitDB.getSts().getFrameSize(b)) * clunitDB.getContinuityWeight();
 
                 if (dist < best_val) {
                     best_val = dist;
@@ -860,8 +833,8 @@ public class ClusterUnitSelector implements UtteranceProcessor {
          */
         public int getFrameDistance(int a, int b, int[] joinWeights, int order) {
 
-            if (LOGGER.isLoggable(Level.FINE)) {
-                LOGGER.fine(" gfd  a " + a + " b " + b + " or " + order);
+            if (logger.isLoggable(Level.FINE)) {
+                logger.fine(" gfd  a " + a + " b " + b + " or " + order);
             }
             int r, i;
             short[] bv = clunitDB.getMcep().getSample(b).getFrameData();
@@ -873,9 +846,7 @@ public class ClusterUnitSelector implements UtteranceProcessor {
             }
             return r;
         }
-
     }
-
 
     /**
      * Represents a point in the Viterbi path. A point corresponds to an item,
@@ -908,8 +879,8 @@ public class ClusterUnitSelector implements UtteranceProcessor {
          * @param size the size of the path array
          */
         public void initPathArray(int size) {
-            if (LOGGER.isLoggable(Level.FINE)) {
-                LOGGER.fine("init_path_array: " + size);
+            if (logger.isLoggable(Level.FINE)) {
+                logger.fine("init_path_array: " + size);
             }
             numStates = size;
             statePaths = new ViterbiPath[size];
@@ -931,8 +902,8 @@ public class ClusterUnitSelector implements UtteranceProcessor {
                  i++, cc = cc.next) {
                 cc.pos = i;
             }
-            if (LOGGER.isLoggable(Level.FINE)) {
-                LOGGER.fine("init_dynamic_ path_array: " + i);
+            if (logger.isLoggable(Level.FINE)) {
+                logger.fine("init_dynamic_ path_array: " + i);
             }
             initPathArray(i);
         }
@@ -1086,7 +1057,6 @@ class ClusterUnit implements com.sun.speech.freetts.Unit {
         this.name = name;
     }
 
-
     /**
      * Returns the start.
      *
@@ -1110,6 +1080,7 @@ class ClusterUnit implements com.sun.speech.freetts.Unit {
      *
      * @return the name of this unit
      */
+    @Override
     public String getName() {
         return name;
     }
@@ -1119,6 +1090,7 @@ class ClusterUnit implements com.sun.speech.freetts.Unit {
      *
      * @return the size of the unit
      */
+    @Override
     public int getSize() {
         return db.getSts().getUnitSize(start, end);
     }
@@ -1129,6 +1101,7 @@ class ClusterUnit implements com.sun.speech.freetts.Unit {
      * @param index the ideal index
      * @return the nearest Sample
      */
+    @Override
     public Sample getNearestSample(float index) {
         int i, iSize = 0, nSize;
         SampleSet sts = db.getSts();
@@ -1156,10 +1129,10 @@ class ClusterUnit implements com.sun.speech.freetts.Unit {
         return getName();
     }
 
-
     /**
      * Dumps this unit.
      */
+    @Override
     public void dump() {
     }
 }

@@ -11,10 +11,10 @@ package demo.freetts.clientServer;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
+import java.util.logging.Logger;
 import javax.sound.sampled.AudioFormat;
 
 import com.sun.speech.freetts.audio.AudioPlayer;
-import com.sun.speech.freetts.util.Utilities;
 
 
 /**
@@ -24,15 +24,16 @@ import com.sun.speech.freetts.util.Utilities;
  */
 public class SocketAudioPlayer implements AudioPlayer {
 
+    /** Logger instance. */
+    private static final Logger logger = Logger.getLogger(SocketAudioPlayer.class.getName());
+
     private AudioFormat audioFormat;
     private Socket socket;
     private DataOutputStream dataOutputStream;
-    private boolean debug = false;
     private int bytesToPlay = 0;
     private int bytesPlayed = 0;
     private boolean firstByteSent = false;
     private long firstByteTime = -1;
-
 
     /**
      * Constructs a SocketAudioPlayer that will send wave bytes to the
@@ -43,14 +44,11 @@ public class SocketAudioPlayer implements AudioPlayer {
     public SocketAudioPlayer(Socket socket) {
         this.socket = socket;
         try {
-            this.dataOutputStream = new DataOutputStream
-                    (socket.getOutputStream());
-            debug = Utilities.getBoolean("debug");
+            this.dataOutputStream = new DataOutputStream(socket.getOutputStream());
         } catch (IOException ioe) {
             ioe.printStackTrace();
         }
     }
-
 
     /**
      * Sets the audio format to use for the next set of outputs. Since
@@ -61,50 +59,51 @@ public class SocketAudioPlayer implements AudioPlayer {
      *
      * @param format the audio format
      */
+    @Override
     public void setAudioFormat(AudioFormat format) {
         this.audioFormat = format;
     }
-
 
     /**
      * Retrieves the audio format for this player
      *
      * @return the current audio format
      */
+    @Override
     public AudioFormat getAudioFormat() {
         return this.audioFormat;
     }
-
 
     /**
      * Pauses all audio output on this player. Play can be resumed
      * with a call to resume. Not implemented in this Player.
      */
+    @Override
     public void pause() {
     }
-
 
     /**
      * Resumes audio output on this player. Not implemented in this Player.
      */
+    @Override
     public void resume() {
     }
-
 
     /**
      * Prepares for another batch of output. Larger groups of output
      * (such as all output associated with a single FreeTTSSpeakable)
      * should be grouped between a reset/drain pair.
      */
+    @Override
     public void reset() {
     }
-
 
     /**
      * Flushes all the audio data to the Socket.
      *
      * @return <code>true</code> all the time
      */
+    @Override
     public boolean drain() {
         try {
             dataOutputStream.flush();
@@ -114,7 +113,6 @@ public class SocketAudioPlayer implements AudioPlayer {
         return true;
     }
 
-
     /**
      * Starts the output of a set of data. Audio data for a single
      * utterance should be grouped between begin/end pairs.
@@ -122,27 +120,25 @@ public class SocketAudioPlayer implements AudioPlayer {
      * @param size the size of data in bytes to be output before
      *             <code>end</code> is called.
      */
+    @Override
     public void begin(int size) {
         try {
             bytesToPlay = size;
             firstByteSent = false;
             dataOutputStream.writeBytes(size + "\n");
             dataOutputStream.flush();
-            if (debug) {
-                System.out.println("begin: " + size);
-            }
+            logger.fine("begin: " + size);
         } catch (IOException ioe) {
             ioe.printStackTrace();
         }
     }
 
-
     /**
      * Starts the first sample timer (none in this player)
      */
+    @Override
     public void startFirstSampleTimer() {
     }
-
 
     /**
      * Signals the end of a set of data. Audio data for a single
@@ -152,10 +148,9 @@ public class SocketAudioPlayer implements AudioPlayer {
      * <code> false</code> if the output was cancelled
      * or interrupted.
      */
+    @Override
     public boolean end() {
-        if (debug) {
-            System.out.println("end");
-        }
+        logger.fine("end");
         if (bytesPlayed < bytesToPlay) {
             int bytesNotPlayed = bytesToPlay - bytesPlayed;
             write(new byte[bytesNotPlayed], 0, bytesNotPlayed);
@@ -166,22 +161,21 @@ public class SocketAudioPlayer implements AudioPlayer {
         return true;
     }
 
-
     /**
      * Cancels all queued output. All 'write' calls until the next
      * reset will return false. Not implemented in this Player.
      */
+    @Override
     public void cancel() {
     }
-
 
     /**
      * Waits for all audio playback to stop, and closes this AudioPlayer.
      * Not implemented in this Player.
      */
+    @Override
     public void close() {
     }
-
 
     /**
      * Returns the current volume. The volume is specified as a number
@@ -190,10 +184,10 @@ public class SocketAudioPlayer implements AudioPlayer {
      *
      * @return the current volume (between 0 and 1)
      */
+    @Override
     public float getVolume() {
         return -1;
     }
-
 
     /**
      * Sets the current volume. The volume is specified as a number
@@ -202,9 +196,9 @@ public class SocketAudioPlayer implements AudioPlayer {
      *
      * @param volume the new volume (between 0 and 1)
      */
+    @Override
     public void setVolume(float volume) {
     }
-
 
     /**
      * Gets the amount of audio played since the last resetTime.
@@ -212,17 +206,17 @@ public class SocketAudioPlayer implements AudioPlayer {
      *
      * @return the amount of audio in milliseconds
      */
+    @Override
     public long getTime() {
         return -1;
     }
 
-
     /**
      * Resets the audio clock. Not implemented in this Player.
      */
+    @Override
     public void resetTime() {
     }
-
 
     /**
      * Writes the given bytes to the audio stream
@@ -231,10 +225,10 @@ public class SocketAudioPlayer implements AudioPlayer {
      * @return <code>true</code> of the write completed successfully,
      * <code> false </code>if the write was cancelled.
      */
+    @Override
     public boolean write(byte[] audioData) {
         return write(audioData, 0, audioData.length);
     }
-
 
     /**
      * Writes the given bytes to the audio stream
@@ -245,6 +239,7 @@ public class SocketAudioPlayer implements AudioPlayer {
      * @return <code>true</code> of the write completed successfully,
      * <code> false </code>if the write was cancelled.
      */
+    @Override
     public boolean write(byte[] audioData, int offset, int size) {
         try {
             if (!firstByteSent) {
@@ -256,10 +251,7 @@ public class SocketAudioPlayer implements AudioPlayer {
             dataOutputStream.write(audioData, offset, size);
             dataOutputStream.flush();
 
-            if (debug) {
-                System.out.println("sent " + size + " bytes " +
-                        audioData[0] + " " + audioData[size / 2]);
-            }
+            logger.fine("sent " + size + " bytes " + audioData[0] + " " + audioData[size / 2]);
             return true;
         } catch (IOException ioe) {
             ioe.printStackTrace();
@@ -267,13 +259,12 @@ public class SocketAudioPlayer implements AudioPlayer {
         }
     }
 
-
     /**
      * Shows metrics for this audio player. Not implemented in this Player.
      */
+    @Override
     public void showMetrics() {
     }
-
 
     /**
      * Returns the first byte sent time in milliseconds, the last time it

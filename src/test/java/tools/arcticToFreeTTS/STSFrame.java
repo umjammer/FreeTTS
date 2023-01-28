@@ -34,6 +34,7 @@ public class STSFrame extends Frame {
     /**
      * Dumps the ASCII form of this Frame.
      */
+    @Override
     public void dumpData(PrintStream out) {
         out.print("FRAME");
         for (int parameter : parameters) {

@@ -34,6 +34,7 @@ public class ParametersToMbrolaConverter implements UtteranceProcessor {
      * @throws ProcessException if an error occurs while
      *                          processing of the utterance
      */
+    @Override
     public void processUtterance(Utterance utterance) throws ProcessException {
         Relation segmentRelation = utterance.getRelation(Relation.SEGMENT);
         Relation targetRelation = utterance.getRelation(Relation.TARGET);
@@ -43,15 +44,14 @@ public class ParametersToMbrolaConverter implements UtteranceProcessor {
         if (targetRelation != null) target = targetRelation.getHead();
         float prevEnd = 0f;
         while (segment != null) {
-            // String name = segment.getFeatures().getString("name");
+//             String name = segment.getFeatures().getString("name");
             // Accumulated duration of all segments in the utterance,
             // in seconds:
             float end = segment.getFeatures().getFloat("end");
             // Individual duration of segment, in milliseconds:
             int dur = (int) ((end - prevEnd) * 1000);
             StringBuilder targetStringBuffer = new StringBuilder();
-            while (target != null &&
-                    target.getFeatures().getFloat("pos") <= end) {
+            while (target != null && target.getFeatures().getFloat("pos") <= end) {
                 float pos = target.getFeatures().getFloat("pos");
                 // time axis as percentage of segment duration:
                 int percentage = ((int) ((pos - prevEnd) * 1000)) * 100 / dur;
@@ -63,10 +63,9 @@ public class ParametersToMbrolaConverter implements UtteranceProcessor {
                 targetStringBuffer.append(f0);
                 target = target.getNext();
             }
-            // System.err.println(name + " " + dur + targetStringBuffer);
+            // logger.finer(name + " " + dur + targetStringBuffer);
             segment.getFeatures().setInt("mbr_dur", dur);
-            segment.getFeatures().setString("mbr_targets",
-                    targetStringBuffer.toString().trim());
+            segment.getFeatures().setString("mbr_targets", targetStringBuffer.toString().trim());
             prevEnd = end;
             segment = segment.getNext();
         }

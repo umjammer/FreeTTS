@@ -31,9 +31,9 @@ import com.sun.speech.freetts.audio.AudioPlayer;
  * @see LPCResult
  */
 public class AudioOutput implements UtteranceProcessor {
+
     /** Logger instance. */
-    private static final Logger LOGGER =
-            Logger.getLogger(AudioOutput.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(AudioOutput.class.getName());
 
     private final static AudioFormat AUDIO_8KHZ =
             new AudioFormat(8000.0f, 16, 1, true, true);
@@ -49,18 +49,17 @@ public class AudioOutput implements UtteranceProcessor {
      *                          processing of the utterance
      * @see LPCResult
      */
+    @Override
     public void processUtterance(Utterance utterance) throws ProcessException {
         LPCResult lpcResult = (LPCResult) utterance.getObject("target_lpcres");
-        SampleInfo sampleInfo =
-                (SampleInfo) utterance.getObject(SampleInfo.UTT_NAME);
+        SampleInfo sampleInfo = (SampleInfo) utterance.getObject(SampleInfo.UTT_NAME);
         AudioPlayer audioPlayer = utterance.getVoice().getAudioPlayer();
 
         audioPlayer.setAudioFormat(getAudioFormat(sampleInfo));
         audioPlayer.setVolume(utterance.getVoice().getVolume());
 
         if (LOGGER.isLoggable(Level.FINE)) {
-            LOGGER.fine("=== " +
-                    utterance.getString("input_text"));
+            LOGGER.fine("=== " + utterance.getString("input_text"));
         }
         try {
             if (!lpcResult.playWave(audioPlayer, utterance)) {
@@ -70,7 +69,6 @@ public class AudioOutput implements UtteranceProcessor {
             throw new ProcessException(e.getMessage(), e);
         }
     }
-
 
     /**
      * Gets the current audio format.
@@ -88,8 +86,7 @@ public class AudioOutput implements UtteranceProcessor {
         } else if (sampleInfo.getSampleRate() == 16000) {
             return AUDIO_16KHZ;
         } else {
-            return new AudioFormat(sampleInfo.getSampleRate(),
-                    16, 1, true, true);
+            return new AudioFormat(sampleInfo.getSampleRate(), 16, 1, true, true);
         }
     }
 

@@ -9,6 +9,7 @@
 package demo.freetts.emacspeak;
 
 import java.net.Socket;
+import java.util.logging.Logger;
 
 import com.sun.speech.freetts.Voice;
 import com.sun.speech.freetts.VoiceManager;
@@ -20,17 +21,18 @@ import demo.util.TTSServer;
  */
 public class FreeTTSEmacspeakServer extends TTSServer {
 
+    /** Logger instance. */
+    private static final Logger logger = Logger.getLogger(FreeTTSEmacspeakServer.class.getName());
+
     private Voice emacsVoice;
 
     /**
      * Constructs a EmacspeakServer.
      */
     public FreeTTSEmacspeakServer(String voiceName) {
-        System.setProperty
-                ("com.sun.speech.freetts.audio.AudioPlayer.cancelDelay", "0");
+        System.setProperty("com.sun.speech.freetts.audio.AudioPlayer.cancelDelay", "0");
         createVoice(voiceName);
     }
-
 
     /**
      * Creates and loads the Voice.
@@ -39,12 +41,11 @@ public class FreeTTSEmacspeakServer extends TTSServer {
         VoiceManager voiceManager = VoiceManager.getInstance();
         emacsVoice = voiceManager.getVoice(voiceName);
         if (emacsVoice == null) {
-            System.err.println("No such voice with the name: " + voiceName);
+            logger.info("No such voice with the name: " + voiceName);
             System.exit(1);
         }
         emacsVoice.allocate();
     }
-
 
     /**
      * Spawns a ProtocolHandler depending on the current protocol.
@@ -52,6 +53,7 @@ public class FreeTTSEmacspeakServer extends TTSServer {
      *
      * @param socket the socket that the spawned protocol handler will use
      */
+    @Override
     protected void spawnProtocolHandler(Socket socket) {
         try {
             FreeTTSEmacspeakHandler handler =
@@ -62,7 +64,6 @@ public class FreeTTSEmacspeakServer extends TTSServer {
         }
     }
 
-
     /**
      * Sets the speaking rate of the voice.
      *
@@ -72,16 +73,13 @@ public class FreeTTSEmacspeakServer extends TTSServer {
         emacsVoice.setRate(wpm);
     }
 
-
     /**
      * Starts this TTS Server.
      * <p>
      * Usage: FreeTTSEmacspeakServer [voicename [speaking rate]]
      */
     public static void main(String[] args) {
-        String voiceName = (args.length > 0)
-                ? args[0]
-                : "kevin16";
+        String voiceName = (args.length > 0) ? args[0] : "kevin16";
 
         System.out.println();
         System.out.println("Using voice: " + voiceName);

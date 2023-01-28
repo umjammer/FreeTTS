@@ -30,13 +30,12 @@ import com.sun.speech.freetts.util.Utilities;
  * @see LPCResult
  */
 public class UnitConcatenator implements UtteranceProcessor {
+
     static private final int ADD_RESIDUAL_PULSE = 1;
     static private final int ADD_RESIDUAL_WINDOWED = 2;
     static private final int ADD_RESIDUAL = 3;
-    public final static String PROP_OUTPUT_LPC =
-            "com.sun.speech.freetts.outputLPC";
+    public final static String PROP_OUTPUT_LPC = "com.sun.speech.freetts.outputLPC";
     private boolean outputLPC = Utilities.getBoolean(PROP_OUTPUT_LPC);
-
 
     /**
      * Concatenate the Units in the given Utterance to the target_lpc
@@ -47,14 +46,13 @@ public class UnitConcatenator implements UtteranceProcessor {
      *                          the utterance
      * @see LPCResult
      */
+    @Override
     public void processUtterance(Utterance utterance) throws ProcessException {
         float uIndex, m;
-        int pmI = 0, targetResidualPosition = 0,
-                targetStart = 0, targetEnd, residualSize, numberFrames;
+        int pmI = 0, targetResidualPosition = 0, targetStart = 0, targetEnd, residualSize, numberFrames;
         Relation unitRelation = utterance.getRelation(Relation.UNIT);
 
         SampleInfo sampleInfo;
-
 
         int addResidualMethod = ADD_RESIDUAL;
 
@@ -69,8 +67,7 @@ public class UnitConcatenator implements UtteranceProcessor {
 
         sampleInfo = (SampleInfo) utterance.getObject(SampleInfo.UTT_NAME);
         if (sampleInfo == null) {
-            throw new IllegalStateException
-                    ("UnitConcatenator: SampleInfo does not exist");
+            throw new IllegalStateException("UnitConcatenator: SampleInfo does not exist");
         }
 
         LPCResult lpcResult = (LPCResult) utterance.getObject("target_lpcres");
@@ -90,8 +87,7 @@ public class UnitConcatenator implements UtteranceProcessor {
         }
         lpcResult.resizeResiduals(samplesSize);
 
-        for (Item unitItem = unitRelation.getHead(); unitItem != null;
-             unitItem = unitItem.getNext()) {
+        for (Item unitItem = unitRelation.getHead(); unitItem != null; unitItem = unitItem.getNext()) {
             FeatureSet featureSet = unitItem.getFeatures();
 
             targetEnd = featureSet.getInt("target_end");
@@ -103,8 +99,7 @@ public class UnitConcatenator implements UtteranceProcessor {
             numberFrames = lpcResult.getNumberOfFrames();
 
             // for all the pitchmarks that are required
-            for (; (pmI < numberFrames) &&
-                    (targetTimes[pmI] <= targetEnd); pmI++) {
+            for (; (pmI < numberFrames) && (targetTimes[pmI] <= targetEnd); pmI++) {
 
                 Sample sample = unit.getNearestSample(uIndex);
 
@@ -118,11 +113,9 @@ public class UnitConcatenator implements UtteranceProcessor {
                 byte[] residualData = sample.getResidualData();
 
                 if (addResidualMethod == ADD_RESIDUAL_PULSE) {
-                    lpcResult.copyResidualsPulse
-                            (residualData, targetResidualPosition, residualSize);
+                    lpcResult.copyResidualsPulse(residualData, targetResidualPosition, residualSize);
                 } else {
-                    lpcResult.copyResiduals
-                            (residualData, targetResidualPosition, residualSize);
+                    lpcResult.copyResiduals(residualData, targetResidualPosition, residualSize);
                 }
 
                 targetResidualPosition += residualSize;

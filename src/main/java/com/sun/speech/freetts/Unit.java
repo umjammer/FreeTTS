@@ -42,7 +42,6 @@ public interface Unit {
      */
     Sample getNearestSample(float index);
 
-
     /**
      * Dumps this unit.
      */

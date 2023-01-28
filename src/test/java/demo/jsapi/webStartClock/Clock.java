@@ -237,6 +237,7 @@ public abstract class Clock extends JFrame {
      */
     class ClockThread extends Thread {
 
+        @Override
         public void run() {
             while (true) {
                 updateTime();

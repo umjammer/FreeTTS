@@ -25,10 +25,10 @@ import java.util.StringTokenizer;
  * (RELP) frame and residual voice data.
  */
 public class Sample {
+
     private final short[] frameData;
     private final byte[] residualData;
     private final int residualSize;
-
 
     /**
      * Constructs a RELP Sample from its component parts
@@ -131,7 +131,6 @@ public class Sample {
         return residualSize;
     }
 
-
     /**
      * Returns the normalized residual data. You may not want to
      * call this function because of the overhead involved.
@@ -154,7 +153,6 @@ public class Sample {
         return ((int) frameData[which]) + 32768;
     }
 
-
     /**
      * Dumps the sample:
      */
@@ -165,7 +163,7 @@ public class Sample {
         }
         System.out.println();
         System.out.println(" RD Count: " + getResidualSize());
-        // getResidualData().length);
+//        getResidualData().length);
         for (int i = 0; i < getResidualData().length; i++) {
             System.out.print(" " + getResidualData(i));
         }
@@ -235,8 +233,7 @@ public class Sample {
      * @param dis the DataInputStream to read the data from.
      * @throws IOException if IO error occurs
      */
-    public static Sample loadBinary(DataInputStream dis)
-            throws IOException {
+    public static Sample loadBinary(DataInputStream dis) throws IOException {
         int frameDataSize = dis.readInt();
 
         short[] frameData = new short[frameDataSize];

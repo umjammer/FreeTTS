@@ -67,10 +67,10 @@ public class Intonator implements UtteranceProcessor {
      * @throws ProcessException if an IOException is thrown during the
      *                          processing of the utterance
      */
+    @Override
     public void processUtterance(Utterance utterance) throws ProcessException {
         String results;
-        for (Item syllable =
-             utterance.getRelation(Relation.SYLLABLE).getHead();
+        for (Item syllable = utterance.getRelation(Relation.SYLLABLE).getHead();
              syllable != null;
              syllable = syllable.getNext()) {
             results = (String) accentCart.interpret(syllable);

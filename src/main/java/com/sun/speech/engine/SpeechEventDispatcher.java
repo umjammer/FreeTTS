@@ -18,6 +18,7 @@ import javax.speech.SpeechEvent;
  * @see SpeechEventUtilities
  */
 public interface SpeechEventDispatcher {
+
     /**
      * Dispatches a <code>SpeechEvent</code> to all appropriate
      * <code>SpeechEventListeners</code>

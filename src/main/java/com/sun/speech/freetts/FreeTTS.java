@@ -38,9 +38,9 @@ import com.sun.speech.freetts.audio.SingleFileAudioPlayer;
  * Standalone utility that directly interacts with a CMUDiphoneVoice.
  */
 public class FreeTTS {
+
     /** Logger instance. */
-    private static final Logger LOGGER =
-            Logger.getLogger(FreeTTS.class.getName());
+    private static final Logger logger = Logger.getLogger(FreeTTS.class.getName());
 
     /** Version number. */
     public final static String VERSION = "FreeTTS 1.2.2";
@@ -80,17 +80,14 @@ public class FreeTTS {
                 AudioFileFormat.Type type = getAudioType(audioFile);
                 if (type != null) {
                     if (multiAudio) {
-                        audioPlayer = new MultiFileAudioPlayer(
-                                getBasename(audioFile), type);
+                        audioPlayer = new MultiFileAudioPlayer(getBasename(audioFile), type);
                     } else
-                        audioPlayer = new SingleFileAudioPlayer(
-                                getBasename(audioFile), type);
+                        audioPlayer = new SingleFileAudioPlayer(getBasename(audioFile), type);
                 } else {
                     try {
                         audioPlayer = new RawFileAudioPlayer(audioFile);
                     } catch (IOException ioe) {
-                        System.out.println("Can't open " + audioFile + " "
-                                + ioe);
+                        System.out.println("Can't open " + audioFile + " " + ioe);
                     }
                 }
             } else if (!streamingAudio) {
@@ -166,7 +163,7 @@ public class FreeTTS {
         try {
             audioPlayer.close();
         } catch (IOException e) {
-            LOGGER.warning("error closing the audio player: " + e.getMessage());
+            logger.warning("error closing the audio player: " + e.getMessage());
         }
         voice.deallocate();
     }
@@ -213,13 +210,12 @@ public class FreeTTS {
             }
             reader.close();
         } catch (IOException ioe) {
-            LOGGER.severe("can't read " + path);
+            logger.severe("can't read " + path);
             throw new Error(ioe);
         }
         voice.endBatch();
 
         return ok;
-
     }
 
     /**
@@ -257,7 +253,7 @@ public class FreeTTS {
             InputStream is = url.openStream();
             ok = streamToSpeech(is);
         } catch (IOException ioe) {
-            System.err.println("Can't read data from " + urlPath);
+            logger.info("Can't read data from " + urlPath);
         }
         return ok;
     }
@@ -274,7 +270,7 @@ public class FreeTTS {
             InputStream is = Files.newInputStream(Paths.get(filePath));
             ok = streamToSpeech(is);
         } catch (IOException ioe) {
-            System.err.println("Can't read data from " + filePath);
+            logger.info("Can't read data from " + filePath);
         }
         return ok;
     }
@@ -353,13 +349,11 @@ public class FreeTTS {
         System.out.println("Usage:");
         System.out.println("    -detailedMetrics: turn on detailed metrics");
         System.out.println("    -dumpAudio file : dump audio to file ");
-        System.out.println("    -dumpAudioTypes : dump the possible"
-                + " output types");
+        System.out.println("    -dumpAudioTypes : dump the possible" + " output types");
         System.out.println("    -dumpMultiAudio file : dump audio to file ");
         System.out.println("    -dumpRelations  : dump the relations ");
         System.out.println("    -dumpUtterance  : dump the final utterance");
-        System.out
-                .println("    -dumpASCII file : dump the final wave to file as ASCII");
+        System.out.println("    -dumpASCII file : dump the final wave to file as ASCII");
         System.out.println("    -file file      : speak text from given file");
         System.out.println("    -lines file     : render lines from a file");
         System.out.println("    -help           : shows usage information");

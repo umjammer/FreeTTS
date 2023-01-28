@@ -77,6 +77,7 @@ abstract public class BaseSynthesizer extends BaseEngine
      * @throws EngineStateError if this <code>Synthesizer</code> in the <code>DEALLOCATED</code> or
      *                          <code>DEALLOCATING_RESOURCES</code> states
      */
+    @Override
     public void speak(Speakable jsmlText, SpeakableListener listener) throws JSMLException, EngineStateError {
         checkEngineState(DEALLOCATED | DEALLOCATING_RESOURCES);
         BaseSynthesizerQueueItem item = createQueueItem();
@@ -96,6 +97,7 @@ abstract public class BaseSynthesizer extends BaseEngine
      * @throws JSMLException         if the JSML text contains errors
      * @throws MalformedURLException if errors are encountered with the <code>JSMLurl</code>
      */
+    @Override
     public void speak(URL jsmlURL, SpeakableListener listener) throws JSMLException, MalformedURLException,
             IOException, EngineStateError {
         checkEngineState(DEALLOCATED | DEALLOCATING_RESOURCES);
@@ -114,6 +116,7 @@ abstract public class BaseSynthesizer extends BaseEngine
      *                          <code>DEALLOCATING_RESOURCES</code> states
      * @throws JSMLException    if the JSML text contains errors
      */
+    @Override
     public void speak(String jsmlText, SpeakableListener listener) throws JSMLException, EngineStateError {
         checkEngineState(DEALLOCATED | DEALLOCATING_RESOURCES);
         BaseSynthesizerQueueItem item = createQueueItem();
@@ -131,6 +134,7 @@ abstract public class BaseSynthesizer extends BaseEngine
      * @throws EngineStateError if this <code>Synthesizer</code> in the <code>DEALLOCATED</code> or
      *                          <code>DEALLOCATING_RESOURCES</code> states
      */
+    @Override
     public void speakPlainText(String text, SpeakableListener listener) throws EngineStateError {
         checkEngineState(DEALLOCATED | DEALLOCATING_RESOURCES);
         try {
@@ -150,6 +154,7 @@ abstract public class BaseSynthesizer extends BaseEngine
      * @return a String of the names of all the states implied
      * in the given bit pattern.
      */
+    @Override
     protected String stateToString(long state) {
         StringBuilder buf = new StringBuilder();
         if ((state & Synthesizer.QUEUE_EMPTY) != 0)
@@ -175,6 +180,7 @@ abstract public class BaseSynthesizer extends BaseEngine
      * @throws EngineStateError if this <code>Synthesizer</code> in the <code>DEALLOCATED</code> or
      *                          <code>DEALLOCATING_RESOURCES</code> states
      */
+    @Override
     public String phoneme(String text) throws EngineStateError {
         checkEngineState(DEALLOCATED | DEALLOCATING_RESOURCES);
 
@@ -193,6 +199,7 @@ abstract public class BaseSynthesizer extends BaseEngine
      * @throws EngineStateError if this <code>Synthesizer</code> in the <code>DEALLOCATED</code> or
      *                          <code>DEALLOCATING_RESOURCES</code> states
      */
+    @Override
     abstract public Enumeration<?> enumerateQueue() throws EngineStateError;
 
     /**
@@ -201,6 +208,7 @@ abstract public class BaseSynthesizer extends BaseEngine
      * @throws EngineStateError if this <code>Synthesizer</code> in the <code>DEALLOCATED</code> or
      *                          <code>DEALLOCATING_RESOURCES</code> states
      */
+    @Override
     abstract public void cancel() throws EngineStateError;
 
     /**
@@ -211,6 +219,7 @@ abstract public class BaseSynthesizer extends BaseEngine
      * @throws EngineStateError         if this <code>Synthesizer</code> in the <code>DEALLOCATED</code> or
      *                                  <code>DEALLOCATING_RESOURCES</code> states
      */
+    @Override
     abstract public void cancel(Object source) throws IllegalArgumentException, EngineStateError;
 
     /**
@@ -219,6 +228,7 @@ abstract public class BaseSynthesizer extends BaseEngine
      * @throws EngineStateError if this <code>Synthesizer</code> in the <code>DEALLOCATED</code> or
      *                          <code>DEALLOCATING_RESOURCES</code> states
      */
+    @Override
     abstract public void cancelAll() throws EngineStateError;
 
     /**
@@ -231,6 +241,7 @@ abstract public class BaseSynthesizer extends BaseEngine
      * @return the <code>SynthesizerProperties</code> object for this
      * <code>Synthesizer</code>
      */
+    @Override
     public SynthesizerProperties getSynthesizerProperties() {
         checkEngineState(DEALLOCATED | DEALLOCATING_RESOURCES);
         return (SynthesizerProperties) getEngineProperties();
@@ -242,6 +253,7 @@ abstract public class BaseSynthesizer extends BaseEngine
      * @param listener the listener to add
      * @see #removeSpeakableListener
      */
+    @Override
     public void addSpeakableListener(SpeakableListener listener) {
         if (!speakableListeners.contains(listener)) {
             speakableListeners.add(listener);
@@ -255,6 +267,7 @@ abstract public class BaseSynthesizer extends BaseEngine
      * @param listener the listener to remove
      * @see #addSpeakableListener
      */
+    @Override
     public void removeSpeakableListener(SpeakableListener listener) {
         speakableListeners.remove(listener);
     }
@@ -269,6 +282,7 @@ abstract public class BaseSynthesizer extends BaseEngine
      * @return a <code>BaseEngineProperties</code> object specific to
      * a subclass.
      */
+    @Override
     protected BaseEngineProperties createEngineProperties() {
         SynthesizerModeDesc desc = (SynthesizerModeDesc) engineModeDesc;
         BaseVoice defaultVoice = (BaseVoice) (desc.getVoices()[0]);
@@ -398,6 +412,7 @@ abstract public class BaseSynthesizer extends BaseEngine
      * @see #postQueueUpdated
      * @see #postQueueEmptied
      */
+    @Override
     public void dispatchSpeechEvent(SpeechEvent event) {
         switch (event.getId()) {
         case SynthesizerEvent.QUEUE_EMPTIED:

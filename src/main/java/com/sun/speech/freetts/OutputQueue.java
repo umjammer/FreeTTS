@@ -22,6 +22,7 @@ import java.util.List;
  * pend method.
  */
 public class OutputQueue {
+
     private List<Utterance> list = new LinkedList<>();
     private int size;
     private final static int DEFAULT_SIZE = 5;
@@ -66,7 +67,6 @@ public class OutputQueue {
         notify();
     }
 
-
     /**
      * Closes the queue.
      */
@@ -75,7 +75,6 @@ public class OutputQueue {
         list.add(null);
         notify();
     }
-
 
     /**
      * Determines if the queue is closed.

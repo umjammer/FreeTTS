@@ -11,6 +11,7 @@ package demo.jsapi.emacspeak;
 import java.io.File;
 import java.net.Socket;
 import java.util.Locale;
+import java.util.logging.Logger;
 import javax.speech.Central;
 import javax.speech.synthesis.Synthesizer;
 import javax.speech.synthesis.SynthesizerModeDesc;
@@ -23,6 +24,9 @@ import demo.util.TTSServer;
  * Provides text-to-speech server for Emacspeak.
  */
 public class EmacspeakServer extends TTSServer {
+
+    /** Logger instance. */
+    private static final Logger logger = Logger.getLogger(EmacspeakServer.class.getName());
 
     // synthesizer related variables
     private Synthesizer synthesizer;
@@ -41,10 +45,7 @@ public class EmacspeakServer extends TTSServer {
      */
     private void loadSynthesizer(String voiceName) {
 
-        voice = new Voice(voiceName,
-                Voice.GENDER_DONT_CARE,
-                Voice.AGE_DONT_CARE,
-                null);
+        voice = new Voice(voiceName, Voice.GENDER_DONT_CARE, Voice.AGE_DONT_CARE, null);
 
         SynthesizerModeDesc modeDesc = new SynthesizerModeDesc(
                 null, "general", Locale.US, null, null);
@@ -53,7 +54,7 @@ public class EmacspeakServer extends TTSServer {
             synthesizer = Central.createSynthesizer(modeDesc);
 
             if (synthesizer == null) {
-                System.err.println(noSynthesizerMessage());
+                logger.info(noSynthesizerMessage());
                 System.exit(1);
             }
 
@@ -75,8 +76,7 @@ public class EmacspeakServer extends TTSServer {
      * @return a no synthesizer message
      */
     static private String noSynthesizerMessage() {
-        String message =
-                "No synthesizer created.  This may be the result of any\n" +
+        String message = "No synthesizer created.  This may be the result of any\n" +
                         "number of problems.  It's typically due to a missing\n" +
                         "\"speech.properties\" file that should be at either of\n" +
                         "these locations: \n\n";
@@ -96,10 +96,10 @@ public class EmacspeakServer extends TTSServer {
      *
      * @param socket the socket that the spawned protocol handler will use
      */
+    @Override
     protected void spawnProtocolHandler(Socket socket) {
         try {
-            JSAPIEmacspeakHandler handler =
-                    new JSAPIEmacspeakHandler(socket, synthesizer);
+            JSAPIEmacspeakHandler handler = new JSAPIEmacspeakHandler(socket, synthesizer);
             (new Thread(handler)).start();
         } catch (Exception e) {
             e.printStackTrace();
@@ -123,9 +123,7 @@ public class EmacspeakServer extends TTSServer {
      * Starts this TTS Server.
      */
     public static void main(String[] args) {
-        String voiceName = (args.length > 0)
-                ? args[0]
-                : "kevin16";
+        String voiceName = (args.length > 0) ? args[0] : "kevin16";
 
         System.out.println();
         System.out.println("Using voice: " + voiceName);

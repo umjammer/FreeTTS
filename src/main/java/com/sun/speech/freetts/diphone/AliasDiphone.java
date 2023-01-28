@@ -19,6 +19,7 @@ import com.sun.speech.freetts.relp.Sample;
  * @author Marc Schr&ouml;der
  */
 public class AliasDiphone extends Diphone {
+
     private String originalName;
     private Diphone original;
 
@@ -60,6 +61,7 @@ public class AliasDiphone extends Diphone {
      *
      * @return the samples associated with this diphone
      */
+    @Override
     public Sample[] getSamples() {
         return original.getSamples();
     }
@@ -70,6 +72,7 @@ public class AliasDiphone extends Diphone {
      * @param which which sample to return
      * @return the desired sample
      */
+    @Override
     public Sample getSamples(int which) {
         return original.getSamples(which);
     }
@@ -80,6 +83,7 @@ public class AliasDiphone extends Diphone {
      *
      * @return the midpoint index.
      */
+    @Override
     public int getMidPoint() {
         return original.getMidPoint();
     }
@@ -90,6 +94,7 @@ public class AliasDiphone extends Diphone {
      *
      * @return the midpoint index.
      */
+    @Override
     public int getPbPositionMillis() {
         return original.getPbPositionMillis();
     }
@@ -103,6 +108,7 @@ public class AliasDiphone extends Diphone {
      * @return the sample nearest to the given index in the given
      * part
      */
+    @Override
     public Sample nearestSample(float uIndex, int unitPart) {
         return original.nearestSample(uIndex, unitPart);
     }
@@ -114,6 +120,7 @@ public class AliasDiphone extends Diphone {
      * @param unitPart indicates which part is of interest (1 or 2)
      * @return the number of residuals in the specified part
      */
+    @Override
     public int getUnitSize(int unitPart) {
         return original.getUnitSize(unitPart);
     }
@@ -121,6 +128,7 @@ public class AliasDiphone extends Diphone {
     /**
      * dumps out this Diphone.
      */
+    @Override
     public void dump() {
         System.out.println("AliasDiphone: " + getName() + " aliased to " + original.getName());
     }
@@ -131,6 +139,7 @@ public class AliasDiphone extends Diphone {
      * @param bb the ByteBuffer to write to
      * @throws IOException if IO error occurs
      */
+    @Override
     public void dumpBinary(ByteBuffer bb) throws IOException {
         char[] nameArray = (getName() + "        ").toCharArray();
         char[] origNameArray = (original.getName() + "        ").toCharArray();
@@ -150,6 +159,7 @@ public class AliasDiphone extends Diphone {
      * @param os the DataOutputStream to write to
      * @throws IOException if IO error occurs
      */
+    @Override
     public void dumpBinary(DataOutputStream os) throws IOException {
         char[] nameArray = (getName() + "        ").toCharArray();
         char[] origNameArray = (original.getName() + "        ").toCharArray();
@@ -174,8 +184,8 @@ public class AliasDiphone extends Diphone {
      * @return <code>true</code> if the diphones match; otherwise
      * <code>false</code>
      */
+    @Override
     boolean compare(Diphone other) {
         return original.compare(other);
     }
-
 }

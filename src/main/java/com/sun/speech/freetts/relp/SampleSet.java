@@ -26,6 +26,7 @@ import java.util.StringTokenizer;
  * used Residual Excited Linear Predictive synthesizer
  */
 public class SampleSet {
+
     private Sample[] samples;
     private SampleInfo sampleInfo;
 
@@ -46,8 +47,7 @@ public class SampleSet {
             int residualFold = Integer.parseInt(tok.nextToken());
 
             samples = new Sample[numSamples];
-            sampleInfo = new SampleInfo(sampleRate, numChannels,
-                    residualFold, coeffMin, coeffRange, postEmphasis);
+            sampleInfo = new SampleInfo(sampleRate, numChannels, residualFold, coeffMin, coeffRange, postEmphasis);
 
             for (int i = 0; i < numSamples; i++) {
                 samples[i] = new Sample(reader, numChannels);
@@ -103,7 +103,6 @@ public class SampleSet {
         }
     }
 
-
     /**
      * return the sample associated with the index
      *
@@ -123,7 +122,6 @@ public class SampleSet {
         return sampleInfo;
     }
 
-
     /**
      * Returns the size of the unit represented
      * by the given start and end points
@@ -140,7 +138,6 @@ public class SampleSet {
         }
         return size;
     }
-
 
     /**
      * Gets the size of the given frame

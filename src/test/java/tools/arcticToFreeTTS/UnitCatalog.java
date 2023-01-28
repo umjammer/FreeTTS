@@ -77,7 +77,7 @@ public class UnitCatalog extends HashMap<String, List<Unit>> {
 
         // Create a new ArrayList for this unit type if it
         // is not in the catalog yet.
-        List<Unit> units = (List<Unit>) get(unitType);
+        List<Unit> units = get(unitType);
         if (units == null) {
             units = new ArrayList<>();
             put(unitType, units);

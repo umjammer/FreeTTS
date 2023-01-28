@@ -25,6 +25,7 @@ import com.sun.speech.freetts.relp.Sample;
  * together. This class is immutable.
  */
 public class Diphone {
+
     protected final static int MAGIC = 0xFACE0FF;
     protected final static int ALIAS_MAGIC = 0xBABAF00;
     protected final static int NAME_LENGTH = 8;
@@ -97,7 +98,6 @@ public class Diphone {
     public String getName() {
         return name;
     }
-
 
     /**
      * Returns the midpoint index. the midpoint index is the sample

@@ -20,6 +20,7 @@ package com.sun.speech.freetts;
  * @see PhoneDurations
  */
 public class PhoneDuration {
+
     /**
      * The mean duration.
      */

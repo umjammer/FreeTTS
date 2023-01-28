@@ -27,8 +27,7 @@ public class FreeTTSVoice extends BaseVoice {
      * @param freettsVoice  the freetts voice
      * @param validatorName the classname of the validator to use
      */
-    public FreeTTSVoice(com.sun.speech.freetts.Voice freettsVoice,
-                        String validatorName) {
+    public FreeTTSVoice(com.sun.speech.freetts.Voice freettsVoice, String validatorName) {
         super(freettsVoice.getName() + Math.random(), freettsVoice.getName(),
                 genderToInt(freettsVoice.getGender()),
                 ageToInt(freettsVoice.getAge()), freettsVoice.getStyle(),
@@ -64,8 +63,7 @@ public class FreeTTSVoice extends BaseVoice {
         } else if (gender == com.sun.speech.freetts.Gender.DONT_CARE) {
             return javax.speech.synthesis.Voice.GENDER_DONT_CARE;
         } else {
-            throw new Error("jaspi does not have an equivalent to gender "
-                    + gender.toString());
+            throw new Error("jaspi does not have an equivalent to gender " + gender.toString());
         }
     }
 
@@ -91,8 +89,7 @@ public class FreeTTSVoice extends BaseVoice {
         } else if (age == com.sun.speech.freetts.Age.DONT_CARE) {
             return javax.speech.synthesis.Voice.AGE_DONT_CARE;
         } else {
-            throw new Error("jaspi does not have an equivalent to age "
-                    + age.toString());
+            throw new Error("jaspi does not have an equivalent to age " + age.toString());
         }
     }
 
@@ -102,6 +99,7 @@ public class FreeTTSVoice extends BaseVoice {
      *
      * @return the voice id
      */
+    @Override
     public String getId() {
         return voiceId;
     }
@@ -114,7 +112,6 @@ public class FreeTTSVoice extends BaseVoice {
     public String toString() {
         return getName();
     }
-
 
     /**
      * Gets a FreeTTS com.sun.speech.freetts.Voice from this JSAPI voice
@@ -130,6 +127,7 @@ public class FreeTTSVoice extends BaseVoice {
      *
      * @param id the new id
      */
+    @Override
     public void setId(String id) {
         voiceId = id;
     }
@@ -139,6 +137,7 @@ public class FreeTTSVoice extends BaseVoice {
      *
      * @return the cloned object
      */
+    @Override
     public Object clone() {
         return super.clone();
     }

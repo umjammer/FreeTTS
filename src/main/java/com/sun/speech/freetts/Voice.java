@@ -81,7 +81,7 @@ import org.w3c.dom.Text;
 public abstract class Voice implements UtteranceProcessor, Dumpable {
 
     /** Logger instance. */
-    private static final Logger LOGGER = Logger.getLogger(Voice.class.getName());
+    private static final Logger logger = Logger.getLogger(Voice.class.getName());
 
     /**
      * Constant that describes the name of the unit database used by
@@ -262,8 +262,8 @@ public abstract class Voice implements UtteranceProcessor, Dumpable {
      * <code>false</code> otherwise
      */
     public boolean speak(FreeTTSSpeakable speakable) {
-        if (LOGGER.isLoggable(Level.FINE)) {
-            LOGGER.fine("speak(FreeTTSSpeakable) called");
+        if (logger.isLoggable(Level.FINE)) {
+            logger.fine("speak(FreeTTSSpeakable) called");
         }
         boolean ok = true;
         boolean posted = false;
@@ -286,8 +286,8 @@ public abstract class Voice implements UtteranceProcessor, Dumpable {
             ok = speakable.waitCompleted();
             runTimer.stop("WaitAudio");
         }
-        if (LOGGER.isLoggable(Level.FINE)) {
-            LOGGER.fine("speak(FreeTTSSpeakable) completed");
+        if (logger.isLoggable(Level.FINE)) {
+            logger.fine("speak(FreeTTSSpeakable) completed");
         }
         return ok;
     }
@@ -316,7 +316,7 @@ public abstract class Voice implements UtteranceProcessor, Dumpable {
             try {
                 lexicon.load();
             } catch (IOException ioe) {
-                LOGGER.severe("Can't load voice " + ioe);
+                logger.severe("Can't load voice " + ioe);
                 throw new Error("Can't load voice " + ioe.getMessage(), ioe);
             }
         }
@@ -324,7 +324,7 @@ public abstract class Voice implements UtteranceProcessor, Dumpable {
         try {
             audioOutput = getAudioOutput();
         } catch (IOException ioe) {
-            LOGGER.severe("Can't load audio output handler for voice " + ioe);
+            logger.severe("Can't load audio output handler for voice " + ioe);
             throw new Error(ioe);
         }
         if (outputQueue == null) {
@@ -333,7 +333,7 @@ public abstract class Voice implements UtteranceProcessor, Dumpable {
         try {
             loader();
         } catch (IOException ioe) {
-            LOGGER.severe("Can't load voice " + ioe);
+            logger.severe("Can't load voice " + ioe);
             throw new Error(ioe);
         }
         BulkTimer.LOAD.stop();
@@ -373,6 +373,7 @@ public abstract class Voice implements UtteranceProcessor, Dumpable {
      * @throws ProcessException if an exception occurred while performing
      *                          operations on the Utterance
      */
+    @Override
     public void processUtterance(Utterance u) throws ProcessException {
         UtteranceProcessor[] processors;
 
@@ -387,8 +388,8 @@ public abstract class Voice implements UtteranceProcessor, Dumpable {
         processors = new UtteranceProcessor[utteranceProcessors.size()];
         processors = utteranceProcessors.toArray(processors);
 
-        if (LOGGER.isLoggable(Level.FINE)) {
-            LOGGER.fine("Processing Utterance: " + u.getString("input_text"));
+        if (logger.isLoggable(Level.FINE)) {
+            logger.fine("Processing Utterance: " + u.getString("input_text"));
         }
         try {
             for (int i = 0; i < processors.length && !u.getSpeakable().isCompleted(); i++) {
@@ -396,8 +397,8 @@ public abstract class Voice implements UtteranceProcessor, Dumpable {
             }
             if (!u.getSpeakable().isCompleted()) {
                 if (outputQueue == null) {
-                    if (LOGGER.isLoggable(Level.FINE)) {
-                        LOGGER.fine("To AudioOutput");
+                    if (logger.isLoggable(Level.FINE)) {
+                        logger.fine("To AudioOutput");
                     }
                     outputUtterance(u, runTimer);
                 } else {
@@ -407,15 +408,15 @@ public abstract class Voice implements UtteranceProcessor, Dumpable {
                 }
             }
         } catch (ProcessException pe) {
-            System.err.println("Processing Utterance: " + pe);
+            logger.info("Processing Utterance: " + pe);
         } catch (Exception e) {
-            System.err.println("Trouble while processing utterance " + e);
+            logger.info("Trouble while processing utterance " + e);
             e.printStackTrace();
             u.getSpeakable().cancelled();
         }
 
-        if (LOGGER.isLoggable(Level.FINE)) {
-            LOGGER.fine("Done Processing Utterance: " + u.getString("input_text"));
+        if (logger.isLoggable(Level.FINE)) {
+            logger.fine("Done Processing Utterance: " + u.getString("input_text"));
         }
         runTimer.stop("processing");
 
@@ -444,7 +445,7 @@ public abstract class Voice implements UtteranceProcessor, Dumpable {
                     lpcResult.dumpASCII(waveDumpFile);
                 }
             } catch (IOException ioe) {
-                LOGGER.severe("Can't dump file to " + waveDumpFile + " " + ioe);
+                logger.severe("Can't dump file to " + waveDumpFile + " " + ioe);
                 throw new Error(ioe);
             }
         }
@@ -466,8 +467,8 @@ public abstract class Voice implements UtteranceProcessor, Dumpable {
                 utterance = queue.pend();
                 if (utterance != null) {
                     Voice voice = utterance.getVoice();
-                    if (LOGGER.isLoggable(Level.FINE)) {
-                        LOGGER.fine("OUT: " + utterance.getString("input_text"));
+                    if (logger.isLoggable(Level.FINE)) {
+                        logger.fine("OUT: " + utterance.getString("input_text"));
                     }
                     voice.outputUtterance(utterance, voice.threadTimer);
                 }
@@ -499,8 +500,8 @@ public abstract class Voice implements UtteranceProcessor, Dumpable {
             if (utterance.isFirst()) {
                 getAudioPlayer().reset();
                 speakable.started();
-                if (LOGGER.isLoggable(Level.FINE)) {
-                    LOGGER.fine(" --- started ---");
+                if (logger.isLoggable(Level.FINE)) {
+                    logger.fine(" --- started ---");
                 }
             }
 
@@ -517,29 +518,29 @@ public abstract class Voice implements UtteranceProcessor, Dumpable {
             if (ok && utterance.isLast()) {
                 getAudioPlayer().drain();
                 speakable.completed();
-                if (LOGGER.isLoggable(Level.FINE)) {
-                    LOGGER.fine(" --- completed ---");
+                if (logger.isLoggable(Level.FINE)) {
+                    logger.fine(" --- completed ---");
                 }
             } else if (!ok) {
                 // getAudioPlayer().drain();
                 speakable.cancelled();
-                if (LOGGER.isLoggable(Level.FINE)) {
-                    LOGGER.fine(" --- cancelled ---");
+                if (logger.isLoggable(Level.FINE)) {
+                    logger.fine(" --- cancelled ---");
                 }
             } else {
-                if (LOGGER.isLoggable(Level.FINE)) {
-                    LOGGER.fine(" --- not last: " + speakable.getText()
+                if (logger.isLoggable(Level.FINE)) {
+                    logger.fine(" --- not last: " + speakable.getText()
                             + " --- ");
                 }
             }
-            if (LOGGER.isLoggable(Level.FINE)) {
-                LOGGER.fine("Calling speakable.completed() on "
+            if (logger.isLoggable(Level.FINE)) {
+                logger.fine("Calling speakable.completed() on "
                         + speakable.getText());
             }
         } else {
             ok = false;
-            if (LOGGER.isLoggable(Level.FINE)) {
-                LOGGER.fine("STRANGE: speakable already completed: "
+            if (logger.isLoggable(Level.FINE)) {
+                logger.fine("STRANGE: speakable already completed: "
                         + speakable.getText());
             }
         }
@@ -559,8 +560,8 @@ public abstract class Voice implements UtteranceProcessor, Dumpable {
             throws ProcessException {
         if (processor != null) {
             String processorName = ".." + processor;
-            if (LOGGER.isLoggable(Level.FINE)) {
-                LOGGER.fine("   Running " + processorName);
+            if (logger.isLoggable(Level.FINE)) {
+                logger.fine("   Running " + processorName);
             }
             timer.start(processorName);
             processor.processUtterance(utterance);
@@ -619,7 +620,7 @@ public abstract class Voice implements UtteranceProcessor, Dumpable {
             threadTimer.show(getRunTitle() + " thread");
             getAudioPlayer().showMetrics();
             long totalMemory = Runtime.getRuntime().totalMemory();
-            LOGGER.info("Memory Use    : "
+            logger.info("Memory Use    : "
                     + (totalMemory - Runtime.getRuntime().freeMemory()) / 1024
                     + "k  of " + totalMemory / 1024 + "k");
         }
@@ -793,12 +794,12 @@ public abstract class Voice implements UtteranceProcessor, Dumpable {
      * @param pad    the initial padding
      * @param title  the title to print when dumping out
      */
+    @Override
     public void dump(PrintWriter output, int pad, String title) {
         Utilities.dump(output, pad, title);
         features.dump(output, pad + 4, title + " Features");
         dumpProcessors(output, pad + 4, title + " Processors");
     }
-
 
     /**
      * Dumps the voice processors.
@@ -822,7 +823,6 @@ public abstract class Voice implements UtteranceProcessor, Dumpable {
         }
     }
 
-
     /**
      * Returns a language/voice specific Feature Processor.
      *
@@ -831,7 +831,7 @@ public abstract class Voice implements UtteranceProcessor, Dumpable {
      * could be found
      */
     public FeatureProcessor getFeatureProcessor(String name) {
-        return (FeatureProcessor) featureProcessors.get(name);
+        return featureProcessors.get(name);
     }
 
     /**
@@ -861,8 +861,8 @@ public abstract class Voice implements UtteranceProcessor, Dumpable {
      */
     public void setMetrics(boolean metrics) {
         this.metrics = metrics;
-        if (LOGGER.isLoggable(Level.FINE)) {
-            LOGGER.fine("Metrics mode is " + metrics);
+        if (logger.isLoggable(Level.FINE)) {
+            logger.fine("Metrics mode is " + metrics);
         }
     }
 
@@ -882,8 +882,8 @@ public abstract class Voice implements UtteranceProcessor, Dumpable {
      */
     public void setDetailedMetrics(boolean detailedMetrics) {
         this.detailedMetrics = detailedMetrics;
-        if (LOGGER.isLoggable(Level.FINE)) {
-            LOGGER.fine("DetailedMetrics mode is " + detailedMetrics);
+        if (logger.isLoggable(Level.FINE)) {
+            logger.fine("DetailedMetrics mode is " + detailedMetrics);
         }
     }
 
@@ -903,8 +903,8 @@ public abstract class Voice implements UtteranceProcessor, Dumpable {
      */
     public void setDumpUtterance(boolean dumpUtterance) {
         this.dumpUtterance = dumpUtterance;
-        if (LOGGER.isLoggable(Level.FINE)) {
-            LOGGER.fine("DumpUtterance mode is " + dumpUtterance);
+        if (logger.isLoggable(Level.FINE)) {
+            logger.fine("DumpUtterance mode is " + dumpUtterance);
         }
     }
 
@@ -924,8 +924,8 @@ public abstract class Voice implements UtteranceProcessor, Dumpable {
      */
     public void setDumpRelations(boolean dumpRelations) {
         this.dumpRelations = dumpRelations;
-        if (LOGGER.isLoggable(Level.FINE)) {
-            LOGGER.fine("DumpRelations mode is " + dumpRelations);
+        if (logger.isLoggable(Level.FINE)) {
+            logger.fine("DumpRelations mode is " + dumpRelations);
         }
     }
 
@@ -969,7 +969,7 @@ public abstract class Voice implements UtteranceProcessor, Dumpable {
                 try {
                     audioPlayer.close();
                 } catch (IOException e) {
-                    LOGGER.warning(e.getMessage());
+                    logger.warning(e.getMessage());
                 }
                 audioPlayer = null;
             }
@@ -1072,7 +1072,6 @@ public abstract class Voice implements UtteranceProcessor, Dumpable {
         return durationStretch * nominalRate;
     }
 
-
     /**
      * Sets the volume.
      *
@@ -1107,7 +1106,6 @@ public abstract class Voice implements UtteranceProcessor, Dumpable {
      */
     public void setLexicon(Lexicon lexicon) {
         this.lexicon = lexicon;
-
     }
 
     /**
@@ -1408,6 +1406,7 @@ public abstract class Voice implements UtteranceProcessor, Dumpable {
                  *
                  * @return true if there are more tokens
                  */
+                @Override
                 public boolean hasNext() {
                     return savedToken != null || tok.hasMoreTokens();
                 }
@@ -1418,6 +1417,7 @@ public abstract class Voice implements UtteranceProcessor, Dumpable {
                  * @return the next utterance (as an object) or
                  *    null if there is are no utterances left
                  */
+                @Override
                 public Utterance next() {
                     List<Token> tokenList = new ArrayList<>();
                     Utterance utterance;
@@ -1445,6 +1445,7 @@ public abstract class Voice implements UtteranceProcessor, Dumpable {
                     return utterance;
                 }
 
+                @Override
                 public void remove() {
                     throw new UnsupportedOperationException("remove");
                 }

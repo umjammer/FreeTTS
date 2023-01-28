@@ -23,7 +23,6 @@ import java.io.PrintWriter;
 
 public interface FeatureSet extends Dumpable {
 
-
     /**
      * Determines if the given feature is present.
      *
@@ -31,7 +30,6 @@ public interface FeatureSet extends Dumpable {
      * @return true if the named feature is present
      */
     boolean isPresent(String name);
-
 
     /**
      * Removes the named feature from this set of features.
@@ -121,5 +119,6 @@ public interface FeatureSet extends Dumpable {
      * @param pad    the padding
      * @param title  the title
      */
+    @Override
     void dump(PrintWriter output, int pad, String title);
 }

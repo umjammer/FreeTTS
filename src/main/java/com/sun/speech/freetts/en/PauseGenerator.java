@@ -25,6 +25,7 @@ import com.sun.speech.freetts.Voice;
  * Annotates an utterance with pause information.
  */
 public class PauseGenerator implements UtteranceProcessor {
+
     private final static PathExtractor segmentPath = new
             PathExtractorImpl("R:SylStructure.daughtern.daughtern.R:Segment", false);
     private final static PathExtractor puncPath =
@@ -43,9 +44,9 @@ public class PauseGenerator implements UtteranceProcessor {
      * @throws ProcessException if an error occurs while
      *                          processing of the utterance
      */
+    @Override
     public void processUtterance(Utterance utterance) throws ProcessException {
-        String silence = utterance.getVoice().getFeatures().
-                getString(Voice.FEATURE_SILENCE);
+        String silence = utterance.getVoice().getFeatures().getString(Voice.FEATURE_SILENCE);
 
         Item phraseHead = utterance.getRelation(Relation.PHRASE).getHead();
 
@@ -66,9 +67,7 @@ public class PauseGenerator implements UtteranceProcessor {
         }
         s.getFeatures().setString("name", silence);
 
-        for (Item phrase = phraseHead;
-             phrase != null;
-             phrase = phrase.getNext()) {
+        for (Item phrase = phraseHead; phrase != null; phrase = phrase.getNext()) {
             Item word = phrase.getLastDaughter();
             while (word != null) {
                 Item seg = segmentPath.findItem(word);

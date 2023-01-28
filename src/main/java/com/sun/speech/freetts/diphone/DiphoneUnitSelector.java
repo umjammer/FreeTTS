@@ -34,8 +34,7 @@ public class DiphoneUnitSelector implements UtteranceProcessor {
     private DiphoneUnitDatabase diphoneDatabase;
 
     // The Utterance that this DiphoneUnitSelector works on
-    // private Utterance utterance;
-
+//    private Utterance utterance;
 
     /**
      * Constructs a DiphoneUnitSelector.
@@ -70,15 +69,14 @@ public class DiphoneUnitSelector implements UtteranceProcessor {
      * @throws ProcessException if an IOException is thrown during the
      *                          processing of the utterance
      */
+    @Override
     public void processUtterance(Utterance utterance) throws ProcessException {
 
         if (utterance.getRelation(Relation.SEGMENT) == null) {
-            throw new IllegalStateException
-                    ("DiphoneUnitSelector: Segment relation does not exist");
+            throw new IllegalStateException("DiphoneUnitSelector: Segment relation does not exist");
         }
 
-        utterance.setObject(SampleInfo.UTT_NAME,
-                diphoneDatabase.getSampleInfo());
+        utterance.setObject(SampleInfo.UTT_NAME, diphoneDatabase.getSampleInfo());
         createUnitRelation(utterance);
     }
 
@@ -112,15 +110,13 @@ public class DiphoneUnitSelector implements UtteranceProcessor {
 
             // First half of diphone
             end0 = segmentItem0.getFeatures().getFloat("end");
-            targetEnd = (int) (end0 *
-                    diphoneDatabase.getSampleInfo().getSampleRate());
+            targetEnd = (int) (end0 * diphoneDatabase.getSampleInfo().getSampleRate());
             unitItem0 = createUnitItem(unitRelation, diphoneName, targetEnd, 1);
             segmentItem0.addDaughter(unitItem0);
 
             // Second half of diphone
             end1 = segmentItem1.getFeatures().getFloat("end");
-            targetEnd = (int) (((end0 + end1) / 2.0) *
-                    diphoneDatabase.getSampleInfo().getSampleRate());
+            targetEnd = (int) (((end0 + end1) / 2.0) * diphoneDatabase.getSampleInfo().getSampleRate());
             unitItem1 = createUnitItem(unitRelation, diphoneName, targetEnd, 2);
             segmentItem1.addDaughter(unitItem1);
         }
@@ -142,9 +138,7 @@ public class DiphoneUnitSelector implements UtteranceProcessor {
                                 int unitPart) {
         Diphone diphone = diphoneDatabase.getUnit(diphoneName);
         if (diphone == null) {
-            System.err.println
-                    ("FreeTTS: unit database failed to find entry for: " +
-                            diphoneName);
+            System.err.println("FreeTTS: unit database failed to find entry for: " + diphoneName);
         }
         Item unit = unitRelation.appendItem();
         FeatureSet unitFeatureSet = unit.getFeatures();
@@ -192,6 +186,7 @@ class DiphoneUnit implements com.sun.speech.freetts.Unit {
      *
      * @return the name of the unit
      */
+    @Override
     public String getName() {
         return diphone.getName();
     }
@@ -201,6 +196,7 @@ class DiphoneUnit implements com.sun.speech.freetts.Unit {
      *
      * @return the size of the unit
      */
+    @Override
     public int getSize() {
         return diphone.getUnitSize(unitPart);
     }
@@ -211,6 +207,7 @@ class DiphoneUnit implements com.sun.speech.freetts.Unit {
      * @param index the ideal index
      * @return the nearest Sample
      */
+    @Override
     public Sample getNearestSample(float index) {
         return diphone.nearestSample(index, unitPart);
     }
@@ -224,10 +221,10 @@ class DiphoneUnit implements com.sun.speech.freetts.Unit {
         return getName();
     }
 
-
     /**
      * Dumps this unit.
      */
+    @Override
     public void dump() {
         diphone.dump();
     }

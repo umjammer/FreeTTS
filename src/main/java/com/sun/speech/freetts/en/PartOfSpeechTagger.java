@@ -24,9 +24,9 @@ import com.sun.speech.freetts.UtteranceProcessor;
  * Currently this does nothing.
  */
 public class PartOfSpeechTagger implements UtteranceProcessor {
+
     /** Logger instance. */
-    private static final Logger LOGGER =
-            Logger.getLogger(PartOfSpeechTagger.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(PartOfSpeechTagger.class.getName());
 
     /**
      * Constructs a PartOfSpeechTagger
@@ -42,6 +42,7 @@ public class PartOfSpeechTagger implements UtteranceProcessor {
      * @throws ProcessException if an error occurs while
      *                          processing of the utterance
      */
+    @Override
     public void processUtterance(Utterance utterance) throws ProcessException {
         if (LOGGER.isLoggable(Level.FINE)) {
             LOGGER.fine("PartOfSpeechTagger does nothing!");

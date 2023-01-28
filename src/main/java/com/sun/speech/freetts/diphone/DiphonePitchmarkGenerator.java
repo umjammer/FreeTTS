@@ -11,6 +11,8 @@
 
 package com.sun.speech.freetts.diphone;
 
+import java.util.logging.Logger;
+
 import com.sun.speech.freetts.FeatureSet;
 import com.sun.speech.freetts.Item;
 import com.sun.speech.freetts.ProcessException;
@@ -33,6 +35,9 @@ import com.sun.speech.freetts.relp.SampleInfo;
  */
 public class DiphonePitchmarkGenerator implements UtteranceProcessor {
 
+    /** Logger instance. */
+    private static final Logger logger = Logger.getLogger(DiphonePitchmarkGenerator.class.getName());
+
     /**
      * Generates the LPCResult for this utterance.
      *
@@ -43,27 +48,26 @@ public class DiphonePitchmarkGenerator implements UtteranceProcessor {
      *                               relation named Relation.TARGET or a feature named
      *                               SampleInfo.UTT_NAME
      */
+    @Override
     public void processUtterance(Utterance utterance) throws ProcessException {
 
         // precondition that must be satisfied
         Relation targetRelation = utterance.getRelation(Relation.TARGET);
         if (targetRelation == null) {
-            throw new IllegalStateException
-                    ("DiphonePitchmarkGenerator: Target relation does not exist");
+            throw new IllegalStateException("DiphonePitchmarkGenerator: Target relation does not exist");
         }
 
         SampleInfo sampleInfo;
         sampleInfo = (SampleInfo) utterance.getObject(SampleInfo.UTT_NAME);
         if (sampleInfo == null) {
-            throw new IllegalStateException
-                    ("DiphonePitchmarkGenerator: SampleInfo does not exist");
+            throw new IllegalStateException("DiphonePitchmarkGenerator: SampleInfo does not exist");
         }
 
         float pos, f0, m;
         float lf0 = utterance.getVoice().getPitch();
 
         double time = 0;
-        int pitchMarks = 0;  // how many pitch marks
+        int pitchMarks = 0; // how many pitch marks
 
         LPCResult lpcResult;
         IntLinkedList timesList = new IntLinkedList();
@@ -74,16 +78,16 @@ public class DiphonePitchmarkGenerator implements UtteranceProcessor {
             FeatureSet featureSet = targetItem.getFeatures();
             pos = featureSet.getFloat("pos");
             f0 = featureSet.getFloat("f0");
-            //System.err.println("Target pos="+pos+", f0="+f0);
+logger.finer("Target pos=" + pos + ", f0=" + f0);
             if (time == pos) {
                 lf0 = f0;
                 continue;
             }
             m = (f0 - lf0) / pos;
-            //System.err.println("m=("+f0+"-"+lf0+")/"+pos+"="+m);
+logger.finer("m=(" + f0 + "-" + lf0 + ")/" + pos + "=" + m);
             for (; time < pos; pitchMarks++) {
                 time += 1 / (lf0 + (time * m));
-                //System.err.println("f("+time+")="+((lf0+(time*m))));
+logger.finer("f(" + time + ")=" + ((lf0 + (time * m))));
                 // save the time value in a list
                 timesList.add((int) (time * sampleInfo.getSampleRate()));
             }
@@ -104,7 +108,6 @@ public class DiphonePitchmarkGenerator implements UtteranceProcessor {
         }
         utterance.setObject("target_lpcres", lpcResult);
     }
-
 
     /**
      * Returns a string representation of this object.
@@ -131,10 +134,11 @@ public class DiphonePitchmarkGenerator implements UtteranceProcessor {
  * great improvement in compiler performance in this area such that we
  * may be able to revert to using an array without any performance
  * impact.
- * <p>
- * [[[ TODO look at replacing this with a simple int array ]]]
+ *
+ * TODO look at replacing this with a simple int array
  */
 class IntLinkedList {
+
     private IntListNode head;
     private IntListNode tail;
     private IntListNode iterator;
@@ -202,6 +206,7 @@ class IntLinkedList {
  * Represents a node for the IntList
  */
 class IntListNode {
+
     int val;
     IntListNode next;
 

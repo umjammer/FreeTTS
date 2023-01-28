@@ -27,7 +27,6 @@ import com.sun.speech.freetts.util.BulkTimer;
  */
 public class GermanLexicon extends LexiconImpl {
 
-
     /**
      * Creates a GermanLexicon based upon the given compiled and addenda
      * DBs and the given letter to sound rules
@@ -40,10 +39,7 @@ public class GermanLexicon extends LexiconImpl {
      *                         binary ; otherwise if <code>false</code> the input
      *                         data are loaded as text.
      */
-    public GermanLexicon(URL compiledURL,
-                         URL addendaURL,
-                         URL letterToSoundURL,
-                         boolean binary) {
+    public GermanLexicon(URL compiledURL, URL addendaURL, URL letterToSoundURL, boolean binary) {
         setLexiconParameters(compiledURL, addendaURL, letterToSoundURL, binary);
     }
 
@@ -64,35 +60,30 @@ public class GermanLexicon extends LexiconImpl {
     }
 
     public GermanLexicon(String basename, boolean useBinaryIO) {
-        java.net.URLClassLoader classLoader =
-                VoiceManager.getVoiceClassLoader();
+        java.net.URLClassLoader classLoader = VoiceManager.getVoiceClassLoader();
         String type = (useBinaryIO ? "bin" : "txt");
 
         URL letterToSoundURL = classLoader.getResource(
                 "de/dfki/lt/freetts/de/" + basename + "_lts." + type);
         URL compiledURL = classLoader.getResource(
-                "de/dfki/lt/freetts/de/" + basename
-                        + "_compiled." + type);
+                "de/dfki/lt/freetts/de/" + basename + "_compiled." + type);
         URL addendaURL = classLoader.getResource(
-                "de/dfki/lt/freetts/de/" + basename
-                        + "_addenda." + type);
+                "de/dfki/lt/freetts/de/" + basename + "_addenda." + type);
 
-        /* Just another try with possibly a different class loader
-         * if the above didn't work.
-         */
+        // Just another try with possibly a different class loader
+        // if the above didn't work.
+        //
         if (letterToSoundURL == null) {
             Class<GermanLexicon> cls = GermanLexicon.class;
             letterToSoundURL = cls.getResource(basename + "_lts." + type);
             compiledURL = cls.getResource(basename + "_compiled." + type);
             addendaURL = cls.getResource(basename + "_addenda." + type);
             if (letterToSoundURL == null) {
-                System.err.println(
-                        "GermanLexicon: Oh no!  Couldn't find lexicon data!");
+                System.err.println("GermanLexicon: Oh no!  Couldn't find lexicon data!");
             }
         }
 
-        setLexiconParameters(compiledURL, addendaURL,
-                letterToSoundURL, useBinaryIO);
+        setLexiconParameters(compiledURL, addendaURL, letterToSoundURL, useBinaryIO);
     }
 
     /**
@@ -101,8 +92,7 @@ public class GermanLexicon extends LexiconImpl {
      * @param useBinaryIO if true use binary IO to load DB
      * @throws IOException if problems occurred while reading the data
      */
-    static public GermanLexicon getInstance(boolean useBinaryIO)
-            throws IOException {
+    static public GermanLexicon getInstance(boolean useBinaryIO) throws IOException {
         return getInstance("dummylex", useBinaryIO);
     }
 
@@ -112,8 +102,7 @@ public class GermanLexicon extends LexiconImpl {
      * @param useBinaryIO if true use binary IO to load DB
      * @throws IOException if problems occurred while reading the data
      */
-    static public GermanLexicon getInstance(String basename, boolean useBinaryIO)
-            throws IOException {
+    static public GermanLexicon getInstance(String basename, boolean useBinaryIO) throws IOException {
         GermanLexicon lexicon = new GermanLexicon(basename, useBinaryIO);
         lexicon.load();
         return lexicon;
@@ -129,9 +118,8 @@ public class GermanLexicon extends LexiconImpl {
      * @return <code>true</code> if the word phone in question is on a
      * syllable boundary; otherwise <code>false</code>.
      */
-    public boolean isSyllableBoundary(List<String> syllablePhones,
-                                      String[] wordPhones,
-                                      int currentWordPhone) {
+    @Override
+    public boolean isSyllableBoundary(List<String> syllablePhones, String[] wordPhones, int currentWordPhone) {
         return false;
     }
 

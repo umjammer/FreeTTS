@@ -15,6 +15,7 @@ package com.sun.speech.freetts;
  * Determines the part of speech of a word.
  */
 public interface PartOfSpeech {
+
     /**
      * Returns a description of the part of speech given a word.
      * The string is implementation dependent.

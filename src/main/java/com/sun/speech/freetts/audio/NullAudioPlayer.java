@@ -21,9 +21,9 @@ import com.sun.speech.freetts.util.BulkTimer;
  * is instrumented to provide timing metrics.
  */
 public class NullAudioPlayer implements AudioPlayer {
+
     /** Logger instance. */
-    private static final Logger LOGGER =
-            Logger.getLogger(NullAudioPlayer.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(NullAudioPlayer.class.getName());
 
     private float volume = 1.0f;
     private AudioFormat audioFormat;
@@ -32,19 +32,18 @@ public class NullAudioPlayer implements AudioPlayer {
     private int totalWrites = 0;
     private BulkTimer timer = new BulkTimer();
 
-
     /**
      * Constructs a NullAudioPlayer
      */
     public NullAudioPlayer() {
     }
 
-
     /**
      * Sets the audio format for this player
      *
      * @param format the audio format
      */
+    @Override
     public void setAudioFormat(AudioFormat format) {
         this.audioFormat = format;
     }
@@ -54,6 +53,7 @@ public class NullAudioPlayer implements AudioPlayer {
      *
      * @return the current audio format.
      */
+    @Override
     public AudioFormat getAudioFormat() {
         return audioFormat;
     }
@@ -62,46 +62,47 @@ public class NullAudioPlayer implements AudioPlayer {
      * Cancels all queued output. Current 'write' call will return
      * false
      */
+    @Override
     public void cancel() {
     }
-
 
     /**
      * Pauses the audio output
      */
+    @Override
     public void pause() {
     }
-
 
     /**
      * Prepares for another batch of output. Larger groups of output
      * (such as all output associated with a single FreeTTSSpeakable)
      * should be grouped between a reset/drain pair.
      */
+    @Override
     public void reset() {
         timer.start("AudioOutput");
     }
 
-
     /**
      * Resumes audio output
      */
+    @Override
     public void resume() {
     }
-
 
     /**
      * Waits for all audio playback to stop, and closes this AudioPlayer.
      */
+    @Override
     public void close() {
     }
-
 
     /**
      * Returns the current volume.
      *
      * @return the current volume (between 0 and 1)
      */
+    @Override
     public float getVolume() {
         return volume;
     }
@@ -111,10 +112,10 @@ public class NullAudioPlayer implements AudioPlayer {
      *
      * @param volume the current volume (between 0 and 1)
      */
+    @Override
     public void setVolume(float volume) {
         this.volume = volume;
     }
-
 
     /**
      * Writes the given bytes to the audio stream
@@ -123,22 +124,24 @@ public class NullAudioPlayer implements AudioPlayer {
      * @return <code>true</code> of the write completed successfully,
      * <code> false </code>if the write was cancelled.
      */
+    @Override
     public boolean write(byte[] audioData) {
         return write(audioData, 0, audioData.length);
     }
-
 
     /**
      * Starts the output of a set of data
      *
      * @param size the size of data between now and the end
      */
+    @Override
     public void begin(int size) {
     }
 
     /**
      * Marks the end of a set of data
      */
+    @Override
     public boolean end() {
         return true;
     }
@@ -152,6 +155,7 @@ public class NullAudioPlayer implements AudioPlayer {
      * @return <code>true</code> of the write completed successfully,
      * <code> false </code>if the write was cancelled.
      */
+    @Override
     public boolean write(byte[] bytes, int offset, int size) {
         totalBytes += size;
         totalWrites++;
@@ -171,6 +175,7 @@ public class NullAudioPlayer implements AudioPlayer {
     /**
      * Starts the first sample timer
      */
+    @Override
     public void startFirstSampleTimer() {
         firstSound = true;
         timer.start("AudioFirstSound");
@@ -182,6 +187,7 @@ public class NullAudioPlayer implements AudioPlayer {
      * @return <code>true</code> if the audio played to completion,
      * <code> false </code>if the audio was stopped
      */
+    @Override
     public boolean drain() {
         timer.stop("AudioOutput");
         return true;
@@ -193,20 +199,22 @@ public class NullAudioPlayer implements AudioPlayer {
      *
      * @return the amount of audio in milliseconds
      */
+    @Override
     public long getTime() {
         return -1L;
     }
 
-
     /**
      * Resets the audio clock
      */
+    @Override
     public void resetTime() {
     }
 
     /**
      * Shows metrics for this audio player
      */
+    @Override
     public void showMetrics() {
         timer.show("NullAudioPlayer");
     }

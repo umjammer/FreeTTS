@@ -55,6 +55,7 @@ public class SynthesizerMonitor extends EngineMonitor {
 
     // Inherited javadoc.
     //
+    @Override
     protected EngineListener getEngineListener() {
         if (engineListener == null) {
             engineListener = new SynthesizerMonitorEngineListener();
@@ -70,6 +71,7 @@ public class SynthesizerMonitor extends EngineMonitor {
      * @return the panel containing the labels for representing the
      * current engine state.
      */
+    @Override
     public Component getStatePanel() {
         if (statePanel == null) {
             statePanel = (JPanel) super.getStatePanel();
@@ -89,6 +91,7 @@ public class SynthesizerMonitor extends EngineMonitor {
 
     // Inherited javadoc.
     //
+    @Override
     protected void updateGUIComponents() {
         super.updateGUIComponents();
         if (statePanel != null) {
@@ -118,6 +121,7 @@ public class SynthesizerMonitor extends EngineMonitor {
 
     // Inherited javadoc.
     //
+    @Override
     protected String engineStateString(long state) {
         StringBuffer buf = new StringBuffer();
 
@@ -133,6 +137,7 @@ public class SynthesizerMonitor extends EngineMonitor {
 
     // Inherited javadoc.
     //
+    @Override
     protected void handleEvent(EngineEvent e) {
         super.handleEvent(e);
     }
@@ -146,10 +151,12 @@ public class SynthesizerMonitor extends EngineMonitor {
         public SynthesizerMonitorEngineListener() {
         }
 
+        @Override
         public void queueEmptied(SynthesizerEvent e) {
             handleEvent(e);
         }
 
+        @Override
         public void queueUpdated(SynthesizerEvent e) {
             handleEvent(e);
         }

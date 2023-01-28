@@ -324,11 +324,9 @@ public class PlayerPanel extends JPanel {
         }
         speedSlider = new JSlider(JSlider.VERTICAL, 0, 400, 0);
 
-        JPanel volumePanel = createSliderPanel
-                (volumeSlider, "Volume Control", 1, 5,
+        JPanel volumePanel = createSliderPanel(volumeSlider, "Volume Control", 1, 5,
                         "Volume", volumeMnemonic);
-        JPanel speedPanel = createSliderPanel
-                (speedSlider, "Speed Control", 50, 100,
+        JPanel speedPanel = createSliderPanel(speedSlider, "Speed Control", 50, 100,
                         "Words/min", wordsPerMinMnemonic);
 
         JPanel sliderPanel = new JPanel(new FlowLayout());
@@ -528,8 +526,7 @@ public class PlayerPanel extends JPanel {
         speakTextButton.addActionListener(e -> {
             String inputText = textArea.getText();
             if (inputText.length() > 0) {
-                Playable textPlayable =
-                        Playable.createTextPlayable(inputText);
+                Playable textPlayable = Playable.createTextPlayable(inputText);
                 playerModel.addPlayable(textPlayable);
                 speakablesList.setSelectedValue(textPlayable, true);
                 playerModel.play(textPlayable);
@@ -538,8 +535,7 @@ public class PlayerPanel extends JPanel {
         speakJSMLButton.addActionListener(e -> {
             String inputText = textArea.getText();
             if (inputText.length() > 0) {
-                Playable jsmlPlayable =
-                        Playable.createJSMLPlayable(inputText);
+                Playable jsmlPlayable = Playable.createJSMLPlayable(inputText);
                 playerModel.addPlayable(jsmlPlayable);
                 speakablesList.setSelectedValue(jsmlPlayable, true);
                 playerModel.play(jsmlPlayable);

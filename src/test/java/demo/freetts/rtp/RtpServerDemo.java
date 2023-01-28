@@ -9,6 +9,7 @@
 package demo.freetts.rtp;
 
 import java.io.IOException;
+import java.util.logging.Logger;
 import javax.media.MediaException;
 import javax.media.rtp.SessionManagerException;
 
@@ -27,6 +28,9 @@ import org.jvoicexml.rtp.freetts.RtpServer;
  */
 public class RtpServerDemo {
 
+    /** Logger instance. */
+    private static final Logger logger = Logger.getLogger(RtpServerDemo.class.getName());
+
     /**
      * Example of how to list all the known voices.
      */
@@ -36,8 +40,7 @@ public class RtpServerDemo {
         VoiceManager voiceManager = VoiceManager.getInstance();
         Voice[] voices = voiceManager.getVoices();
         for (Voice voice : voices) {
-            System.out.println("    " + voice.getName() + " ("
-                    + voice.getDomain() + " domain)");
+            System.out.println("    " + voice.getName() + " (" + voice.getDomain() + " domain)");
         }
     }
 
@@ -55,15 +58,13 @@ public class RtpServerDemo {
         System.out.println();
         System.out.println("Using voice: " + voiceName);
 
-        /*
-         * The VoiceManager manages all the voices for FreeTTS.
-         */
+        // The VoiceManager manages all the voices for FreeTTS.
+        //
         VoiceManager voiceManager = VoiceManager.getInstance();
         Voice helloVoice = voiceManager.getVoice(voiceName);
 
         if (helloVoice == null) {
-            System.err.println("Cannot find a voice named " + voiceName
-                    + ".  Please specify a different voice.");
+            logger.info("Cannot find a voice named " + voiceName + ".  Please specify a different voice.");
             System.exit(1);
         }
 
@@ -78,14 +79,12 @@ public class RtpServerDemo {
             e.printStackTrace();
         }
 
-        /*
-         * Allocates the resources for the voice.
-         */
+        // Allocates the resources for the voice.
+        //
         helloVoice.allocate();
 
-        /*
-         * Synthesize speech.
-         */
+        // Synthesize speech.
+        //
         helloVoice.setAudioPlayer(player);
         helloVoice.speak("This is the RTP test");
         try {
@@ -99,9 +98,8 @@ public class RtpServerDemo {
         ds.waitCompleted();
         ds.disconnect();
 
-        /*
-         * Clean up and leave.
-         */
+        // Clean up and leave.
+        //
         helloVoice.deallocate();
         try {
             server.stopSending();

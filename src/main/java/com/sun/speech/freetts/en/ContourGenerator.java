@@ -38,25 +38,18 @@ import com.sun.speech.freetts.Voice;
  */
 public class ContourGenerator implements UtteranceProcessor {
     private final static PathExtractor endPath =
-            new PathExtractorImpl("R:SylStructure.daughter.R:Segment.p.end",
-                    true);
+            new PathExtractorImpl("R:SylStructure.daughter.R:Segment.p.end", true);
     private final static PathExtractor lastDaughterEndPath =
-            new PathExtractorImpl("R:SylStructure.daughtern.end",
-                    true);
+            new PathExtractorImpl("R:SylStructure.daughtern.end", true);
     private final static PathExtractor postBreakPath =
-            new PathExtractorImpl("R:SylStructure.daughter.R:Segment.p.name",
-                    true);
+            new PathExtractorImpl("R:SylStructure.daughter.R:Segment.p.name", true);
     private final static PathExtractor preBreakPath =
-            new PathExtractorImpl("R:SylStructure.daughtern.R:Segment.n.name",
-                    true);
+            new PathExtractorImpl("R:SylStructure.daughtern.R:Segment.n.name", true);
     private final static PathExtractor vowelMidPath =
-            new PathExtractorImpl("R:Segment.p.end",
-                    true);
-    private final static PathExtractor localF0Shift =
-            new PathExtractorImpl(
+            new PathExtractorImpl("R:Segment.p.end", true);
+    private final static PathExtractor localF0Shift = new PathExtractorImpl(
                     "R:SylStructure.parent.R:Token.parent.local_f0_shift", true);
-    private final static PathExtractor localF0Range =
-            new PathExtractorImpl(
+    private final static PathExtractor localF0Range = new PathExtractorImpl(
                     "R:SylStructure.parent.R:Token.parent.local_f0_range", true);
 
     private final float modelMean;
@@ -71,9 +64,7 @@ public class ContourGenerator implements UtteranceProcessor {
      * @param modelStddev the std deviation of the frequency
      * @throws IOException if an error occurs while loading data
      */
-    public ContourGenerator(URL url,
-                            float modelMean, float modelStddev)
-            throws IOException {
+    public ContourGenerator(URL url, float modelMean, float modelStddev) throws IOException {
         this.modelMean = modelMean;
         this.modelStddev = modelStddev;
 
@@ -100,6 +91,7 @@ public class ContourGenerator implements UtteranceProcessor {
      * @throws ProcessException if an <code>IOException</code> is
      *                          thrown during the processing of the utterance
      */
+    @Override
     public void processUtterance(Utterance utterance) throws ProcessException {
         float lend = 0.0f;
         float mean;
@@ -144,17 +136,12 @@ public class ContourGenerator implements UtteranceProcessor {
                 Float val = (Float) endPath.findFeature(syllable);
                 // assert val != null;
                 // don't mind null ptr exception
-                addTargetPoint(target, val,
-                        mapF0((interceptor.start + lend) / 2.0f,
-                                localMean, localStddev));
-                addTargetPoint(target, vowelMid(syllable),
-                        mapF0(interceptor.mid, localMean, localStddev));
+                addTargetPoint(target, val, mapF0((interceptor.start + lend) / 2.0f, localMean, localStddev));
+                addTargetPoint(target, vowelMid(syllable), mapF0(interceptor.mid, localMean, localStddev));
                 lend = mapF0(interceptor.end, localMean, localStddev);
                 if (isPreBreak(syllable)) {
-                    Float eval = (Float) lastDaughterEndPath.findFeature(
-                            syllable);
-                    addTargetPoint(target, eval,
-                            mapF0(interceptor.end, localMean, localStddev));
+                    Float eval = (Float) lastDaughterEndPath.findFeature(syllable);
+                    addTargetPoint(target, eval, mapF0(interceptor.end, localMean, localStddev));
                 }
             }
         }
@@ -166,12 +153,10 @@ public class ContourGenerator implements UtteranceProcessor {
             } else if (first.getFeatures().getFloat("pos") > 0) {
                 Item newItem = first.prependItem(null);
                 newItem.getFeatures().setFloat("pos", 0.0f);
-                newItem.getFeatures().setFloat(
-                        "f0", first.getFeatures().getFloat("f0"));
+                newItem.getFeatures().setFloat("f0", first.getFeatures().getFloat("f0"));
             }
             Item last = target.getTail();
-            Item lastSegment
-                    = utterance.getRelation(Relation.SEGMENT).getTail();
+            Item lastSegment = utterance.getRelation(Relation.SEGMENT).getTail();
             float segEnd = 0.0f;
 
             if (lastSegment != null) {
@@ -179,8 +164,7 @@ public class ContourGenerator implements UtteranceProcessor {
             }
 
             if (last.getFeatures().getFloat("pos") < segEnd) {
-                addTargetPoint(target, segEnd, last.getFeatures().
-                        getFloat("f0"));
+                addTargetPoint(target, segEnd, last.getFeatures(). getFloat("f0"));
             }
         }
     }
@@ -226,8 +210,7 @@ public class ContourGenerator implements UtteranceProcessor {
      */
     private float vowelMid(Item syllable) {
         Voice voice = syllable.getUtterance().getVoice();
-        Item firstSeg = syllable.getItemAs(
-                Relation.SYLLABLE_STRUCTURE).getDaughter();
+        Item firstSeg = syllable.getItemAs(Relation.SYLLABLE_STRUCTURE).getDaughter();
         Item segment;
         float val;
 
@@ -244,9 +227,7 @@ public class ContourGenerator implements UtteranceProcessor {
         if (firstSeg == null) {
             val = 0.0f;
         } else {
-            val = (firstSeg.getFeatures().getFloat("end") +
-                    (Float) vowelMidPath.findFeature(firstSeg))
-                    / 2.0f;
+            val = (firstSeg.getFeatures().getFloat("end") + (Float) vowelMidPath.findFeature(firstSeg)) / 2.0f;
         }
 
         return val;
@@ -280,8 +261,7 @@ public class ContourGenerator implements UtteranceProcessor {
      * break; otherwise <code>false</code>.
      */
     private boolean isPostBreak(Item syllable) {
-        return ((syllable.getPrevious() == null) ||
-                "pau".equals(postBreakPath.findFeature(syllable)));
+        return ((syllable.getPrevious() == null) || "pau".equals(postBreakPath.findFeature(syllable)));
     }
 
     /**
@@ -292,8 +272,7 @@ public class ContourGenerator implements UtteranceProcessor {
      * break; otherwise <code>false</code>.
      */
     private boolean isPreBreak(Item syllable) {
-        return ((syllable.getNext() == null) ||
-                "pau".equals(preBreakPath.findFeature(syllable)));
+        return ((syllable.getNext() == null) || "pau".equals(preBreakPath.findFeature(syllable)));
     }
 
     /**
@@ -327,11 +306,9 @@ public class ContourGenerator implements UtteranceProcessor {
 
             list.add(new F0ModelTerm(feature, start, mid, end, type));
         } catch (NoSuchElementException nsee) {
-            throw new Error("ContourGenerator: Error while parsing F0ModelTerm "
-                    + nsee.getMessage());
+            throw new Error("ContourGenerator: Error while parsing F0ModelTerm " + nsee.getMessage());
         } catch (NumberFormatException nfe) {
-            throw new Error("ContourGenerator: Bad float format "
-                    + nfe.getMessage());
+            throw new Error("ContourGenerator: Bad float format " + nfe.getMessage());
         }
     }
 
@@ -349,6 +326,7 @@ public class ContourGenerator implements UtteranceProcessor {
  * Represents a single term for the F0 model
  */
 class F0ModelTerm {
+
     PathExtractor path;
     float start;
     float mid;
@@ -364,8 +342,7 @@ class F0ModelTerm {
      * @param end     the end point of the term
      * @param type    the type of the term
      */
-    F0ModelTerm(String feature, float start, float mid,
-                float end, String type) {
+    F0ModelTerm(String feature, float start, float mid, float end, String type) {
         path = new PathExtractorImpl(feature, true);
         this.start = start;
         this.mid = mid;
@@ -397,6 +374,7 @@ class F0ModelTerm {
  * Represents an interceptor.
  */
 class Interceptor {
+
     float start;
     float mid;
     float end;
@@ -416,8 +394,6 @@ class Interceptor {
      * @return the string representation of the object
      */
     public String toString() {
-        return start + " " +
-                mid + " " +
-                end;
+        return start + " " + mid + " " + end;
     }
 }

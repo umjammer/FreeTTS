@@ -17,6 +17,7 @@ package com.sun.speech.freetts;
  */
 @SuppressWarnings("serial")
 public class ProcessException extends Exception {
+
     /**
      * Constructs a new object.
      *

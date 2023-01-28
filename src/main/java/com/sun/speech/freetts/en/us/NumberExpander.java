@@ -97,13 +97,11 @@ public class NumberExpander {
             "eightieth",
             "ninetieth"};
 
-
     /**
      * Unconstructable
      */
     private NumberExpander() {
     }
-
 
     /**
      * Expands a digit string into a list of English words of those digits.
@@ -112,8 +110,7 @@ public class NumberExpander {
      * @param numberString the digit string to expand.
      * @param wordRelation words are added to this Relation
      */
-    public static void expandNumber(String numberString,
-                                    WordRelation wordRelation) {
+    public static void expandNumber(String numberString, WordRelation wordRelation) {
         int numDigits = numberString.length();
 
         if (numDigits == 0) {
@@ -135,15 +132,13 @@ public class NumberExpander {
         }
     }
 
-
     /**
      * Expands a two-digit string into a list of English words.
      *
      * @param numberString the string which is the number to expand
      * @param wordRelation words are added to this Relation
      */
-    private static void expand2DigitNumber(String numberString,
-                                           WordRelation wordRelation) {
+    private static void expand2DigitNumber(String numberString, WordRelation wordRelation) {
         if (numberString.charAt(0) == '0') {
             // numberString is "0X"
             if (numberString.charAt(1) == '0') {
@@ -165,11 +160,9 @@ public class NumberExpander {
             // numberString is "2X", "3X", ...
             String enty = digit2enty[numberString.charAt(0) - '0'];
             wordRelation.addWord(enty);
-            expandDigits(numberString.substring(1),
-                    wordRelation);
+            expandDigits(numberString.substring(1), wordRelation);
         }
     }
-
 
     /**
      * Expands a three-digit string into a list of English words.
@@ -177,8 +170,7 @@ public class NumberExpander {
      * @param numberString the string which is the number to expand
      * @param wordRelation words are added to this Relation
      */
-    private static void expand3DigitNumber(String numberString,
-                                           WordRelation wordRelation) {
+    private static void expand3DigitNumber(String numberString, WordRelation wordRelation) {
         if (numberString.charAt(0) == '0') {
             expandNumberAt(numberString, 1, wordRelation);
         } else {
@@ -189,7 +181,6 @@ public class NumberExpander {
         }
     }
 
-
     /**
      * Expands a string that is a 4 to 6 digits number into a list
      * of English words. For example, "333000" into "three hundred
@@ -198,11 +189,9 @@ public class NumberExpander {
      * @param numberString the string which is the number to expand
      * @param wordRelation words are added to this Relation
      */
-    private static void expandBelow7DigitNumber(String numberString,
-                                                WordRelation wordRelation) {
+    private static void expandBelow7DigitNumber(String numberString, WordRelation wordRelation) {
         expandLargeNumber(numberString, "thousand", 3, wordRelation);
     }
-
 
     /**
      * Expands a string that is a 7 to 9 digits number into a list
@@ -211,11 +200,9 @@ public class NumberExpander {
      * @param numberString the string which is the number to expand
      * @param wordRelation words are added to this Relation
      */
-    private static void expandBelow10DigitNumber(String numberString,
-                                                 WordRelation wordRelation) {
+    private static void expandBelow10DigitNumber(String numberString, WordRelation wordRelation) {
         expandLargeNumber(numberString, "million", 6, wordRelation);
     }
-
 
     /**
      * Expands a string that is a 10 to 12 digits number into a list
@@ -225,11 +212,9 @@ public class NumberExpander {
      * @param numberString the string which is the number to expand
      * @param wordRelation words are added to this Relation
      */
-    private static void expandBelow13DigitNumber(String numberString,
-                                                 WordRelation wordRelation) {
+    private static void expandBelow13DigitNumber(String numberString, WordRelation wordRelation) {
         expandLargeNumber(numberString, "billion", 9, wordRelation);
     }
-
 
     /**
      * Expands a string that is a number longer than 3 digits into a list
@@ -273,13 +258,9 @@ public class NumberExpander {
      * @param startIndex   the starting position
      * @param wordRelation words are added to this Relation
      */
-    private static void expandNumberAt(String numberString,
-                                       int startIndex,
-                                       WordRelation wordRelation) {
-        expandNumber(numberString.substring(startIndex),
-                wordRelation);
+    private static void expandNumberAt(String numberString, int startIndex, WordRelation wordRelation) {
+        expandNumber(numberString.substring(startIndex), wordRelation);
     }
-
 
     /**
      * Expands given token to list of words pronouncing it as digits
@@ -287,8 +268,7 @@ public class NumberExpander {
      * @param numberString the string which is the number to expand
      * @param wordRelation words are added to this Relation
      */
-    public static void expandDigits(String numberString,
-                                    WordRelation wordRelation) {
+    public static void expandDigits(String numberString, WordRelation wordRelation) {
         int numberDigits = numberString.length();
         for (int i = 0; i < numberDigits; i++) {
             char digit = numberString.charAt(i);
@@ -300,15 +280,13 @@ public class NumberExpander {
         }
     }
 
-
     /**
      * Expands the digit string of an ordinal number.
      *
      * @param rawNumberString the string which is the number to expand
      * @param wordRelation    words are added to this Relation
      */
-    public static void expandOrdinal(String rawNumberString,
-                                     WordRelation wordRelation) {
+    public static void expandOrdinal(String rawNumberString, WordRelation wordRelation) {
         // remove all ','s from the raw number string
         String numberString = Utilities.deleteChar(rawNumberString, ',');
 
@@ -350,7 +328,6 @@ public class NumberExpander {
         }
     }
 
-
     /**
      * Finds a match of the given string in the given array,
      * and returns the element at the same index in the returnInArray
@@ -361,9 +338,7 @@ public class NumberExpander {
      * @return an element in returnInArray, or <code>null</code>
      * if a match is not found
      */
-    private static String findMatchInArray(String strToMatch,
-                                           String[] matchInArray,
-                                           String[] returnInArray) {
+    private static String findMatchInArray(String strToMatch, String[] matchInArray, String[] returnInArray) {
         for (int i = 0; i < matchInArray.length; i++) {
             if (strToMatch.equals(matchInArray[i])) {
                 if (i < returnInArray.length) {
@@ -376,7 +351,6 @@ public class NumberExpander {
         return null;
     }
 
-
     /**
      * Expands the given number string as pairs as in years or IDs
      *
@@ -387,10 +361,8 @@ public class NumberExpander {
 
         int numberDigits = numberString.length();
 
-        if ((numberDigits == 4) &&
-                (numberString.charAt(2) == '0') &&
-                (numberString.charAt(3) == '0')) {
-            if (numberString.charAt(1) == '0') {          // e.g. 2000, 3000
+        if ((numberDigits == 4) && (numberString.charAt(2) == '0') && (numberString.charAt(3) == '0')) {
+            if (numberString.charAt(1) == '0') { // e.g. 2000, 3000
                 expandNumber(numberString, wordRelation);
             } else {
                 expandNumber(numberString.substring(0, 2), wordRelation);
@@ -399,9 +371,7 @@ public class NumberExpander {
         } else if ((numberDigits == 2) && (numberString.charAt(0) == '0')) {
             wordRelation.addWord("oh");
             expandDigits(numberString.substring(1, 2), wordRelation);
-        } else if ((numberDigits == 4 &&
-                numberString.charAt(1) == '0') ||
-                numberDigits < 3) {
+        } else if ((numberDigits == 4 && numberString.charAt(1) == '0') || numberDigits < 3) {
             expandNumber(numberString, wordRelation);
         } else if (numberDigits % 2 == 1) {
             String firstDigit = digit2num[numberString.charAt(0) - '0'];
@@ -412,7 +382,6 @@ public class NumberExpander {
             expandID(numberString.substring(2, numberDigits), wordRelation);
         }
     }
-
 
     /**
      * Expands the given number string as a real number.
@@ -433,8 +402,7 @@ public class NumberExpander {
             // prefixed with a '+'
             wordRelation.addWord("plus");
             expandReal(numberString.substring(1, stringLength), wordRelation);
-        } else if ((position = numberString.indexOf('e')) != -1 ||
-                (position = numberString.indexOf('E')) != -1) {
+        } else if ((position = numberString.indexOf('e')) != -1 || (position = numberString.indexOf('E')) != -1) {
             // numbers with 'E' or 'e'
             expandReal(numberString.substring(0, position), wordRelation);
             wordRelation.addWord("e");
@@ -463,8 +431,7 @@ public class NumberExpander {
      * @param letters      the string of letters to expand
      * @param wordRelation words are added to this Relation
      */
-    public static void expandLetters(String letters,
-                                     WordRelation wordRelation) {
+    public static void expandLetters(String letters, WordRelation wordRelation) {
         letters = letters.toLowerCase();
         char c;
 
@@ -481,7 +448,6 @@ public class NumberExpander {
             }
         }
     }
-
 
     /**
      * Returns the integer value of the given string of Roman numerals.
@@ -517,7 +483,6 @@ public class NumberExpander {
         }
         return value;
     }
-
 
     /**
      * Returns true if the given character is a digit (0-9 only).

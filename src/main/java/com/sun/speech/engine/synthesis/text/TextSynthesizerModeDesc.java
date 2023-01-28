@@ -58,6 +58,7 @@ public class TextSynthesizerModeDesc extends SynthesizerModeDesc
      * @throws EngineException
      * @throws SecurityException
      */
+    @Override
     public Engine createEngine()
             throws IllegalArgumentException, EngineException, SecurityException {
         TextSynthesizer s = new TextSynthesizer(this);

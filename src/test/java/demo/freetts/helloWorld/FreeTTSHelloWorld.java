@@ -8,6 +8,8 @@
 
 package demo.freetts.helloWorld;
 
+import java.util.logging.Logger;
+
 import com.sun.speech.freetts.Voice;
 import com.sun.speech.freetts.VoiceManager;
 
@@ -19,6 +21,9 @@ import com.sun.speech.freetts.VoiceManager;
  */
 public class FreeTTSHelloWorld {
 
+    /** Logger instance. */
+    private static final Logger logger = Logger.getLogger(FreeTTSHelloWorld.class.getName());
+
     /**
      * Example of how to list all the known voices.
      */
@@ -28,8 +33,7 @@ public class FreeTTSHelloWorld {
         VoiceManager voiceManager = VoiceManager.getInstance();
         Voice[] voices = voiceManager.getVoices();
         for (Voice voice : voices) {
-            System.out.println("    " + voice.getName()
-                    + " (" + voice.getDomain() + " domain)");
+            System.out.println("    " + voice.getName() + " (" + voice.getDomain() + " domain)");
         }
     }
 
@@ -37,36 +41,31 @@ public class FreeTTSHelloWorld {
 
         listAllVoices();
 
-        String voiceName = (args.length > 0)
-                ? args[0]
-                : "kevin16";
+        String voiceName = (args.length > 0) ? args[0] : "kevin16";
 
         System.out.println();
         System.out.println("Using voice: " + voiceName);
 
-        /* The VoiceManager manages all the voices for FreeTTS.
-         */
+        // The VoiceManager manages all the voices for FreeTTS.
+        //
         VoiceManager voiceManager = VoiceManager.getInstance();
         Voice helloVoice = voiceManager.getVoice(voiceName);
 
         if (helloVoice == null) {
-            System.err.println(
-                    "Cannot find a voice named "
-                            + voiceName + ".  Please specify a different voice.");
+            logger.info("Cannot find a voice named " + voiceName + ".  Please specify a different voice.");
             System.exit(1);
         }
 
-        /* Allocates the resources for the voice.
-         */
+        // Allocates the resources for the voice.
+        //
         helloVoice.allocate();
 
-        /* Synthesize speech.
-         */
-        helloVoice.speak("Thank you for giving me a voice. "
-                + "I'm so glad to say hello to this world.");
+        // Synthesize speech.
+        //
+        helloVoice.speak("Thank you for giving me a voice. " + "I'm so glad to say hello to this world.");
 
-        /* Clean up and leave.
-         */
+        // Clean up and leave.
+        //
         helloVoice.deallocate();
         System.exit(0);
     }

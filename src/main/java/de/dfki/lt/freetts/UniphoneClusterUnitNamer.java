@@ -13,9 +13,9 @@ public class UniphoneClusterUnitNamer implements ClusterUnitNamer {
         super();
     }
 
+    @Override
     public void setUnitName(Item seg) {
         String cname = seg.getFeatures().getString("name");
         seg.getFeatures().setString("clunit_name", cname);
     }
-
 }

@@ -26,6 +26,7 @@ import com.sun.speech.freetts.util.Utilities;
  * them.
  */
 public class MultiFile8BitAudioPlayer implements AudioPlayer {
+
     // 8-bit unsigned little-endian mono audio
     private AudioFormat currentFormat = new AudioFormat
             (8000, 8, 1, false, false);
@@ -36,7 +37,6 @@ public class MultiFile8BitAudioPlayer implements AudioPlayer {
     private int curIndex = 0;
     private AudioFileFormat.Type outputType;
 
-
     /**
      * Creates a default audio player for an AudioFileFormat of type
      * WAVE.  Reads the "com.sun.speech.freetts.AudioPlayer.baseName"
@@ -45,8 +45,7 @@ public class MultiFile8BitAudioPlayer implements AudioPlayer {
      * base name is "freetts".
      */
     public MultiFile8BitAudioPlayer() {
-        this(Utilities.getProperty(
-                        "com.sun.speech.freetts.AudioPlayer.baseName", "freetts"),
+        this(Utilities.getProperty("com.sun.speech.freetts.AudioPlayer.baseName", "freetts"),
                 AudioFileFormat.Type.WAVE);
     }
 
@@ -56,12 +55,10 @@ public class MultiFile8BitAudioPlayer implements AudioPlayer {
      * @param baseName the base name of the audio file
      * @param type     the type of audio output
      */
-    public MultiFile8BitAudioPlayer(String baseName,
-                                    AudioFileFormat.Type type) {
+    public MultiFile8BitAudioPlayer(String baseName, AudioFileFormat.Type type) {
         this.baseName = baseName;
         this.outputType = type;
     }
-
 
     /**
      * Sets the audio format for this player
@@ -70,42 +67,45 @@ public class MultiFile8BitAudioPlayer implements AudioPlayer {
      * @throws UnsupportedOperationException if the line cannot be opened with
      *                                       the given format
      */
+    @Override
     public synchronized void setAudioFormat(AudioFormat format) {
     }
-
 
     /**
      * Gets the audio format for this player
      *
      * @return format the audio format
      */
+    @Override
     public AudioFormat getAudioFormat() {
         return currentFormat;
     }
 
-
     /**
      * Pauses audio output
      */
+    @Override
     public void pause() {
     }
 
     /**
      * Resumes audio output
      */
+    @Override
     public synchronized void resume() {
     }
 
     /**
      * Starts the first sample timer
      */
+    @Override
     public void startFirstSampleTimer() {
     }
-
 
     /**
      * Cancels currently playing audio
      */
+    @Override
     public synchronized void cancel() {
     }
 
@@ -114,12 +114,14 @@ public class MultiFile8BitAudioPlayer implements AudioPlayer {
      * (such as all output associated with a single FreeTTSSpeakable)
      * should be grouped between a reset/drain pair.
      */
+    @Override
     public synchronized void reset() {
     }
 
     /**
      * Closes this audio player
      */
+    @Override
     public synchronized void close() {
     }
 
@@ -128,6 +130,7 @@ public class MultiFile8BitAudioPlayer implements AudioPlayer {
      *
      * @return the current volume (between 0 and 1)
      */
+    @Override
     public float getVolume() {
         return 1.0f;
     }
@@ -137,9 +140,9 @@ public class MultiFile8BitAudioPlayer implements AudioPlayer {
      *
      * @param volume the current volume (between 0 and 1)
      */
+    @Override
     public void setVolume(float volume) {
     }
-
 
     /**
      * Starts the output of a set of data. Audio data for a single
@@ -147,6 +150,7 @@ public class MultiFile8BitAudioPlayer implements AudioPlayer {
      *
      * @param size the size of data between now and the end
      */
+    @Override
     public void begin(int size) {
         outputData = new byte[size / 2];
         curIndex = 0;
@@ -155,8 +159,7 @@ public class MultiFile8BitAudioPlayer implements AudioPlayer {
     @Override
     public boolean end() throws IOException {
         ByteArrayInputStream bais = new ByteArrayInputStream(outputData);
-        AudioInputStream ais = new AudioInputStream
-                (bais, currentFormat,
+        AudioInputStream ais = new AudioInputStream(bais, currentFormat,
                         outputData.length / currentFormat.getFrameSize());
         String name = baseName;
         name = name + fileCount;
@@ -172,13 +175,13 @@ public class MultiFile8BitAudioPlayer implements AudioPlayer {
         return true;
     }
 
-
     /**
      * Waits for all queued audio to be played
      *
      * @return true if the audio played to completion, false if
      * the audio was stopped
      */
+    @Override
     public boolean drain() {
         return true;
     }
@@ -188,17 +191,17 @@ public class MultiFile8BitAudioPlayer implements AudioPlayer {
      *
      * @return the amount of audio in milliseconds
      */
+    @Override
     public synchronized long getTime() {
         return -1L;
     }
 
-
     /**
      * Resets the audio clock
      */
+    @Override
     public synchronized void resetTime() {
     }
-
 
     /**
      * Writes the given bytes to the audio stream
@@ -207,10 +210,10 @@ public class MultiFile8BitAudioPlayer implements AudioPlayer {
      * @return <code>true</code> of the write completed successfully,
      * <code> false </code>if the write was cancelled.
      */
+    @Override
     public boolean write(byte[] audioData) {
         return write(audioData, 0, audioData.length);
     }
-
 
     /**
      * Writes the given bytes to the audio stream
@@ -221,6 +224,7 @@ public class MultiFile8BitAudioPlayer implements AudioPlayer {
      * @return <code>true</code> of the write completed successfully,
      * <code> false </code>if the write was cancelled.
      */
+    @Override
     public boolean write(byte[] bytes, int offset, int size) {
         bytes = convert16To8Bits(bytes);
         size /= 2;
@@ -228,7 +232,6 @@ public class MultiFile8BitAudioPlayer implements AudioPlayer {
         curIndex += size;
         return true;
     }
-
 
     /**
      * Converts an array of signed 16-bit audio data to unsigned 8-bit
@@ -246,7 +249,6 @@ public class MultiFile8BitAudioPlayer implements AudioPlayer {
         return samples8Bit;
     }
 
-
     /**
      * Returns the name of this audioplayer
      *
@@ -259,6 +261,7 @@ public class MultiFile8BitAudioPlayer implements AudioPlayer {
     /**
      * Shows metrics for this audio player
      */
+    @Override
     public void showMetrics() {
     }
 }

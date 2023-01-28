@@ -40,6 +40,7 @@ public class JSAPIEmacspeakHandler extends EmacspeakProtocolHandler {
      *
      * @param input the input text to speak.
      */
+    @Override
     public void speak(String input) {
         // split around "[*]"
         String[] parts = input.split(PARENS_STAR_REGEX);
@@ -52,6 +53,7 @@ public class JSAPIEmacspeakHandler extends EmacspeakProtocolHandler {
     /**
      * Removes all the queued text.
      */
+    @Override
     public void cancelAll() {
         synthesizer.cancelAll();
     }
@@ -61,6 +63,7 @@ public class JSAPIEmacspeakHandler extends EmacspeakProtocolHandler {
      *
      * @param wpm the new speaking rate (words per minute)
      */
+    @Override
     public void setRate(float wpm) {
         try {
             synthesizer.getSynthesizerProperties().setSpeakingRate(wpm);

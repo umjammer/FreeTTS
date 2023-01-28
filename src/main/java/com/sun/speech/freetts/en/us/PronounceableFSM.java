@@ -30,24 +30,20 @@ public class PronounceableFSM {
     private static final String NUM_OF_TRANSITIONS = "NUM_OF_TRANSITIONS";
     private static final String TRANSITIONS = "TRANSITIONS";
 
-
     /**
      * The vocabulary size.
      */
     protected int vocabularySize;
-
 
     /**
      * The transitions of this FSM
      */
     protected int[] transitions;
 
-
     /**
      * Whether we should scan the input string from the front.
      */
     protected boolean scanFromFront;
-
 
     /**
      * Constructs a PronounceableFSM with information in the given URL.
@@ -63,7 +59,6 @@ public class PronounceableFSM {
         is.close();
     }
 
-
     /**
      * Constructs a PronounceableFSM with the given attributes.
      *
@@ -78,7 +73,6 @@ public class PronounceableFSM {
         this.transitions = transitions;
         this.scanFromFront = scanFromFront;
     }
-
 
     /**
      * Loads the ASCII specification of this FSM from the given InputStream.
@@ -110,7 +104,6 @@ public class PronounceableFSM {
         reader.close();
     }
 
-
     /**
      * Returns the integer value of the last integer in the given string.
      *
@@ -121,7 +114,6 @@ public class PronounceableFSM {
         String lastInt = line.trim().substring(line.lastIndexOf(" "));
         return Integer.parseInt(lastInt.trim());
     }
-
 
     /**
      * Causes this FSM to transition to the next state given
@@ -138,7 +130,6 @@ public class PronounceableFSM {
         }
         return -1;
     }
-
 
     /**
      * Checks to see if this finite state machine accepts the given

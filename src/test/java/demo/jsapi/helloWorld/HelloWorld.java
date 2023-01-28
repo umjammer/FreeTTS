@@ -10,6 +10,7 @@ package demo.jsapi.helloWorld;
 
 import java.io.File;
 import java.util.Locale;
+import java.util.logging.Logger;
 import javax.speech.Central;
 import javax.speech.EngineList;
 import javax.speech.synthesis.Synthesizer;
@@ -23,6 +24,9 @@ import javax.speech.synthesis.Voice;
  */
 public class HelloWorld {
 
+    /** Logger instance. */
+    private static final Logger logger = Logger.getLogger(HelloWorld.class.getName());
+
     /**
      * Returns a "no synthesizer" message, and asks
      * the user to check if the "speech.properties" file is
@@ -31,8 +35,7 @@ public class HelloWorld {
      * @return a no synthesizer message
      */
     static private String noSynthesizerMessage() {
-        String message =
-                "No synthesizer created.  This may be the result of any\n" +
+        String message = "No synthesizer created.  This may be the result of any\n" +
                         "number of problems.  It's typically due to a missing\n" +
                         "\"speech.properties\" file that should be at either of\n" +
                         "these locations: \n\n";
@@ -58,8 +61,7 @@ public class HelloWorld {
     public static void listAllVoices(String modeName) {
 
         System.out.println();
-        System.out.println(
-                "All " + modeName + " Mode JSAPI Synthesizers and Voices:");
+        System.out.println("All " + modeName + " Mode JSAPI Synthesizers and Voices:");
 
         /* Create a template that tells JSAPI what kind of speech
          * synthesizer we are interested in.  In this case, we're
@@ -73,10 +75,10 @@ public class HelloWorld {
                 null,      // running
                 null);     // voices
 
-        /* Contact the primary entry point for JSAPI, which is
-         * the Central class, to discover what synthesizers are
-         * available that match the template we defined above.
-         */
+        // Contact the primary entry point for JSAPI, which is
+        // the Central class, to discover what synthesizers are
+        // available that match the template we defined above.
+        //
         EngineList engineList = Central.availableSynthesizers(required);
         for (Object o : engineList) {
 
@@ -93,10 +95,10 @@ public class HelloWorld {
 
     public static void main(String[] args) {
 
-        /* List all the "general" domain voices, which are voices that
-         * are capable of attempting to speak almost any text you
-         * throw at them.
-         */
+        // List all the "general" domain voices, which are voices that
+        // are capable of attempting to speak almost any text you
+        // throw at them.
+        //
         listAllVoices("general");
 
         String voiceName = (args.length > 0)
@@ -107,18 +109,18 @@ public class HelloWorld {
         System.out.println("Using voice: " + voiceName);
 
         try {
-            /* Find a synthesizer that has the general domain voice
-             * we are looking for.  NOTE:  this uses the Central class
-             * of JSAPI to find a Synthesizer.  The Central class
-             * expects to find a speech.properties file in user.home
-             * or java.home/lib.
-             *
-             * If your situation doesn't allow you to set up a
-             * speech.properties file, you can circumvent the Central
-             * class and do a very non-JSAPI thing by talking to
-             * FreeTTSEngineCentral directly.  See the WebStartClock
-             * demo for an example of how to do this.
-             */
+            // Find a synthesizer that has the general domain voice
+            // we are looking for.  NOTE:  this uses the Central class
+            // of JSAPI to find a Synthesizer.  The Central class
+            // expects to find a speech.properties file in user.home
+            // or java.home/lib.
+            //
+            // If your situation doesn't allow you to set up a
+            // speech.properties file, you can circumvent the Central
+            // class and do a very non-JSAPI thing by talking to
+            // FreeTTSEngineCentral directly.  See the WebStartClock
+            // demo for an example of how to do this.
+            //
             SynthesizerModeDesc desc = new SynthesizerModeDesc(
                     null,          // engine name
                     "general",     // mode name
@@ -127,21 +129,21 @@ public class HelloWorld {
                     null);         // voice
             Synthesizer synthesizer = Central.createSynthesizer(desc);
 
-            /* Just an informational message to guide users that didn't
-             * set up their speech.properties file.
-             */
+            // Just an informational message to guide users that didn't
+            // set up their speech.properties file.
+            //
             if (synthesizer == null) {
-                System.err.println(noSynthesizerMessage());
+                logger.info(noSynthesizerMessage());
                 System.exit(1);
             }
 
-            /* Get the synthesizer ready to speak
-             */
+            // Get the synthesizer ready to speak
+            //
             synthesizer.allocate();
             synthesizer.resume();
 
-            /* Choose the voice.
-             */
+            // Choose the voice.
+            //
             desc = (SynthesizerModeDesc) synthesizer.getEngineModeDesc();
             Voice[] voices = desc.getVoices();
             Voice voice = null;
@@ -152,21 +154,20 @@ public class HelloWorld {
                 }
             }
             if (voice == null) {
-                System.err.println(
-                        "Synthesizer does not have a voice named "
-                                + voiceName + ".");
+                logger.info("Synthesizer does not have a voice named " + voiceName + ".");
                 System.exit(1);
             }
             synthesizer.getSynthesizerProperties().setVoice(voice);
+            synthesizer.getSynthesizerProperties().setVolume(1.2345f);
 
-            /* The synthesizer to speak and wait for it to
-             * complete.
-             */
+            // The synthesizer to speak and wait for it to
+            // complete.
+            //
             synthesizer.speakPlainText("Hello world!", null);
             synthesizer.waitEngineState(Synthesizer.QUEUE_EMPTY);
 
-            /* Clean up and leave.
-             */
+            // Clean up and leave.
+            //
             synthesizer.deallocate();
             System.exit(0);
 

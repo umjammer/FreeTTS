@@ -28,9 +28,9 @@ import com.sun.speech.freetts.util.Utilities;
  * Streams audio to a file.
  */
 public class SingleFileAudioPlayer implements AudioPlayer {
+
     /** Logger instance. */
-    private static final Logger LOGGER =
-            Logger.getLogger(SingleFileAudioPlayer.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(SingleFileAudioPlayer.class.getName());
 
     private AudioFormat currentFormat = null;
     private String baseName;
@@ -39,7 +39,6 @@ public class SingleFileAudioPlayer implements AudioPlayer {
     private int totBytes = 0;
     private AudioFileFormat.Type outputType;
     private Vector<InputStream> outputList;
-
 
     /**
      * Constructs a FileAudioPlayer
@@ -62,8 +61,7 @@ public class SingleFileAudioPlayer implements AudioPlayer {
      * base name is "freetts".
      */
     public SingleFileAudioPlayer() {
-        this(Utilities.getProperty(
-                        "com.sun.speech.freetts.AudioPlayer.baseName", "freetts"),
+        this(Utilities.getProperty("com.sun.speech.freetts.AudioPlayer.baseName", "freetts"),
                 AudioFileFormat.Type.WAVE);
     }
 
@@ -74,6 +72,7 @@ public class SingleFileAudioPlayer implements AudioPlayer {
      * @throws UnsupportedOperationException if the line cannot be opened with
      *                                       the given format
      */
+    @Override
     public synchronized void setAudioFormat(AudioFormat format) {
         currentFormat = format;
     }
@@ -84,6 +83,7 @@ public class SingleFileAudioPlayer implements AudioPlayer {
      *
      * @return format the audio format
      */
+    @Override
     public AudioFormat getAudioFormat() {
         return currentFormat;
     }
@@ -92,12 +92,14 @@ public class SingleFileAudioPlayer implements AudioPlayer {
     /**
      * Pauses audio output
      */
+    @Override
     public void pause() {
     }
 
     /**
      * Resumes audio output
      */
+    @Override
     public synchronized void resume() {
     }
 
@@ -105,6 +107,7 @@ public class SingleFileAudioPlayer implements AudioPlayer {
     /**
      * Cancels currently playing audio
      */
+    @Override
     public synchronized void cancel() {
     }
 
@@ -113,6 +116,7 @@ public class SingleFileAudioPlayer implements AudioPlayer {
      * (such as all output associated with a single FreeTTSSpeakable)
      * should be grouped between a reset/drain pair.
      */
+    @Override
     public synchronized void reset() {
     }
 
@@ -120,12 +124,14 @@ public class SingleFileAudioPlayer implements AudioPlayer {
     /**
      * Starts the first sample timer
      */
+    @Override
     public void startFirstSampleTimer() {
     }
 
     /**
      * Closes this audio player
      */
+    @Override
     public synchronized void close() throws IOException {
         try {
             File file = new File(baseName);
@@ -150,6 +156,7 @@ public class SingleFileAudioPlayer implements AudioPlayer {
      *
      * @return the current volume (between 0 and 1)
      */
+    @Override
     public float getVolume() {
         return 1.0f;
     }
@@ -159,6 +166,7 @@ public class SingleFileAudioPlayer implements AudioPlayer {
      *
      * @param volume the current volume (between 0 and 1)
      */
+    @Override
     public void setVolume(float volume) {
     }
 
@@ -169,6 +177,7 @@ public class SingleFileAudioPlayer implements AudioPlayer {
      *
      * @param size the size of data between now and the end
      */
+    @Override
     public void begin(int size) {
         outputData = new byte[size];
         curIndex = 0;
@@ -181,6 +190,7 @@ public class SingleFileAudioPlayer implements AudioPlayer {
      * @return true if the audio was output properly, false if the
      * output was cancelled or interrupted.
      */
+    @Override
     public boolean end() {
         outputList.add(new ByteArrayInputStream(outputData));
         totBytes += outputData.length;
@@ -194,6 +204,7 @@ public class SingleFileAudioPlayer implements AudioPlayer {
      * @return true if the audio played to completion, false if
      * the audio was stopped
      */
+    @Override
     public boolean drain() {
         return true;
     }
@@ -203,6 +214,7 @@ public class SingleFileAudioPlayer implements AudioPlayer {
      *
      * @return the amount of audio in milliseconds
      */
+    @Override
     public synchronized long getTime() {
         return -1L;
     }
@@ -211,6 +223,7 @@ public class SingleFileAudioPlayer implements AudioPlayer {
     /**
      * Resets the audio clock
      */
+    @Override
     public synchronized void resetTime() {
     }
 
@@ -222,6 +235,7 @@ public class SingleFileAudioPlayer implements AudioPlayer {
      * @return <code>true</code> of the write completed successfully,
      * <code> false </code>if the write was cancelled.
      */
+    @Override
     public boolean write(byte[] audioData) {
         return write(audioData, 0, audioData.length);
     }
@@ -235,6 +249,7 @@ public class SingleFileAudioPlayer implements AudioPlayer {
      * @return <code>true</code> of the write completed successfully,
      * <code> false </code>if the write was cancelled.
      */
+    @Override
     public boolean write(byte[] bytes, int offset, int size) {
         System.arraycopy(bytes, offset, outputData, curIndex, size);
         curIndex += size;
@@ -253,6 +268,7 @@ public class SingleFileAudioPlayer implements AudioPlayer {
     /**
      * Shows metrics for this audio player
      */
+    @Override
     public void showMetrics() {
     }
 }

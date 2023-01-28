@@ -15,6 +15,7 @@ import java.io.InputStreamReader;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.Locale;
+import java.util.logging.Logger;
 import javax.speech.Central;
 import javax.speech.EngineException;
 import javax.speech.EngineList;
@@ -31,6 +32,9 @@ import demo.util.TimeUtils;
  */
 public class JTime {
 
+    /** Logger instance. */
+    private static final Logger logger = Logger.getLogger(JTime.class.getName());
+
     Synthesizer synthesizer;
 
     /**
@@ -41,8 +45,7 @@ public class JTime {
      * @return a no synthesizer message
      */
     static private String noSynthesizerMessage() {
-        String message =
-                "No synthesizer created.  This may be the result of any\n" +
+        String message = "No synthesizer created.  This may be the result of any\n" +
                         "number of problems.  It's typically due to a missing\n" +
                         "\"speech.properties\" file that should be at either of\n" +
                         "these locations: \n\n";
@@ -91,8 +94,7 @@ public class JTime {
 
             SynthesizerModeDesc desc = (SynthesizerModeDesc) o;
             System.out.println("    " + desc.getEngineName()
-                    + " (mode=" + desc.getModeName()
-                    + ", locale=" + desc.getLocale() + "):");
+                    + " (mode=" + desc.getModeName() + ", locale=" + desc.getLocale() + "):");
             Voice[] voices = desc.getVoices();
             for (Voice voice : voices) {
                 System.out.println("        " + voice.getName());
@@ -132,7 +134,7 @@ public class JTime {
              * set up their speech.properties file.
              */
             if (synthesizer == null) {
-                System.err.println(noSynthesizerMessage());
+                logger.info(noSynthesizerMessage());
                 System.exit(1);
             }
 
@@ -153,9 +155,7 @@ public class JTime {
                 }
             }
             if (voice == null) {
-                System.err.println(
-                        "Synthesizer does not have a voice named "
-                                + voiceName + ".");
+                logger.info("Synthesizer does not have a voice named " + voiceName + ".");
                 System.exit(1);
             }
             synthesizer.getSynthesizerProperties().setVoice(voice);
@@ -172,8 +172,7 @@ public class JTime {
         try {
             while (true) {
                 String text;
-                BufferedReader reader = new BufferedReader
-                        (new InputStreamReader(System.in));
+                BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
                 System.out.print("Enter time (HH:MM): ");
                 System.out.flush();
                 text = reader.readLine();
@@ -241,7 +240,7 @@ public class JTime {
                 timeToSpeech(time);
             }
         } catch (IllegalArgumentException iae) {
-            System.err.println("Bad time format");
+            logger.info("Bad time format");
         }
     }
 
@@ -274,9 +273,7 @@ public class JTime {
          */
         listAllVoices("time");
 
-        String voiceName = (args.length > 0)
-                ? args[0]
-                : "alan";
+        String voiceName = (args.length > 0) ? args[0] : "alan";
 
         System.out.println();
         System.out.println("Using voice: " + voiceName);

@@ -39,9 +39,7 @@ public class MbrolaCaller implements UtteranceProcessor {
      */
     public MbrolaCaller(String[] cmd) {
         this.cmd = cmd;
-        closeDelay = Utilities.getLong
-                ("de.dfki.lt.freetts.mbrola.MbrolaCaller.closeDelay",
-                        100L);
+        closeDelay = Utilities.getLong("de.dfki.lt.freetts.mbrola.MbrolaCaller.closeDelay", 100L);
     }
 
     /**
@@ -51,6 +49,7 @@ public class MbrolaCaller implements UtteranceProcessor {
      * @throws ProcessException if an error occurs while
      *                          processing of the utterance
      */
+    @Override
     public void processUtterance(Utterance utterance) throws ProcessException {
         // Go through Segment relation and print values into Mbrola
         Relation segmentRelation = utterance.getRelation(Relation.SEGMENT);
@@ -65,12 +64,10 @@ public class MbrolaCaller implements UtteranceProcessor {
         try {
             process = Runtime.getRuntime().exec(cmd);
         } catch (Exception e) {
-            throw new ProcessException("Cannot start mbrola program: " + Arrays.toString(cmd),
-                    e);
+            throw new ProcessException("Cannot start mbrola program: " + Arrays.toString(cmd), e);
         }
         PrintWriter toMbrola = new PrintWriter(process.getOutputStream());
-        BufferedInputStream fromMbrola =
-                new BufferedInputStream(process.getInputStream());
+        BufferedInputStream fromMbrola = new BufferedInputStream(process.getInputStream());
 
         while (segment != null) {
             String name = segment.getFeatures().getString("name");

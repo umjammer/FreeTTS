@@ -29,9 +29,9 @@ import com.sun.speech.freetts.UtteranceProcessor;
  * @see Relation#WORD
  */
 public class Phraser implements UtteranceProcessor {
+
     /** Logger instance. */
-    private static final Logger LOGGER =
-            Logger.getLogger(UtteranceProcessor.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(UtteranceProcessor.class.getName());
 
     /**
      * The CART used for this Phrasing UtteranceProcessor.  It is
@@ -60,6 +60,7 @@ public class Phraser implements UtteranceProcessor {
      * @throws ProcessException if a problem is encountered during the
      *                          processing of the utterance
      */
+    @Override
     public void processUtterance(Utterance utterance) throws ProcessException {
         Relation relation = utterance.createRelation(Relation.PHRASE);
         Item p = null;

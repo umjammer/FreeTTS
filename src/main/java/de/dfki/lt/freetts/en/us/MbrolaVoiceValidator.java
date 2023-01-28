@@ -43,23 +43,21 @@ public class MbrolaVoiceValidator implements Validator {
      *
      * @throws ValidationException if this MbrolaVoice is invalid
      */
+    @Override
     public void validate() throws ValidationException {
         String mbrolaBase = Utilities.getProperty("mbrola.base", null);
         File mbrolaBinary = new File(mbrolaVoice.getMbrolaBinary());
         File mbrolaVoiceDB = new File(mbrolaVoice.getDatabase());
 
         if (mbrolaBase == null || mbrolaBase.length() == 0) {
-            throw new ValidationException
-                    ("System property \"mbrola.base\" is undefined. " +
+            throw new ValidationException("System property \"mbrola.base\" is undefined. " +
                             "You might need to set the MBROLA_DIR environment variable.");
         }
         if (!mbrolaBinary.exists()) {
-            throw new ValidationException
-                    ("No MBROLA binary at: " + mbrolaVoice.getMbrolaBinary());
+            throw new ValidationException("No MBROLA binary at: " + mbrolaVoice.getMbrolaBinary());
         }
         if (!mbrolaVoiceDB.exists()) {
-            throw new ValidationException
-                    ("No voice database for " + mbrolaVoice.getName() +
+            throw new ValidationException("No voice database for " + mbrolaVoice.getName() +
                             " at: " + mbrolaVoice.getDatabase());
         }
     }

@@ -41,6 +41,7 @@ import com.sun.speech.freetts.relp.UnitConcatenator;
  * in order for this to become a full TTS voice.
  */
 public class ClusterUnitVoice extends Voice implements ConcatenativeVoice {
+
     private PhoneSet phoneSet;
     protected URL database;
     protected URL phonesetURL;
@@ -71,9 +72,8 @@ public class ClusterUnitVoice extends Voice implements ConcatenativeVoice {
                             String organization, Lexicon lexicon, URL database,
                             ClusterUnitNamer unitNamer, URL phonesetURL, URL partOfSpeechURL) {
 
-        //TODO: do something useful with the lexicon
-        super(name, gender, age, description, locale,
-                domain, organization);
+        // TODO do something useful with the lexicon
+        super(name, gender, age, description, locale, domain, organization);
         setRate(150f);
         setPitch(100F);
         setPitchRange(12F);
@@ -103,16 +103,17 @@ public class ClusterUnitVoice extends Voice implements ConcatenativeVoice {
         return unitSelector.getSampleInfo();
     }
 
+    @Override
     public Tokenizer getTokenizer() {
         return null;
     }
 
-
+    @Override
     protected void loader() throws IOException {
         setupFeatureProcessors();
     }
 
-
+    @Override
     protected UtteranceProcessor getAudioOutput() throws IOException {
         return new AudioOutput();
     }
@@ -123,6 +124,7 @@ public class ClusterUnitVoice extends Voice implements ConcatenativeVoice {
      *
      * @return an url to the database
      */
+    @Override
     public URL getDatabase() {
         return database;
     }
@@ -136,6 +138,7 @@ public class ClusterUnitVoice extends Voice implements ConcatenativeVoice {
      * @throws IOException if an IO error occurs while getting
      *                     processor
      */
+    @Override
     public UtteranceProcessor getUnitSelector() throws IOException {
         return unitSelector;
     }
@@ -149,6 +152,7 @@ public class ClusterUnitVoice extends Voice implements ConcatenativeVoice {
      * @throws IOException if an IO error occurs while getting
      *                     processor
      */
+    @Override
     public UtteranceProcessor getPitchmarkGenerator() throws IOException {
         return new ClusterUnitPitchmarkGenerator();
     }
@@ -162,6 +166,7 @@ public class ClusterUnitVoice extends Voice implements ConcatenativeVoice {
      * @throws IOException if an IO error occurs while getting
      *                     processor
      */
+    @Override
     public UtteranceProcessor getUnitConcatenator() throws IOException {
         return new UnitConcatenator();
     }
@@ -176,29 +181,24 @@ public class ClusterUnitVoice extends Voice implements ConcatenativeVoice {
             addFeatureProcessor("gpos", new FeatureProcessors.Gpos(pos));
         }
 
-
         addFeatureProcessor("word_break", new FeatureProcessors.WordBreak());
         addFeatureProcessor("word_punc", new FeatureProcessors.WordPunc());
         addFeatureProcessor("word_numsyls", new FeatureProcessors.WordNumSyls());
         addFeatureProcessor("ssyl_in", new FeatureProcessors.StressedSylIn());
         addFeatureProcessor("syl_in", new FeatureProcessors.SylIn());
         addFeatureProcessor("syl_out", new FeatureProcessors.SylOut());
-        addFeatureProcessor("ssyl_out", new
-                FeatureProcessors.StressedSylOut());
+        addFeatureProcessor("ssyl_out", new FeatureProcessors.StressedSylOut());
         addFeatureProcessor("syl_break", new FeatureProcessors.SylBreak());
         addFeatureProcessor("old_syl_break", new FeatureProcessors.SylBreak());
         addFeatureProcessor("num_digits", new FeatureProcessors.NumDigits());
         addFeatureProcessor("month_range", new FeatureProcessors.MonthRange());
-        addFeatureProcessor("token_pos_guess",
-                new FeatureProcessors.TokenPosGuess());
-        addFeatureProcessor("segment_duration",
-                new FeatureProcessors.SegmentDuration());
+        addFeatureProcessor("token_pos_guess", new FeatureProcessors.TokenPosGuess());
+        addFeatureProcessor("segment_duration", new FeatureProcessors.SegmentDuration());
         addFeatureProcessor("sub_phrases", new FeatureProcessors.SubPhrases());
         addFeatureProcessor("asyl_in", new FeatureProcessors.AccentedSylIn());
         addFeatureProcessor("last_accent", new FeatureProcessors.LastAccent());
         addFeatureProcessor("pos_in_syl", new FeatureProcessors.PosInSyl());
-        addFeatureProcessor("position_type", new
-                FeatureProcessors.PositionType());
+        addFeatureProcessor("position_type", new FeatureProcessors.PositionType());
 
         addFeatureProcessor("ph_cplace", new FeatureProcessors.PH_CPlace());
         addFeatureProcessor("ph_ctype", new FeatureProcessors.PH_CType());
@@ -209,32 +209,21 @@ public class ClusterUnitVoice extends Voice implements ConcatenativeVoice {
         addFeatureProcessor("ph_vlng", new FeatureProcessors.PH_VLength());
         addFeatureProcessor("ph_vrnd", new FeatureProcessors.PH_VRnd());
 
-        addFeatureProcessor("seg_coda_fric", new
-                FeatureProcessors.SegCodaFric());
-        addFeatureProcessor("seg_onset_fric", new
-                FeatureProcessors.SegOnsetFric());
+        addFeatureProcessor("seg_coda_fric", new FeatureProcessors.SegCodaFric());
+        addFeatureProcessor("seg_onset_fric", new FeatureProcessors.SegOnsetFric());
 
-        addFeatureProcessor("seg_coda_stop", new
-                FeatureProcessors.SegCodaStop());
-        addFeatureProcessor("seg_onset_stop", new
-                FeatureProcessors.SegOnsetStop());
+        addFeatureProcessor("seg_coda_stop", new FeatureProcessors.SegCodaStop());
+        addFeatureProcessor("seg_onset_stop", new FeatureProcessors.SegOnsetStop());
 
-        addFeatureProcessor("seg_coda_nasal", new
-                FeatureProcessors.SegCodaNasal());
-        addFeatureProcessor("seg_onset_nasal", new
-                FeatureProcessors.SegOnsetNasal());
+        addFeatureProcessor("seg_coda_nasal", new FeatureProcessors.SegCodaNasal());
+        addFeatureProcessor("seg_onset_nasal", new FeatureProcessors.SegOnsetNasal());
 
-        addFeatureProcessor("seg_coda_glide", new
-                FeatureProcessors.SegCodaGlide());
-        addFeatureProcessor("seg_onset_glide", new
-                FeatureProcessors.SegOnsetGlide());
+        addFeatureProcessor("seg_coda_glide", new FeatureProcessors.SegCodaGlide());
+        addFeatureProcessor("seg_onset_glide", new FeatureProcessors.SegOnsetGlide());
 
-        addFeatureProcessor("seg_onsetcoda", new
-                FeatureProcessors.SegOnsetCoda());
-        addFeatureProcessor("syl_codasize", new
-                FeatureProcessors.SylCodaSize());
-        addFeatureProcessor("syl_onsetsize", new
-                FeatureProcessors.SylOnsetSize());
+        addFeatureProcessor("seg_onsetcoda", new FeatureProcessors.SegOnsetCoda());
+        addFeatureProcessor("syl_codasize", new FeatureProcessors.SylCodaSize());
+        addFeatureProcessor("syl_onsetsize", new FeatureProcessors.SylOnsetSize());
         addFeatureProcessor("accented", new FeatureProcessors.Accented());
     }
 
@@ -245,11 +234,11 @@ public class ClusterUnitVoice extends Voice implements ConcatenativeVoice {
      * @param featureName the name of the feature of interest
      * @return the feature with the given name
      */
+    @Override
     public String getPhoneFeature(String phone, String featureName) {
         if (phoneSet != null)
             return phoneSet.getPhoneFeature(phone, featureName);
         else
             return null;
     }
-
 }

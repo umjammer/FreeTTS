@@ -37,9 +37,9 @@ import com.sun.speech.freetts.util.Utilities;
  * higher latency (50 msecs for a typical 4 second utterance).
  */
 public class JavaClipAudioPlayer implements AudioPlayer {
+
     /** Logger instance. */
-    private static final Logger LOGGER =
-            Logger.getLogger(JavaClipAudioPlayer.class.getName());
+    private static final Logger logger = Logger.getLogger(JavaClipAudioPlayer.class.getName());
 
     private volatile boolean paused;
     private volatile boolean cancelled = false;
@@ -66,22 +66,17 @@ public class JavaClipAudioPlayer implements AudioPlayer {
     private long openFailDelayMs;
     private long totalOpenFailDelayMs;
 
-
     /**
      * Constructs a default JavaClipAudioPlayer
      */
     public JavaClipAudioPlayer() {
-        drainDelay = Utilities.getLong
-                ("com.sun.speech.freetts.audio.AudioPlayer.drainDelay",
+        drainDelay = Utilities.getLong("com.sun.speech.freetts.audio.AudioPlayer.drainDelay",
                         150L);
-        openFailDelayMs = Utilities.getLong
-                ("com.sun.speech.freetts.audio.AudioPlayer.openFailDelayMs",
+        openFailDelayMs = Utilities.getLong("com.sun.speech.freetts.audio.AudioPlayer.openFailDelayMs",
                         0);
-        totalOpenFailDelayMs = Utilities.getLong
-                ("com.sun.speech.freetts.audio.AudioPlayer.totalOpenFailDelayMs",
+        totalOpenFailDelayMs = Utilities.getLong("com.sun.speech.freetts.audio.AudioPlayer.totalOpenFailDelayMs",
                         0);
-        audioMetrics = Utilities.getBoolean(
-                "com.sun.speech.freetts.audio.AudioPlayer.showAudioMetrics");
+        audioMetrics = Utilities.getBoolean("com.sun.speech.freetts.audio.AudioPlayer.showAudioMetrics");
         setPaused(false);
         outputData = new PipedOutputStream();
         lineListener = new JavaClipLineListener();
@@ -94,6 +89,7 @@ public class JavaClipAudioPlayer implements AudioPlayer {
      * @throws UnsupportedOperationException if the line cannot be opened with
      *                                       the given format
      */
+    @Override
     public synchronized void setAudioFormat(AudioFormat format) {
         if (currentFormat.matches(format)) {
             return;
@@ -110,6 +106,7 @@ public class JavaClipAudioPlayer implements AudioPlayer {
      *
      * @return format the audio format
      */
+    @Override
     public AudioFormat getAudioFormat() {
         return currentFormat;
     }
@@ -120,6 +117,7 @@ public class JavaClipAudioPlayer implements AudioPlayer {
      * current point by calling <code>resume</code>. Output can be
      * aborted by calling <code> cancel </code>
      */
+    @Override
     public void pause() {
         if (!paused) {
             setPaused(true);
@@ -135,6 +133,7 @@ public class JavaClipAudioPlayer implements AudioPlayer {
     /**
      * Resumes playing audio after a pause.
      */
+    @Override
     public synchronized void resume() {
         if (paused) {
             setPaused(false);
@@ -149,6 +148,7 @@ public class JavaClipAudioPlayer implements AudioPlayer {
      * Cancels all queued audio. Any 'write' in process will return
      * immediately false.
      */
+    @Override
     public void cancel() {
         if (audioMetrics) {
             timer.start("audioCancel");
@@ -174,6 +174,7 @@ public class JavaClipAudioPlayer implements AudioPlayer {
      * (such as all output associated with a single FreeTTSSpeakable)
      * should be grouped between a reset/drain pair.
      */
+    @Override
     public synchronized void reset() {
         timer.start("speakableOut");
     }
@@ -184,6 +185,7 @@ public class JavaClipAudioPlayer implements AudioPlayer {
      * @return <code>true</code> if the write completed successfully,
      * <code> false </code>if the write was cancelled.
      */
+    @Override
     public boolean drain() {
         timer.stop("speakableOut");
         return true;
@@ -200,6 +202,7 @@ public class JavaClipAudioPlayer implements AudioPlayer {
      * drained out of the system
      * ]]]
      */
+    @Override
     public synchronized void close() {
         if (currentClip != null) {
             currentClip.drain();
@@ -219,6 +222,7 @@ public class JavaClipAudioPlayer implements AudioPlayer {
      *
      * @return the current volume (between 0 and 1)
      */
+    @Override
     public float getVolume() {
         return volume;
     }
@@ -228,6 +232,7 @@ public class JavaClipAudioPlayer implements AudioPlayer {
      *
      * @param volume the current volume (between 0 and 1)
      */
+    @Override
     public void setVolume(float volume) {
         if (volume > 1.0f) {
             volume = 1.0f;
@@ -259,14 +264,11 @@ public class JavaClipAudioPlayer implements AudioPlayer {
      */
     private void setVolume(Clip clip, float vol) {
         if (clip.isControlSupported(FloatControl.Type.MASTER_GAIN)) {
-            FloatControl volumeControl =
-                    (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
-            float range = volumeControl.getMaximum() -
-                    volumeControl.getMinimum();
+            FloatControl volumeControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+            float range = volumeControl.getMaximum() - volumeControl.getMinimum();
             volumeControl.setValue(vol * range + volumeControl.getMinimum());
         }
     }
-
 
     /**
      * Returns the current position in the output stream since the
@@ -276,21 +278,22 @@ public class JavaClipAudioPlayer implements AudioPlayer {
      *
      * @return the position in the audio stream in milliseconds
      */
+    @Override
     public synchronized long getTime() {
         return -1L;
     }
 
-
     /**
      * Resets the time for this audio stream to zero
      */
+    @Override
     public synchronized void resetTime() {
     }
-
 
     /**
      * {@inheritDoc}
      */
+    @Override
     public synchronized void begin(int size) throws IOException {
         timer.start("utteranceOutput");
         cancelled = false;
@@ -300,7 +303,7 @@ public class JavaClipAudioPlayer implements AudioPlayer {
             in = new PipedInputStream(outputData);
             audioInput = new AudioInputStream(in, currentFormat, size);
         } catch (IOException e) {
-            LOGGER.warning(e.getLocalizedMessage());
+            logger.warning(e.getLocalizedMessage());
         }
         while (paused && !cancelled) {
             try {
@@ -322,8 +325,7 @@ public class JavaClipAudioPlayer implements AudioPlayer {
                 currentClip.open(audioInput);
                 opened = true;
             } catch (LineUnavailableException lue) {
-                System.err.println("LINE UNAVAILABLE: " +
-                        "Format is " + currentFormat);
+                logger.info("LINE UNAVAILABLE: " + "Format is " + currentFormat);
                 try {
                     Thread.sleep(openFailDelayMs);
                     totalDelayMs += openFailDelayMs;
@@ -356,8 +358,8 @@ public class JavaClipAudioPlayer implements AudioPlayer {
      */
     private Clip getClip() throws LineUnavailableException {
         if (currentClip == null) {
-            if (LOGGER.isLoggable(Level.FINE)) {
-                LOGGER.fine("creating new clip");
+            if (logger.isLoggable(Level.FINE)) {
+                logger.fine("creating new clip");
             }
             DataLine.Info info = new DataLine.Info(Clip.class, currentFormat);
             try {
@@ -377,6 +379,7 @@ public class JavaClipAudioPlayer implements AudioPlayer {
      * @return <code>true</code> if the audio was output properly,
      * <code>false </code> if the output was canceled or interrupted.
      */
+    @Override
     public synchronized boolean end() {
         boolean ok = true;
 
@@ -420,8 +423,7 @@ public class JavaClipAudioPlayer implements AudioPlayer {
     }
 
     @Override
-    public boolean write(byte[] bytes, int offset, int size)
-            throws IOException {
+    public boolean write(byte[] bytes, int offset, int size) throws IOException {
         if (firstSample) {
             firstSample = false;
             timer.stop("firstAudio");
@@ -435,7 +437,6 @@ public class JavaClipAudioPlayer implements AudioPlayer {
         return true;
     }
 
-
     /**
      * Returns the name of this audio player
      *
@@ -445,10 +446,10 @@ public class JavaClipAudioPlayer implements AudioPlayer {
         return "JavaClipAudioPlayer";
     }
 
-
     /**
      * Shows metrics for this audio player
      */
+    @Override
     public void showMetrics() {
         timer.show(toString());
     }
@@ -456,6 +457,7 @@ public class JavaClipAudioPlayer implements AudioPlayer {
     /**
      * Starts the first sample timer
      */
+    @Override
     public void startFirstSampleTimer() {
         timer.start("firstAudio");
         firstSample = true;
@@ -464,7 +466,6 @@ public class JavaClipAudioPlayer implements AudioPlayer {
             firstPlay = true;
         }
     }
-
 
     /**
      * Provides a LineListener for this clas.
@@ -476,28 +477,29 @@ public class JavaClipAudioPlayer implements AudioPlayer {
          *
          * @param event the LineEvent to handle
          */
+        @Override
         public void update(LineEvent event) {
             if (event.getType().equals(LineEvent.Type.START)) {
-                if (LOGGER.isLoggable(Level.FINE)) {
-                    LOGGER.fine(this + ": EVENT START");
+                if (logger.isLoggable(Level.FINE)) {
+                    logger.fine(this + ": EVENT START");
                 }
             } else if (event.getType().equals(LineEvent.Type.STOP)) {
-                if (LOGGER.isLoggable(Level.FINE)) {
-                    LOGGER.fine(this + ": EVENT STOP");
+                if (logger.isLoggable(Level.FINE)) {
+                    logger.fine(this + ": EVENT STOP");
                 }
                 synchronized (JavaClipAudioPlayer.this) {
                     JavaClipAudioPlayer.this.notifyAll();
                 }
             } else if (event.getType().equals(LineEvent.Type.OPEN)) {
-                if (LOGGER.isLoggable(Level.FINE)) {
-                    LOGGER.fine(this + ": EVENT OPEN");
+                if (logger.isLoggable(Level.FINE)) {
+                    logger.fine(this + ": EVENT OPEN");
                 }
             } else if (event.getType().equals(LineEvent.Type.CLOSE)) {
                 // When a clip is closed we no longer need it, so
                 // set currentClip to null and notify anyone who may
                 // be waiting on it.
-                if (LOGGER.isLoggable(Level.FINE)) {
-                    LOGGER.fine(this + ": EVENT CLOSE");
+                if (logger.isLoggable(Level.FINE)) {
+                    logger.fine(this + ": EVENT CLOSE");
                 }
                 synchronized (JavaClipAudioPlayer.this) {
                     JavaClipAudioPlayer.this.notifyAll();

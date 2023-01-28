@@ -18,6 +18,7 @@ package com.sun.speech.freetts;
  * @see PhoneDuration
  */
 public interface PhoneDurations {
+
     /**
      * Gets the <code>PhoneDuration</code> for the given phone.  If no
      * duration is applicable, returns <code>null</code>.  Note that

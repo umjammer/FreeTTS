@@ -15,11 +15,13 @@ import com.sun.speech.freetts.en.us.CMULexicon;
  * imported from CMU Flite
  */
 public class KevinVoiceDirectory extends VoiceDirectory {
+
     /**
      * Gets the voices provided by this voice.
      *
      * @return an array of new Voice instances
      */
+    @Override
     public Voice[] getVoices() {
         CMULexicon lexicon = new CMULexicon("cmulex");
         Voice kevin = new CMUDiphoneVoice("kevin", Gender.MALE,

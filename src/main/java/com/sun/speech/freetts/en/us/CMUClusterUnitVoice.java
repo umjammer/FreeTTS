@@ -51,8 +51,7 @@ public class CMUClusterUnitVoice extends CMUVoice implements ConcatenativeVoice 
     public CMUClusterUnitVoice(String name, Gender gender, Age age,
                                String description, Locale locale, String domain,
                                String organization, CMULexicon lexicon, URL database) {
-        super(name, gender, age, description, locale,
-                domain, organization, lexicon);
+        super(name, gender, age, description, locale, domain, organization, lexicon);
         setRate(150f);
         setPitch(100F);
         setPitchRange(12F);
@@ -65,6 +64,7 @@ public class CMUClusterUnitVoice extends CMUVoice implements ConcatenativeVoice 
      *
      * @return an url to the database
      */
+    @Override
     public URL getDatabase() {
         return database;
     }
@@ -74,6 +74,7 @@ public class CMUClusterUnitVoice extends CMUVoice implements ConcatenativeVoice 
      *
      * @throws IOException if an I/O error occurs
      */
+    @Override
     protected void setupFeatureSet() throws IOException {
         super.setupFeatureSet();
         getFeatures().setString(FEATURE_JOIN_TYPE, "simple_join");
@@ -88,6 +89,7 @@ public class CMUClusterUnitVoice extends CMUVoice implements ConcatenativeVoice 
      * @throws IOException if an IO error occurs while getting
      *                     processor
      */
+    @Override
     public UtteranceProcessor getUnitSelector() throws IOException {
         return new ClusterUnitSelector(getDatabase());
     }
@@ -101,6 +103,7 @@ public class CMUClusterUnitVoice extends CMUVoice implements ConcatenativeVoice 
      * @throws IOException if an IO error occurs while getting
      *                     processor
      */
+    @Override
     public UtteranceProcessor getPitchmarkGenerator() throws IOException {
         return new ClusterUnitPitchmarkGenerator();
     }
@@ -114,10 +117,10 @@ public class CMUClusterUnitVoice extends CMUVoice implements ConcatenativeVoice 
      * @throws IOException if an IO error occurs while getting
      *                     processor
      */
+    @Override
     public UtteranceProcessor getUnitConcatenator() throws IOException {
         return new UnitConcatenator();
     }
-
 
     /**
      * Converts this object to a string

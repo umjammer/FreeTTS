@@ -32,6 +32,7 @@ import java.util.List;
  * </ul>
  */
 public interface Lexicon {
+
     /**
      * Gets the phone list for a given word.  If a phone list cannot
      * be found, <code>null</code> is returned.  The
@@ -85,9 +86,7 @@ public interface Lexicon {
      * @param currentWordPhone the word phone in question
      * @return <code>true</code> if the phone is a new boundary
      */
-    boolean isSyllableBoundary(List<String> syllablePhones,
-                               String[] wordPhones,
-                               int currentWordPhone);
+    boolean isSyllableBoundary(List<String> syllablePhones, String[] wordPhones, int currentWordPhone);
 
     /**
      * Loads this lexicon.  The loading of a lexicon need not be done

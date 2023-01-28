@@ -89,8 +89,7 @@ public class LexiconTest {
                 pos = line.substring(0, i);
                 flite_phones = line.substring(i + 1);
                 lex_phone_array = lex.getPhones(word, pos);
-                assertNotNull(lex_phone_array, "Phones returned for " + word + pos
-                        + " is not null: ");
+                assertNotNull(lex_phone_array, "Phones returned for " + word + pos + " is not null: ");
                 lex_phones = new StringBuilder("(");
                 for (i = 0; i < lex_phone_array.length; i++) {
                     if (i != 0) {

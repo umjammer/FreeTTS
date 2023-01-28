@@ -91,7 +91,6 @@ public class Utterance implements FeatureSet, Serializable {
         return relation;
     }
 
-
     /**
      * Retrieves a relation from this utterance.
      *
@@ -129,8 +128,7 @@ public class Utterance implements FeatureSet, Serializable {
      * @param title         the title to print when dumping out the utterance
      * @param justRelations if true don't print voice features
      */
-    public void dump(PrintWriter output, int pad, String title,
-                     boolean justRelations) {
+    public void dump(PrintWriter output, int pad, String title, boolean justRelations) {
         output.println(" ============ " + title + " ========== ");
         if (!justRelations) {
             voice.dump(output, pad + 4, "Voice");
@@ -147,6 +145,7 @@ public class Utterance implements FeatureSet, Serializable {
      * @param pad    the initial padding
      * @param title  the title to print when dumping out the utterance
      */
+    @Override
     public void dump(PrintWriter output, int pad, String title) {
         dump(output, pad, title, false);
     }
@@ -187,6 +186,7 @@ public class Utterance implements FeatureSet, Serializable {
      * @param name the name of the feature of interest
      * @return true if the named feature is present
      */
+    @Override
     public boolean isPresent(String name) {
         if (!features.isPresent(name)) {
             return getVoice().getFeatures().isPresent(name);
@@ -200,6 +200,7 @@ public class Utterance implements FeatureSet, Serializable {
      *
      * @param name the name of the feature of interest
      */
+    @Override
     public void remove(String name) {
         features.remove(name);
     }
@@ -215,6 +216,7 @@ public class Utterance implements FeatureSet, Serializable {
      * @throws ClassCastException if the associated value is not a
      *                            String
      */
+    @Override
     public String getString(String name) {
         if (!features.isPresent(name)) {
             return getVoice().getFeatures().getString(name);
@@ -234,6 +236,7 @@ public class Utterance implements FeatureSet, Serializable {
      * @throws ClassCastException if the associated value is not an
      *                            int
      */
+    @Override
     public int getInt(String name) {
         if (!features.isPresent(name)) {
             return getVoice().getFeatures().getInt(name);
@@ -253,6 +256,7 @@ public class Utterance implements FeatureSet, Serializable {
      * @throws ClassCastException if the associated value is not a
      *                            float
      */
+    @Override
     public float getFloat(String name) {
         if (!features.isPresent(name)) {
             return getVoice().getFeatures().getFloat(name);
@@ -449,13 +453,10 @@ public class Utterance implements FeatureSet, Serializable {
                 FeatureSet featureSet = item.getFeatures();
                 featureSet.setString("name", tokenWord);
                 featureSet.setString("whitespace", token.getWhitespace());
-                featureSet.setString("prepunctuation",
-                        token.getPrepunctuation());
+                featureSet.setString("prepunctuation", token.getPrepunctuation());
                 featureSet.setString("punc", token.getPostpunctuation());
-                featureSet.setString("file_pos",
-                        String.valueOf(token.getPosition()));
-                featureSet.setString("line_number",
-                        String.valueOf(token.getLineNumber()));
+                featureSet.setString("file_pos", String.valueOf(token.getPosition()));
+                featureSet.setString("line_number", String.valueOf(token.getLineNumber()));
 
             }
         }

@@ -13,6 +13,7 @@ package com.sun.speech.freetts;
 
 import java.io.PrintWriter;
 import java.util.StringTokenizer;
+import java.util.logging.Logger;
 
 
 /**
@@ -26,13 +27,16 @@ import java.util.StringTokenizer;
  * the same shared ItemContents.
  */
 public class Item implements Dumpable {
+
+    /** Logger instance. */
+    private static final Logger logger = Logger.getLogger(Item.class.getName());
+
     private Relation ownerRelation;
     private ItemContents contents;
     private Item parent;
     private Item daughter;
     private Item next;
     private Item prev;
-
 
     /**
      * Creates an item. The item is coupled to a particular
@@ -55,7 +59,6 @@ public class Item implements Dumpable {
         next = null;
         prev = null;
 
-
         getSharedContents().addItemRelation(relation.getName(), this);
     }
 
@@ -70,7 +73,6 @@ public class Item implements Dumpable {
     public Item getItemAs(String relationName) {
         return getSharedContents().getItemRelation(relationName);
     }
-
 
     /**
      * Retrieves the owning Relation.
@@ -175,7 +177,6 @@ public class Item implements Dumpable {
         return addDaughter(null);
     }
 
-
     /**
      * Returns the parent of this item.
      *
@@ -224,6 +225,7 @@ public class Item implements Dumpable {
      * @param out where to send the output
      * @param pad the leading whitspace
      */
+    @Override
     public void dump(PrintWriter out, int pad, String title) {
         String itemName = title + ":" + this;
         getFeatures().dump(out, pad, itemName);
@@ -268,7 +270,6 @@ public class Item implements Dumpable {
         Voice voice = getOwnerRelation().getUtterance().getVoice();
         Object results = null;
 
-
         lastDot = pathAndFeature.lastIndexOf(".");
         // string can be of the form "p.feature" or just "feature"
 
@@ -280,7 +281,6 @@ public class Item implements Dumpable {
             path = pathAndFeature.substring(0, lastDot);
         }
 
-
         item = findItem(path);
         if (item != null) {
             fp = voice.getFeatureProcessor(feature);
@@ -289,18 +289,15 @@ public class Item implements Dumpable {
                 try {
                     results = fp.process(item);
                 } catch (ProcessException pe) {
-                    System.err.println("Trouble while processing " +
-                            fp);
+                    logger.info("Trouble while processing " + fp);
                 }
             } else {
                 results = item.getFeatures().getObject(feature);
             }
         }
-        results = (results == null)
-                ? "0"
-                : results;
+        results = (results == null) ? "0" : results;
 
-        // System.out.println("FI " + pathAndFeature + " are " + results);
+        logger.finer("FI " + pathAndFeature + " are " + results);
 
         return results;
     }
@@ -378,7 +375,6 @@ public class Item implements Dumpable {
         return pitem;
     }
 
-
     /**
      * Gets the next item in this list.
      *
@@ -388,7 +384,6 @@ public class Item implements Dumpable {
         return next;
     }
 
-
     /**
      * Gets the previous item in this list.
      *
@@ -397,7 +392,6 @@ public class Item implements Dumpable {
     public Item getPrevious() {
         return prev;
     }
-
 
     /**
      * Appends an item in this list after this item.
@@ -475,8 +469,7 @@ public class Item implements Dumpable {
         return newItem;
     }
 
-
-    // Inherited from object
+    @Override
     public String toString() {
         // if we have a feature called 'name' use that
         // otherwise fall back on the default.

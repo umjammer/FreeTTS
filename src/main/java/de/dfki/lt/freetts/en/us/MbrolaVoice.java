@@ -13,7 +13,9 @@ package de.dfki.lt.freetts.en.us;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.Locale;
+import java.util.logging.Logger;
 
 import com.sun.speech.freetts.Age;
 import com.sun.speech.freetts.Gender;
@@ -31,6 +33,9 @@ import de.dfki.lt.freetts.mbrola.ParametersToMbrolaConverter;
  * the MBROLA synthesis.
  */
 public class MbrolaVoice extends CMUVoice {
+
+    /** Logger instance. */
+    private static final Logger logger = Logger.getLogger(MbrolaVoice.class.getName());
 
     private String databaseDirectory; // where the voice database is
     private String database;          // name of the voice database
@@ -62,8 +67,7 @@ public class MbrolaVoice extends CMUVoice {
                        String name, Gender gender, Age age,
                        String description, Locale locale, String domain,
                        String organization, CMULexicon lexicon) {
-        super(name, gender, age, description, locale,
-                domain, organization, lexicon);
+        super(name, gender, age, description, locale, domain, organization, lexicon);
         setRate(rate);
         setPitch(pitch);
         setPitchRange(range);
@@ -71,11 +75,11 @@ public class MbrolaVoice extends CMUVoice {
         this.database = database;
     }
 
-    //[[Providing the Mbrola classes via getUnitSelector() and
+    // Providing the Mbrola classes via getUnitSelector() and
     // getUnitConcatenator() is just a hack allowing us to use
     // the current CMUVoice.java framework. It only means that
     // after the Durator and the ContourGenerator, the classes
-    // process the utterance (Selector before Concatenator).]]
+    // process the utterance (Selector before Concatenator).
 
     /**
      * Returns the unit selector to be used by this voice.
@@ -85,6 +89,7 @@ public class MbrolaVoice extends CMUVoice {
      * @throws IOException if an IO error occurs while getting
      *                     processor
      */
+    @Override
     protected UtteranceProcessor getUnitSelector() throws IOException {
         return new ParametersToMbrolaConverter();
     }
@@ -93,8 +98,9 @@ public class MbrolaVoice extends CMUVoice {
      * Returns the command line that invokes the MBROLA executable.
      * The command will be in the form of:
      *
-     * <pre> {mbrolaExecutable} -e -R {mbrolaRenameList} {mbrolaVoiceDB}
-     * - -.raw </pre>
+     * <pre>
+     *  {mbrolaExecutable} -e -R {mbrolaRenameList} {mbrolaVoiceDB} - -.raw
+     * </pre>
      */
     protected String[] getMbrolaCommand() {
 
@@ -103,15 +109,9 @@ public class MbrolaVoice extends CMUVoice {
         // to stdout; translates CMU us radio to sampa phonetic symbols;
         // and only complains, but does not abort, when encountering an
         // unknown diphone:
-        String[] cmd =
-                {getMbrolaBinary(), "-e", "-R", getRenameList(),
-                        getDatabase(), "-", "-.raw"};
+        String[] cmd = {getMbrolaBinary(), "-e", "-R", getRenameList(), getDatabase(), "-", "-.raw"};
 
-        if (false) {
-            for (String s : cmd) {
-                System.out.println(s);
-            }
-        }
+logger.finer(Arrays.toString(cmd));
 
         return cmd;
     }
@@ -159,8 +159,7 @@ public class MbrolaVoice extends CMUVoice {
      * @return the absolute file name of the Voice database
      */
     public String getDatabase() {
-        return getMbrolaBase() + File.separator +
-                databaseDirectory + File.separator + database;
+        return getMbrolaBase() + File.separator + databaseDirectory + File.separator + database;
     }
 
 //    /**
@@ -176,11 +175,11 @@ public class MbrolaVoice extends CMUVoice {
 //        return null;
 //    }
 
-    //[[Providing the Mbrola classes via getUnitSelector() and
+    // Providing the Mbrola classes via getUnitSelector() and
     // getUnitConcatenator() is just a hack allowing us to use
     // the current CMUVoice.java framework. It only means that
     // after the Durator and the ContourGenerator, the classes
-    // process the utterance (Selector before Concatenator).]]
+    // process the utterance (Selector before Concatenator).
 
     /**
      * Returns the unit concatenator to be used by this voice.
@@ -192,6 +191,7 @@ public class MbrolaVoice extends CMUVoice {
      * @throws IOException if an IO error occurs while getting
      *                     processor
      */
+    @Override
     protected UtteranceProcessor getUnitConcatenator() throws IOException {
         return new MbrolaCaller(getMbrolaCommand());
     }
@@ -202,6 +202,7 @@ public class MbrolaVoice extends CMUVoice {
      * @return the audio output used by this voice
      * @throws IOException if an I/O error occurs
      */
+    @Override
     protected UtteranceProcessor getAudioOutput() throws IOException {
         return new MbrolaAudioOutput();
     }
@@ -210,6 +211,7 @@ public class MbrolaVoice extends CMUVoice {
      * Get a resource for this voice.  Resources for this voice are located in
      * the package <code>com.sun.speech.freetts.en.us</code>.
      */
+    @Override
     protected URL getResource(String resource) {
         return com.sun.speech.freetts.en.us.CMUVoice.class.
                 getResource(resource);

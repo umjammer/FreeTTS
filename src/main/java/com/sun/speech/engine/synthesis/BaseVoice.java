@@ -135,6 +135,7 @@ public class BaseVoice extends Voice {
      *
      * @return a clone of this voice
      */
+    @Override
     public Object clone() {
         return super.clone();
     }

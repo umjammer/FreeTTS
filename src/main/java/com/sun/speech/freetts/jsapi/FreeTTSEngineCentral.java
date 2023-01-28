@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Vector;
+import java.util.logging.Logger;
 import javax.speech.EngineCentral;
 import javax.speech.EngineList;
 import javax.speech.EngineModeDesc;
@@ -30,6 +31,9 @@ import com.sun.speech.freetts.Voice;
  * </pre>
  */
 public class FreeTTSEngineCentral implements EngineCentral {
+
+    /** Logger instance. */
+    private static final Logger logger = Logger.getLogger(FreeTTSEngineCentral.class.getName());
 
     private static final String ENGINE_NAME = "FreeTTS Synthesizer";
 
@@ -77,22 +81,20 @@ public class FreeTTSEngineCentral implements EngineCentral {
      * @return an engineList containing matching engines, or null if
      * no matching engines are found
      */
+    @Override
     @SuppressWarnings("unchecked")
     public EngineList createEngineList(EngineModeDesc require) {
         EngineList el = new EngineList();
 
-        com.sun.speech.freetts.VoiceManager voiceManager =
-                com.sun.speech.freetts.VoiceManager.getInstance();
+        com.sun.speech.freetts.VoiceManager voiceManager = com.sun.speech.freetts.VoiceManager.getInstance();
 
         com.sun.speech.freetts.Voice[] voices = voiceManager.getVoices();
 
         // We want to get all combinations of domains and locales
         List<DomainLocale> domainLocaleVector = new ArrayList<>();
         for (Voice value : voices) {
-            DomainLocale dl =
-                    new DomainLocale(value.getDomain(), value.getLocale());
-            DomainLocale dlentry = (DomainLocale)
-                    getItem(domainLocaleVector, dl);
+            DomainLocale dl = new DomainLocale(value.getDomain(), value.getLocale());
+            DomainLocale dlentry = (DomainLocale) getItem(domainLocaleVector, dl);
             if (dlentry == null) {
                 domainLocaleVector.add(dl);
                 dlentry = dl;
@@ -104,8 +106,7 @@ public class FreeTTSEngineCentral implements EngineCentral {
         // combination
         for (DomainLocale dl : domainLocaleVector) {
 
-            FreeTTSSynthesizerModeDesc desc = new
-                    FreeTTSSynthesizerModeDesc("FreeTTS "
+            FreeTTSSynthesizerModeDesc desc = new FreeTTSSynthesizerModeDesc("FreeTTS "
                     + dl.getLocale().toString() + " " + dl.getDomain()
                     + " synthesizer", dl.getDomain(), dl.getLocale());
 
@@ -121,7 +122,7 @@ public class FreeTTSEngineCentral implements EngineCentral {
                     desc.validate();
                     el.add(desc);
                 } catch (ValidationException ve) {
-                    System.err.println(ve.getMessage());
+                    logger.info(ve.getMessage());
                 }
             }
         }
@@ -155,6 +156,7 @@ public class FreeTTSEngineCentral implements EngineCentral {
  * combinations of domain/locale pairs.
  */
 class DomainLocale {
+
     private String domain;
     private Locale locale;
     private Vector<Voice> voices;
@@ -183,8 +185,7 @@ class DomainLocale {
         if (!(o instanceof DomainLocale)) {
             return false;
         }
-        return (domain.equals(((DomainLocale) o).getDomain())
-                && locale.equals(((DomainLocale) o).getLocale()));
+        return (domain.equals(((DomainLocale) o).getDomain()) && locale.equals(((DomainLocale) o).getLocale()));
     }
 
     /**
@@ -221,8 +222,7 @@ class DomainLocale {
      * instance.
      */
     public com.sun.speech.freetts.Voice[] getVoices() {
-        com.sun.speech.freetts.Voice[] voiceArray =
-                new com.sun.speech.freetts.Voice[voices.size()];
+        com.sun.speech.freetts.Voice[] voiceArray = new com.sun.speech.freetts.Voice[voices.size()];
         return voices.toArray(voiceArray);
     }
 }

@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.logging.Logger;
 
 import com.sun.speech.freetts.Voice;
 import com.sun.speech.freetts.VoiceManager;
@@ -31,16 +32,16 @@ import demo.util.TTSServer;
  */
 public class Server extends TTSServer {
 
+    /** Logger instance. */
+    private static final Logger logger = Logger.getLogger(Server.class.getName());
+
     // 8k Voice
     private Voice voice8k;
-    private String voice8kName = Utilities.getProperty
-            ("voice8kName", "kevin");
+    private String voice8kName = Utilities.getProperty("voice8kName", "kevin");
 
     // 16k Voice
     private Voice voice16k;
-    private String voice16kName = Utilities.getProperty
-            ("voice16kName", "kevin16");
-
+    private String voice16kName = Utilities.getProperty("voice16kName", "kevin16");
 
     /**
      * Constructs a default Server, which loads a 8k Voice and a 16k Voice
@@ -69,7 +70,6 @@ public class Server extends TTSServer {
         return voice8k;
     }
 
-
     /**
      * Returns the 16k diphone voice.
      *
@@ -79,12 +79,12 @@ public class Server extends TTSServer {
         return voice16k;
     }
 
-
     /**
      * Spawns a ProtocolHandler depending on the current protocol.
      *
      * @param socket the socket that the spawned protocol handler will use
      */
+    @Override
     protected void spawnProtocolHandler(Socket socket) {
         try {
             SocketTTSHandler handler = new SocketTTSHandler(socket, this);
@@ -93,7 +93,6 @@ public class Server extends TTSServer {
             e.printStackTrace();
         }
     }
-
 
     /**
      * Starts this TTS Server.
@@ -110,16 +109,19 @@ public class Server extends TTSServer {
  */
 class SocketTTSHandler implements Runnable {
 
-    // the Voice to use to speak
+    /** Logger instance. */
+    private static final Logger logger = Logger.getLogger(SocketTTSHandler.class.getName());
+
+    /** the Voice to use to speak */
     private Voice voice;
 
-    // the Server to obtain Voices from
+    /** the Server to obtain Voices from */
     private Server server;
 
-    // the Socket to communicate with
+    /** the Socket to communicate with */
     private Socket socket;
 
-    // an AudioPlayer that writes bytes to the socket
+    /** an AudioPlayer that writes bytes to the socket */
     private SocketAudioPlayer socketAudioPlayer;
 
     private BufferedReader reader;
@@ -131,7 +133,6 @@ class SocketTTSHandler implements Runnable {
     private boolean metrics = Utilities.getBoolean("metrics");
     private long requestReceivedTime;
     private long requestSpeakTime;
-
 
     /**
      * Constructs a SocketTTSHandler with the given <code>Socket</code>
@@ -146,7 +147,6 @@ class SocketTTSHandler implements Runnable {
         this.socketAudioPlayer = new SocketAudioPlayer(socket);
     }
 
-
     /**
      * Sets the Socket to be used by this ProtocolHandler.
      *
@@ -156,17 +156,15 @@ class SocketTTSHandler implements Runnable {
         this.socket = socket;
         if (socket != null) {
             try {
-                reader = new BufferedReader
-                        (new InputStreamReader(socket.getInputStream()));
+                reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                 writer = new PrintWriter(socket.getOutputStream(), true);
             } catch (IOException ioe) {
                 ioe.printStackTrace();
-                println("Socket reader/writer not instantiated");
+                logger.fine("Socket reader/writer not instantiated");
                 throw new Error();
             }
         }
     }
-
 
     /**
      * Sends the given line of text over the Socket.
@@ -179,10 +177,10 @@ class SocketTTSHandler implements Runnable {
         writer.flush();
     }
 
-
     /**
      * Implements the run() method of Runnable
      */
+    @Override
     public void run() {
         try {
             sendLine("READY");
@@ -190,36 +188,32 @@ class SocketTTSHandler implements Runnable {
             String command;
             int status;
 
-            while ((command = reader.readLine()) != null &&
-                    command.equals("TTS")) {
+            while ((command = reader.readLine()) != null && command.equals("TTS")) {
 
                 requestReceivedTime = System.currentTimeMillis();
 
                 status = handleSynthesisRequest();
 
                 if (status == INVALID_SAMPLE_RATE) {
-                    println("Invalid sample rate\nexit.");
+                    logger.fine("Invalid sample rate\nexit.");
                     return;
                 } else if (metrics) {
-                    System.out.println
-                            ("Time To Sending First Byte: " +
-                                    (socketAudioPlayer.getFirstByteSentTime() -
-                                            requestReceivedTime) + " ms");
+                    System.out.println("Time To Sending First Byte: " +
+                                    (socketAudioPlayer.getFirstByteSentTime() - requestReceivedTime) + " ms");
                 }
             }
             if (command != null) {
                 if (command.equals("DONE")) {
                     socket.close();
-                    println("... closed socket connection");
+                    logger.fine("... closed socket connection");
                 } else {
-                    println("invalid command: " + command);
+                    logger.fine("invalid command: " + command);
                 }
             }
         } catch (IOException ioe) {
             ioe.printStackTrace();
         }
     }
-
 
     /**
      * Handles a single speech synthesis request.
@@ -251,15 +245,5 @@ class SocketTTSHandler implements Runnable {
             ioe.printStackTrace();
         }
         return 0;
-    }
-
-
-    /**
-     * A central point to write out all message.
-     *
-     * @param message the message
-     */
-    private void println(String message) {
-        System.out.println(message);
     }
 }

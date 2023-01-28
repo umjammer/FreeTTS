@@ -16,11 +16,11 @@ import com.sun.speech.freetts.Item;
 
 
 public interface ClusterUnitNamer {
+
     /**
      * Sets the cluster unit name given the segment.
      *
      * @param seg the segment item that gets the name
      */
     void setUnitName(Item seg);
-
 }

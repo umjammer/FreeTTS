@@ -40,6 +40,7 @@ public class ClusterUnitPitchmarkGenerator implements UtteranceProcessor {
      *                          the utterance
      * @see LPCResult
      */
+    @Override
     public void processUtterance(Utterance utterance) throws ProcessException {
         LPCResult lpcResult;
         int pitchmarks = 0;
@@ -51,8 +52,7 @@ public class ClusterUnitPitchmarkGenerator implements UtteranceProcessor {
         SampleSet sts = (SampleSet) utterance.getObject("sts_list");
         lpcResult = new LPCResult();
 
-        for (Item unit = utterance.getRelation(Relation.UNIT).getHead();
-             unit != null; unit = unit.getNext()) {
+        for (Item unit = utterance.getRelation(Relation.UNIT).getHead(); unit != null; unit = unit.getNext()) {
             unitEntry = unit.getFeatures().getInt("unit_entry");
             unitStart = unit.getFeatures().getInt("unit_start");
             unitEnd = unit.getFeatures().getInt("unit_end");
@@ -68,8 +68,7 @@ public class ClusterUnitPitchmarkGenerator implements UtteranceProcessor {
 
         int[] targetTimes = lpcResult.getTimes();
 
-        for (Item unit = utterance.getRelation(Relation.UNIT).getHead();
-             unit != null; unit = unit.getNext()) {
+        for (Item unit = utterance.getRelation(Relation.UNIT).getHead(); unit != null; unit = unit.getNext()) {
             unitEntry = unit.getFeatures().getInt("unit_entry");
             unitStart = unit.getFeatures().getInt("unit_start");
             unitEnd = unit.getFeatures().getInt("unit_end");

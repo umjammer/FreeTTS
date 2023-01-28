@@ -43,6 +43,7 @@ import com.sun.speech.freetts.util.BulkTimer;
  * Provides generic support for a CMU Voice
  */
 public abstract class CMUVoice extends Voice {
+
     private PhoneSet phoneSet;
 
     /**
@@ -60,20 +61,17 @@ public abstract class CMUVoice extends Voice {
      *                     &quot;weather&quot;.
      * @param lexicon      the lexicon to load
      */
-    public CMUVoice(String name, Gender gender,
-                    Age age, String description, Locale locale, String domain,
+    public CMUVoice(String name, Gender gender, Age age, String description, Locale locale, String domain,
                     String organization, CMULexicon lexicon) {
-        super(name, gender, age, description, locale, domain,
-                organization);
+        super(name, gender, age, description, locale, domain, organization);
         setLexicon(lexicon);
     }
-
-    // overrides Voice.loader
 
     /**
      * Called by <code> Voice </code>  during loading, derived voices
      * should override this to provide customized loading.
      */
+    @Override
     protected void loader() throws IOException {
         setupFeatureSet();
         setupUtteranceProcessors();
@@ -113,12 +111,9 @@ public abstract class CMUVoice extends Voice {
         BulkTimer.LOAD.stop("CartLoading");
 
         BulkTimer.LOAD.start("UtteranceProcessors");
-        PhoneDurations phoneDurations = new PhoneDurationsImpl(
-                getResource("dur_stat.txt"));
-        PronounceableFSM prefixFSM = new PrefixFSM
-                (getResource("prefix_fsm.txt"));
-        PronounceableFSM suffixFSM = new SuffixFSM
-                (getResource("suffix_fsm.txt"));
+        PhoneDurations phoneDurations = new PhoneDurationsImpl(getResource("dur_stat.txt"));
+        PronounceableFSM prefixFSM = new PrefixFSM(getResource("prefix_fsm.txt"));
+        PronounceableFSM suffixFSM = new SuffixFSM(getResource("suffix_fsm.txt"));
 
         processors.add(new TokenToWords(numbersCart, prefixFSM, suffixFSM));
         processors.add(new PartOfSpeechTagger());
@@ -128,8 +123,7 @@ public abstract class CMUVoice extends Voice {
         processors.add(new Intonator(accentCart, toneCart));
         processors.add(getPostLexicalAnalyzer());
         processors.add(new Durator(durzCart, phoneDurations));
-        processors.add(new ContourGenerator
-                (getResource("f0_lr_terms.txt"), 170.0f, 34.0f));
+        processors.add(new ContourGenerator(getResource("f0_lr_terms.txt"), 170.0f, 34.0f));
 
 
         processors.add(getUnitSelector());
@@ -138,9 +132,9 @@ public abstract class CMUVoice extends Voice {
         BulkTimer.LOAD.stop("UtteranceProcessors");
     }
 
-    // [[[TODO: currently a CMUVoice only allows customization of
-    // the postlex, unit selector and wave synthesizer. This may 
-    // grow as time goes on ]]]
+    // TODO currently a CMUVoice only allows customization of
+    //  the postlex, unit selector and wave synthesizer. This may
+    //  grow as time goes on
 
     /**
      * Returns the post lexical processor to be used by this voice.
@@ -190,7 +184,6 @@ public abstract class CMUVoice extends Voice {
         return null;
     }
 
-
     /**
      * Sets up the FeatureProcessors for this Voice.
      *
@@ -198,9 +191,7 @@ public abstract class CMUVoice extends Voice {
      */
     protected void setupFeatureProcessors() throws IOException {
         BulkTimer.LOAD.start("FeatureProcessing");
-        PartOfSpeech pos = new PartOfSpeechImpl(
-                getResource("part_of_speech.txt"),
-                "content");
+        PartOfSpeech pos = new PartOfSpeechImpl(getResource("part_of_speech.txt"), "content");
 
         phoneSet = new PhoneSetImpl(getResource("phoneset.txt"));
 
@@ -211,22 +202,18 @@ public abstract class CMUVoice extends Voice {
         addFeatureProcessor("ssyl_in", new FeatureProcessors.StressedSylIn());
         addFeatureProcessor("syl_in", new FeatureProcessors.SylIn());
         addFeatureProcessor("syl_out", new FeatureProcessors.SylOut());
-        addFeatureProcessor("ssyl_out", new
-                FeatureProcessors.StressedSylOut());
+        addFeatureProcessor("ssyl_out", new FeatureProcessors.StressedSylOut());
         addFeatureProcessor("syl_break", new FeatureProcessors.SylBreak());
         addFeatureProcessor("old_syl_break", new FeatureProcessors.SylBreak());
         addFeatureProcessor("num_digits", new FeatureProcessors.NumDigits());
         addFeatureProcessor("month_range", new FeatureProcessors.MonthRange());
-        addFeatureProcessor("token_pos_guess",
-                new FeatureProcessors.TokenPosGuess());
-        addFeatureProcessor("segment_duration",
-                new FeatureProcessors.SegmentDuration());
+        addFeatureProcessor("token_pos_guess", new FeatureProcessors.TokenPosGuess());
+        addFeatureProcessor("segment_duration", new FeatureProcessors.SegmentDuration());
         addFeatureProcessor("sub_phrases", new FeatureProcessors.SubPhrases());
         addFeatureProcessor("asyl_in", new FeatureProcessors.AccentedSylIn());
         addFeatureProcessor("last_accent", new FeatureProcessors.LastAccent());
         addFeatureProcessor("pos_in_syl", new FeatureProcessors.PosInSyl());
-        addFeatureProcessor("position_type", new
-                FeatureProcessors.PositionType());
+        addFeatureProcessor("position_type", new FeatureProcessors.PositionType());
 
         addFeatureProcessor("ph_cplace", new FeatureProcessors.PH_CPlace());
         addFeatureProcessor("ph_ctype", new FeatureProcessors.PH_CType());
@@ -237,32 +224,21 @@ public abstract class CMUVoice extends Voice {
         addFeatureProcessor("ph_vlng", new FeatureProcessors.PH_VLength());
         addFeatureProcessor("ph_vrnd", new FeatureProcessors.PH_VRnd());
 
-        addFeatureProcessor("seg_coda_fric", new
-                FeatureProcessors.SegCodaFric());
-        addFeatureProcessor("seg_onset_fric", new
-                FeatureProcessors.SegOnsetFric());
+        addFeatureProcessor("seg_coda_fric", new FeatureProcessors.SegCodaFric());
+        addFeatureProcessor("seg_onset_fric", new FeatureProcessors.SegOnsetFric());
 
-        addFeatureProcessor("seg_coda_stop", new
-                FeatureProcessors.SegCodaStop());
-        addFeatureProcessor("seg_onset_stop", new
-                FeatureProcessors.SegOnsetStop());
+        addFeatureProcessor("seg_coda_stop", new FeatureProcessors.SegCodaStop());
+        addFeatureProcessor("seg_onset_stop", new FeatureProcessors.SegOnsetStop());
 
-        addFeatureProcessor("seg_coda_nasal", new
-                FeatureProcessors.SegCodaNasal());
-        addFeatureProcessor("seg_onset_nasal", new
-                FeatureProcessors.SegOnsetNasal());
+        addFeatureProcessor("seg_coda_nasal", new FeatureProcessors.SegCodaNasal());
+        addFeatureProcessor("seg_onset_nasal", new FeatureProcessors.SegOnsetNasal());
 
-        addFeatureProcessor("seg_coda_glide", new
-                FeatureProcessors.SegCodaGlide());
-        addFeatureProcessor("seg_onset_glide", new
-                FeatureProcessors.SegOnsetGlide());
+        addFeatureProcessor("seg_coda_glide", new FeatureProcessors.SegCodaGlide());
+        addFeatureProcessor("seg_onset_glide", new FeatureProcessors.SegOnsetGlide());
 
-        addFeatureProcessor("seg_onsetcoda", new
-                FeatureProcessors.SegOnsetCoda());
-        addFeatureProcessor("syl_codasize", new
-                FeatureProcessors.SylCodaSize());
-        addFeatureProcessor("syl_onsetsize", new
-                FeatureProcessors.SylOnsetSize());
+        addFeatureProcessor("seg_onsetcoda", new FeatureProcessors.SegOnsetCoda());
+        addFeatureProcessor("syl_codasize", new FeatureProcessors.SylCodaSize());
+        addFeatureProcessor("syl_onsetsize", new FeatureProcessors.SylOnsetSize());
         addFeatureProcessor("accented", new FeatureProcessors.Accented());
         BulkTimer.LOAD.stop("FeatureProcessing");
     }
@@ -274,6 +250,7 @@ public abstract class CMUVoice extends Voice {
      * @param featureName the name of the feature of interest
      * @return the feature with the given name
      */
+    @Override
     public String getPhoneFeature(String phone, String featureName) {
         return phoneSet.getPhoneFeature(phone, featureName);
     }
@@ -286,6 +263,7 @@ public abstract class CMUVoice extends Voice {
      * @throws IOException if an IO error occurs while getting
      *                     processor
      */
+    @Override
     protected UtteranceProcessor getAudioOutput() throws IOException {
         return new AudioOutput();
     }
@@ -295,6 +273,7 @@ public abstract class CMUVoice extends Voice {
      *
      * @return the tokenizer
      */
+    @Override
     public Tokenizer getTokenizer() {
         Tokenizer tokenizer = new com.sun.speech.freetts.en.TokenizerImpl();
         tokenizer.setWhitespaceSymbols(USEnglish.WHITESPACE_SYMBOLS);

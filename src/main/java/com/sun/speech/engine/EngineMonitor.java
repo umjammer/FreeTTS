@@ -25,6 +25,7 @@ import javax.swing.JPanel;
  * <code>Engine</code>.  Used for debugging and testing purposes.
  */
 public class EngineMonitor {
+
     /**
      * The <code>Engine</code> to monitor.
      */
@@ -124,8 +125,7 @@ public class EngineMonitor {
 
             JPanel engineStatePanel = new JPanel();
             engineStatePanel.setLayout(new GridLayout(4, 2));
-            engineStatePanel.setBorder(
-                    BorderFactory.createTitledBorder("Engine State:"));
+            engineStatePanel.setBorder(BorderFactory.createTitledBorder("Engine State:"));
 
             deallocatedLabel = new JLabel("DEALLOCATED");
             allocatingResourcesLabel = new JLabel("ALLOCATING_RESOURCES");
@@ -154,15 +154,9 @@ public class EngineMonitor {
      */
     protected void handleEvent(EngineEvent e) {
         if (eventPanel != null) {
-            eventPanel.addText(new Date() + ": "
-                    + e.toString()
-                    + "\n");
-            eventPanel.addText("   Old state: "
-                    + engineStateString(e.getOldEngineState())
-                    + "\n");
-            eventPanel.addText("   New state: "
-                    + engineStateString(e.getNewEngineState())
-                    + "\n");
+            eventPanel.addText(new Date() + ": " + e.toString() + "\n");
+            eventPanel.addText("   Old state: " + engineStateString(e.getOldEngineState()) + "\n");
+            eventPanel.addText("   New state: " + engineStateString(e.getNewEngineState()) + "\n");
         }
         updateGUIComponents();
     }
@@ -181,18 +175,12 @@ public class EngineMonitor {
      */
     protected void updateEngineStateComponents() {
         if (statePanel != null) {
-            deallocatedLabel.setEnabled(
-                    engine.testEngineState(Engine.DEALLOCATED));
-            allocatingResourcesLabel.setEnabled(
-                    engine.testEngineState(Engine.ALLOCATING_RESOURCES));
-            allocatedLabel.setEnabled(
-                    engine.testEngineState(Engine.ALLOCATED));
-            deallocatingResourcesLabel.setEnabled(
-                    engine.testEngineState(Engine.DEALLOCATING_RESOURCES));
-            pausedLabel.setEnabled(
-                    engine.testEngineState(Engine.PAUSED));
-            resumedLabel.setEnabled(
-                    engine.testEngineState(Engine.RESUMED));
+            deallocatedLabel.setEnabled(engine.testEngineState(Engine.DEALLOCATED));
+            allocatingResourcesLabel.setEnabled(engine.testEngineState(Engine.ALLOCATING_RESOURCES));
+            allocatedLabel.setEnabled(engine.testEngineState(Engine.ALLOCATED));
+            deallocatingResourcesLabel.setEnabled(engine.testEngineState(Engine.DEALLOCATING_RESOURCES));
+            pausedLabel.setEnabled(engine.testEngineState(Engine.PAUSED));
+            resumedLabel.setEnabled(engine.testEngineState(Engine.RESUMED));
         }
     }
 
@@ -244,30 +232,37 @@ public class EngineMonitor {
         public EngineMonitorEngineListener() {
         }
 
+        @Override
         public void enginePaused(EngineEvent e) {
             handleEvent(e);
         }
 
+        @Override
         public void engineResumed(EngineEvent e) {
             handleEvent(e);
         }
 
+        @Override
         public void engineAllocated(EngineEvent e) {
             handleEvent(e);
         }
 
+        @Override
         public void engineDeallocated(EngineEvent e) {
             handleEvent(e);
         }
 
+        @Override
         public void engineAllocatingResources(EngineEvent e) {
             handleEvent(e);
         }
 
+        @Override
         public void engineDeallocatingResources(EngineEvent e) {
             handleEvent(e);
         }
 
+        @Override
         public void engineError(EngineErrorEvent e) {
             handleEvent(e);
         }

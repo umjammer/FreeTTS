@@ -39,18 +39,12 @@ public class LetterToSoundTest {
      * Common code run before each test
      */
     @BeforeEach
-    protected void setUp() {
-        try {
-            lts = new LetterToSoundImpl(
-                    LetterToSoundTest.class.getResource("/com/sun/speech/freetts/en/us/cmulex_lts.bin"), true);
-            assertNotNull(lts, "LTS Rules created");
-            InputStream in =
-                    LetterToSoundTest.class.getResourceAsStream("LTS.txt");
-            reader = new BufferedReader(new InputStreamReader(in));
-            assertNotNull(reader, "Data File opened");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    protected void setUp() throws IOException {
+        lts = new LetterToSoundImpl(LetterToSoundTest.class.getResource("/com/sun/speech/freetts/en/us/cmulex_lts.bin"), true);
+        assertNotNull(lts, "LTS Rules created");
+        InputStream in = LetterToSoundTest.class.getResourceAsStream("LTS.txt");
+        reader = new BufferedReader(new InputStreamReader(in));
+        assertNotNull(reader, "Data File opened");
     }
 
     /**

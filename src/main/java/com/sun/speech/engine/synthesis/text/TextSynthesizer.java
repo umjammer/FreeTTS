@@ -402,7 +402,7 @@ public class TextSynthesizer extends BaseSynthesizer {
                         commandLock.notifyAll();
                     }
                     while (itemList.size() > 0) {
-                        item = (TextSynthesizerQueueItem) (itemList.remove(0));
+                        item = itemList.remove(0);
                         item.postSpeakableCancelled();
                     }
                     long[] states = setEngineState(QUEUE_NOT_EMPTY, QUEUE_EMPTY);

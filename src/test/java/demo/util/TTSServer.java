@@ -24,15 +24,14 @@ public abstract class TTSServer implements Runnable {
      * The port number to listen on. It is the value specified by the
      * System property "port".
      */
-    protected int port = Integer.parseInt
-            (System.getProperty("port", String.valueOf(2222)));
-
+    protected int port = Integer.parseInt(System.getProperty("port", String.valueOf(2222)));
 
     /**
      * Implements the run() method of Runnable interface. It starts a
      * ServerSocket, listens for connections, and spawns a handler for
      * each connection.
      */
+    @Override
     public void run() {
         ServerSocket ss;
 
@@ -64,7 +63,6 @@ public abstract class TTSServer implements Runnable {
             ioe.printStackTrace();
         }
     }
-
 
     /**
      * This method is called after a connection request is made to this

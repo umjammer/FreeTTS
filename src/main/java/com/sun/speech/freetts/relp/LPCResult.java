@@ -54,8 +54,7 @@ public class LPCResult {
     private float lpcMinimum;
     private float lpcRange;
 
-    private final static int MAX_SAMPLE_SIZE =
-            Utilities.getInteger("com.sun.speech.freetts.LpcResult.maxSamples",
+    private final static int MAX_SAMPLE_SIZE = Utilities.getInteger("com.sun.speech.freetts.LpcResult.maxSamples",
                     1024);
 
     /**
@@ -332,20 +331,14 @@ public class LPCResult {
      * @param targetPosition start position in the array of residuals
      * @param targetSize     the maximum number of characters to copy
      */
-    public void copyResiduals(byte[] source,
-                              int targetPosition,
-                              int targetSize) {
+    public void copyResiduals(byte[] source, int targetPosition, int targetSize) {
         int unitSize = source.length;
         if (unitSize < targetSize) {
             int targetStart = (targetSize - unitSize) / 2;
-            System.arraycopy(source, 0,
-                    residuals, targetPosition + targetStart,
-                    source.length);
+            System.arraycopy(source, 0, residuals, targetPosition + targetStart, source.length);
         } else {
             int sourcePosition = (unitSize - targetSize) / 2;
-            System.arraycopy(source, sourcePosition,
-                    residuals, targetPosition,
-                    targetSize);
+            System.arraycopy(source, sourcePosition, residuals, targetPosition, targetSize);
         }
     }
 
@@ -357,8 +350,7 @@ public class LPCResult {
      * @param targetPosition start position in the array of residuals
      * @param targetSize     the maximum number of characters to copy
      */
-    public void copyResidualsPulse(byte[] source,
-                                   int targetPosition, int targetSize) {
+    public void copyResidualsPulse(byte[] source, int targetPosition, int targetSize) {
         int unitSize = source.length;
         short sample = (short) (source[0] + 128);
         if (unitSize < targetSize) {
@@ -390,19 +382,15 @@ public class LPCResult {
         return (byte) (val & 0x000000FF);
     }
 
-
     /**
      * Synthesize a Wave  from this LPCResult
      *
      * @return the wave
      * @throws IOException if an error occurs while writing the audio data
      */
-    public boolean playWave(AudioPlayer player, Utterance utterance)
-            throws IOException {
-        return playWaveSamples(player, utterance.getSpeakable(),
-                getNumberOfSamples() * 2);
+    public boolean playWave(AudioPlayer player, Utterance utterance) throws IOException {
+        return playWaveSamples(player, utterance.getSpeakable(), getNumberOfSamples() * 2);
     }
-
 
     public byte[] getWaveSamples() {
         return getWaveSamples(2 * getNumberOfSamples(), null);
@@ -413,13 +401,11 @@ public class LPCResult {
      *
      * @param numberSamples the number of samples desirred
      * @param utterance     the utterance
-     *                      <p>
-     *                      [[[ TODO: well there is a bunch of duplicated code here ..
-     *                      these should be combined into one routine.
-     *                      ]]]
+     *
+     * TODO well there is a bunch of duplicated code here ..
+     *  these should be combined into one routine.
      */
-    private byte[] getWaveSamples(int numberSamples,
-                                  Utterance utterance) {
+    private byte[] getWaveSamples(int numberSamples, Utterance utterance) {
         int numberChannels = getNumberOfChannels();
         int pmSizeSamples;
         float pp = 0;
@@ -442,8 +428,7 @@ public class LPCResult {
 
             FloatList lpcCoeffs = lpcCoefficients;
             for (int k = 0; k < numberChannels; k++) {
-                lpcCoeffs.value = (float) ((frame[k] + 32768.0)
-                        * multiplier) + lpcMinimum;
+                lpcCoeffs.value = (float) ((frame[k] + 32768.0) * multiplier) + lpcMinimum;
                 lpcCoeffs = lpcCoeffs.next;
             }
 
@@ -502,17 +487,14 @@ public class LPCResult {
 
         // for each frame in the LPC result
         player.begin(numberSamples);
-        for (int r = 0, i = 0;
-             (ok &= !speakable.isCompleted()) &&
-                     i < numberOfFrames; i++) {
+        for (int r = 0, i = 0; (ok &= !speakable.isCompleted()) && i < numberOfFrames; i++) {
 
             // unpack the LPC coefficients
             short[] frame = getFrame(i);
 
             FloatList lpcCoeffs = lpcCoefficients;
             for (int k = 0; k < numberChannels; k++) {
-                lpcCoeffs.value = (float) ((frame[k] + 32768.0)
-                        * multiplier) + lpcMinimum;
+                lpcCoeffs.value = (float) ((frame[k] + 32768.0) * multiplier) + lpcMinimum;
                 lpcCoeffs = lpcCoeffs.next;
             }
 
@@ -537,8 +519,7 @@ public class LPCResult {
                 samples[s++] = lobyte(sample);
 
                 if (s >= MAX_SAMPLE_SIZE) {
-                    if ((ok &= !speakable.isCompleted()) &&
-                            !player.write(samples)) {
+                    if ((ok &= !speakable.isCompleted()) && !player.write(samples)) {
                         ok = false;
                     }
                     s = 0;
@@ -627,7 +608,6 @@ public class LPCResult {
         pw.flush();
     }
 
-
     /**
      * Dumps the wave data associated with this result
      */
@@ -653,12 +633,9 @@ public class LPCResult {
      */
     private Wave getWave() {
         // construct a new wave object
-        AudioFormat audioFormat = new AudioFormat
-                (getSampleRate(),
-                        Wave.DEFAULT_SAMPLE_SIZE_IN_BITS, 1,
-                        Wave.DEFAULT_SIGNED, true);
-        return new Wave(audioFormat,
-                getWaveSamples(getNumberOfSamples() * 2, null));
+        AudioFormat audioFormat = new AudioFormat(getSampleRate(),
+                        Wave.DEFAULT_SAMPLE_SIZE_IN_BITS, 1, Wave.DEFAULT_SIGNED, true);
+        return new Wave(audioFormat, getWaveSamples(getNumberOfSamples() * 2, null));
     }
 
     /**
@@ -677,6 +654,7 @@ public class LPCResult {
      * of AudioInputStream.
      */
     private static class Wave {
+
         /**
          * The default sample size of the Wave, which is 16.
          */
@@ -694,7 +672,6 @@ public class LPCResult {
          */
         public static final boolean DEFAULT_BIG_ENDIAN = false;
 
-
         private byte[] samples;
         private AudioFormat audioFormat;
 
@@ -708,7 +685,6 @@ public class LPCResult {
             this.audioFormat = audioFormat;
             this.samples = samples;
         }
-
 
         /**
          * Dumps the wave out to the given stream
@@ -724,15 +700,13 @@ public class LPCResult {
             pw.println("#Num_of_Channels: " + audioFormat.getChannels());
             if (samples != null) {
                 for (int i = 0; i < samples.length; i += 2) {
-                    pw.println(
-                            WaveUtils.bytesToShort(samples[i], samples[i + 1]));
+                    pw.println(WaveUtils.bytesToShort(samples[i], samples[i + 1]));
                 }
             }
             pw.flush();
         }
     }
 }
-
 
 /**
  * FloatList is used to maintain a circular buffer of float values.
@@ -742,6 +716,7 @@ public class LPCResult {
  * save us some time.
  */
 class FloatList {
+
     float value;
     FloatList next;
     FloatList prev;

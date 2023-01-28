@@ -130,8 +130,7 @@ public class SpeechEventUtilities {
      * @param dispatcher the dispatcher that will dispatch the event
      * @param event      the SpeechEvent to post
      */
-    static public void postSpeechEvent(SpeechEventDispatcher dispatcher,
-                                       SpeechEvent event) {
+    static public void postSpeechEvent(SpeechEventDispatcher dispatcher, SpeechEvent event) {
         postSpeechEvent(dispatcher, event, waitUntilDispatched);
     }
 
@@ -173,8 +172,7 @@ public class SpeechEventUtilities {
              */
             if (speechAWTEventTarget == null) {
                 speechAWTEventTarget = new SpeechAWTEventTarget();
-                systemEventQueue =
-                        Toolkit.getDefaultToolkit().getSystemEventQueue();
+                systemEventQueue = Toolkit.getDefaultToolkit().getSystemEventQueue();
             }
 
             /* Post the event to the AWT EventQueue.  When AWT dispatches
@@ -184,21 +182,14 @@ public class SpeechEventUtilities {
             if (waitUntilDispatched) {
                 Object lock = new Object();
                 synchronized (lock) {
-                    systemEventQueue.postEvent(
-                            new SpeechAWTEvent(speechAWTEventTarget,
-                                    dispatcher,
-                                    event,
-                                    lock));
+                    systemEventQueue.postEvent(new SpeechAWTEvent(speechAWTEventTarget, dispatcher, event, lock));
                     try {
                         lock.wait();
                     } catch (InterruptedException e) {
                     }
                 }
             } else {
-                systemEventQueue.postEvent(
-                        new SpeechAWTEvent(speechAWTEventTarget,
-                                dispatcher,
-                                event));
+                systemEventQueue.postEvent(new SpeechAWTEvent(speechAWTEventTarget, dispatcher, event));
             }
         } else {
             dispatcher.dispatchSpeechEvent(event);
@@ -217,6 +208,7 @@ public class SpeechEventUtilities {
             enableEvents(SpeechAWTEvent.EVENT_ID);
         }
 
+        @Override
         protected void processEvent(AWTEvent event) {
             if (event instanceof SpeechAWTEvent) {
                 SpeechAWTEvent sae = (SpeechAWTEvent) event;
@@ -242,9 +234,7 @@ public class SpeechEventUtilities {
         SpeechEvent event;
         Object lock;
 
-        SpeechAWTEvent(SpeechAWTEventTarget target,
-                       SpeechEventDispatcher dispatcher,
-                       SpeechEvent event) {
+        SpeechAWTEvent(SpeechAWTEventTarget target, SpeechEventDispatcher dispatcher, SpeechEvent event) {
             this(target, dispatcher, event, null);
         }
 

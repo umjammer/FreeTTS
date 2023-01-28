@@ -31,6 +31,7 @@ import com.sun.speech.freetts.lexicon.Lexicon;
  * @see Relation#SYLLABLE_STRUCTURE
  */
 public class Segmenter implements UtteranceProcessor {
+
     private final static String STRESS = "1";
     private final static String NO_STRESS = "0";
 
@@ -46,28 +47,24 @@ public class Segmenter implements UtteranceProcessor {
      * @see Relation#SYLLABLE
      * @see Relation#SYLLABLE_STRUCTURE
      */
+    @Override
     public void processUtterance(Utterance utterance) throws ProcessException {
 
         // preconditions
         if (utterance.getRelation(Relation.WORD) == null) {
-            throw new IllegalStateException(
-                    "Word relation has not been set");
+            throw new IllegalStateException("Word relation has not been set");
         } else if (utterance.getRelation(Relation.SYLLABLE) != null) {
-            throw new IllegalStateException(
-                    "Syllable relation has already been set");
+            throw new IllegalStateException("Syllable relation has already been set");
         } else if (utterance.getRelation(Relation.SYLLABLE_STRUCTURE)
                 != null) {
-            throw new IllegalStateException(
-                    "SylStructure relation has already been set");
+            throw new IllegalStateException("SylStructure relation has already been set");
         } else if (utterance.getRelation(Relation.SEGMENT) != null) {
-            throw new IllegalStateException(
-                    "Segment relation has already been set");
+            throw new IllegalStateException("Segment relation has already been set");
         }
 
         String stress = NO_STRESS;
         Relation syl = utterance.createRelation(Relation.SYLLABLE);
-        Relation sylstructure =
-                utterance.createRelation(Relation.SYLLABLE_STRUCTURE);
+        Relation sylstructure = utterance.createRelation(Relation.SYLLABLE_STRUCTURE);
         Relation seg = utterance.createRelation(Relation.SEGMENT);
         Lexicon lex = utterance.getVoice().getLexicon();
         List<String> syllableList = null;
@@ -75,9 +72,9 @@ public class Segmenter implements UtteranceProcessor {
         for (Item word = utterance.getRelation(Relation.WORD).getHead();
              word != null; word = word.getNext()) {
             Item ssword = sylstructure.appendItem(word);
-            Item sylItem = null;   // item denoting syllable boundaries
-            Item segItem;   // item denoting phonelist (segments)
-            Item sssyl = null;     // item denoting syl in word
+            Item sylItem = null; // item denoting syllable boundaries
+            Item segItem; // item denoting phonelist (segments)
+            Item sssyl = null; // item denoting syl in word
 
             String[] phones;
 

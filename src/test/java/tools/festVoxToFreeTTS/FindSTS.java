@@ -17,6 +17,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.util.logging.Logger;
 
 
 /**
@@ -28,12 +29,15 @@ import java.io.OutputStreamWriter;
  * </p>
  *
  * <p>
- * Note: 
+ * Note:
  * The a/b diff result is slightly different than the C version due to
  * Intel floating-point math.
  * </p>
  */
 public strictfp class FindSTS {
+
+    /** Logger instance. */
+    private static final Logger logger = Logger.getLogger(FindSTS.class.getName());
 
     /**
      * Generate a sts file
@@ -42,7 +46,7 @@ public strictfp class FindSTS {
      * <b>Usage</b>
      * </p>
      * <p>
-     *  <code> java FindSTS lpc_min lpc_range lpcFile waveFile stsFile
+     * <code> java FindSTS lpc_min lpc_range lpcFile waveFile stsFile
      * </code>
      * </p>
      * <p>
@@ -52,8 +56,7 @@ public strictfp class FindSTS {
     public static void main(String[] args) {
         try {
             if (args.length != 5) {
-                System.err.println("Usage: java FindSTS lpc_min lpc_range "
-                        + "lpcFile waveFile stsFile");
+                logger.info("Usage: java FindSTS lpc_min lpc_range " + "lpcFile waveFile stsFile");
             } else {
                 float lpc_min = Float.parseFloat(args[0]);
                 float lpc_range = Float.parseFloat(args[1]);
@@ -71,9 +74,7 @@ public strictfp class FindSTS {
                 STS[] stsData = findSTS(wave, lpc, lpc_min, lpc_range);
 
                 // Verify STS data for sanity
-                Wave reconstructedWave = new
-                        Wave(wave.getSampleRate(), stsData, lpc,
-                        lpc_min, lpc_range);
+                Wave reconstructedWave = new Wave(wave.getSampleRate(), stsData, lpc, lpc_min, lpc_range);
                 wave.compare(reconstructedWave);
 
                 // Save output
@@ -93,15 +94,13 @@ public strictfp class FindSTS {
     /**
      * Find the sts data.
      *
-     * @param wave the data from the wave file
-     * @param lpc the data from the lpc file
-     * @param lpc_min the minimum lpc value
+     * @param wave      the data from the wave file
+     * @param lpc       the data from the lpc file
+     * @param lpc_min   the minimum lpc value
      * @param lpc_range the range of the lpc values
-     *
      * @return an <code>STS</code> array containing the data
      */
-    private static STS[] findSTS(Wave wave, LPC lpc, float lpc_min,
-                                 float lpc_range) {
+    private static STS[] findSTS(Wave wave, LPC lpc, float lpc_min, float lpc_range) {
         int size;
         int start = 0;
         int end;
@@ -109,10 +108,8 @@ public strictfp class FindSTS {
         STS[] stsData = new STS[lpc.getNumFrames()];
 
         // read wave data into a special array.
-        short[] waveData =
-                new short[wave.getNumSamples() + lpc.getNumChannels()];
-        System.arraycopy(wave.getSamples(), 0, waveData,
-                lpc.getNumChannels(), wave.getNumSamples());
+        short[] waveData = new short[wave.getNumSamples() + lpc.getNumChannels()];
+        System.arraycopy(wave.getSamples(), 0, waveData, lpc.getNumChannels(), wave.getNumSamples());
 
         for (int i = 0; i < lpc.getNumFrames(); i++) {
             double[] resd;
@@ -122,20 +119,15 @@ public strictfp class FindSTS {
             end = (int) ((float) wave.getSampleRate() * lpc.getTime(i));
             size = end - start;
             if (size <= 0) {
-                System.out.println("frame size at "
-                        + lpc.getTime(i) + " is "
-                        + size + ".");
+                System.out.println("frame size at " + lpc.getTime(i) + " is " + size + ".");
             }
 
-            residual = generateResiduals(waveData,
-                    start + lpc.getNumChannels(), lpc.getFrame(i),
+            residual = generateResiduals(waveData, start + lpc.getNumChannels(), lpc.getFrame(i),
                     lpc.getNumChannels(), size);
 
             frame = new int[lpc.getNumChannels() - 1];
             for (int j = 1; j < lpc.getNumChannels(); j++) {
-                frame[j - 1] = (int)
-                        ((((lpc.getFrameEntry(i, j) - lpc_min) / lpc_range))
-                                * (float) 65535.0);
+                frame[j - 1] = (int) ((((lpc.getFrameEntry(i, j) - lpc_min) / lpc_range)) * (float) 65535.0);
             }
 
             stsData[i] = new STS(frame, size, residual);
@@ -148,16 +140,14 @@ public strictfp class FindSTS {
     /**
      * Generate the residuals for this sts
      *
-     * @param wave specially formatted wave data
+     * @param wave  specially formatted wave data
      * @param start offset into the wave data
      * @param frame frame data from the lpc
      * @param order typically the number of lpc channels
-     * @param size size of the residual
-     *
+     * @param size  size of the residual
      * @return sts residuals
      */
-    private static short[] generateResiduals(short[] wave, int start,
-                                             float[] frame, int order, int size) {
+    private static short[] generateResiduals(short[] wave, int start, float[] frame, int order, int size) {
         double r;
         short[] residual = new short[size];
         for (int i = 0; i < order; i++) {
@@ -180,13 +170,12 @@ public strictfp class FindSTS {
     /**
      * Save the sts data
      *
-     * @param stsData generated sts data
-     * @param lpc data loaded from the lpc file
-     * @param wave data loaded from the wave file
-     * @param osw the OutputStreamWriter to write the sts data to
-     * @param lpc_min minimum lpc value
+     * @param stsData   generated sts data
+     * @param lpc       data loaded from the lpc file
+     * @param wave      data loaded from the wave file
+     * @param osw       the OutputStreamWriter to write the sts data to
+     * @param lpc_min   minimum lpc value
      * @param lpc_range range of lpc values
-     *
      */
     private static void saveSTS(STS[] stsData, LPC lpc, Wave wave,
                                 OutputStreamWriter osw, float lpc_min, float lpc_range) {
@@ -205,15 +194,11 @@ public strictfp class FindSTS {
                 //osw.write("( " + Utility.hex(lpc.getTime(i)) + " (");
 
                 for (int j = 1; j < lpc.getNumChannels(); j++) {
-                    osw.write(" " +
-                            stsData[i].getFrameEntry(j - 1));
+                    osw.write(" " + stsData[i].getFrameEntry(j - 1));
                 }
-                osw.write(" ) "
-                        + stsData[i].getNumSamples()
-                        + " ( ");
+                osw.write(" ) " + stsData[i].getNumSamples() + " ( ");
                 for (int j = 0; j < stsData[i].getNumSamples(); j++) {
-                    osw.write(" " +
-                            Integer.toString(stsData[i].getResidual(j)));
+                    osw.write(" " + Integer.toString(stsData[i].getResidual(j)));
                 }
                 osw.write(" ))\n");
             }
@@ -226,23 +211,22 @@ public strictfp class FindSTS {
 
 /**
  * The lpc data
- *
  */
 class LPC {
+
     private int numFrames;
     private int numChannels;
     float[] times;
     float[][] frames;
 
-    /** Create lpc data from an input stream
+    /**
+     * Create lpc data from an input stream
      *
      * @param dis DataInputStream to read the lpc in from
-     *
      */
     public LPC(DataInputStream dis) {
         try {
-            if (!Utility.readWord(dis).equals("EST_File") ||
-                    !Utility.readWord(dis).equals("Track")) {
+            if (!Utility.readWord(dis).equals("EST_File") || !Utility.readWord(dis).equals("Track")) {
                 throw new Error("Lpc file not EST Track file");
             }
 
@@ -254,18 +238,10 @@ class LPC {
             while (!token.equals("EST_Header_End")) {
                 switch (token) {
                 case "DataType":
-                    if (Utility.readWord(dis).equals("binary")) {
-                        isBinary = true;
-                    } else {
-                        isBinary = false;
-                    }
+                    isBinary = Utility.readWord(dis).equals("binary");
                     break;
                 case "ByteOrder":
-                    if (Utility.readWord(dis).equals("10")) {
-                        isBigEndian = true;
-                    } else {
-                        isBigEndian = false;
-                    }
+                    isBigEndian = Utility.readWord(dis).equals("10");
                     break;
                 case "NumFrames":
                     numFrames = Integer.parseInt(Utility.readWord(dis));
@@ -297,7 +273,6 @@ class LPC {
      * load the data section of the lpc file as ascii text
      *
      * @param dis DataInputStream to read from
-     *
      * @throws IOException on ill-formatted input
      */
     private void loadTextData(DataInputStream dis) throws IOException {
@@ -313,10 +288,9 @@ class LPC {
     /**
      * load the data section of the lpc file as ascii text
      *
-     * @param dis DataInputStream to read from
+     * @param dis         DataInputStream to read from
      * @param isBigEndian whether or not the data in the file is in
-     *          big endian byte order
-     *
+     *                    big endian byte order
      * @throws IOException on ill-formatted input
      */
     private void loadBinaryData(DataInputStream dis, boolean isBigEndian)
@@ -364,7 +338,6 @@ class LPC {
      * Get an individual time associated with this lpc
      *
      * @param index index of time to get
-     *
      * @return time value at given index
      */
     public float getTime(int index) {
@@ -375,7 +348,6 @@ class LPC {
      * Get an individual frame
      *
      * @param i index of frame
-     *
      * @return the frame
      */
     public float[] getFrame(int i) {
@@ -387,9 +359,8 @@ class LPC {
      *
      * @param i index of frame
      * @param j index into frame
-     *
      * @return the frame entry in frame <code>i</code> at index
-     *          <code>j</code>
+     * <code>j</code>
      */
     public float getFrameEntry(int i, int j) {
         return frames[i][j];
@@ -401,6 +372,7 @@ class LPC {
  * The wave (riff) data
  */
 class Wave {
+
     private int numSamples;
     private int sampleRate;
     private short[] samples;
@@ -457,7 +429,6 @@ class Wave {
      * load a RIFF header
      *
      * @param dis DataInputStream to read from
-     *
      * @throws IOException on ill-formatted input
      */
     private void loadHeader(DataInputStream dis) throws IOException {
@@ -489,12 +460,11 @@ class Wave {
      * Reconstruct a wave from a wave, sts, and lpc
      *
      * @param sampleRate the sample rate to use
-     * @param lpc lpc
-     * @param lpc_min minimum lpc value
-     * @param lpc_range range of lpc values
+     * @param lpc        lpc
+     * @param lpc_min    minimum lpc value
+     * @param lpc_range  range of lpc values
      */
-    public Wave(int sampleRate, STS[] stsData, LPC lpc, float lpc_min,
-                float lpc_range) {
+    public Wave(int sampleRate, STS[] stsData, LPC lpc, float lpc_min, float lpc_range) {
         // set number of samples and sample rate
         numSamples = 0;
         for (int i = 0; i < lpc.getNumFrames(); i++) {
@@ -529,20 +499,16 @@ class Wave {
         float[] lpcCoefs = new float[lpcResNumChannels];
         float[] outbuf = new float[lpcResNumChannels + 1];
         int ci, cr;
-        //float pp = 0;  // the C code uses this unnecessarily (for now)
+//        float pp = 0;  // the C code uses this unnecessarily (for now)
 
-        for (int r = 0, o = lpcResNumChannels, i = 0; i <
-                lpc.getNumFrames(); i++) {
+        for (int r = 0, o = lpcResNumChannels, i = 0; i < lpc.getNumFrames(); i++) {
             // residual_fold is hard-coded to 1.
             int pm_size_samps = lpcResSizes[i];//  * residual_fold;
 
             // Unpack the LPC coefficients
             for (int k = 0; k < lpcResNumChannels; k++) {
-                lpcCoefs[k] = (float)
-                        ((((double) lpcResFrames[i][k]) / 65535.0) * lpc_range)
-                        + lpc_min;
+                lpcCoefs[k] = (float) ((((double) lpcResFrames[i][k]) / 65535.0) * lpc_range) + lpc_min;
             }
-
 
             // resynthesize the signal
             for (int j = 0; j < pm_size_samps; j++, r++) {
@@ -553,9 +519,8 @@ class Wave {
                     outbuf[o] += lpcCoefs[ci] * outbuf[cr];
                     cr = (cr == 0 ? lpcResNumChannels : cr - 1);
                 }
-                samples[r] = (short) (outbuf[o]
-                        /* + pp * lpcres->post_emphasis)*/); // post_emphasis = 0
-                // pp = outbuf[o];
+                samples[r] = (short) (outbuf[o] /* + pp * lpcres->post_emphasis)*/); // post_emphasis = 0
+//                pp = outbuf[o];
                 o = (o == lpcResNumChannels ? 0 : o + 1);
             }
         }
@@ -572,15 +537,13 @@ class Wave {
      * </p>
      *
      * @param wave2 the wave to compare this wave against
-     *
      */
     public void compare(Wave wave2) {
         if (numSamples > wave2.numSamples) {
             wave2.compare(this);
         } else {
             double r = 0;
-            int i;
-            for (i = 0; i < this.numSamples; i++) {
+            for (int i = 0; i < this.numSamples; i++) {
                 r += (double) ((float) this.samples[i] - (float) wave2.samples[i])
                         * (double) ((float) this.samples[i] - (float) wave2.samples[i]);
             }
@@ -592,16 +555,14 @@ class Wave {
     /**
      * Make sure that a string of characters appear next in the file
      *
-     * @param dis DataInputStream to read in
+     * @param dis   DataInputStream to read in
      * @param chars a String containing the ascii characters you
-     *          want the <code>dis</code> to contain.
-     *
+     *              want the <code>dis</code> to contain.
      * @return <code>true</code> if <code>chars</code> appears next
-     *          in <code>dis</code>, else <code>false</code>
+     * in <code>dis</code>, else <code>false</code>
      * @throws IOException on ill-formatted input (end of file, for example)
      */
-    private boolean checkChars(DataInputStream dis, String chars)
-            throws IOException {
+    private boolean checkChars(DataInputStream dis, String chars) throws IOException {
         char[] carray = chars.toCharArray();
         for (char c : carray) {
             if ((char) dis.readByte() != c) {
@@ -642,6 +603,7 @@ class Wave {
  * The sts data
  */
 class STS {
+
     private int[] frame;
     private int numSamples;
     private short[] residual;
@@ -655,10 +617,9 @@ class STS {
     /**
      * Create a sts with the given data
      *
-     * @param frame frame for this sts
+     * @param frame      frame for this sts
      * @param numSamples number of samples this sts will contain
-     * @param residual the residual for this sts
-     *
+     * @param residual   the residual for this sts
      */
     public STS(int[] frame, int numSamples, short[] residual) {
         this.frame = new int[frame.length];
@@ -701,7 +662,6 @@ class STS {
      * Get an entry out of the frame
      *
      * @param index the index into the frame
-     *
      * @return the entry in the frame at offset <code>index</code>
      */
     public int getFrameEntry(int index) {
@@ -721,9 +681,7 @@ class Utility {
      * given stream
      *
      * @param dis the input stream
-     *
      * @return the next word
-     *
      * @throws IOException on error
      */
     public static String readWord(DataInputStream dis) throws IOException {
@@ -748,7 +706,6 @@ class Utility {
      *
      * @param dis the stream to read
      * @return the next character on the stream
-     *
      * @throws IOException if an error occurs
      */
     public static char readChar(DataInputStream dis) throws IOException {
@@ -761,12 +718,10 @@ class Utility {
      * @param dis the stream to read
      * @param num the number of chars to read
      * @return a character array containing the next <code>num<code>
-     *          in the stream
-     *
+     * in the stream
      * @throws IOException if an error occurs
      */
-    public static char[] readChars(DataInputStream dis, int num)
-            throws IOException {
+    public static char[] readChars(DataInputStream dis, int num) throws IOException {
         char[] carray = new char[num];
         for (int i = 0; i < num; i++) {
             carray[i] = readChar(dis);
@@ -778,16 +733,13 @@ class Utility {
      * Read a float from the input stream, byte-swapping as
      * necessary
      *
-     * @param dis the inputstream
+     * @param dis         the inputstream
      * @param isBigEndian whether or not the data being read in is in
-     *          big endian format.
-     *
+     *                    big endian format.
      * @return a floating pint value
-     *
      * @throws IOException on error
      */
-    public static float readFloat(DataInputStream dis, boolean isBigEndian)
-            throws IOException {
+    public static float readFloat(DataInputStream dis, boolean isBigEndian) throws IOException {
         float val;
         if (!isBigEndian) {
             val = readLittleEndianFloat(dis);
@@ -802,11 +754,9 @@ class Utility {
      * where the data is in little endian.
      *
      * @param dataStream the DataInputStream to read from
-     *
      * @return a float
      */
-    public static float readLittleEndianFloat(DataInputStream dataStream)
-            throws IOException {
+    public static float readLittleEndianFloat(DataInputStream dataStream) throws IOException {
         return Float.intBitsToFloat(readLittleEndianInt(dataStream));
     }
 
@@ -814,16 +764,13 @@ class Utility {
      * Read an integer from the input stream, byte-swapping as
      * necessary
      *
-     * @param dis the inputstream
+     * @param dis         the inputstream
      * @param isBigEndian whether or not the data being read in is in
-     *          big endian format.
-     *
+     *                    big endian format.
      * @return an integer value
-     *
      * @throws IOException on error
      */
-    public static int readInt(DataInputStream dis, boolean isBigEndian)
-            throws IOException {
+    public static int readInt(DataInputStream dis, boolean isBigEndian) throws IOException {
         if (!isBigEndian) {
             return readLittleEndianInt(dis);
         } else {
@@ -835,11 +782,9 @@ class Utility {
      * Reads the next little-endian integer from the given DataInputStream.
      *
      * @param dataStream the DataInputStream to read from
-     *
      * @return an integer
      */
-    public static int readLittleEndianInt(DataInputStream dataStream)
-            throws IOException {
+    public static int readLittleEndianInt(DataInputStream dataStream) throws IOException {
         int bits = 0x00000000;
         for (int shift = 0; shift < 32; shift += 8) {
             int byteRead = (0x000000ff & dataStream.readByte());
@@ -852,16 +797,13 @@ class Utility {
      * Read a short from the input stream, byte-swapping as
      * necessary
      *
-     * @param dis the inputstream
+     * @param dis         the inputstream
      * @param isBigEndian whether or not the data being read in is in
-     *          big endian format.
-     *
+     *                    big endian format.
      * @return an integer value
-     *
      * @throws IOException on error
      */
-    public static short readShort(DataInputStream dis, boolean isBigEndian)
-            throws IOException {
+    public static short readShort(DataInputStream dis, boolean isBigEndian) throws IOException {
         if (!isBigEndian) {
             return readLittleEndianShort(dis);
         } else {
@@ -873,11 +815,9 @@ class Utility {
      * Reads the next little-endian short from the given DataInputStream.
      *
      * @param dis the DataInputStream to read from
-     *
      * @return a short
      */
-    public static short readLittleEndianShort(DataInputStream dis)
-            throws IOException {
+    public static short readLittleEndianShort(DataInputStream dis) throws IOException {
         short bits = (short) (0x0000ff & dis.readByte());
         bits = (short) (bits | (((short) (0x0000ff & dis.readByte())) << 8));
         return bits;
@@ -887,12 +827,12 @@ class Utility {
      * Convert a short to ulaw format
      *
      * @param sample the short to convert
-     *
      * @return a short containing an unsigned 8-bit quantity
-     *          representing the ulaw
+     * representing the ulaw
      */
     public static short shortToUlaw(short sample) {
-        int[] exp_lut = {0, 0, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3,
+        int[] exp_lut = {
+                0, 0, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3,
                 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
                 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5,
                 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5,
@@ -907,7 +847,8 @@ class Utility {
                 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7,
                 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7,
                 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7,
-                7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7};
+                7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7
+        };
 
         int sign, exponent, mantissa;
         short ulawbyte;
@@ -926,8 +867,7 @@ class Utility {
         sample = (short) (sample + BIAS);
         exponent = exp_lut[(sample >> 7) & 0xFF];
         mantissa = (sample >> (exponent + 3)) & 0x0F;
-        ulawbyte = (short)
-                ((~(sign | (exponent << 4) | mantissa)) & 0x00FF);
+        ulawbyte = (short) ((~(sign | (exponent << 4) | mantissa)) & 0x00FF);
         if (ulawbyte == 0) ulawbyte = 0x02; /* optional CCITT trap */
         return ulawbyte;
     }
@@ -936,8 +876,7 @@ class Utility {
      * Convert a ulaw format to short
      *
      * @param ulawbyte a short containing an unsigned 8-but quantity
-     *          representing a ulaw
-     *
+     *                 representing a ulaw
      * @return the short equivalent of the ulaw
      */
     public static short ulawToShort(short ulawbyte) {
@@ -956,16 +895,13 @@ class Utility {
         return sample;
     }
 
-
     /**
      * Print a float type's internal bit representation in hex
      *
      * @param f the float to print
-     *
      * @return a string containing the hex value of <code>f</code>
      */
     public static String hex(float f) {
         return Integer.toHexString(Float.floatToIntBits(f));
     }
 }
-

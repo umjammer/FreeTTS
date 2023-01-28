@@ -18,6 +18,7 @@ import java.io.Reader;
  * Chops a string or text file into Token instances.
  */
 public interface Tokenizer {
+
     /**
      * Sets the text to be tokenized by this tokenizer.
      *
@@ -32,14 +33,12 @@ public interface Tokenizer {
      */
     void setInputReader(Reader reader);
 
-
     /**
      * Returns the next token.
      *
      * @return the next token if it exists; otherwise null
      */
     Token getNextToken();
-
 
     /**
      * Returns true if there are more tokens, false otherwise.

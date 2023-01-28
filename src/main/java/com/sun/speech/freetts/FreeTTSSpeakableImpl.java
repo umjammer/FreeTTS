@@ -12,6 +12,7 @@
 package com.sun.speech.freetts;
 
 import java.io.InputStream;
+import java.util.logging.Logger;
 
 import org.w3c.dom.Document;
 
@@ -20,6 +21,10 @@ import org.w3c.dom.Document;
  * Minimal implementation of a FreeTTSSpeakable
  */
 public class FreeTTSSpeakableImpl implements FreeTTSSpeakable {
+
+    /** Logger instance. */
+    private static final Logger logger = Logger.getLogger(FreeTTSSpeakableImpl.class.getName());
+
     private Document doc;
     private String text;
     private InputStream inputStream;
@@ -56,12 +61,14 @@ public class FreeTTSSpeakableImpl implements FreeTTSSpeakable {
     /**
      * Indicate that this speakable has been started.
      */
+    @Override
     public void started() {
     }
 
     /**
      * Indicates that this speakable has been completed.
      */
+    @Override
     public synchronized void completed() {
         completed = true;
         notifyAll();
@@ -70,6 +77,7 @@ public class FreeTTSSpeakableImpl implements FreeTTSSpeakable {
     /**
      * Indicates that this speakable has been cancelled.
      */
+    @Override
     public synchronized void cancelled() {
         completed = true;
         cancelled = true;
@@ -82,6 +90,7 @@ public class FreeTTSSpeakableImpl implements FreeTTSSpeakable {
      *
      * @return true if it has been processed
      */
+    @Override
     public synchronized boolean isCompleted() {
         return completed;
     }
@@ -92,12 +101,13 @@ public class FreeTTSSpeakableImpl implements FreeTTSSpeakable {
      * @return true if the item was completed successfully, false if
      * the speakable  was cancelled or an error occurred.
      */
+    @Override
     public synchronized boolean waitCompleted() {
         while (!completed) {
             try {
                 wait();
             } catch (InterruptedException ie) {
-                System.err.println("FreeTTSSpeakableImpl:Wait interrupted");
+                logger.info("FreeTTSSpeakableImpl:Wait interrupted");
                 return false;
             }
         }
@@ -110,6 +120,7 @@ public class FreeTTSSpeakableImpl implements FreeTTSSpeakable {
      *
      * @return true if the item contains plain text
      */
+    @Override
     public boolean isPlainText() {
         return text != null;
     }
@@ -119,6 +130,7 @@ public class FreeTTSSpeakableImpl implements FreeTTSSpeakable {
      *
      * @return the Playable text
      */
+    @Override
     public String getText() {
         return text;
     }
@@ -128,6 +140,7 @@ public class FreeTTSSpeakableImpl implements FreeTTSSpeakable {
      *
      * @return the DOM document for this object.
      */
+    @Override
     public Document getDocument() {
         return doc;
     }
@@ -137,6 +150,7 @@ public class FreeTTSSpeakableImpl implements FreeTTSSpeakable {
      *
      * @return true if the item is an input stream
      */
+    @Override
     public boolean isStream() {
         return inputStream != null;
     }
@@ -146,6 +160,7 @@ public class FreeTTSSpeakableImpl implements FreeTTSSpeakable {
      *
      * @return the input stream
      */
+    @Override
     public InputStream getInputStream() {
         return inputStream;
     }
@@ -156,6 +171,7 @@ public class FreeTTSSpeakableImpl implements FreeTTSSpeakable {
      *
      * @return true if the item is a document
      */
+    @Override
     public boolean isDocument() {
         return doc != null;
     }

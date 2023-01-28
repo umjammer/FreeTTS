@@ -31,9 +31,9 @@ import com.sun.speech.freetts.audio.AudioPlayer;
  * FreeTTS speech synthesis system.
  */
 public class FreeTTSSynthesizer extends BaseSynthesizer {
+
     /** Logger instance. */
-    private static final Logger LOGGER =
-            Logger.getLogger(FreeTTSSynthesizer.class.getName());
+    private static final Logger logger = Logger.getLogger(FreeTTSSynthesizer.class.getName());
 
     /**
      * Reference to output thread.
@@ -62,7 +62,6 @@ public class FreeTTSSynthesizer extends BaseSynthesizer {
     public FreeTTSSynthesizer(FreeTTSSynthesizerModeDesc desc) {
         super(desc);
         outputHandler = new OutputHandler();
-
     }
 
     /**
@@ -72,12 +71,11 @@ public class FreeTTSSynthesizer extends BaseSynthesizer {
      *
      * @throws EngineException if an allocation error occurs
      */
+    @Override
     protected void handleAllocate() throws EngineException {
         long[] states;
         boolean ok = false;
-        FreeTTSSynthesizerModeDesc desc = (FreeTTSSynthesizerModeDesc)
-                getEngineModeDesc();
-
+        FreeTTSSynthesizerModeDesc desc = (FreeTTSSynthesizerModeDesc) getEngineModeDesc();
 
         outputQueue = com.sun.speech.freetts.Voice.createOutputThread();
 
@@ -86,13 +84,10 @@ public class FreeTTSSynthesizer extends BaseSynthesizer {
             ok = setCurrentVoice(freettsVoice);
         }
 
-
         if (ok) {
             synchronized (engineStateLock) {
                 long newState = ALLOCATED | RESUMED;
-                newState |= (outputHandler.isQueueEmpty()
-                        ? QUEUE_EMPTY
-                        : QUEUE_NOT_EMPTY);
+                newState |= (outputHandler.isQueueEmpty() ? QUEUE_EMPTY : QUEUE_NOT_EMPTY);
                 states = setEngineState(CLEAR_ALL_STATE, newState);
             }
             outputHandler.start();
@@ -102,19 +97,16 @@ public class FreeTTSSynthesizer extends BaseSynthesizer {
         }
     }
 
-
     /**
      * Sets the given voice to be the current voice. If
      * the voice cannot be loaded, this call has no affect.
      *
      * @param voice the new voice.
      */
-    private boolean setCurrentVoice(FreeTTSVoice voice)
-            throws EngineException {
+    private boolean setCurrentVoice(FreeTTSVoice voice) throws EngineException {
 
         com.sun.speech.freetts.Voice freettsVoice = voice.getVoice();
         boolean ok = false;
-
 
         if (!freettsVoice.isLoaded()) {
             freettsVoice.setOutputQueue(outputQueue);
@@ -133,8 +125,7 @@ public class FreeTTSSynthesizer extends BaseSynthesizer {
             curVoice = voice;
             ok = true;
             // notify the world of potential property changes
-            FreeTTSSynthesizerProperties props =
-                    (FreeTTSSynthesizerProperties) getSynthesizerProperties();
+            FreeTTSSynthesizerProperties props = (FreeTTSSynthesizerProperties) getSynthesizerProperties();
             props.checkForPropertyChanges();
         }
         return ok;
@@ -146,6 +137,7 @@ public class FreeTTSSynthesizer extends BaseSynthesizer {
      *
      * @throws EngineException if a deallocation error occurs
      */
+    @Override
     protected void handleDeallocate() throws EngineException {
         long[] states = setEngineState(CLEAR_ALL_STATE, DEALLOCATED);
         outputHandler.cancelAllItems();
@@ -170,6 +162,7 @@ public class FreeTTSSynthesizer extends BaseSynthesizer {
      *
      * @return a queue item appropriate for this synthesizer
      */
+    @Override
     protected BaseSynthesizerQueueItem createQueueItem() {
         return new FreeTTSSynthesizerQueueItem();
     }
@@ -182,6 +175,7 @@ public class FreeTTSSynthesizer extends BaseSynthesizer {
      * @throws EngineStateError if the engine was not in the proper
      *                          state
      */
+    @Override
     public Enumeration<?> enumerateQueue() throws EngineStateError {
         checkEngineState(DEALLOCATED | DEALLOCATING_RESOURCES);
         return outputHandler.enumerateQueue();
@@ -192,6 +186,7 @@ public class FreeTTSSynthesizer extends BaseSynthesizer {
      *
      * @param item the item to place  in the queue
      */
+    @Override
     protected void appendQueue(BaseSynthesizerQueueItem item) {
         outputHandler.appendQueue((FreeTTSSynthesizerQueueItem) item);
     }
@@ -202,6 +197,7 @@ public class FreeTTSSynthesizer extends BaseSynthesizer {
      * @throws EngineStateError if the synthesizer is not in the
      *                          proper state
      */
+    @Override
     public void cancel() throws EngineStateError {
         checkEngineState(DEALLOCATED | DEALLOCATING_RESOURCES);
         outputHandler.cancelItem();
@@ -216,8 +212,8 @@ public class FreeTTSSynthesizer extends BaseSynthesizer {
      * @throws EngineStateError         the synthesizer is not in the
      *                                  proper state
      */
-    public void cancel(Object source)
-            throws IllegalArgumentException, EngineStateError {
+    @Override
+    public void cancel(Object source) throws IllegalArgumentException, EngineStateError {
         checkEngineState(DEALLOCATED | DEALLOCATING_RESOURCES);
         outputHandler.cancelItem(source);
     }
@@ -227,6 +223,7 @@ public class FreeTTSSynthesizer extends BaseSynthesizer {
      *
      * @throws EngineStateError
      */
+    @Override
     public void cancelAll() throws EngineStateError {
         checkEngineState(DEALLOCATED | DEALLOCATING_RESOURCES);
         outputHandler.cancelAllItems();
@@ -235,6 +232,7 @@ public class FreeTTSSynthesizer extends BaseSynthesizer {
     /**
      * Pauses the output
      */
+    @Override
     protected void handlePause() {
         audio.pause();
     }
@@ -242,6 +240,7 @@ public class FreeTTSSynthesizer extends BaseSynthesizer {
     /**
      * Resumes the output
      */
+    @Override
     protected void handleResume() {
         audio.resume();
     }
@@ -253,6 +252,7 @@ public class FreeTTSSynthesizer extends BaseSynthesizer {
      * from the default voice.
      * Override to set engine-specific defaults.
      */
+    @Override
     protected BaseEngineProperties createEngineProperties() {
         SynthesizerModeDesc desc = (SynthesizerModeDesc) engineModeDesc;
         FreeTTSVoice defaultVoice = (FreeTTSVoice) (desc.getVoices()[0]);
@@ -288,13 +288,13 @@ public class FreeTTSSynthesizer extends BaseSynthesizer {
                 float defaultSpeakingRate,
                 float defaultVolume) {
 
-            super(defaultVoice, defaultPitch, defaultPitchRange,
-                    defaultSpeakingRate, defaultVolume);
+            super(defaultVoice, defaultPitch, defaultPitchRange, defaultSpeakingRate, defaultVolume);
         }
 
         /**
          * Resets the properties to their default values
          */
+        @Override
         public void reset() {
             super.reset();
         }
@@ -337,6 +337,7 @@ public class FreeTTSSynthesizer extends BaseSynthesizer {
          *
          * @return the current pitch (in hertz)
          */
+        @Override
         public float getPitch() {
             com.sun.speech.freetts.Voice voice = curVoice.getVoice();
             return voice.getPitch();
@@ -347,12 +348,12 @@ public class FreeTTSSynthesizer extends BaseSynthesizer {
          *
          * @param voice the voice that matches it
          */
+        @Override
         public void setVoice(javax.speech.synthesis.Voice voice) {
             if (!curVoice.match(voice)) {
                 // chase through the voice list and find the first match
                 // and use that.  If no match, just ignore it.
-                FreeTTSSynthesizerModeDesc desc =
-                        (FreeTTSSynthesizerModeDesc) getEngineModeDesc();
+                FreeTTSSynthesizerModeDesc desc = (FreeTTSSynthesizerModeDesc) getEngineModeDesc();
                 javax.speech.synthesis.Voice[] voices = desc.getVoices();
                 for (javax.speech.synthesis.Voice value : voices) {
                     if (value.match(voice)) {
@@ -366,8 +367,7 @@ public class FreeTTSSynthesizer extends BaseSynthesizer {
                                 }
                             }
                         } catch (EngineException ee) {
-                            System.err.println("Engine Exception: " +
-                                    ee.getMessage());
+                            logger.info("Engine Exception: " + ee.getMessage());
                         }
                     }
                 }
@@ -381,6 +381,7 @@ public class FreeTTSSynthesizer extends BaseSynthesizer {
          * @throws PropertyVetoException if the synthesizer rejects or
          *                               limits the new value
          */
+        @Override
         public void setPitch(float hertz) throws PropertyVetoException {
             if (hertz != getPitch()) {
                 com.sun.speech.freetts.Voice voice = curVoice.getVoice();
@@ -389,12 +390,12 @@ public class FreeTTSSynthesizer extends BaseSynthesizer {
             }
         }
 
-
         /**
          * Get the pitch range for synthesis.
          *
          * @return the current range of pitch in hertz
          */
+        @Override
         public float getPitchRange() {
             com.sun.speech.freetts.Voice voice = curVoice.getVoice();
             return voice.getPitchRange();
@@ -406,6 +407,7 @@ public class FreeTTSSynthesizer extends BaseSynthesizer {
          * @throws PropertyVetoException if the synthesizer rejects or
          *                               limits the new value
          */
+        @Override
         public void setPitchRange(float hertz) throws PropertyVetoException {
             if (hertz != getPitchRange()) {
                 com.sun.speech.freetts.Voice voice = curVoice.getVoice();
@@ -419,6 +421,7 @@ public class FreeTTSSynthesizer extends BaseSynthesizer {
          *
          * @return the current speaking rate in words per minute
          */
+        @Override
         public float getSpeakingRate() {
             com.sun.speech.freetts.Voice voice = curVoice.getVoice();
             return voice.getRate();
@@ -432,6 +435,7 @@ public class FreeTTSSynthesizer extends BaseSynthesizer {
          * @throws PropertyVetoException if the synthesizer rejects or
          *                               limits the new value
          */
+        @Override
         public void setSpeakingRate(float wpm) throws PropertyVetoException {
             if (wpm != getSpeakingRate()) {
                 com.sun.speech.freetts.Voice voice = curVoice.getVoice();
@@ -445,6 +449,7 @@ public class FreeTTSSynthesizer extends BaseSynthesizer {
          *
          * @return the current volume setting (between 0 and 1.0)
          */
+        @Override
         public float getVolume() {
             com.sun.speech.freetts.Voice voice = curVoice.getVoice();
             return voice.getVolume();
@@ -457,6 +462,7 @@ public class FreeTTSSynthesizer extends BaseSynthesizer {
          * @throws PropertyVetoException if the synthesizer rejects or
          *                               limits the new value
          */
+        @Override
         public void setVolume(float volume) throws PropertyVetoException {
             if (volume > 1.0f)
                 volume = 1.0f;
@@ -471,12 +477,12 @@ public class FreeTTSSynthesizer extends BaseSynthesizer {
         }
     }
 
-
     /**
      * The OutputHandler is responsible for taking items off of the
      * input queue and sending them to the current voice.
      */
     class OutputHandler extends Thread {
+
         protected boolean done = false;
 
         /**
@@ -540,8 +546,7 @@ public class FreeTTSSynthesizer extends BaseSynthesizer {
                 queue.notifyAll();
             }
             if (topOfQueueChanged) {
-                long[] states = setEngineState(QUEUE_EMPTY,
-                        QUEUE_NOT_EMPTY);
+                long[] states = setEngineState(QUEUE_EMPTY, QUEUE_NOT_EMPTY);
                 postQueueUpdated(topOfQueueChanged, states[0], states[1]);
             }
         }
@@ -584,7 +589,6 @@ public class FreeTTSSynthesizer extends BaseSynthesizer {
             }
         }
 
-
         /**
          * Cancel the given item.
          *
@@ -610,6 +614,7 @@ public class FreeTTSSynthesizer extends BaseSynthesizer {
         /**
          * Gets the next item from the queue and outputs it
          */
+        @Override
         public void run() {
             FreeTTSSynthesizerQueueItem item;
             while (!done) {
@@ -633,7 +638,7 @@ public class FreeTTSSynthesizer extends BaseSynthesizer {
                     try {
                         queue.wait();
                     } catch (InterruptedException e) {
-                        LOGGER.severe("Unexpected interrupt");
+                        logger.severe("Unexpected interrupt");
                         // Ignore interrupts and we'll loop around
                     }
                 }
@@ -674,8 +679,7 @@ public class FreeTTSSynthesizer extends BaseSynthesizer {
                 long[] states = setEngineState(QUEUE_NOT_EMPTY, QUEUE_EMPTY);
                 postQueueEmptied(states[0], states[1]);
             } else {
-                long[] states = setEngineState(QUEUE_NOT_EMPTY,
-                        QUEUE_NOT_EMPTY);
+                long[] states = setEngineState(QUEUE_NOT_EMPTY, QUEUE_NOT_EMPTY);
                 postQueueUpdated(true, states[0], states[1]);
             }
         }

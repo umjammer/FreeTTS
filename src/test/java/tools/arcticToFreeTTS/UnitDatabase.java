@@ -177,7 +177,7 @@ public class UnitDatabase {
             List<Unit> units = unitCatalog.get(unitType);
 
             for (Unit unit : units) {
-                Track track = (Track) sts.get(unit.filename);
+                Track track = sts.get(unit.filename);
                 int startIndex = track.findTrackFrameIndex(unit.start);
                 int endIndex = track.findTrackFrameIndex(unit.end);
                 unitIndexOut.println("UNITS " + unitTypeIndex

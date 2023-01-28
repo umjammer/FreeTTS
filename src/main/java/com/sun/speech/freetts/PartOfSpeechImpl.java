@@ -19,6 +19,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.StringTokenizer;
+import java.util.logging.Logger;
 
 
 /**
@@ -37,6 +38,10 @@ import java.util.StringTokenizer;
  * dependent.
  */
 public class PartOfSpeechImpl implements PartOfSpeech {
+
+    /** Logger instance. */
+    private static final Logger logger = Logger.getLogger(PartOfSpeechImpl.class.getName());
+
     /**
      * Used for informational purposes if there's a bad line in the
      * file.
@@ -91,7 +96,7 @@ public class PartOfSpeechImpl implements PartOfSpeech {
             String pos = tokenizer.nextToken();
             partOfSpeechMap.put(word, pos);
         } catch (NoSuchElementException nse) {
-            System.err.println("part of speech data in bad format at line " + lineCount);
+            logger.info("part of speech data in bad format at line " + lineCount);
         }
     }
 
@@ -103,6 +108,7 @@ public class PartOfSpeechImpl implements PartOfSpeech {
      * @param word the word to classify
      * @return an implementation dependent part of speech for the word
      */
+    @Override
     public String getPartOfSpeech(String word) {
         String pos = partOfSpeechMap.get(word);
         if (pos == null) {

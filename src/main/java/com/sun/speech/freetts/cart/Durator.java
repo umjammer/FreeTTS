@@ -27,13 +27,13 @@ import com.sun.speech.freetts.UtteranceProcessor;
  * utterance. Annotates the <code>Relation.SEGMENT</code> relation with an "end"
  * time feature.
  *
- * <p>
- * [[[TODO: The mean words-per-minute rate should become part of the CART data.
- * For now, it is passed into the constructor.]]]
+ * TODO: The mean words-per-minute rate should become part of the CART data.
+ *  For now, it is passed into the constructor.
  *
  * @see Relation#SEGMENT
  */
 public class Durator implements UtteranceProcessor {
+
     /**
      * The CART used for this duration UtteranceProcessor. It is passed into the
      * constructor.
@@ -73,6 +73,7 @@ public class Durator implements UtteranceProcessor {
      * @throws ProcessException if a problem is encountered during the processing of the
      *                          utterance
      */
+    @Override
     public void processUtterance(Utterance utterance) throws ProcessException {
         PhoneDuration durStat;
         float durationStretch = utterance.getVoice().getDurationStretch();
@@ -85,11 +86,10 @@ public class Durator implements UtteranceProcessor {
         // for it. Store the cumulative end time for the duration in
         // the "end" feature of the segment.
         //
-        for (Item segment = utterance.getRelation(Relation.SEGMENT).getHead(); segment != null; segment = segment
-                .getNext()) {
+        for (Item segment = utterance.getRelation(Relation.SEGMENT).getHead();
+             segment != null; segment = segment.getNext()) {
             zdur = (Float) cart.interpret(segment);
-            durStat = durations.getPhoneDuration(segment.getFeatures()
-                    .getString("name"));
+            durStat = durations.getPhoneDuration(segment.getFeatures().getString("name"));
 
             Object tval = DURATION_STRETCH_PATH.findFeature(segment);
             localDurationStretch = Float.parseFloat(tval.toString());
@@ -100,9 +100,7 @@ public class Durator implements UtteranceProcessor {
                 localDurationStretch *= durationStretch;
             }
 
-            dur = localDurationStretch
-                    * ((zdur * durStat.getStandardDeviation()) + durStat
-                    .getMean());
+            dur = localDurationStretch * ((zdur * durStat.getStandardDeviation()) + durStat.getMean());
             end += dur;
             segment.getFeatures().setFloat("end", end);
         }

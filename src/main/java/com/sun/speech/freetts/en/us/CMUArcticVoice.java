@@ -37,8 +37,7 @@ public class CMUArcticVoice extends CMUClusterUnitVoice {
     public CMUArcticVoice(String name, Gender gender, Age age,
                           String description, Locale locale, String domain,
                           String organization, CMULexicon lexicon, URL database) {
-        super(name, gender, age, description, locale,
-                domain, organization, lexicon, database);
+        super(name, gender, age, description, locale, domain, organization, lexicon, database);
     }
 
     /**
@@ -50,6 +49,7 @@ public class CMUArcticVoice extends CMUClusterUnitVoice {
      * @throws IOException if an IO error occurs while getting
      *                     processor
      */
+    @Override
     public UtteranceProcessor getUnitSelector() throws IOException {
         ClusterUnitNamer unitNamer = seg -> {
             String VOWELS = "aeiou";

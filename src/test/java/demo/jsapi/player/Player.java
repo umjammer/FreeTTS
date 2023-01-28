@@ -47,6 +47,7 @@ public class Player extends JFrame {
 
         setDefaultLookAndFeelDecorated(true);
         addWindowListener(new WindowAdapter() {
+            @Override
             public void windowClosing(WindowEvent e) {
                 playerModel.close();
                 System.exit(0);

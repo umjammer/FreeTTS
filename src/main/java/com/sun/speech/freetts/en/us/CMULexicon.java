@@ -58,10 +58,7 @@ public class CMULexicon extends LexiconImpl {
      *                         binary ; otherwise if <code>false</code> the input
      *                         data are loaded as text.
      */
-    public CMULexicon(URL compiledURL,
-                      URL addendaURL,
-                      URL letterToSoundURL,
-                      boolean binary) {
+    public CMULexicon(URL compiledURL, URL addendaURL, URL letterToSoundURL, boolean binary) {
         setLexiconParameters(compiledURL, addendaURL, letterToSoundURL, binary);
     }
 
@@ -82,18 +79,15 @@ public class CMULexicon extends LexiconImpl {
     }
 
     public CMULexicon(String basename, boolean useBinaryIO) {
-        java.net.URLClassLoader classLoader =
-                VoiceManager.getVoiceClassLoader();
+        java.net.URLClassLoader classLoader = VoiceManager.getVoiceClassLoader();
         String type = (useBinaryIO ? "bin" : "txt");
 
         URL letterToSoundURL = classLoader.getResource(
                 "/com/sun/speech/freetts/en/us/" + basename + "_lts." + type);
         URL compiledURL = classLoader.getResource(
-                "/com/sun/speech/freetts/en/us/" + basename
-                        + "_compiled." + type);
+                "/com/sun/speech/freetts/en/us/" + basename + "_compiled." + type);
         URL addendaURL = classLoader.getResource(
-                "/com/sun/speech/freetts/en/us/" + basename
-                        + "_addenda." + type);
+                "/com/sun/speech/freetts/en/us/" + basename + "_addenda." + type);
 
         /* Just another try with possibly a different class loader
          * if the above didn't work.
@@ -109,8 +103,7 @@ public class CMULexicon extends LexiconImpl {
             }
         }
 
-        setLexiconParameters(compiledURL, addendaURL,
-                letterToSoundURL, useBinaryIO);
+        setLexiconParameters(compiledURL, addendaURL, letterToSoundURL, useBinaryIO);
     }
 
     /**
@@ -119,8 +112,7 @@ public class CMULexicon extends LexiconImpl {
      * @param useBinaryIO if true use binary IO to load DB
      * @throws IOException if problems occurred while reading the data
      */
-    static public CMULexicon getInstance(boolean useBinaryIO)
-            throws IOException {
+    static public CMULexicon getInstance(boolean useBinaryIO) throws IOException {
         return getInstance("cmulex", useBinaryIO);
     }
 
@@ -130,8 +122,7 @@ public class CMULexicon extends LexiconImpl {
      * @param useBinaryIO if true use binary IO to load DB
      * @throws IOException if problems occurred while reading the data
      */
-    static public CMULexicon getInstance(String basename, boolean useBinaryIO)
-            throws IOException {
+    static public CMULexicon getInstance(String basename, boolean useBinaryIO) throws IOException {
         CMULexicon lexicon = new CMULexicon(basename, useBinaryIO);
         lexicon.load();
         return lexicon;
@@ -147,9 +138,8 @@ public class CMULexicon extends LexiconImpl {
      * @return <code>true</code> if the word phone in question is on a
      * syllable boundary; otherwise <code>false</code>.
      */
-    public boolean isSyllableBoundary(List<String> syllablePhones,
-                                      String[] wordPhones,
-                                      int currentWordPhone) {
+    @Override
+    public boolean isSyllableBoundary(List<String> syllablePhones, String[] wordPhones, int currentWordPhone) {
         if (currentWordPhone >= wordPhones.length) {
             return true;
         } else if (isSilence(wordPhones[currentWordPhone])) {
@@ -277,8 +267,7 @@ public class CMULexicon extends LexiconImpl {
                         srcPath = args[++i];
                     } else if (args[i].equals("-dest")) {
                         destPath = args[++i];
-                    } else if (args[i].equals("-name")
-                            && i < args.length - 1) {
+                    } else if (args[i].equals("-name") && i < args.length - 1) {
                         baseName = args[++i];
                     } else if (args[i].equals("-generate_binary")) {
 

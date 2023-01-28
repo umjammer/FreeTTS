@@ -51,7 +51,6 @@ public class InputMode {
      */
     public static final InputMode LINES = new InputMode("lines");
 
-
     /**
      * Indicates that the input is from the keyboard.
      */

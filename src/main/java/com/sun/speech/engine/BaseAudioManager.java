@@ -39,6 +39,7 @@ public class BaseAudioManager implements AudioManager {
      *
      * @param listener the listener to add
      */
+    @Override
     public void addAudioListener(AudioListener listener) {
         if (!listeners.contains(listener)) {
             listeners.add(listener);
@@ -51,6 +52,7 @@ public class BaseAudioManager implements AudioManager {
      *
      * @param listener the listener to remove
      */
+    @Override
     public void removeAudioListener(AudioListener listener) {
         listeners.remove(listener);
     }

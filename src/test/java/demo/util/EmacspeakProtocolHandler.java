@@ -229,6 +229,7 @@ public abstract class EmacspeakProtocolHandler implements Runnable {
     /**
      * Implements the run() method of Runnable
      */
+    @Override
     public synchronized void run() {
         try {
             String command;

@@ -47,8 +47,7 @@ public class CMUTimeVoice extends CMUClusterUnitVoice {
     public CMUTimeVoice(String name, Gender gender, Age age,
                         String description, Locale locale, String domain,
                         String organization, CMULexicon lexicon, URL database) {
-        super(name, gender, age, description, locale,
-                domain, organization, lexicon, database);
+        super(name, gender, age, description, locale, domain, organization, lexicon, database);
     }
 
     /**
@@ -64,9 +63,10 @@ public class CMUTimeVoice extends CMUClusterUnitVoice {
      * @throws IOException if an IO error occurs while getting
      *                     processor
      */
+    @Override
     protected UtteranceProcessor getPostLexicalAnalyzer() throws IOException {
-        /* Do nothing
-         */
+        // Do nothing
+        //
         return utterance -> {
         };
     }

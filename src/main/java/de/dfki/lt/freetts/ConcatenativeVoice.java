@@ -23,6 +23,7 @@ import com.sun.speech.freetts.UtteranceProcessor;
  * concatentive voices (e.g., diphone, cluster unit and arctic voices).
  */
 public interface ConcatenativeVoice {
+
     /**
      * Gets the url to the database that defines the unit data for this
      * voice.

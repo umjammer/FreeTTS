@@ -25,12 +25,10 @@ public class WordRelation {
     private Relation relation;
     private TokenToWords tokenToWords;
 
-
     private WordRelation(Relation parentRelation, TokenToWords tokenToWords) {
         this.relation = parentRelation;
         this.tokenToWords = tokenToWords;
     }
-
 
     /**
      * Creates a WordRelation object with the given utterance and
@@ -40,12 +38,10 @@ public class WordRelation {
      * @param tokenToWords the TokenToWords object to use
      * @return a WordRelation object
      */
-    public static WordRelation createWordRelation(Utterance utterance,
-                                                  TokenToWords tokenToWords) {
+    public static WordRelation createWordRelation(Utterance utterance, TokenToWords tokenToWords) {
         Relation relation = utterance.createRelation(Relation.WORD);
         return new WordRelation(relation, tokenToWords);
     }
-
 
     /**
      * Adds a break as a feature to the last item in the list.
@@ -57,7 +53,6 @@ public class WordRelation {
             featureSet.setString("break", "1");
         }
     }
-
 
     /**
      * Adds a word as an Item to this WordRelation object.
@@ -72,7 +67,6 @@ public class WordRelation {
         relation.appendItem(wordItem);
     }
 
-
     /**
      * Sets the last Item in this WordRelation to the given word.
      *
@@ -83,7 +77,6 @@ public class WordRelation {
         FeatureSet featureSet = lastItem.getFeatures();
         featureSet.setString("name", word);
     }
-
 
     /**
      * Returns the last item in this WordRelation.

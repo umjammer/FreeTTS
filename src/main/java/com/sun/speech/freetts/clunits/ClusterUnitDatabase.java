@@ -78,7 +78,6 @@ public class ClusterUnitDatabase {
     private final static int MAGIC = 0xf0cacc1a;
     private final static int VERSION = 0x1000;
 
-
     /**
      * Creates the UnitDatabase from the given input stream.
      *
@@ -107,7 +106,6 @@ public class ClusterUnitDatabase {
         }
         BulkTimer.LOAD.stop("ClusterUnitDatabase");
     }
-
 
     /**
      * Retrieves the begininning sample index for the
@@ -151,8 +149,7 @@ public class ClusterUnitDatabase {
         CART cart = cartMap.get(unitType);
 
         if (cart == null) {
-            System.err.println("ClusterUnitDatabase: can't find tree for "
-                    + unitType);
+            System.err.println("ClusterUnitDatabase: can't find tree for " + unitType);
             return defaultCart;    // "graceful" failrue
         }
         return cart;
@@ -161,10 +158,11 @@ public class ClusterUnitDatabase {
     /**
      * Retrieves the type index for the name given a name.
      *
+     * TODO perhaps replace this with  java.util.Arrays.binarySearch
+     *
      * @param name the name
      * @return the index for the name
      */
-// [[[TODO: perhaps replace this with  java.util.Arrays.binarySearch]]]
     int getUnitTypeIndex(String name) {
         int start, end, mid, c;
 
@@ -252,7 +250,6 @@ public class ClusterUnitDatabase {
         return units[which].prev;
     }
 
-
     /**
      * Determines if the unit types are equal.
      *
@@ -330,7 +327,6 @@ public class ClusterUnitDatabase {
             return null;
     }
 
-
     /**
      * Returns the name of this UnitDatabase.
      *
@@ -348,7 +344,6 @@ public class ClusterUnitDatabase {
     SampleInfo getSampleInfo() {
         return sts.getSampleInfo();
     }
-
 
     /**
      * Gets the sample list.
@@ -378,7 +373,6 @@ public class ClusterUnitDatabase {
     int getJoinWeightShift() {
         return joinWeightShift;
     }
-
 
     /**
      * Calculates the join weight shift.
@@ -411,7 +405,6 @@ public class ClusterUnitDatabase {
     private void loadText(InputStream is) {
         BufferedReader reader;
         String line;
-
 
         unitList = new ArrayList<>();
         unitTypesList = new ArrayList<>();
@@ -450,8 +443,7 @@ public class ClusterUnitDatabase {
      * @param reader the source for the lines
      * @throws IOException if an error occurs while reading
      */
-    private void parseAndAdd(String line, BufferedReader reader)
-            throws IOException {
+    private void parseAndAdd(String line, BufferedReader reader) throws IOException {
         try {
             StringTokenizer tokenizer = new StringTokenizer(line, " ");
             String tag = tokenizer.nextToken();
@@ -494,9 +486,7 @@ public class ClusterUnitDatabase {
                 int end = Integer.parseInt(tokenizer.nextToken());
                 int prev = Integer.parseInt(tokenizer.nextToken());
                 int next = Integer.parseInt(tokenizer.nextToken());
-                DatabaseClusterUnit unit
-                        = new DatabaseClusterUnit(type, phone, start,
-                        end, prev, next);
+                DatabaseClusterUnit unit = new DatabaseClusterUnit(type, phone, start, end, prev, next);
                 unitList.add(unit);
                 break;
             }
@@ -543,8 +533,7 @@ public class ClusterUnitDatabase {
             FileInputStream fis = (FileInputStream) is;
             FileChannel fc = fis.getChannel();
 
-            MappedByteBuffer bb =
-                    fc.map(FileChannel.MapMode.READ_ONLY, 0, (int) fc.size());
+            MappedByteBuffer bb = fc.map(FileChannel.MapMode.READ_ONLY, 0, (int) fc.size());
             bb.load();
             loadBinary(bb);
             is.close();
@@ -695,7 +684,6 @@ public class ClusterUnitDatabase {
         in.close();
     }
 
-
     /**
      * Dumps a binary form of the database.
      *
@@ -704,8 +692,7 @@ public class ClusterUnitDatabase {
     void dumpBinary(String path) {
         try {
             FileOutputStream fos = new FileOutputStream(path);
-            DataOutputStream os = new DataOutputStream(new
-                    BufferedOutputStream(fos));
+            DataOutputStream os = new DataOutputStream(new BufferedOutputStream(fos));
 
             os.writeInt(MAGIC);
             os.writeInt(VERSION);
@@ -744,11 +731,9 @@ public class ClusterUnitDatabase {
             // of the default cart
 
         } catch (FileNotFoundException fe) {
-            throw new Error("Can't dump binary database " +
-                    fe.getMessage());
+            throw new Error("Can't dump binary database " + fe.getMessage());
         } catch (IOException ioe) {
-            throw new Error("Can't write binary database " +
-                    ioe.getMessage());
+            throw new Error("Can't write binary database " + ioe.getMessage());
         }
     }
 
@@ -885,7 +870,6 @@ public class ClusterUnitDatabase {
         }
     }
 
-
     /**
      * Represents a unit  for the cluster database.
      */
@@ -908,8 +892,7 @@ public class ClusterUnitDatabase {
          * @param prev  the previous index
          * @param next  the next index
          */
-        DatabaseClusterUnit(int type, int phone, int start,
-                            int end, int prev, int next) {
+        DatabaseClusterUnit(int type, int phone, int start, int end, int prev, int next) {
             this.type = type;
             this.phone = phone;
             this.start = start;
@@ -996,6 +979,7 @@ public class ClusterUnitDatabase {
  * Represents a unit type in the system
  */
 class UnitType {
+
     private String name;
     private int start;
     private int count;

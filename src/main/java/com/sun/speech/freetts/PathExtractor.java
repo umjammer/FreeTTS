@@ -35,7 +35,6 @@ public interface PathExtractor {
      */
     Object findFeature(Item item);
 
-
     // TODO: add these to the interface should we support binary files
 //    public void writeBinary();
 //    public void readBinary();

@@ -24,6 +24,7 @@ import java.nio.ByteBuffer;
  * generated.
  */
 public class SampleInfo {
+
     public final static String UTT_NAME = "SampleInfo";
 
     private final int sampleRate;
@@ -136,7 +137,6 @@ public class SampleInfo {
     public final float getPostEmphasis() {
         return postEmphasis;
     }
-
 
     /**
      * Dump a binary form of the sample rate

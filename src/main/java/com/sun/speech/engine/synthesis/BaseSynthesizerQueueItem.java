@@ -10,6 +10,7 @@ package com.sun.speech.engine.synthesis;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.logging.Logger;
 import javax.speech.SpeechEvent;
 import javax.speech.synthesis.JSMLException;
 import javax.speech.synthesis.Speakable;
@@ -26,8 +27,10 @@ import org.w3c.dom.Document;
  * Extends the JSAPI 1.0 <code>SynthesizerQueueItem</code> with handling
  * for JSML, generation of engine-specific text, and other features.
  */
-public class BaseSynthesizerQueueItem extends SynthesizerQueueItem
-        implements SpeechEventDispatcher {
+public class BaseSynthesizerQueueItem extends SynthesizerQueueItem implements SpeechEventDispatcher {
+
+    /** Logger instance. */
+    private static final Logger logger = Logger.getLogger(BaseSynthesizerQueueItem.class.getName());
 
     private volatile boolean done = false;
     private volatile boolean cancelled = false;
@@ -42,12 +45,10 @@ public class BaseSynthesizerQueueItem extends SynthesizerQueueItem
      */
     protected static int itemNumber = 0;
 
-
     /**
      * Count for this item used for debug.
      */
     protected int thisItemNumber;
-
 
     /**
      * <code>Synthesizer</code> that has queued this item.
@@ -73,8 +74,7 @@ public class BaseSynthesizerQueueItem extends SynthesizerQueueItem
      */
     protected void setData(BaseSynthesizer synth,
                            Speakable source,
-                           SpeakableListener listener)
-            throws JSMLException {
+                           SpeakableListener listener) throws JSMLException {
         this.synth = synth;
         this.source = source;
         this.text = source.getJSMLText();
@@ -98,8 +98,7 @@ public class BaseSynthesizerQueueItem extends SynthesizerQueueItem
     protected void setData(BaseSynthesizer synth,
                            String source,
                            boolean plainText,
-                           SpeakableListener listener)
-            throws JSMLException {
+                           SpeakableListener listener) throws JSMLException {
         this.synth = synth;
         this.source = source;
         this.text = source;
@@ -109,7 +108,6 @@ public class BaseSynthesizerQueueItem extends SynthesizerQueueItem
             document = new JSMLParser(this.text, false).getDocument();
         }
     }
-
 
     /**
      * Sets queue item data with a <code>URL</code> source.
@@ -123,8 +121,7 @@ public class BaseSynthesizerQueueItem extends SynthesizerQueueItem
      */
     protected void setData(BaseSynthesizer synth,
                            URL source,
-                           SpeakableListener listener)
-            throws JSMLException, IOException {
+                           SpeakableListener listener) throws JSMLException, IOException {
         this.synth = synth;
         this.source = source;
         this.text = null;
@@ -142,7 +139,6 @@ public class BaseSynthesizerQueueItem extends SynthesizerQueueItem
         return document;
     }
 
-
     /**
      * determines if this queue item has been canceled
      *
@@ -152,7 +148,6 @@ public class BaseSynthesizerQueueItem extends SynthesizerQueueItem
     protected synchronized boolean isCancelled() {
         return cancelled;
     }
-
 
     /**
      * returns true if this queue item has been
@@ -175,8 +170,7 @@ public class BaseSynthesizerQueueItem extends SynthesizerQueueItem
             try {
                 wait();
             } catch (InterruptedException ie) {
-                System.err.println(
-                        "FreeTTSSynthesizerQueueItem.Wait interrupted");
+                logger.info("FreeTTSSynthesizerQueueItem.Wait interrupted");
                 return false;
             }
         }
@@ -231,8 +225,7 @@ public class BaseSynthesizerQueueItem extends SynthesizerQueueItem
      * @see #dispatchSpeechEvent
      */
     public void postMarkerReached(String text, int markerType) {
-        SpeechEventUtilities.postSpeechEvent(
-                this,
+        SpeechEventUtilities.postSpeechEvent(this,
                 new SpeakableEvent(source, SpeakableEvent.MARKER_REACHED, text, markerType));
     }
 
@@ -247,7 +240,6 @@ public class BaseSynthesizerQueueItem extends SynthesizerQueueItem
         if (listener != null) {
             listener.markerReached(event);
         }
-
 
         if (synth.speakableListeners != null) {
             for (SpeakableListener sl : synth.speakableListeners) {
@@ -281,8 +273,7 @@ public class BaseSynthesizerQueueItem extends SynthesizerQueueItem
             cancelled = true;
         }
         if (shouldPost) {
-            SpeechEventUtilities.postSpeechEvent(
-                    this,
+            SpeechEventUtilities.postSpeechEvent(this,
                     new SpeakableEvent(source, SpeakableEvent.SPEAKABLE_CANCELLED));
         }
     }
@@ -298,7 +289,6 @@ public class BaseSynthesizerQueueItem extends SynthesizerQueueItem
         if (listener != null) {
             listener.speakableCancelled(event);
         }
-
 
         if (synth.speakableListeners != null) {
             for (SpeakableListener sl : synth.speakableListeners) {
@@ -330,12 +320,10 @@ public class BaseSynthesizerQueueItem extends SynthesizerQueueItem
             done = true;
         }
         if (shouldPost) {
-            SpeechEventUtilities.postSpeechEvent(
-                    this,
+            SpeechEventUtilities.postSpeechEvent(this,
                     new SpeakableEvent(source, SpeakableEvent.SPEAKABLE_ENDED));
         }
     }
-
 
     /**
      * Utility function that sends a <code>SPEAKABLE_ENDED</code> event
@@ -348,7 +336,6 @@ public class BaseSynthesizerQueueItem extends SynthesizerQueueItem
         if (listener != null) {
             listener.speakableEnded(event);
         }
-
 
         if (synth.speakableListeners != null) {
             for (SpeakableListener sl : synth.speakableListeners) {
@@ -369,8 +356,7 @@ public class BaseSynthesizerQueueItem extends SynthesizerQueueItem
      * @see #dispatchSpeechEvent
      */
     public void postSpeakablePaused() {
-        SpeechEventUtilities.postSpeechEvent(
-                this,
+        SpeechEventUtilities.postSpeechEvent(this,
                 new SpeakableEvent(source, SpeakableEvent.SPEAKABLE_PAUSED));
     }
 
@@ -385,7 +371,6 @@ public class BaseSynthesizerQueueItem extends SynthesizerQueueItem
         if (listener != null) {
             listener.speakablePaused(event);
         }
-
 
         if (synth.speakableListeners != null) {
             for (SpeakableListener sl : synth.speakableListeners) {
@@ -406,8 +391,7 @@ public class BaseSynthesizerQueueItem extends SynthesizerQueueItem
      * @see #dispatchSpeechEvent
      */
     public void postSpeakableResumed() {
-        SpeechEventUtilities.postSpeechEvent(
-                this,
+        SpeechEventUtilities.postSpeechEvent(this,
                 new SpeakableEvent(source, SpeakableEvent.SPEAKABLE_RESUMED));
     }
 
@@ -422,7 +406,6 @@ public class BaseSynthesizerQueueItem extends SynthesizerQueueItem
         if (listener != null) {
             listener.speakableResumed(event);
         }
-
 
         if (synth.speakableListeners != null) {
             for (SpeakableListener sl : synth.speakableListeners) {
@@ -443,8 +426,7 @@ public class BaseSynthesizerQueueItem extends SynthesizerQueueItem
      * @see #dispatchSpeechEvent
      */
     public void postSpeakableStarted() {
-        SpeechEventUtilities.postSpeechEvent(
-                this,
+        SpeechEventUtilities.postSpeechEvent(this,
                 new SpeakableEvent(source, SpeakableEvent.SPEAKABLE_STARTED));
     }
 
@@ -479,8 +461,7 @@ public class BaseSynthesizerQueueItem extends SynthesizerQueueItem
      * @see #dispatchSpeechEvent
      */
     public void postTopOfQueue() {
-        SpeechEventUtilities.postSpeechEvent(
-                this,
+        SpeechEventUtilities.postSpeechEvent(this,
                 new SpeakableEvent(source, SpeakableEvent.TOP_OF_QUEUE));
     }
 
@@ -495,7 +476,6 @@ public class BaseSynthesizerQueueItem extends SynthesizerQueueItem
         if (listener != null) {
             listener.topOfQueue(event);
         }
-
 
         if (synth.speakableListeners != null) {
             for (SpeakableListener sl : synth.speakableListeners) {
@@ -519,8 +499,7 @@ public class BaseSynthesizerQueueItem extends SynthesizerQueueItem
      * @see #dispatchSpeechEvent
      */
     public void postWordStarted(String text, int wordStart, int wordEnd) {
-        SpeechEventUtilities.postSpeechEvent(
-                this,
+        SpeechEventUtilities.postSpeechEvent(this,
                 new SpeakableEvent(source, SpeakableEvent.WORD_STARTED, text, wordStart, wordEnd));
     }
 
@@ -559,6 +538,7 @@ public class BaseSynthesizerQueueItem extends SynthesizerQueueItem
      * @see #postTopOfQueue
      * @see #postWordStarted
      */
+    @Override
     public void dispatchSpeechEvent(SpeechEvent event) {
         switch (event.getId()) {
         case SpeakableEvent.MARKER_REACHED:

@@ -189,7 +189,6 @@ abstract public class LexiconImpl implements Lexicon {
      *                         otherwise, they are text.
      */
     public LexiconImpl(URL compiledURL, URL addendaURL, URL letterToSoundURL, boolean binary) {
-        this();
         setLexiconParameters(compiledURL, addendaURL, letterToSoundURL, binary);
     }
 
@@ -228,6 +227,7 @@ abstract public class LexiconImpl implements Lexicon {
      *
      * @return <code>true</code> if the lexicon is loaded
      */
+    @Override
     public boolean isLoaded() {
         return loaded;
     }
@@ -237,6 +237,7 @@ abstract public class LexiconImpl implements Lexicon {
      *
      * @throws IOException if errors occur during loading
      */
+    @Override
     @SuppressWarnings("unchecked")
     public void load() throws IOException {
         BulkTimer.LOAD.start("Lexicon");
@@ -488,6 +489,7 @@ abstract public class LexiconImpl implements Lexicon {
      * @param partOfSpeech the part of speech
      * @param phones       the phones for the word
      */
+    @Override
     public void addAddendum(String word, String partOfSpeech, String[] phones) {
         String pos = fixPartOfSpeech(partOfSpeech);
         if (!partsOfSpeech.contains(pos)) {
@@ -502,6 +504,7 @@ abstract public class LexiconImpl implements Lexicon {
      * @param word         the word to remove
      * @param partOfSpeech the part of speech
      */
+    @Override
     public void removeAddendum(String word, String partOfSpeech) {
         addenda.remove(word + fixPartOfSpeech(partOfSpeech));
     }
@@ -549,7 +552,6 @@ abstract public class LexiconImpl implements Lexicon {
         }
         return new String(charBuffer, 0, size);
     }
-
 
     /**
      * Dumps a binary form of the database.  This method is not thread-safe.
@@ -655,8 +657,7 @@ abstract public class LexiconImpl implements Lexicon {
 
         for (int i = 0; i < numEntries; i++) {
             String wordAndPos = getString(bb);
-            String pos = Character.toString(
-                    wordAndPos.charAt(wordAndPos.length() - 1));
+            String pos = Character.toString(wordAndPos.charAt(wordAndPos.length() - 1));
             if (!partsOfSpeech.contains(pos)) {
                 partsOfSpeech.add(pos);
             }

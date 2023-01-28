@@ -37,6 +37,7 @@ import java.util.StringTokenizer;
  * mean.
  */
 public class PhoneDurationsImpl implements PhoneDurations {
+
     /**
      * The set of PhoneDuration instances indexed by phone.
      */
@@ -53,8 +54,7 @@ public class PhoneDurationsImpl implements PhoneDurations {
         String line;
 
         phoneDurations = new java.util.HashMap<>();
-        reader = new BufferedReader(new
-                InputStreamReader(url.openStream()));
+        reader = new BufferedReader(new InputStreamReader(url.openStream()));
         line = reader.readLine();
         while (line != null) {
             if (!line.startsWith("***")) {
@@ -86,6 +86,7 @@ public class PhoneDurationsImpl implements PhoneDurations {
      * @param phone the phone
      * @return the <code>PhoneDuration</code> for <code>phone</code>
      */
+    @Override
     public PhoneDuration getPhoneDuration(String phone) {
         return phoneDurations.get(phone);
     }

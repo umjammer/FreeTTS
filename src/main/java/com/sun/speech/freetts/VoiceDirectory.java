@@ -27,6 +27,7 @@ package com.sun.speech.freetts;
  * @see VoiceManager
  */
 public abstract class VoiceDirectory {
+
     /**
      * Default constructor does nothing.  This may be overridden by
      * subclasses, but it is not recommended.  This is the only

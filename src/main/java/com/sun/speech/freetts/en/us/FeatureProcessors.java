@@ -32,28 +32,23 @@ import com.sun.speech.freetts.Voice;
 public class FeatureProcessors {
 
     private final static PathExtractor FIRST_SYLLABLE_PATH =
-            new PathExtractorImpl(
-                    "R:SylStructure.parent.R:Phrase.parent.daughter.R:SylStructure.daughter",
+            new PathExtractorImpl("R:SylStructure.parent.R:Phrase.parent.daughter.R:SylStructure.daughter",
                     false);
 
     private final static PathExtractor LAST_SYLLABLE_PATH =
-            new PathExtractorImpl(
-                    "R:SylStructure.parent.R:Phrase.parent.daughtern.R:SylStructure.daughter",
+            new PathExtractorImpl("R:SylStructure.parent.R:Phrase.parent.daughtern.R:SylStructure.daughter",
                     false);
 
     private final static PathExtractor LAST_LAST_SYLLABLE_PATH =
-            new PathExtractorImpl(
-                    "R:SylStructure.parent.R:Phrase.parent.daughtern.R:SylStructure.daughtern",
+            new PathExtractorImpl("R:SylStructure.parent.R:Phrase.parent.daughtern.R:SylStructure.daughtern",
                     false);
 
     private final static PathExtractor SUB_PHRASE_PATH =
             new PathExtractorImpl("R:SylStructure.parent.R:Phrase.parent.p", false);
 
-    private final static Pattern DOUBLE_PATTERN
-            = Pattern.compile(USEnglish.RX_DOUBLE);
+    private final static Pattern DOUBLE_PATTERN = Pattern.compile(USEnglish.RX_DOUBLE);
 
-    private final static Pattern DIGITS_PATTERN
-            = Pattern.compile(USEnglish.RX_DIGITS);
+    private final static Pattern DIGITS_PATTERN = Pattern.compile(USEnglish.RX_DIGITS);
 
     private static Set<String> months;
     private static Set<String> days;
@@ -116,6 +111,7 @@ public class FeatureProcessors {
      * performs some sort of processing on the item and returns an object.
      */
     public static class Gpos implements FeatureProcessor {
+
         PartOfSpeech pos;
 
         /**
@@ -135,11 +131,11 @@ public class FeatureProcessors {
          * @throws ProcessException if an exception occurred during the
          *                          processing
          */
+        @Override
         public String process(Item item) throws ProcessException {
             return pos.getPartOfSpeech(item.toString());
         }
     }
-
 
     /**
      * Returns as an Integer the number of syllables in the given
@@ -156,10 +152,10 @@ public class FeatureProcessors {
          * @throws ProcessException if an exception occurred during the
          *                          processing
          */
+        @Override
         public String process(Item item) throws ProcessException {
             int count = 0;
-            Item daughter = item.getItemAs(
-                    Relation.SYLLABLE_STRUCTURE).getDaughter();
+            Item daughter = item.getItemAs(Relation.SYLLABLE_STRUCTURE).getDaughter();
             while (daughter != null) {
                 count++;
                 daughter = daughter.getNext();
@@ -184,6 +180,7 @@ public class FeatureProcessors {
          * @throws ProcessException if an exception occurred during the
          *                          processing
          */
+        @Override
         public String process(Item item) throws ProcessException {
             int count = 0;
             Item ss = item.getItemAs(Relation.SYLLABLE);
@@ -201,7 +198,6 @@ public class FeatureProcessors {
         }
     }
 
-
     /**
      * Counts the number of stressed syllables since the last major break.
      * This is a feature processor. A feature processor takes an item,
@@ -218,6 +214,7 @@ public class FeatureProcessors {
          * @throws ProcessException if an exception occurred during the
          *                          processing
          */
+        @Override
         public String process(Item item) throws ProcessException {
             int count = 0;
             Item ss = item.getItemAs(Relation.SYLLABLE);
@@ -226,9 +223,7 @@ public class FeatureProcessors {
             // this should include the first syllable, but
             // flite 1.1 and festival don't.
 
-            for (Item p = ss.getPrevious();
-                 p != null && !p.equalsShared(firstSyllable);
-                 p = p.getPrevious()) {
+            for (Item p = ss.getPrevious(); p != null && !p.equalsShared(firstSyllable); p = p.getPrevious()) {
                 if ("1".equals(p.getFeatures().getString("stress"))) {
                     count++;
                 }
@@ -252,6 +247,7 @@ public class FeatureProcessors {
          * @throws ProcessException if an exception occurred during the
          *                          processing
          */
+        @Override
         public String process(Item item) throws ProcessException {
             int count = 0;
             Item ss = item.getItemAs(Relation.SYLLABLE);
@@ -285,6 +281,7 @@ public class FeatureProcessors {
          * @throws ProcessException if an exception occurred during the
          *                          processing
          */
+        @Override
         public String process(Item item) throws ProcessException {
             String name = item.getFeatures().getString("name");
             return Integer.toString(rail(name.length()));
@@ -309,6 +306,7 @@ public class FeatureProcessors {
          * @throws ProcessException if an exception occurred during the
          *                          processing
          */
+        @Override
         public String process(Item item) throws ProcessException {
             int v = Integer.parseInt(item.getFeatures().getString("name"));
             if ((v > 0) && (v < 32)) {
@@ -333,6 +331,7 @@ public class FeatureProcessors {
          * @throws ProcessException if an exception occurred during the
          *                          processing
          */
+        @Override
         public String process(Item item) throws ProcessException {
             String name = item.getFeatures().getString("name");
             String dc = name.toLowerCase();
@@ -371,6 +370,7 @@ public class FeatureProcessors {
          * @throws ProcessException if an exception occurred during the
          *                          processing
          */
+        @Override
         public String process(Item item) throws ProcessException {
             if (isAccented(item)) {
                 return "1";
@@ -395,6 +395,7 @@ public class FeatureProcessors {
          * @throws ProcessException if an exception occurred during the
          *                          processing
          */
+        @Override
         public String process(Item item) throws ProcessException {
             int count = 0;
 
@@ -423,6 +424,7 @@ public class FeatureProcessors {
          * @throws ProcessException if an exception occurred during the
          *                          processing
          */
+        @Override
         public String process(Item item) throws ProcessException {
             int count = -1;
 
@@ -450,6 +452,7 @@ public class FeatureProcessors {
          * @throws ProcessException if an exception occurred during the
          *                          processing
          */
+        @Override
         public String process(Item item) throws ProcessException {
             String type;
 
@@ -488,6 +491,7 @@ public class FeatureProcessors {
          * @throws ProcessException if an exception occurred during the
          *                          processing
          */
+        @Override
         public String process(Item item) throws ProcessException {
             int count = 0;
             Item ss = item.getItemAs(Relation.SYLLABLE);
@@ -518,6 +522,7 @@ public class FeatureProcessors {
          * @throws ProcessException if an exception occurred during the
          *                          processing
          */
+        @Override
         public String process(Item item) throws ProcessException {
             int count = 0;
             Item ss = item.getItemAs(Relation.SYLLABLE);
@@ -549,6 +554,7 @@ public class FeatureProcessors {
          * @throws ProcessException if an exception occurred during the
          *                          processing
          */
+        @Override
         public String process(Item syl) throws ProcessException {
             Item ss = syl.getItemAs(Relation.SYLLABLE_STRUCTURE);
             if (ss == null) {
@@ -579,6 +585,7 @@ public class FeatureProcessors {
          * @throws ProcessException if an exception occurred during the
          *                          processing
          */
+        @Override
         public String process(Item word) throws ProcessException {
             return wordBreak(word);
         }
@@ -599,6 +606,7 @@ public class FeatureProcessors {
          * @throws ProcessException if an exception occurred during the
          *                          processing
          */
+        @Override
         public String process(Item word) throws ProcessException {
             return wordPunc(word);
         }
@@ -621,6 +629,7 @@ public class FeatureProcessors {
          * @throws ProcessException if an exception occurred during the
          *                          processing
          */
+        @Override
         public String process(Item item) throws ProcessException {
             return getPhoneFeature(item, "cplace");
         }
@@ -643,6 +652,7 @@ public class FeatureProcessors {
          * @throws ProcessException if an exception occurred during the
          *                          processing
          */
+        @Override
         public String process(Item item) throws ProcessException {
             return getPhoneFeature(item, "ctype");
         }
@@ -665,6 +675,7 @@ public class FeatureProcessors {
          * @throws ProcessException if an exception occurred during the
          *                          processing
          */
+        @Override
         public String process(Item item) throws ProcessException {
             return getPhoneFeature(item, "cvox");
         }
@@ -687,6 +698,7 @@ public class FeatureProcessors {
          * @throws ProcessException if an exception occurred during the
          *                          processing
          */
+        @Override
         public String process(Item item) throws ProcessException {
             return getPhoneFeature(item, "vc");
         }
@@ -709,6 +721,7 @@ public class FeatureProcessors {
          * @throws ProcessException if an exception occurred during the
          *                          processing
          */
+        @Override
         public String process(Item item) throws ProcessException {
             return getPhoneFeature(item, "vfront");
         }
@@ -731,6 +744,7 @@ public class FeatureProcessors {
          * @throws ProcessException if an exception occurred during the
          *                          processing
          */
+        @Override
         public String process(Item item) throws ProcessException {
             return getPhoneFeature(item, "vheight");
         }
@@ -754,6 +768,7 @@ public class FeatureProcessors {
          * @throws ProcessException if an exception occurred during the
          *                          processing
          */
+        @Override
         public String process(Item item) throws ProcessException {
             return getPhoneFeature(item, "vlng");
         }
@@ -777,6 +792,7 @@ public class FeatureProcessors {
          * @throws ProcessException if an exception occurred during the
          *                          processing
          */
+        @Override
         public String process(Item item) throws ProcessException {
             return getPhoneFeature(item, "vrnd");
         }
@@ -797,10 +813,10 @@ public class FeatureProcessors {
          * @throws ProcessException if an exception occurred during the
          *                          processing
          */
+        @Override
         public String process(Item syl) throws ProcessException {
             int count = 0;
-            Item daughter = syl.getItemAs(
-                    Relation.SYLLABLE_STRUCTURE).getDaughter();
+            Item daughter = syl.getItemAs(Relation.SYLLABLE_STRUCTURE).getDaughter();
             while (daughter != null) {
                 if ("+".equals(getPhoneFeature(daughter, "vc"))) {
                     break;
@@ -811,7 +827,6 @@ public class FeatureProcessors {
             return Integer.toString(rail(count));
         }
     }
-
 
     /**
      * Determines the coda size
@@ -828,10 +843,10 @@ public class FeatureProcessors {
          * @throws ProcessException if an exception occurred during the
          *                          processing
          */
+        @Override
         public String process(Item syl) throws ProcessException {
             int count = 0;
-            Item daughter = syl.getItemAs(
-                    Relation.SYLLABLE_STRUCTURE).getLastDaughter();
+            Item daughter = syl.getItemAs(Relation.SYLLABLE_STRUCTURE).getLastDaughter();
 
             while (daughter != null) {
                 if ("+".equals(getPhoneFeature(daughter, "vc"))) {
@@ -844,7 +859,6 @@ public class FeatureProcessors {
             return Integer.toString(rail(count));
         }
     }
-
 
     /**
      * Checks for fricative
@@ -861,6 +875,7 @@ public class FeatureProcessors {
          * @throws ProcessException if an exception occurred during the
          *                          processing
          */
+        @Override
         public String process(Item seg) throws ProcessException {
             return segCodaCtype(seg, "f");
         }
@@ -881,6 +896,7 @@ public class FeatureProcessors {
          * @throws ProcessException if an exception occurred during the
          *                          processing
          */
+        @Override
         public String process(Item seg) throws ProcessException {
             return segOnsetCtype(seg, "f");
         }
@@ -902,6 +918,7 @@ public class FeatureProcessors {
          * @throws ProcessException if an exception occurred during the
          *                          processing
          */
+        @Override
         public String process(Item seg) throws ProcessException {
             return segCodaCtype(seg, "s");
         }
@@ -922,6 +939,7 @@ public class FeatureProcessors {
          * @throws ProcessException if an exception occurred during the
          *                          processing
          */
+        @Override
         public String process(Item seg) throws ProcessException {
             return segOnsetCtype(seg, "s");
         }
@@ -942,6 +960,7 @@ public class FeatureProcessors {
          * @throws ProcessException if an exception occurred during the
          *                          processing
          */
+        @Override
         public String process(Item seg) throws ProcessException {
             return segCodaCtype(seg, "n");
         }
@@ -962,6 +981,7 @@ public class FeatureProcessors {
          * @throws ProcessException if an exception occurred during the
          *                          processing
          */
+        @Override
         public String process(Item seg) throws ProcessException {
             return segOnsetCtype(seg, "n");
         }
@@ -982,6 +1002,7 @@ public class FeatureProcessors {
          * @throws ProcessException if an exception occurred during the
          *                          processing
          */
+        @Override
         public String process(Item seg) throws ProcessException {
             if (segCodaCtype(seg, "r").equals("0")) {
                 return segCodaCtype(seg, "l");
@@ -1005,6 +1026,7 @@ public class FeatureProcessors {
          * @throws ProcessException if an exception occurred during the
          *                          processing
          */
+        @Override
         public String process(Item seg) throws ProcessException {
             if (segOnsetCtype(seg, "r").equals("0")) {
                 return segOnsetCtype(seg, "l");
@@ -1012,7 +1034,6 @@ public class FeatureProcessors {
             return "1";
         }
     }
-
 
     /**
      * Checks for onset coda
@@ -1029,6 +1050,7 @@ public class FeatureProcessors {
          * @throws ProcessException if an exception occurred during the
          *                          processing
          */
+        @Override
         public String process(Item seg) throws ProcessException {
             Item s = seg.getItemAs(Relation.SYLLABLE_STRUCTURE);
             if (s == null) {
@@ -1063,6 +1085,7 @@ public class FeatureProcessors {
          * @throws ProcessException if an exception occurred during the
          *                          processing
          */
+        @Override
         public String process(Item item) throws ProcessException {
             int count = 0;
             Item inPhrase = SUB_PHRASE_PATH.findItem(item);
@@ -1089,14 +1112,14 @@ public class FeatureProcessors {
          * @throws ProcessException if an exception occurred during the
          *                          processing
          */
+        @Override
         public String process(Item seg) throws ProcessException {
             if (seg == null) {
                 return "0";
             } else if (seg.getPrevious() == null) {
                 return seg.getFeatures().getObject("end").toString();
             } else {
-                return Float.toString(
-                        seg.getFeatures().getFloat("end") -
+                return Float.toString(seg.getFeatures().getFloat("end") -
                                 seg.getPrevious().getFeatures().getFloat("end")
                 );
             }
@@ -1170,9 +1193,7 @@ public class FeatureProcessors {
      * @return "1" on match "0" on no match
      */
     private static String segCodaCtype(Item seg, String ctype) {
-        Item daughter
-                = seg.getItemAs(
-                Relation.SYLLABLE_STRUCTURE).getParent().getLastDaughter();
+        Item daughter = seg.getItemAs(Relation.SYLLABLE_STRUCTURE).getParent().getLastDaughter();
 
         while (daughter != null) {
             if ("+".equals(getPhoneFeature(daughter, "vc"))) {
@@ -1195,8 +1216,7 @@ public class FeatureProcessors {
      * @return if Onset Stop "1"; otherwise "0"
      */
     private static String segOnsetCtype(Item seg, String ctype) {
-        Item daughter = seg.getItemAs(
-                Relation.SYLLABLE_STRUCTURE).getParent().getDaughter();
+        Item daughter = seg.getItemAs(Relation.SYLLABLE_STRUCTURE).getParent().getDaughter();
 
         while (daughter != null) {
             if ("+".equals(getPhoneFeature(daughter, "vc"))) {
@@ -1219,8 +1239,7 @@ public class FeatureProcessors {
      * <code>false</code>
      */
     private static boolean isAccented(Item item) {
-        return (item.getFeatures().isPresent("accent") ||
-                item.getFeatures().isPresent("endtone"));
+        return (item.getFeatures().isPresent("accent") || item.getFeatures().isPresent("endtone"));
     }
 
     /**

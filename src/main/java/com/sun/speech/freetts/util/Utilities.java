@@ -124,8 +124,7 @@ public class Utilities {
      * @param s   the string to output
      * @throws IOException if an I/O error occurs
      */
-    public static void outString(DataOutputStream dos, String s)
-            throws IOException {
+    public static void outString(DataOutputStream dos, String s) throws IOException {
         dos.writeShort((short) s.length());
         for (int i = 0; i < s.length(); i++) {
             dos.writeChar(s.charAt(i));
@@ -240,7 +239,6 @@ public class Utilities {
         }
         return value;
     }
-
 }
 
   

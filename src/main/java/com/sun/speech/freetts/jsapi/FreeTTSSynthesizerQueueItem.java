@@ -22,8 +22,8 @@ import org.w3c.dom.Document;
  * document.
  */
 
-public class FreeTTSSynthesizerQueueItem extends BaseSynthesizerQueueItem
-        implements FreeTTSSpeakable {
+public class FreeTTSSynthesizerQueueItem extends BaseSynthesizerQueueItem implements FreeTTSSpeakable {
+
     /**
      * Construct a queue item.
      */
@@ -36,6 +36,7 @@ public class FreeTTSSynthesizerQueueItem extends BaseSynthesizerQueueItem
      *
      * @return the DOM document for this object.
      */
+    @Override
     public Document getDocument() {
         return super.getDocument();
     }
@@ -46,6 +47,7 @@ public class FreeTTSSynthesizerQueueItem extends BaseSynthesizerQueueItem
      * @return true if the item is an input stream;
      * otherwise, returns <code> false </code>
      */
+    @Override
     public boolean isStream() {
         return false;
     }
@@ -55,6 +57,7 @@ public class FreeTTSSynthesizerQueueItem extends BaseSynthesizerQueueItem
      *
      * @return the input stream
      */
+    @Override
     public InputStream getInputStream() {
         return null;
     }
@@ -66,9 +69,8 @@ public class FreeTTSSynthesizerQueueItem extends BaseSynthesizerQueueItem
      * @return <code> true </code> if the item is a document;
      * otherwise, returns <code> false </code>
      */
+    @Override
     public boolean isDocument() {
         return super.getDocument() != null;
     }
-
-
 }

@@ -152,8 +152,7 @@ public class VoiceManager {
      * @throws IOException error loading a voice directory
      * @see #getVoices()
      */
-    private Collection<VoiceDirectory> getVoiceDirectories()
-            throws IOException {
+    private Collection<VoiceDirectory> getVoiceDirectories() throws IOException {
         try {
             // If there is a freetts.voices property, it means two
             // things: 1) it is a comma separated list of class names
@@ -169,19 +168,16 @@ public class VoiceManager {
             }
 
             // Get voice directory names from voices files
-            UniqueVector<String> voiceDirectoryNames =
-                    getVoiceDirectoryNamesFromFiles();
+            UniqueVector<String> voiceDirectoryNames = getVoiceDirectoryNamesFromFiles();
 
             // Get list of voice jars
             UniqueVector<URL> pathURLs = getVoiceJarURLs();
-            voiceDirectoryNames.addVector(
-                    getVoiceDirectoryNamesFromJarURLs(pathURLs));
+            voiceDirectoryNames.addVector(getVoiceDirectoryNamesFromJarURLs(pathURLs));
 
             // Get dependencies
             // Copy of vector made because vector may be modified by
             // each call to getDependencyURLs
-            URL[] voiceJarURLs = pathURLs.toArray(
-                    new URL[pathURLs.size()]);
+            URL[] voiceJarURLs = pathURLs.toArray(new URL[pathURLs.size()]);
             for (URL voiceJarURL : voiceJarURLs) {
                 getDependencyURLs(voiceJarURL, pathURLs);
             }
@@ -196,22 +192,17 @@ public class VoiceManager {
                 }
             }
 
-
             // Create an instance of each voice directory
-            UniqueVector<VoiceDirectory> voiceDirectories =
-                    new UniqueVector<>();
-            ServiceLoader<VoiceDirectory> directories =
-                    ServiceLoader.load(VoiceDirectory.class);
+            UniqueVector<VoiceDirectory> voiceDirectories = new UniqueVector<>();
+            ServiceLoader<VoiceDirectory> directories = ServiceLoader.load(VoiceDirectory.class);
             for (VoiceDirectory directory : directories) {
                 voiceDirectories.add(directory);
             }
 
             for (int i = 0; i < voiceDirectoryNames.size(); i++) {
                 @SuppressWarnings("unchecked")
-                Class<VoiceDirectory> c =
-                        (Class<VoiceDirectory>) Class.forName(
-                                voiceDirectoryNames.get(i),
-                                true, CLASSLOADER);
+                Class<VoiceDirectory> c = (Class<VoiceDirectory>) Class.forName(
+                                voiceDirectoryNames.get(i), true, CLASSLOADER);
                 voiceDirectories.add(c.newInstance());
             }
 
@@ -225,19 +216,16 @@ public class VoiceManager {
      * Gets VoiceDirectory instances by parsing a comma separated String of
      * VoiceDirectory class names.
      */
-    private Collection<VoiceDirectory> getVoiceDirectoryNamesFromProperty(
-            String voiceClasses) throws InstantiationException,
-            IllegalAccessException, ClassNotFoundException {
+    private Collection<VoiceDirectory> getVoiceDirectoryNamesFromProperty(String voiceClasses)
+            throws InstantiationException, IllegalAccessException, ClassNotFoundException {
 
         String[] classnames = voiceClasses.split(",");
 
-        Collection<VoiceDirectory> directories =
-                new java.util.ArrayList<>();
+        Collection<VoiceDirectory> directories = new java.util.ArrayList<>();
 
         for (String classname : classnames) {
             @SuppressWarnings("unchecked")
-            Class<VoiceDirectory> c =
-                    (Class<VoiceDirectory>) CLASSLOADER.loadClass(classname);
+            Class<VoiceDirectory> c = (Class<VoiceDirectory>) CLASSLOADER.loadClass(classname);
             directories.add(c.newInstance());
         }
 
@@ -260,17 +248,14 @@ public class VoiceManager {
      *                       parameter is modified as urls are added to it.
      * @throws IOException error openig the URL connection
      */
-    private void getDependencyURLs(URL url, UniqueVector<URL> dependencyURLs)
-            throws IOException {
+    private void getDependencyURLs(URL url, UniqueVector<URL> dependencyURLs) throws IOException {
         String urlDirName = getURLDirName(url);
         if (url.getProtocol().equals("jar")) { // only check deps of jars
 
             // read in Class-Path attribute of jar Manifest
-            JarURLConnection jarConnection = (JarURLConnection) url
-                    .openConnection();
+            JarURLConnection jarConnection = (JarURLConnection) url.openConnection();
             Attributes attributes = jarConnection.getMainAttributes();
-            String fullClassPath = attributes
-                    .getValue(Attributes.Name.CLASS_PATH);
+            String fullClassPath = attributes.getValue(Attributes.Name.CLASS_PATH);
             if (fullClassPath == null || fullClassPath.equals("")) {
                 return; // no classpaths to add
             }
@@ -281,18 +266,12 @@ public class VoiceManager {
             for (String s : classPath) {
                 try {
                     if (s.endsWith("/")) { // assume directory
-                        classPathURL = new URL("file:" + urlDirName
-                                + s);
+                        classPathURL = new URL("file:" + urlDirName + s);
                     } else { // assume jar
-                        classPathURL = new URL("jar", "", "file:"
-                                + urlDirName + s + "!/");
+                        classPathURL = new URL("jar", "", "file:" + urlDirName + s + "!/");
                     }
                 } catch (MalformedURLException e) {
-                    System.err
-                            .println("Warning: unable to resolve dependency "
-                                    + s
-                                    + " referenced by "
-                                    + url);
+                    System.err.println("Warning: unable to resolve dependency " + s + " referenced by " + url);
                     continue;
                 }
 
@@ -313,25 +292,19 @@ public class VoiceManager {
      * @return a vector containing the String names of the voice directories
      * @throws IOException error reading voice files.
      */
-    private UniqueVector<String> getVoiceDirectoryNamesFromFiles()
-            throws IOException {
-        UniqueVector<String> voiceDirectoryNames =
-                new UniqueVector<>();
+    private UniqueVector<String> getVoiceDirectoryNamesFromFiles() throws IOException {
+        UniqueVector<String> voiceDirectoryNames = new UniqueVector<>();
 
         // first, load internal_voices.txt
-        InputStream is = this.getClass().getResourceAsStream(
-                "internal_voices.txt");
+        InputStream is = this.getClass().getResourceAsStream("internal_voices.txt");
         if (is != null) { // if it doesn't exist, move on
-            UniqueVector<String> voices = getVoiceDirectoryNamesFromInputStream(
-                    is);
+            UniqueVector<String> voices = getVoiceDirectoryNamesFromInputStream(is);
             voiceDirectoryNames.addVector(voices);
         }
 
         // next, try loading voices.txt
         try {
-            voiceDirectoryNames
-                    .addVector(getVoiceDirectoryNamesFromFile(getBaseDirectory()
-                            + "voices.txt"));
+            voiceDirectoryNames.addVector(getVoiceDirectoryNamesFromFile(getBaseDirectory()+ "voices.txt"));
         } catch (IOException e) {
             // do nothing
         }
@@ -339,8 +312,7 @@ public class VoiceManager {
         // last, read voices from property freetts.voicesfile
         String voicesFile = System.getProperty("freetts.voicesfile");
         if (voicesFile != null) {
-            voiceDirectoryNames.addVector(
-                    getVoiceDirectoryNamesFromFile(voicesFile));
+            voiceDirectoryNames.addVector(getVoiceDirectoryNamesFromFile(voicesFile));
         }
 
         return voiceDirectoryNames;
@@ -358,17 +330,13 @@ public class VoiceManager {
     private UniqueVector<String> getVoiceDirectoryNamesFromJarURLs(
             UniqueVector<URL> urls) {
         try {
-            UniqueVector<String> voiceDirectoryNames =
-                    new UniqueVector<>();
+            UniqueVector<String> voiceDirectoryNames = new UniqueVector<>();
             for (int i = 0; i < urls.size(); i++) {
-                JarURLConnection jarConnection = (JarURLConnection) urls
-                        .get(i).openConnection();
+                JarURLConnection jarConnection = (JarURLConnection) urls.get(i).openConnection();
                 Attributes attributes = jarConnection.getMainAttributes();
-                String mainClass = attributes
-                        .getValue(Attributes.Name.MAIN_CLASS);
+                String mainClass = attributes.getValue(Attributes.Name.MAIN_CLASS);
                 if (mainClass == null || mainClass.trim().equals("")) {
-                    throw new Error("No Main-Class found in jar "
-                            + urls.get(i));
+                    throw new Error("No Main-Class found in jar " + urls.get(i));
                 }
 
                 voiceDirectoryNames.add(mainClass);
@@ -408,8 +376,7 @@ public class VoiceManager {
                 try {
                     voiceJarURLs.addVector(getVoiceJarURLsFromDir(dirName));
                 } catch (FileNotFoundException e) {
-                    throw new Error("Error loading jars from voicespath "
-                            + dirName + ". ");
+                    throw new Error("Error loading jars from voicespath " + dirName + ". ");
                 }
             }
         }
@@ -429,25 +396,20 @@ public class VoiceManager {
             UniqueVector<URL> voiceJarURLs = new UniqueVector<>();
             File dir = new File(URI.create("file://" + dirName));
             if (!dir.isDirectory()) {
-                throw new FileNotFoundException("File is not a directory: "
-                        + dirName);
+                throw new FileNotFoundException("File is not a directory: " + dirName);
             }
             File[] files = dir.listFiles();
             for (File file : files) {
-                if (file.isFile() && (!file.isHidden())
-                        && file.getName().endsWith(".jar")) {
+                if (file.isFile() && (!file.isHidden()) && file.getName().endsWith(".jar")) {
                     URL jarURL = file.toURI().toURL();
-                    jarURL = new URL("jar", "", "file:" + jarURL.getPath()
-                            + "!/");
-                    JarURLConnection jarConnection = (JarURLConnection) jarURL
-                            .openConnection();
+                    jarURL = new URL("jar", "", "file:" + jarURL.getPath() + "!/");
+                    JarURLConnection jarConnection = (JarURLConnection) jarURL.openConnection();
                     // if it is not a real jar file, we will end up
                     // with a null set of attributes.
 
                     Attributes attributes = jarConnection.getMainAttributes();
                     if (attributes != null) {
-                        String isVoice = attributes
-                                .getValue("FreeTTSVoiceDefinition");
+                        String isVoice = attributes.getValue("FreeTTSVoiceDefinition");
                         if (isVoice != null && isVoice.trim().equals("true")) {
                             voiceJarURLs.add(jarURL);
                         }
@@ -456,8 +418,7 @@ public class VoiceManager {
             }
             return voiceJarURLs;
         } catch (IOException e) {
-            throw new Error("Error reading jars from directory " + dirName
-                    + ". ");
+            throw new Error("Error reading jars from directory " + dirName + ". ");
         }
     }
 
@@ -577,8 +538,7 @@ public class VoiceManager {
      * @return a vector of the names of the VoiceDirectory subclasses
      * @throws IOException error reading from the input stream
      */
-    private UniqueVector<String> getVoiceDirectoryNamesFromInputStream(
-            InputStream is) throws IOException {
+    private UniqueVector<String> getVoiceDirectoryNamesFromInputStream(InputStream is) throws IOException {
         UniqueVector<String> names = new UniqueVector<>();
         BufferedReader reader = new BufferedReader(new InputStreamReader(is));
         while (true) {
@@ -605,6 +565,7 @@ public class VoiceManager {
         return CLASSLOADER;
     }
 }
+
 
 /**
  * The DynamicClassLoader provides a means to add urls to the classpath after
@@ -651,8 +612,7 @@ class DynamicClassLoader extends URLClassLoader {
     }
 
     @Override
-    public Class<?> loadClass(String name)
-            throws ClassNotFoundException {
+    public Class<?> loadClass(String name) throws ClassNotFoundException {
         Class<?> loadedClass = findLoadedClass(name);
         if (loadedClass == null) {
             try {
@@ -669,12 +629,14 @@ class DynamicClassLoader extends URLClassLoader {
     }
 }
 
+
 /**
  * Provides a vector whose elements are always unique. The advantage over a Set
  * is that the elements are still ordered in the way they were added. If an
  * element is added that already exists, then nothing happens.
  */
 class UniqueVector<T> {
+
     private java.util.HashSet<T> elementSet;
     private java.util.Vector<T> elementVector;
 

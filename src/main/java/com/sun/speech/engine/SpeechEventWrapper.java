@@ -23,6 +23,7 @@ import javax.speech.SpeechEvent;
  * @see EventObject
  */
 public class SpeechEventWrapper extends SpeechEvent {
+
     /**
      * Use an id that won't be confused with JSAPI event ids.
      */

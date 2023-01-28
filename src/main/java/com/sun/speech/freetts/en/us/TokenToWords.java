@@ -247,7 +247,6 @@ public class TokenToWords implements UtteranceProcessor {
         }
     }
 
-
     // class variables
 
     // the word relation that we are building
@@ -287,6 +286,7 @@ public class TokenToWords implements UtteranceProcessor {
      * @throws ProcessException if an IOException is thrown during the
      *                          processing of the utterance
      */
+    @Override
     public void processUtterance(Utterance utterance) throws ProcessException {
         Relation tokenRelation;
         if ((tokenRelation = utterance.getRelation(Relation.TOKEN)) == null) {
@@ -382,8 +382,7 @@ public class TokenToWords implements UtteranceProcessor {
                 romanToWords(tokenVal);
 
             } else if (matches(illionPattern, tokenVal) &&
-                    matches(usMoneyPattern,
-                            (String) tokenItem.findFeature("p.name"))) {
+                    matches(usMoneyPattern, (String) tokenItem.findFeature("p.name"))) {
                 // $ X -illion
                 wordRelation.addWord(tokenVal);
                 wordRelation.addWord("dollars");
@@ -423,8 +422,7 @@ public class TokenToWords implements UtteranceProcessor {
             } else if (tokenLength > 1 && !isPronounceable(tokenVal)) {
                 // Need common exception list
                 // unpronouncable list of alphas
-                NumberExpander.expandLetters
-                        (tokenVal, wordRelation);
+                NumberExpander.expandLetters(tokenVal, wordRelation);
 
             } else {
                 // just a word
@@ -748,8 +746,7 @@ public class TokenToWords implements UtteranceProcessor {
 
         int dotIndex = tokenVal.indexOf('.');
 
-        if (matches(illionPattern,
-                (String) tokenItem.findFeature("n.name"))) {
+        if (matches(illionPattern, (String) tokenItem.findFeature("n.name"))) {
             NumberExpander.expandReal(tokenVal.substring(1), wordRelation);
         } else if (dotIndex == -1) {
 
@@ -761,8 +758,7 @@ public class TokenToWords implements UtteranceProcessor {
             } else {
                 wordRelation.addWord("dollars");
             }
-        } else if (dotIndex == (tokenVal.length() - 1) ||
-                (tokenVal.length() - dotIndex) > 3) {
+        } else if (dotIndex == (tokenVal.length() - 1) || (tokenVal.length() - dotIndex) > 3) {
             // simply read as mumble point mumble
             NumberExpander.expandReal(tokenVal.substring(1), wordRelation);
             wordRelation.addWord("dollars");
@@ -813,7 +809,7 @@ public class TokenToWords implements UtteranceProcessor {
             wordRelation.addWord("'ve");
 
         } else {
-            /* internal single quote deleted */
+            // internal single quote deleted
             StringBuilder buffer = new StringBuilder(tokenVal);
             buffer.deleteCharAt(index);
             tokenToWords(buffer.toString());
@@ -828,7 +824,7 @@ public class TokenToWords implements UtteranceProcessor {
      */
     private void digitsSlashDigitsToWords(String tokenVal) {
 
-        /* might be fraction, or not */
+        // might be fraction, or not
         int index = tokenVal.indexOf('/');
         String aaa = tokenVal.substring(0, index);
         String bbb = tokenVal.substring(index + 1);
@@ -929,7 +925,7 @@ public class TokenToWords implements UtteranceProcessor {
      * @param tokenVal the token string
      */
     private boolean isStateName(String tokenVal) {
-        String[] state = (String[]) usStatesHash.get(tokenVal);
+        String[] state = usStatesHash.get(tokenVal);
         if (state != null) {
             boolean expandState;
 

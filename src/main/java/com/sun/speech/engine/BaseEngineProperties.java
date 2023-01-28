@@ -22,8 +22,7 @@ import javax.speech.SpeechEvent;
  * Supports the JSAPI 1.0 <code>EngineProperties</code>
  * interface.
  */
-public abstract class BaseEngineProperties
-        implements EngineProperties, SpeechEventDispatcher {
+public abstract class BaseEngineProperties implements EngineProperties, SpeechEventDispatcher {
 
     /**
      * List of <code>PropertyChangeListeners</code> registered for
@@ -46,6 +45,7 @@ public abstract class BaseEngineProperties
      *
      * @return an AWT <code>Component</code> to manipulate this object
      */
+    @Override
     public java.awt.Component getControlComponent() {
         return null;
     }
@@ -56,6 +56,7 @@ public abstract class BaseEngineProperties
      * <code>PropertyChangeEvent</code> is issued
      * for each property that changes as the reset takes effect.
      */
+    @Override
     public abstract void reset();
 
     /**
@@ -63,6 +64,7 @@ public abstract class BaseEngineProperties
      *
      * @param listener the <code>PropertyChangeListener</code> to add
      */
+    @Override
     public void addPropertyChangeListener(PropertyChangeListener listener) {
         if (!propertyChangeListeners.contains(listener)) {
             propertyChangeListeners.add(listener);
@@ -75,6 +77,7 @@ public abstract class BaseEngineProperties
      *
      * @param listener the <code>PropertyChangeListener</code> to remove
      */
+    @Override
     public void removePropertyChangeListener(PropertyChangeListener listener) {
         propertyChangeListeners.remove(listener);
     }
@@ -92,13 +95,8 @@ public abstract class BaseEngineProperties
      * @see #firePropertyChangeEvent
      * @see #dispatchSpeechEvent
      */
-    protected void postPropertyChangeEvent(String propName,
-                                           Object oldValue,
-                                           Object newValue) {
-        EventObject e = new PropertyChangeEvent(this,
-                propName,
-                oldValue,
-                newValue);
+    protected void postPropertyChangeEvent(String propName, Object oldValue, Object newValue) {
+        EventObject e = new PropertyChangeEvent(this, propName, oldValue, newValue);
         SpeechEvent se = new SpeechEventWrapper(e);
         SpeechEventUtilities.postSpeechEvent(this, se);
     }
@@ -116,13 +114,8 @@ public abstract class BaseEngineProperties
      * @see #firePropertyChangeEvent
      * @see #dispatchSpeechEvent
      */
-    protected void postPropertyChangeEvent(String propName,
-                                           float oldValue,
-                                           float newValue) {
-        EventObject e = new PropertyChangeEvent(this,
-                propName,
-                oldValue,
-                newValue);
+    protected void postPropertyChangeEvent(String propName, float oldValue, float newValue) {
+        EventObject e = new PropertyChangeEvent(this, propName, oldValue, newValue);
         SpeechEvent se = new SpeechEventWrapper(e);
         SpeechEventUtilities.postSpeechEvent(this, se);
     }
@@ -140,13 +133,8 @@ public abstract class BaseEngineProperties
      * @see #firePropertyChangeEvent
      * @see #dispatchSpeechEvent
      */
-    protected void postPropertyChangeEvent(String propName,
-                                           int oldValue,
-                                           int newValue) {
-        EventObject e = new PropertyChangeEvent(this,
-                propName,
-                oldValue,
-                newValue);
+    protected void postPropertyChangeEvent(String propName, int oldValue, int newValue) {
+        EventObject e = new PropertyChangeEvent(this, propName, oldValue, newValue);
         SpeechEvent se = new SpeechEventWrapper(e);
         SpeechEventUtilities.postSpeechEvent(this, se);
     }
@@ -164,13 +152,8 @@ public abstract class BaseEngineProperties
      * @see #firePropertyChangeEvent
      * @see #dispatchSpeechEvent
      */
-    protected void postPropertyChangeEvent(String propName,
-                                           boolean oldValue,
-                                           boolean newValue) {
-        EventObject e = new PropertyChangeEvent(this,
-                propName,
-                oldValue,
-                newValue);
+    protected void postPropertyChangeEvent(String propName, boolean oldValue, boolean newValue) {
+        EventObject e = new PropertyChangeEvent(this, propName, oldValue, newValue);
         SpeechEvent se = new SpeechEventWrapper(e);
         SpeechEventUtilities.postSpeechEvent(this, se);
     }
@@ -189,9 +172,7 @@ public abstract class BaseEngineProperties
             return;
         }
         for (PropertyChangeListener propertyChangeListener : propertyChangeListeners) {
-            PropertyChangeListener pl =
-                    propertyChangeListener;
-            pl.propertyChange(event);
+            propertyChangeListener.propertyChange(event);
         }
     }
 
@@ -205,15 +186,14 @@ public abstract class BaseEngineProperties
      *              <code>PropertyChangeEvent</code>
      * @see #postPropertyChangeEvent
      */
+    @Override
     public void dispatchSpeechEvent(SpeechEvent event) {
         if (event instanceof SpeechEventWrapper) {
             SpeechEventWrapper se = (SpeechEventWrapper) event;
-            PropertyChangeEvent pe =
-                    (PropertyChangeEvent) (se.getEventObject());
+            PropertyChangeEvent pe = (PropertyChangeEvent) (se.getEventObject());
             firePropertyChangeEvent(pe);
         } else {
-            throw new SpeechError(
-                    "BaseEngineProperties: speech event type error");
+            throw new SpeechError("BaseEngineProperties: speech event type error");
         }
     }
 }

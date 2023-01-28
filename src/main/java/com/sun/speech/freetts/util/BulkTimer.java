@@ -18,6 +18,7 @@ import java.util.Map;
  * performance metrics for FreeTTS.
  */
 public class BulkTimer {
+
     /**
      * A BulkTimer that can be used by classes that need to
      * time their loading phase.
@@ -27,7 +28,6 @@ public class BulkTimer {
     private final static String SELF = "OverallTime";
     private boolean verbose;
     private Map<String, Timer> timers;
-
 
     /**
      * Creates a bulk timer.
