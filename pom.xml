@@ -430,7 +430,7 @@
                         <path refid="maven.compile.classpath"/>
                         <path refid="maven.test.classpath"/>
                       </classpath>
-                      <jvmarg value="-Djava.util.logging.config.file=${project.testResources.directory}/logging.properties" />
+                      <jvmarg value="-Djava.util.logging.config.file=${project.build.testOutputDirectory}/logging.properties" />
                     </java>
                   </target>
                 </configuration>
@@ -447,7 +447,7 @@
                         <path refid="maven.compile.classpath"/>
                         <path refid="maven.test.classpath"/>
                       </classpath>
-                      <jvmarg value="-Djava.util.logging.config.file=${project.testResources.directory}/logging.properties" />
+                      <jvmarg value="-Djava.util.logging.config.file=${project.build.testOutputDirectory}/logging.properties" />
                     </java>
                   </target>
                 </configuration>
@@ -464,7 +464,7 @@
                         <path refid="maven.compile.classpath"/>
                         <path refid="maven.test.classpath"/>
                       </classpath>
-                      <jvmarg value="-Djava.util.logging.config.file=${project.testResources.directory}/logging.properties" />
+                      <jvmarg value="-Djava.util.logging.config.file=${project.build.testOutputDirectory}/logging.properties" />
                     </java>
                   </target>
                 </configuration>
