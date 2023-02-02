@@ -1115,7 +1115,7 @@
       <id>jitpack.io</id>
       <url>https://jitpack.io</url>
     </repository>
-    <repository>
+    <repository> <!-- jmf(test) -->
       <id>umjammer-mvn-repo</id>
       <url>https://raw.github.com/umjammer/umjammer/mvn-repo/</url>
     </repository>
@@ -1152,6 +1152,16 @@
       <groupId>org.jvoicexml</groupId>
       <artifactId>org.jvoicexml.jsapi2.freetts</artifactId>
       <version>0.6.3</version>
+      <exclusions>
+        <exclusion>
+          <groupId>org.jvoicexml</groupId>
+          <artifactId>freetts</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>com.github.umjammer.jsapi</groupId>
+          <artifactId>jsapi</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
 
     <dependency>
