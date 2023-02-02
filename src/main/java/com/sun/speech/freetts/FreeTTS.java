@@ -408,6 +408,8 @@ public class FreeTTS {
 
     /**
      * The main entry point for FreeTTS.
+     *
+     * @see "mvn -P demo antrun:run@FreeTTS"
      */
     public static void main(String[] args) {
 

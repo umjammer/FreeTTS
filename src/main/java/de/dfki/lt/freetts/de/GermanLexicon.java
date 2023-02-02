@@ -138,6 +138,8 @@ public class GermanLexicon extends LexiconImpl {
      * -showtimes
      *
      * </pre>
+     *
+     * @see "mvn -P compile_voice_db antrun:run@germanlex_db"
      */
     public static void main(String[] args) {
         LexiconImpl lex, lex2;

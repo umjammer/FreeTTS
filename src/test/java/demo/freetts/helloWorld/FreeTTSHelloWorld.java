@@ -37,6 +37,9 @@ public class FreeTTSHelloWorld {
         }
     }
 
+    /**
+     * @see "mvn -P demo antrun:run@hello-world"
+     */
     public static void main(String[] args) {
 
         listAllVoices();

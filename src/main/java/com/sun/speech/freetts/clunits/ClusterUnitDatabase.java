@@ -773,6 +773,8 @@ public class ClusterUnitDatabase {
      * <li> <code> -showTimes </code> shows timings for any
      * loading, comparing or dumping operation
      *  </ul>
+     *
+     * @see "mvn -P compile_voice_db antrun:run@time_awb_db"
      */
     public static void main(String[] args) {
         boolean showTimes = false;

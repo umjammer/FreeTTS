@@ -112,6 +112,7 @@ public abstract class VoiceDirectory {
      * just call dumpVoices()
      *
      * @see #toString()
+     * @see "mvn -P demo antrun:run@VoiceDirectory"
      */
     public static void main(String[] args) {
         // subclasses must call dumpVoices()

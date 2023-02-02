@@ -469,6 +469,127 @@
                   </target>
                 </configuration>
               </execution>
+
+              <execution>
+                <id>VoiceDirectory</id>
+                <goals>
+                  <goal>run</goal>
+                </goals>
+                <configuration>
+                  <target>
+                    <java classname="com.sun.speech.freetts.VoiceDirectory" fork="true">
+                      <classpath>
+                        <path refid="maven.compile.classpath"/>
+                        <path refid="maven.test.classpath"/>
+                      </classpath>
+                      <jvmarg value="-Djava.util.logging.config.file=${project.build.testOutputDirectory}/logging.properties" />
+                    </java>
+                  </target>
+                </configuration>
+              </execution>
+              <execution>
+                <id>FreeTTS</id>
+                <goals>
+                  <goal>run</goal>
+                </goals>
+                <configuration>
+                  <target>
+                    <java classname="com.sun.speech.freetts.FreeTTS" fork="true">
+                      <classpath>
+                        <path refid="maven.compile.classpath"/>
+                        <path refid="maven.test.classpath"/>
+                      </classpath>
+                      <jvmarg value="-Djava.util.logging.config.file=${project.build.testOutputDirectory}/logging.properties" />
+                    </java>
+                  </target>
+                </configuration>
+              </execution>
+              <execution>
+                <id>FreeTTSTime</id>
+                <goals>
+                  <goal>run</goal>
+                </goals>
+                <configuration>
+                  <target>
+                    <java classname="com.sun.speech.freetts.FreeTTSTime" fork="true">
+                      <classpath>
+                        <path refid="maven.compile.classpath"/>
+                        <path refid="maven.test.classpath"/>
+                      </classpath>
+                      <jvmarg value="-Djava.util.logging.config.file=${project.build.testOutputDirectory}/logging.properties" />
+                    </java>
+                  </target>
+                </configuration>
+              </execution>
+              <execution>
+                <id>AlanVoiceDirectory</id>
+                <goals>
+                  <goal>run</goal>
+                </goals>
+                <configuration>
+                  <target>
+                    <java classname="com.sun.speech.freetts.en.us.cmu_time_awb.AlanVoiceDirectory" fork="true">
+                      <classpath>
+                        <path refid="maven.compile.classpath"/>
+                        <path refid="maven.test.classpath"/>
+                      </classpath>
+                      <jvmarg value="-Djava.util.logging.config.file=${project.build.testOutputDirectory}/logging.properties" />
+                    </java>
+                  </target>
+                </configuration>
+              </execution>
+              <execution>
+                <id>KevinVoiceDirectory</id>
+                <goals>
+                  <goal>run</goal>
+                </goals>
+                <configuration>
+                  <target>
+                    <java classname="com.sun.speech.freetts.en.us.cmu_us_kal.KevinVoiceDirectory" fork="true">
+                      <classpath>
+                        <path refid="maven.compile.classpath"/>
+                        <path refid="maven.test.classpath"/>
+                      </classpath>
+                      <jvmarg value="-Djava.util.logging.config.file=${project.build.testOutputDirectory}/logging.properties" />
+                    </java>
+                  </target>
+                </configuration>
+              </execution>
+              <execution>
+                <id>Timer</id>
+                <goals>
+                  <goal>run</goal>
+                </goals>
+                <configuration>
+                  <target>
+                    <java classname="com.sun.speech.freetts.util.Timer" fork="true">
+                      <classpath>
+                        <path refid="maven.compile.classpath"/>
+                        <path refid="maven.test.classpath"/>
+                      </classpath>
+                      <jvmarg value="-Djava.util.logging.config.file=${project.build.testOutputDirectory}/logging.properties" />
+                    </java>
+                  </target>
+                </configuration>
+              </execution>
+              <execution>
+                <id>WaveUtils</id>
+                <goals>
+                  <goal>run</goal>
+                </goals>
+                <configuration>
+                  <target>
+                    <java classname="com.sun.speech.freetts.util.WaveUtils" fork="true">
+                      <classpath>
+                        <path refid="maven.compile.classpath"/>
+                        <path refid="maven.test.classpath"/>
+                      </classpath>
+                      <jvmarg value="-Djava.util.logging.config.file=${project.build.testOutputDirectory}/logging.properties" />
+                    </java>
+                  </target>
+                </configuration>
+              </execution>
+
             </executions>
           </plugin>
         </plugins>

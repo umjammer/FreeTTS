@@ -126,6 +126,8 @@ public class WaveUtils {
      * Provides test program for method ulawToShort().
      *
      * @param args not used
+     *
+     * @see "mvn -P demo antrun:run@Timer"
      */
     public static void main(String[] args) {
         for (int i = 0; i < 256; i++) {

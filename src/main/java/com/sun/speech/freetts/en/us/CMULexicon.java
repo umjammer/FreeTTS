@@ -251,6 +251,10 @@ public class CMULexicon extends LexiconImpl {
      * -showtimes
      *
      * </pre>
+     *
+     * @see "mvn -P compile_voice_db antrun:run@cmulex_db"
+     * @see "mvn -P compile_voice_db antrun:run@cmudict04_db"
+     * @see "mvn -P compile_voice_db antrun:run@cmutimelex_db"
      */
     public static void main(String[] args) {
         LexiconImpl lex, lex2;

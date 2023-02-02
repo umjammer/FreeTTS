@@ -790,6 +790,9 @@ public class DiphoneUnitDatabase {
      * <li> <code> -showTimes </code> shows timings for any
      * loading, comparing or dumping operation
      *  </ul>
+     *
+     * @see "mvn -P compile_voice_db antrun:run@kal8_db"
+     * @see "mvn -P compile_voice_db antrun:run@kal16_db"
      */
     public static void main(String[] args) {
         boolean showTimes = false;

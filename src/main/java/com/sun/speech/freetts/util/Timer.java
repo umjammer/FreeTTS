@@ -240,6 +240,8 @@ public class Timer {
      * uses it and shows its output.
      *
      * @param args program arguments (not used)
+     *
+     * @see "mvn -P demo antrun:run@Timer"
      */
     public static void main(String[] args) {
         Timer timer = new Timer("testTimer");

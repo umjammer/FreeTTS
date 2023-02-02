@@ -48,6 +48,8 @@ public class RtpServerDemo {
      * Starts the program
      *
      * @param args none expected
+     *
+     * @see "mvn -P demo antrun:run@rtp-server"
      */
     public static void main(String[] args) {
 

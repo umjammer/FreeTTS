@@ -836,6 +836,11 @@ public class LetterToSoundImpl implements LetterToSound {
 
     /**
      * Translates between text and binary forms of the CMU6 LTS rules.
+     *
+     * @see "mvn -P compile_voice_db antrun:run@cmulex_lts_db"
+     * @see "mvn -P compile_voice_db antrun:run@cmudict04_lts_db"
+     * @see "mvn -P compile_voice_db antrun:run@cmutimelex_lts_db"
+     * @see "mvn -P compile_voice_db antrun:run@germanlex_lts_db"
      */
     public static void main(String[] args) {
         boolean showTimes = false;

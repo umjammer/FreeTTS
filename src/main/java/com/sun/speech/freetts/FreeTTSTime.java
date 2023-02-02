@@ -352,6 +352,8 @@ public class FreeTTSTime extends FreeTTS {
 
     /**
      * The main entry point for FreeTTSTime.
+     *
+     * @see "mvn -P demo antrun:run@FreeTTSTime"
      */
     public static void main(String[] args) {
 

@@ -39,6 +39,8 @@ public class KevinVoiceDirectory extends VoiceDirectory {
 
     /**
      * Print out information about this voice jarfile.
+     *
+     * @see "mvn -P demo antrun:run@KevinVoiceDirectory"
      */
     public static void main(String[] args) {
         System.out.println((new KevinVoiceDirectory()));

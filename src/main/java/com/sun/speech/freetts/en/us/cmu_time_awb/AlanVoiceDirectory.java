@@ -34,6 +34,8 @@ public class AlanVoiceDirectory extends VoiceDirectory {
 
     /**
      * Print out information about this voice jarfile.
+     *
+     * @see "mvn -P demo antrun:run@AlanVoiceDirectory"
      */
     public static void main(String[] args) {
         System.out.println((new AlanVoiceDirectory()));
