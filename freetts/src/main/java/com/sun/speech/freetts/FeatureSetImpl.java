@@ -48,7 +48,6 @@ public class FeatureSetImpl implements FeatureSet {
         return featureMap.containsKey(name);
     }
 
-
     /**
      * Removes the named feature from this set of features.
      *
@@ -194,12 +193,10 @@ public class FeatureSetImpl implements FeatureSet {
             }
 
             Object value = getObject(key);
-            if (value instanceof Dumpable) {
-                Dumpable d = (Dumpable) value;
+            if (value instanceof Dumpable d) {
                 d.dump(output, pad + 4, key);
             } else {
-                if (value instanceof Float) {
-                    Float fval = (Float) value;
+                if (value instanceof Float fval) {
                     Utilities.dump(output, pad + 4, key + "=" + formatter.format(fval.floatValue()));
                 } else {
                     Utilities.dump(output, pad + 4, key + "=" + value);

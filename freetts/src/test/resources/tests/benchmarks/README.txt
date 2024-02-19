@@ -7,7 +7,7 @@ Script: 'benchmark"
 
 Script: 'collectMetrics'
      Collects benchmarks for a number of input sizes and voices.  Sends
-     output to stadout.  Typically run by the benchmark script.
+     output to stdout.  Typically run by the benchmark script.
    
 Script 'dukesays'
      Generates a wave dump for a standard utterance

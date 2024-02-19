@@ -11,7 +11,8 @@
 
 package com.sun.speech.freetts.diphone;
 
-import java.util.logging.Logger;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 
 import com.sun.speech.freetts.FeatureSet;
 import com.sun.speech.freetts.Item;
@@ -36,7 +37,7 @@ import com.sun.speech.freetts.relp.SampleInfo;
 public class DiphonePitchmarkGenerator implements UtteranceProcessor {
 
     /** Logger instance. */
-    private static final Logger logger = Logger.getLogger(DiphonePitchmarkGenerator.class.getName());
+    private static final Logger logger = System.getLogger(DiphonePitchmarkGenerator.class.getName());
 
     /**
      * Generates the LPCResult for this utterance.
@@ -78,16 +79,16 @@ public class DiphonePitchmarkGenerator implements UtteranceProcessor {
             FeatureSet featureSet = targetItem.getFeatures();
             pos = featureSet.getFloat("pos");
             f0 = featureSet.getFloat("f0");
-logger.finer("Target pos=" + pos + ", f0=" + f0);
+logger.log(Level.TRACE, "Target pos=" + pos + ", f0=" + f0);
             if (time == pos) {
                 lf0 = f0;
                 continue;
             }
             m = (f0 - lf0) / pos;
-logger.finer("m=(" + f0 + "-" + lf0 + ")/" + pos + "=" + m);
+logger.log(Level.TRACE, "m=(" + f0 + "-" + lf0 + ")/" + pos + "=" + m);
             for (; time < pos; pitchMarks++) {
                 time += 1 / (lf0 + (time * m));
-logger.finer("f(" + time + ")=" + ((lf0 + (time * m))));
+logger.log(Level.TRACE, "f(" + time + ")=" + ((lf0 + (time * m))));
                 // save the time value in a list
                 timesList.add((int) (time * sampleInfo.getSampleRate()));
             }

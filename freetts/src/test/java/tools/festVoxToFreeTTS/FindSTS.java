@@ -17,7 +17,8 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
-import java.util.logging.Logger;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 
 
 /**
@@ -34,10 +35,10 @@ import java.util.logging.Logger;
  * Intel floating-point math.
  * </p>
  */
-public strictfp class FindSTS {
+public class FindSTS {
 
     /** Logger instance. */
-    private static final Logger logger = Logger.getLogger(FindSTS.class.getName());
+    private static final Logger logger = System.getLogger(FindSTS.class.getName());
 
     /**
      * Generate a sts file
@@ -56,7 +57,7 @@ public strictfp class FindSTS {
     public static void main(String[] args) {
         try {
             if (args.length != 5) {
-                logger.info("Usage: java FindSTS lpc_min lpc_range " + "lpcFile waveFile stsFile");
+                logger.log(Level.INFO, "Usage: java FindSTS lpc_min lpc_range " + "lpcFile waveFile stsFile");
             } else {
                 float lpc_min = Float.parseFloat(args[0]);
                 float lpc_range = Float.parseFloat(args[1]);
@@ -562,7 +563,7 @@ class Wave {
      * in <code>dis</code>, else <code>false</code>
      * @throws IOException on ill-formatted input (end of file, for example)
      */
-    private boolean checkChars(DataInputStream dis, String chars) throws IOException {
+    private static boolean checkChars(DataInputStream dis, String chars) throws IOException {
         char[] carray = chars.toCharArray();
         for (char c : carray) {
             if ((char) dis.readByte() != c) {

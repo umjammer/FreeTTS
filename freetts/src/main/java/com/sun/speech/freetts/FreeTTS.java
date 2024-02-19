@@ -21,8 +21,8 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.logging.ConsoleHandler;
 import java.util.logging.Handler;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.lang.System.Logger.Level;
+import java.lang.System.Logger;
 import javax.sound.sampled.AudioFileFormat;
 import javax.sound.sampled.AudioSystem;
 
@@ -40,7 +40,7 @@ import com.sun.speech.freetts.audio.SingleFileAudioPlayer;
 public class FreeTTS {
 
     /** Logger instance. */
-    private static final Logger logger = Logger.getLogger(FreeTTS.class.getName());
+    private static final Logger logger = System.getLogger(FreeTTS.class.getName());
 
     /** Version number. */
     public final static String VERSION = "FreeTTS 1.2.2";
@@ -96,7 +96,7 @@ public class FreeTTS {
                 try {
                     audioPlayer = voice.getDefaultAudioPlayer();
                 } catch (InstantiationException e) {
-                    e.printStackTrace();
+                    logger.log(Level.ERROR, e.getMessage(), e);
                 }
             }
         }
@@ -114,7 +114,7 @@ public class FreeTTS {
      * @param file the file of interest
      * @return the audio type of the file or null if it is a non-supported type
      */
-    private AudioFileFormat.Type getAudioType(String file) {
+    private static AudioFileFormat.Type getAudioType(String file) {
         AudioFileFormat.Type[] types = AudioSystem.getAudioFileTypes();
         String extension = getExtension(file);
 
@@ -163,7 +163,7 @@ public class FreeTTS {
         try {
             audioPlayer.close();
         } catch (IOException e) {
-            logger.warning("error closing the audio player: " + e.getMessage());
+            logger.log(Level.WARNING, "error closing the audio player: " + e.getMessage(), e);
         }
         voice.deallocate();
     }
@@ -210,7 +210,7 @@ public class FreeTTS {
             }
             reader.close();
         } catch (IOException ioe) {
-            logger.severe("can't read " + path);
+            logger.log(Level.ERROR, "can't read " + path);
             throw new Error(ioe);
         }
         voice.endBatch();
@@ -253,7 +253,7 @@ public class FreeTTS {
             InputStream is = url.openStream();
             ok = streamToSpeech(is);
         } catch (IOException ioe) {
-            logger.info("Can't read data from " + urlPath);
+            logger.log(Level.INFO, "Can't read data from " + urlPath);
         }
         return ok;
     }
@@ -270,7 +270,7 @@ public class FreeTTS {
             InputStream is = Files.newInputStream(Paths.get(filePath));
             ok = streamToSpeech(is);
         } catch (IOException ioe) {
-            logger.info("Can't read data from " + filePath);
+            logger.log(Level.INFO, "Can't read data from " + filePath);
         }
         return ok;
     }
@@ -384,7 +384,7 @@ public class FreeTTS {
                 System.out.print("Enter text: ");
                 System.out.flush();
                 text = reader.readLine();
-                if ((text == null) || (text.length() == 0)) {
+                if ((text == null) || (text.isEmpty())) {
                     freetts.shutdown();
                     System.exit(0);
                 } else {
@@ -467,9 +467,9 @@ public class FreeTTS {
                 break;
             case "-verbose":
                 Handler handler = new ConsoleHandler();
-                handler.setLevel(Level.ALL);
-                Logger.getLogger("com.sun").addHandler(handler);
-                Logger.getLogger("com.sun").setLevel(Level.ALL);
+                handler.setLevel(java.util.logging.Level.ALL);
+                java.util.logging.Logger.getLogger("com.sun").addHandler(handler);
+                java.util.logging.Logger.getLogger("com.sun").setLevel(java.util.logging.Level.ALL);
                 break;
             case "-dumpUtterance":
                 voice.setDumpUtterance(true);

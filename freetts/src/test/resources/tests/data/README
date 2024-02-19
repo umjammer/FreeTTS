@@ -12,7 +12,7 @@ first.wave.txt - Text used in first wave test
 gettysburg_address.txt - the gettysburg address
 journey.txt - Journey to the center of the earth input text
 numbers.test - Text normalization test input
-numbers.test.words - Text normaliztion test input
+numbers.test.words - Text normalization test input
 README - This description
 shuffle.awk - script that outputs words in random order
 simple.txt - very small simple input text

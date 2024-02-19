@@ -12,6 +12,8 @@
 package com.sun.speech.freetts.en.us;
 
 import java.io.IOException;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.net.URL;
 import java.util.List;
 
@@ -19,12 +21,16 @@ import com.sun.speech.freetts.VoiceManager;
 import com.sun.speech.freetts.lexicon.LexiconImpl;
 import com.sun.speech.freetts.util.BulkTimer;
 
+import static java.lang.System.getLogger;
+
 
 /**
  * Provides a CMU lexicon-specific implementation of a Lexicon that is
  * stored in a text file.
  */
 public class CMULexicon extends LexiconImpl {
+
+    private static final Logger logger = getLogger(CMULexicon.class.getName());
 
     /**
      * Vowels
@@ -323,7 +329,7 @@ public class CMULexicon extends LexiconImpl {
                 System.out.println("    -showtimes");
             }
         } catch (IOException ioe) {
-            ioe.printStackTrace();
+            logger.log(Level.ERROR, ioe.getMessage(), ioe);
         }
     }
 }

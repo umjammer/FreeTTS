@@ -8,8 +8,8 @@
 
 package com.sun.speech.freetts.audio;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.lang.System.Logger.Level;
+import java.lang.System.Logger;
 import javax.sound.sampled.AudioFormat;
 
 import com.sun.speech.freetts.util.BulkTimer;
@@ -23,7 +23,7 @@ import com.sun.speech.freetts.util.BulkTimer;
 public class NullAudioPlayer implements AudioPlayer {
 
     /** Logger instance. */
-    private static final Logger LOGGER = Logger.getLogger(NullAudioPlayer.class.getName());
+    private static final Logger logger = System.getLogger(NullAudioPlayer.class.getName());
 
     private float volume = 1.0f;
     private AudioFormat audioFormat;
@@ -162,12 +162,12 @@ public class NullAudioPlayer implements AudioPlayer {
         if (firstSound) {
             timer.stop("AudioFirstSound");
             firstSound = false;
-            if (LOGGER.isLoggable(Level.FINER)) {
+            if (logger.isLoggable(Level.TRACE)) {
                 timer.show("Null Trace");
             }
         }
-        if (LOGGER.isLoggable(Level.FINER)) {
-            LOGGER.fine("NullAudio: write " + size + " bytes.");
+        if (logger.isLoggable(Level.TRACE)) {
+            logger.log(Level.DEBUG, "NullAudio: write " + size + " bytes.");
         }
         return true;
     }

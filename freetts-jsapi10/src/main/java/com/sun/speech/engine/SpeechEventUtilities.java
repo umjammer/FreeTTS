@@ -12,7 +12,6 @@ import java.awt.AWTEvent;
 import java.awt.Component;
 import java.awt.EventQueue;
 import java.awt.Toolkit;
-import java.security.AccessControlException;
 import javax.speech.SpeechEvent;
 
 
@@ -76,38 +75,27 @@ public class SpeechEventUtilities {
             return true;
         }
 
-        try {
-            ThreadGroup rootGroup;
-            ThreadGroup parent;
-            ThreadGroup g = Thread.currentThread().getThreadGroup();
-            rootGroup = g;
-            parent = rootGroup.getParent();
-            while (parent != null) {
-                rootGroup = parent;
-                parent = parent.getParent();
-            }
+        ThreadGroup rootGroup;
+        ThreadGroup parent;
+        ThreadGroup g = Thread.currentThread().getThreadGroup();
+        rootGroup = g;
+        parent = rootGroup.getParent();
+        while (parent != null) {
+            rootGroup = parent;
+            parent = parent.getParent();
+        }
 
-            int activeCount = rootGroup.activeCount();
-            Thread[] threads = new Thread[activeCount];
-            rootGroup.enumerate(threads, true);
-            for (Thread thread : threads) {
-                if (thread != null) {
-                    String name = thread.getName();
-                    if (name.startsWith("AWT-EventQueue")) {
-                        awtRunning = true;
-                        return true;
-                    }
+        int activeCount = rootGroup.activeCount();
+        Thread[] threads = new Thread[activeCount];
+        rootGroup.enumerate(threads, true);
+        for (Thread thread : threads) {
+            if (thread != null) {
+                String name = thread.getName();
+                if (name.startsWith("AWT-EventQueue")) {
+                    awtRunning = true;
+                    return true;
                 }
             }
-        } catch (AccessControlException ace) {
-            // if we receive an access control exception then
-            // it is likely that we are running in an applet
-            // in which case AWT is running.
-            // I'm not sure if this is always true, perhaps
-            // there is another way to tell if we are running in an
-            // applet.
-
-            return true;
         }
 
         return false;
@@ -210,8 +198,7 @@ public class SpeechEventUtilities {
 
         @Override
         protected void processEvent(AWTEvent event) {
-            if (event instanceof SpeechAWTEvent) {
-                SpeechAWTEvent sae = (SpeechAWTEvent) event;
+            if (event instanceof SpeechAWTEvent sae) {
                 sae.dispatcher.dispatchSpeechEvent(sae.event);
                 if (sae.lock != null) {
                     synchronized (sae.lock) {
@@ -232,7 +219,7 @@ public class SpeechEventUtilities {
         static final int EVENT_ID = AWTEvent.RESERVED_ID_MAX + 14830;
         SpeechEventDispatcher dispatcher;
         SpeechEvent event;
-        Object lock;
+        final Object lock;
 
         SpeechAWTEvent(SpeechAWTEventTarget target, SpeechEventDispatcher dispatcher, SpeechEvent event) {
             this(target, dispatcher, event, null);
@@ -250,7 +237,7 @@ public class SpeechEventUtilities {
     }
 }
 
-        
+
 
 
 

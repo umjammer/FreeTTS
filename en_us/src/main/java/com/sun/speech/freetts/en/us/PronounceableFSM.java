@@ -110,7 +110,7 @@ public class PronounceableFSM {
      * @param line the line to parse the integer from
      * @return an integer
      */
-    private int parseLastInt(String line) {
+    private static int parseLastInt(String line) {
         String lastInt = line.trim().substring(line.lastIndexOf(" "));
         return Integer.parseInt(lastInt.trim());
     }

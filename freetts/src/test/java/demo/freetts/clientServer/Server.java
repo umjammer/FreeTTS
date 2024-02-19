@@ -12,8 +12,9 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.lang.System.Logger.Level;
 import java.net.Socket;
-import java.util.logging.Logger;
+import java.lang.System.Logger;
 
 import com.sun.speech.freetts.Voice;
 import com.sun.speech.freetts.VoiceManager;
@@ -33,7 +34,7 @@ import demo.util.TTSServer;
 public class Server extends TTSServer {
 
     /** Logger instance. */
-    private static final Logger logger = Logger.getLogger(Server.class.getName());
+    private static final Logger logger = System.getLogger(Server.class.getName());
 
     // 8k Voice
     private Voice voice8k;
@@ -56,7 +57,7 @@ public class Server extends TTSServer {
             voice8k.allocate();
             voice16k.allocate();
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.log(Level.ERROR, e.getMessage(), e);
             System.exit(1);
         }
     }
@@ -90,7 +91,7 @@ public class Server extends TTSServer {
             SocketTTSHandler handler = new SocketTTSHandler(socket, this);
             (new Thread(handler)).start();
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.log(Level.ERROR, e.getMessage(), e);
         }
     }
 
@@ -110,7 +111,7 @@ public class Server extends TTSServer {
 class SocketTTSHandler implements Runnable {
 
     /** Logger instance. */
-    private static final Logger logger = Logger.getLogger(SocketTTSHandler.class.getName());
+    private static final Logger logger = System.getLogger(SocketTTSHandler.class.getName());
 
     /** the Voice to use to speak */
     private Voice voice;
@@ -159,8 +160,8 @@ class SocketTTSHandler implements Runnable {
                 reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                 writer = new PrintWriter(socket.getOutputStream(), true);
             } catch (IOException ioe) {
-                ioe.printStackTrace();
-                logger.fine("Socket reader/writer not instantiated");
+                logger.log(Level.ERROR, ioe.getMessage(), ioe);
+                logger.log(Level.DEBUG, "Socket reader/writer not instantiated");
                 throw new Error();
             }
         }
@@ -195,7 +196,7 @@ class SocketTTSHandler implements Runnable {
                 status = handleSynthesisRequest();
 
                 if (status == INVALID_SAMPLE_RATE) {
-                    logger.fine("Invalid sample rate\nexit.");
+                    logger.log(Level.DEBUG, "Invalid sample rate\nexit.");
                     return;
                 } else if (metrics) {
                     System.out.println("Time To Sending First Byte: " +
@@ -205,13 +206,13 @@ class SocketTTSHandler implements Runnable {
             if (command != null) {
                 if (command.equals("DONE")) {
                     socket.close();
-                    logger.fine("... closed socket connection");
+                    logger.log(Level.DEBUG, "... closed socket connection");
                 } else {
-                    logger.fine("invalid command: " + command);
+                    logger.log(Level.DEBUG, "invalid command: " + command);
                 }
             }
         } catch (IOException ioe) {
-            ioe.printStackTrace();
+            logger.log(Level.ERROR, ioe.getMessage(), ioe);
         }
     }
 
@@ -242,7 +243,7 @@ class SocketTTSHandler implements Runnable {
             sendLine("-1");
 
         } catch (IOException ioe) {
-            ioe.printStackTrace();
+            logger.log(Level.ERROR, ioe.getMessage(), ioe);
         }
         return 0;
     }

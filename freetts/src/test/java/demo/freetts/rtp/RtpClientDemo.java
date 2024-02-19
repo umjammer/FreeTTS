@@ -9,7 +9,8 @@
 package demo.freetts.rtp;
 
 import java.io.IOException;
-import java.util.logging.Logger;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import javax.media.ControllerClosedEvent;
 import javax.media.ControllerErrorEvent;
 import javax.media.ControllerEvent;
@@ -28,7 +29,7 @@ import javax.media.RealizeCompleteEvent;
 public class RtpClientDemo implements ControllerListener {
 
     /** Logger instance. */
-    private static final Logger logger = Logger.getLogger(RtpClientDemo.class.getName());
+    private static final Logger logger = System.getLogger(RtpClientDemo.class.getName());
 
     @Override
     public void controllerUpdate(ControllerEvent control) {
@@ -45,7 +46,7 @@ public class RtpClientDemo implements ControllerListener {
         }
 
         if (control instanceof ControllerClosedEvent) {
-            logger.info("controller closed");
+            logger.log(Level.INFO, "controller closed");
             System.exit(0);
         }
 
@@ -71,7 +72,7 @@ public class RtpClientDemo implements ControllerListener {
         try {
             player = javax.media.Manager.createPlayer(loc);
         } catch (NoPlayerException | IOException e) {
-            e.printStackTrace();
+            logger.log(Level.ERROR, e.getMessage(), e);
             return;
         }
         player.addControllerListener(client);

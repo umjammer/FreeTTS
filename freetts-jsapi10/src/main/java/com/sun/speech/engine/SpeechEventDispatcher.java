@@ -24,7 +24,7 @@ public interface SpeechEventDispatcher {
      * <code>SpeechEventListeners</code>
      * on the object that implements this interface.
      *
-     * @param event the event to dispactch
+     * @param event the event to dispatch
      */
     void dispatchSpeechEvent(SpeechEvent event);
 }

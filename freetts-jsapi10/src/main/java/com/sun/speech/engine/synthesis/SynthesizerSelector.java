@@ -47,7 +47,7 @@ public class SynthesizerSelector {
         }
         Object[] synthNamesArray = synthNames.toArray();
 
-        if (synths.size() == 0) {
+        if (synths.isEmpty()) {
             return null;
         } else if (synths.size() == 1) {
             return synths.get(0);

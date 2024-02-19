@@ -12,7 +12,7 @@
 package com.sun.speech.freetts.util;
 
 /**
- * Provides a set of utilities for prrocessing wave/audio data.
+ * Provides a set of utilities for processing wave/audio data.
  */
 public class WaveUtils {
 
@@ -73,7 +73,6 @@ public class WaveUtils {
         return (byte) ((ulawByte - 128) & 0xFF);
     }
 
-
     /**
      * Converts from ulaw to 16 bit linear.
      * <p>
@@ -131,7 +130,7 @@ public class WaveUtils {
      */
     public static void main(String[] args) {
         for (int i = 0; i < 256; i++) {
-            System.out.println("" + i + "=" + ulawToShort((short) i));
+            System.out.println(i + "=" + ulawToShort((short) i));
         }
     }
 }

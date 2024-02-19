@@ -73,7 +73,6 @@ public class Playable {
         return new Playable(PlayableType.URL, url, url);
     }
 
-
     /**
      * Constructs a Playable object of the given type and data.
      *

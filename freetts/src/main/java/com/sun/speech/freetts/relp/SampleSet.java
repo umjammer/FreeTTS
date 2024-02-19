@@ -149,4 +149,4 @@ public class SampleSet {
         return samples[frame].getResidualSize();
     }
 }
-    
+

@@ -21,6 +21,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.MappedByteBuffer;
@@ -39,6 +41,8 @@ import com.sun.speech.freetts.relp.SampleSet;
 import com.sun.speech.freetts.util.BulkTimer;
 import com.sun.speech.freetts.util.Utilities;
 
+import static java.lang.System.getLogger;
+
 
 /**
  * Provides support for the cluster unit database. The use of the
@@ -51,6 +55,8 @@ import com.sun.speech.freetts.util.Utilities;
  * therefore is generally used in a deployed system.
  */
 public class ClusterUnitDatabase {
+
+    private static final Logger logger = getLogger(ClusterUnitDatabase.class.getName());
 
     final static int CLUNIT_NONE = 65535;
 
@@ -108,7 +114,7 @@ public class ClusterUnitDatabase {
     }
 
     /**
-     * Retrieves the begininning sample index for the
+     * Retrieves the beginning sample index for the
      * given entry.
      *
      * @param unitEntry the entry of interest
@@ -204,7 +210,6 @@ public class ClusterUnitDatabase {
         return unitTypes[i].getStart() + instance;
     }
 
-
     /**
      * Retrieves the index for the name given a name.
      *
@@ -293,7 +298,6 @@ public class ClusterUnitDatabase {
         return joinWeights;
     }
 
-
     /**
      * Looks up the unit with the given name.
      *
@@ -380,7 +384,7 @@ public class ClusterUnitDatabase {
      * @param joinWeights the weights to check
      * @return the amount to right shift (or zero if not possible)
      */
-    private int calcJoinWeightShift(int[] joinWeights) {
+    private static int calcJoinWeightShift(int[] joinWeights) {
         int first = joinWeights[0];
         for (int i = 1; i < joinWeights.length; i++) {
             if (joinWeights[i] != first) {
@@ -529,8 +533,7 @@ public class ClusterUnitDatabase {
         // we get better performance if we can map the file in
         // 1.0 seconds vs. 1.75 seconds, but we can't
         // always guarantee that we can do that.
-        if (is instanceof FileInputStream) {
-            FileInputStream fis = (FileInputStream) is;
+        if (is instanceof FileInputStream fis) {
             FileChannel fc = fis.getChannel();
 
             MappedByteBuffer bb = fc.map(FileChannel.MapMode.READ_ONLY, 0, (int) fc.size());
@@ -868,7 +871,7 @@ public class ClusterUnitDatabase {
                 System.out.println("    -showTimes");
             }
         } catch (IOException ioe) {
-            ioe.printStackTrace();
+            logger.log(Level.ERROR, ioe.getMessage(), ioe);
         }
     }
 
@@ -972,7 +975,7 @@ public class ClusterUnitDatabase {
      *
      * @param s the error message
      */
-    private void error(String s) {
+    private static void error(String s) {
         System.out.println("ClusterUnitDatabase Error: " + s);
     }
 }

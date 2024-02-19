@@ -31,7 +31,6 @@ public class Monitor extends JPanel {
     private int width = 600;
     private int height = 300;
 
-
     /**
      * Constructs a Monitor for the given synthesizer
      *
@@ -47,7 +46,6 @@ public class Monitor extends JPanel {
         this.monitor = new SynthesizerMonitor(synthesizer);
         createMonitorPanel();
     }
-
 
     /**
      * Populates this Monitor JPanel.

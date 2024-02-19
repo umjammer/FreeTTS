@@ -12,8 +12,8 @@
 package com.sun.speech.freetts.relp;
 
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.lang.System.Logger.Level;
+import java.lang.System.Logger;
 import javax.sound.sampled.AudioFormat;
 
 import com.sun.speech.freetts.ProcessException;
@@ -33,7 +33,7 @@ import com.sun.speech.freetts.audio.AudioPlayer;
 public class AudioOutput implements UtteranceProcessor {
 
     /** Logger instance. */
-    private static final Logger LOGGER = Logger.getLogger(AudioOutput.class.getName());
+    private static final Logger logger = System.getLogger(AudioOutput.class.getName());
 
     private final static AudioFormat AUDIO_8KHZ =
             new AudioFormat(8000.0f, 16, 1, true, true);
@@ -58,8 +58,8 @@ public class AudioOutput implements UtteranceProcessor {
         audioPlayer.setAudioFormat(getAudioFormat(sampleInfo));
         audioPlayer.setVolume(utterance.getVoice().getVolume());
 
-        if (LOGGER.isLoggable(Level.FINE)) {
-            LOGGER.fine("=== " + utterance.getString("input_text"));
+        if (logger.isLoggable(Level.DEBUG)) {
+            logger.log(Level.DEBUG, "=== " + utterance.getString("input_text"));
         }
         try {
             if (!lpcResult.playWave(audioPlayer, utterance)) {
@@ -80,7 +80,7 @@ public class AudioOutput implements UtteranceProcessor {
      * @param sampleInfo the sample info
      * @return an audio format
      */
-    private AudioFormat getAudioFormat(SampleInfo sampleInfo) {
+    private static AudioFormat getAudioFormat(SampleInfo sampleInfo) {
         if (sampleInfo.getSampleRate() == 8000) {
             return AUDIO_8KHZ;
         } else if (sampleInfo.getSampleRate() == 16000) {

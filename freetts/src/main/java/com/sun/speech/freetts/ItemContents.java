@@ -12,7 +12,8 @@
 package com.sun.speech.freetts;
 
 import java.io.PrintWriter;
-import java.util.logging.Logger;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 
 
 /**
@@ -21,7 +22,7 @@ import java.util.logging.Logger;
 public class ItemContents {
 
     /** Logger instance. */
-    private static final Logger logger = Logger.getLogger(ItemContents.class.getName());
+    private static final Logger logger = System.getLogger(ItemContents.class.getName());
 
     private FeatureSetImpl features;
     private FeatureSetImpl relations;
@@ -44,7 +45,7 @@ public class ItemContents {
      * @param item         the item reference in the relation
      */
     public void addItemRelation(String relationName, Item item) {
-logger.finer("AddItemRelation: " + relationName + " item: " + item);
+logger.log(Level.TRACE, "AddItemRelation: " + relationName + " item: " + item);
         relations.setObject(relationName, item);
     }
 

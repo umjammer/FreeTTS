@@ -13,6 +13,8 @@
 package de.dfki.lt.freetts.de;
 
 import java.io.IOException;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.net.URL;
 import java.util.List;
 
@@ -20,12 +22,16 @@ import com.sun.speech.freetts.VoiceManager;
 import com.sun.speech.freetts.lexicon.LexiconImpl;
 import com.sun.speech.freetts.util.BulkTimer;
 
+import static java.lang.System.getLogger;
+
 
 /**
  * Provides a CMU lexicon-specific implementation of a Lexicon that is
  * stored in a text file.
  */
 public class GermanLexicon extends LexiconImpl {
+
+    private static final Logger logger = getLogger(GermanLexicon.class.getName());
 
     /**
      * Creates a GermanLexicon based upon the given compiled and addenda
@@ -209,7 +215,7 @@ public class GermanLexicon extends LexiconImpl {
                 System.out.println("    -showtimes");
             }
         } catch (IOException ioe) {
-            ioe.printStackTrace();
+            logger.log(Level.ERROR, ioe.getMessage(), ioe);
         }
     }
 }

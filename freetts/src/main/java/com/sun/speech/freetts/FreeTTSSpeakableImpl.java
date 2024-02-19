@@ -12,7 +12,8 @@
 package com.sun.speech.freetts;
 
 import java.io.InputStream;
-import java.util.logging.Logger;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 
 import org.w3c.dom.Document;
 
@@ -23,7 +24,7 @@ import org.w3c.dom.Document;
 public class FreeTTSSpeakableImpl implements FreeTTSSpeakable {
 
     /** Logger instance. */
-    private static final Logger logger = Logger.getLogger(FreeTTSSpeakableImpl.class.getName());
+    private static final Logger logger = System.getLogger(FreeTTSSpeakableImpl.class.getName());
 
     private Document doc;
     private String text;
@@ -107,7 +108,7 @@ public class FreeTTSSpeakableImpl implements FreeTTSSpeakable {
             try {
                 wait();
             } catch (InterruptedException ie) {
-                logger.info("FreeTTSSpeakableImpl:Wait interrupted");
+                logger.log(Level.INFO, "FreeTTSSpeakableImpl:Wait interrupted");
                 return false;
             }
         }

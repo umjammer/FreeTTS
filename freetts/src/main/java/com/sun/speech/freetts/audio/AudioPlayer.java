@@ -85,7 +85,6 @@ public interface AudioPlayer {
      */
     boolean drain();
 
-
     /**
      * Starts the output of a set of data. Audio data for a single
      * utterance should be grouped between begin/end pairs.

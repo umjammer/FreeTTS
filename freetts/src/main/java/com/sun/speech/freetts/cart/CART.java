@@ -40,6 +40,3 @@ public interface CART {
      */
     void dumpBinary(DataOutputStream os) throws IOException;
 }
-
-
-  

@@ -14,12 +14,13 @@ package com.sun.speech.freetts;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.lang.System.Logger.Level;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.StringTokenizer;
-import java.util.logging.Logger;
+import java.lang.System.Logger;
 
 
 /**
@@ -40,7 +41,7 @@ import java.util.logging.Logger;
 public class PartOfSpeechImpl implements PartOfSpeech {
 
     /** Logger instance. */
-    private static final Logger logger = Logger.getLogger(PartOfSpeechImpl.class.getName());
+    private static final Logger logger = System.getLogger(PartOfSpeechImpl.class.getName());
 
     /**
      * Used for informational purposes if there's a bad line in the
@@ -96,7 +97,7 @@ public class PartOfSpeechImpl implements PartOfSpeech {
             String pos = tokenizer.nextToken();
             partOfSpeechMap.put(word, pos);
         } catch (NoSuchElementException nse) {
-            logger.info("part of speech data in bad format at line " + lineCount);
+            logger.log(Level.INFO, "part of speech data in bad format at line " + lineCount);
         }
     }
 

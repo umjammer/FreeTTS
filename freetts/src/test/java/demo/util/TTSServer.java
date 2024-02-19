@@ -9,8 +9,12 @@
 package demo.util;
 
 import java.io.IOException;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.net.ServerSocket;
 import java.net.Socket;
+
+import static java.lang.System.getLogger;
 
 
 /**
@@ -19,6 +23,8 @@ import java.net.Socket;
  * method.
  */
 public abstract class TTSServer implements Runnable {
+
+    private static final Logger logger = getLogger(TTSServer.class.getName());
 
     /**
      * The port number to listen on. It is the value specified by the
@@ -40,7 +46,7 @@ public abstract class TTSServer implements Runnable {
             System.out.println("Waiting on " + ss);
         } catch (IOException ioe) {
             System.out.println("Can't open socket on port " + port);
-            ioe.printStackTrace();
+            logger.log(Level.ERROR, ioe.getMessage(), ioe);
             return;
         }
 
@@ -51,7 +57,7 @@ public abstract class TTSServer implements Runnable {
                 spawnProtocolHandler(socket);
             } catch (IOException ioe) {
                 System.err.println("Could not accept socket " + ioe);
-                ioe.printStackTrace();
+                logger.log(Level.ERROR, ioe.getMessage(), ioe);
                 break;
             }
         }
@@ -60,7 +66,7 @@ public abstract class TTSServer implements Runnable {
             ss.close();
         } catch (IOException ioe) {
             System.err.println("Could not close server socket " + ioe);
-            ioe.printStackTrace();
+            logger.log(Level.ERROR, ioe.getMessage(), ioe);
         }
     }
 

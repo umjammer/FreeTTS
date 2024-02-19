@@ -457,7 +457,7 @@ public class TokenToWords implements UtteranceProcessor {
 
             // part of a telephone number
             String punctuation = (String) tokenItem.findFeature("punc");
-            if (punctuation.equals("")) {
+            if (punctuation.isEmpty()) {
                 tokenItem.getFeatures().setString("punc", ",");
             }
             NumberExpander.expandDigits(tokenVal, wordRelation);
@@ -617,7 +617,7 @@ public class TokenToWords implements UtteranceProcessor {
     private void romanToWords(String romanString) {
         String punctuation = (String) tokenItem.findFeature("p.punc");
 
-        if (punctuation.equals("")) {
+        if (punctuation.isEmpty()) {
             // no preceeding punctuation
             String n = String.valueOf(NumberExpander.expandRoman(romanString));
 

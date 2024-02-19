@@ -12,8 +12,8 @@ package de.dfki.lt.freetts.mbrola;
 import java.io.IOException;
 import java.nio.ByteOrder;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.lang.System.Logger.Level;
+import java.lang.System.Logger;
 import javax.sound.sampled.AudioFormat;
 
 import com.sun.speech.freetts.ProcessException;
@@ -32,7 +32,7 @@ import com.sun.speech.freetts.audio.AudioPlayer;
 public class MbrolaAudioOutput implements UtteranceProcessor {
 
     /** Logger instance. */
-    private static final Logger LOGGER = Logger.getLogger(MbrolaAudioOutput.class.getName());
+    private static final Logger logger = System.getLogger(MbrolaAudioOutput.class.getName());
 
     /**
      * The raw audio data coming out of MBROLA is in native byte order,
@@ -58,8 +58,8 @@ public class MbrolaAudioOutput implements UtteranceProcessor {
      */
     @Override
     public void processUtterance(Utterance utterance) throws ProcessException {
-        if (LOGGER.isLoggable(Level.FINE)) {
-            LOGGER.fine("=== " + utterance.getString("input_text"));
+        if (logger.isLoggable(Level.DEBUG)) {
+            logger.log(Level.DEBUG, "=== " + utterance.getString("input_text"));
         }
 
         AudioPlayer audioPlayer = utterance.getVoice().getAudioPlayer();

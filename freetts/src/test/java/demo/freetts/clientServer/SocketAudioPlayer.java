@@ -10,8 +10,9 @@ package demo.freetts.clientServer;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.lang.System.Logger.Level;
 import java.net.Socket;
-import java.util.logging.Logger;
+import java.lang.System.Logger;
 import javax.sound.sampled.AudioFormat;
 
 import com.sun.speech.freetts.audio.AudioPlayer;
@@ -25,7 +26,7 @@ import com.sun.speech.freetts.audio.AudioPlayer;
 public class SocketAudioPlayer implements AudioPlayer {
 
     /** Logger instance. */
-    private static final Logger logger = Logger.getLogger(SocketAudioPlayer.class.getName());
+    private static final Logger logger = System.getLogger(SocketAudioPlayer.class.getName());
 
     private AudioFormat audioFormat;
     private Socket socket;
@@ -46,7 +47,7 @@ public class SocketAudioPlayer implements AudioPlayer {
         try {
             this.dataOutputStream = new DataOutputStream(socket.getOutputStream());
         } catch (IOException ioe) {
-            ioe.printStackTrace();
+            logger.log(Level.ERROR, ioe.getMessage(), ioe);
         }
     }
 
@@ -108,7 +109,7 @@ public class SocketAudioPlayer implements AudioPlayer {
         try {
             dataOutputStream.flush();
         } catch (IOException ioe) {
-            ioe.printStackTrace();
+            logger.log(Level.ERROR, ioe.getMessage(), ioe);
         }
         return true;
     }
@@ -127,9 +128,9 @@ public class SocketAudioPlayer implements AudioPlayer {
             firstByteSent = false;
             dataOutputStream.writeBytes(size + "\n");
             dataOutputStream.flush();
-            logger.fine("begin: " + size);
+            logger.log(Level.DEBUG, "begin: " + size);
         } catch (IOException ioe) {
-            ioe.printStackTrace();
+            logger.log(Level.ERROR, ioe.getMessage(), ioe);
         }
     }
 
@@ -142,7 +143,7 @@ public class SocketAudioPlayer implements AudioPlayer {
 
     /**
      * Signals the end of a set of data. Audio data for a single
-     * utterance should be groupd between <code> begin/end </code> pairs.
+     * utterance should be grouped between <code> begin/end </code> pairs.
      *
      * @return <code>true</code> if the audio was output properly,
      * <code> false</code> if the output was cancelled
@@ -150,7 +151,7 @@ public class SocketAudioPlayer implements AudioPlayer {
      */
     @Override
     public boolean end() {
-        logger.fine("end");
+        logger.log(Level.DEBUG, "end");
         if (bytesPlayed < bytesToPlay) {
             int bytesNotPlayed = bytesToPlay - bytesPlayed;
             write(new byte[bytesNotPlayed], 0, bytesNotPlayed);
@@ -251,10 +252,10 @@ public class SocketAudioPlayer implements AudioPlayer {
             dataOutputStream.write(audioData, offset, size);
             dataOutputStream.flush();
 
-            logger.fine("sent " + size + " bytes " + audioData[0] + " " + audioData[size / 2]);
+            logger.log(Level.DEBUG, "sent " + size + " bytes " + audioData[0] + " " + audioData[size / 2]);
             return true;
         } catch (IOException ioe) {
-            ioe.printStackTrace();
+            logger.log(Level.ERROR, ioe.getMessage(), ioe);
             return false;
         }
     }

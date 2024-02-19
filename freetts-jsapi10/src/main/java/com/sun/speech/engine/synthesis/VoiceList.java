@@ -97,15 +97,14 @@ public class VoiceList {
     public String getVoiceId(Voice voice, int variant) {
         // If voice is a BaseVoice simply return its id.
         //
-        if (voice instanceof BaseVoice) {
-            BaseVoice bv = (BaseVoice) voice;
+        if (voice instanceof BaseVoice bv) {
             String id = bv.getId();
-            if (id != null && id.length() > 0) {
+            if (id != null && !id.isEmpty()) {
                 return id;
             }
         }
 
-        // Build a list of indicies of all matching voices.
+        // Build a list of indices of all matching voices.
         // If variant is <= 0 return with first match
         //
         int[] indexes = new int[voiceList.size()];
@@ -152,29 +151,29 @@ public class VoiceList {
 
         // Is there a match by voice name?  If yes, return it.
         // Otherwise, ignore name.
-        if (name != null && name.length() > 0) {
+        if (name != null && !name.isEmpty()) {
             id = getVoiceId(new Voice(name, Voice.GENDER_DONT_CARE, Voice.AGE_DONT_CARE, null), 0);
-            if (id != null && id.length() > 0) {
+            if (id != null && !id.isEmpty()) {
                 return id;
             }
         }
 
         // Try to match gender and age
         id = getVoiceId(new Voice(null, gender, age, null), variant);
-        if (id != null && id.length() > 0) {
+        if (id != null && !id.isEmpty()) {
             return id;
         }
 
         // Try to match gender and adjoining ages
         int looseAge = age | (age << 1) | (age >> 1);
         id = getVoiceId(new Voice(null, gender, looseAge, null), variant);
-        if (id != null && id.length() > 0) {
+        if (id != null && !id.isEmpty()) {
             return id;
         }
 
         // Try to match just gender
         id = getVoiceId(new Voice(null, gender, Voice.AGE_DONT_CARE, null), variant);
-        if (id != null && id.length() > 0) {
+        if (id != null && !id.isEmpty()) {
             return id;
         }
 

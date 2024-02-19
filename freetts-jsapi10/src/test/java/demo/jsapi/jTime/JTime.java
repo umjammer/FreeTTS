@@ -12,10 +12,11 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.lang.System.Logger.Level;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.Locale;
-import java.util.logging.Logger;
+import java.lang.System.Logger;
 import javax.speech.Central;
 import javax.speech.EngineException;
 import javax.speech.EngineList;
@@ -33,7 +34,7 @@ import demo.util.TimeUtils;
 public class JTime {
 
     /** Logger instance. */
-    private static final Logger logger = Logger.getLogger(JTime.class.getName());
+    private static final Logger logger = System.getLogger(JTime.class.getName());
 
     Synthesizer synthesizer;
 
@@ -45,10 +46,13 @@ public class JTime {
      * @return a no synthesizer message
      */
     static private String noSynthesizerMessage() {
-        String message = "No synthesizer created.  This may be the result of any\n" +
-                        "number of problems.  It's typically due to a missing\n" +
-                        "\"speech.properties\" file that should be at either of\n" +
-                        "these locations: \n\n";
+        String message = """
+                No synthesizer created.  This may be the result of any
+                number of problems.  It's typically due to a missing
+                "speech.properties" file that should be at either of
+                these locations:\s
+
+                """;
         message += "user.home    : " + System.getProperty("user.home") + "\n";
         message += "java.home/lib: " + System.getProperty("java.home") +
                 File.separator + "lib\n\n" +
@@ -134,7 +138,7 @@ public class JTime {
              * set up their speech.properties file.
              */
             if (synthesizer == null) {
-                logger.info(noSynthesizerMessage());
+                logger.log(Level.INFO, noSynthesizerMessage());
                 System.exit(1);
             }
 
@@ -155,12 +159,12 @@ public class JTime {
                 }
             }
             if (voice == null) {
-                logger.info("Synthesizer does not have a voice named " + voiceName + ".");
+                logger.log(Level.INFO, "Synthesizer does not have a voice named " + voiceName + ".");
                 System.exit(1);
             }
             synthesizer.getSynthesizerProperties().setVoice(voice);
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.log(Level.ERROR, e.getMessage(), e);
         }
     }
 
@@ -176,14 +180,14 @@ public class JTime {
                 System.out.print("Enter time (HH:MM): ");
                 System.out.flush();
                 text = reader.readLine();
-                if ((text == null) || (text.length() == 0)) {
+                if ((text == null) || (text.isEmpty())) {
                     break;
                 } else {
                     timeToSpeech(text);
                 }
             }
         } catch (IOException ioe) {
-            ioe.printStackTrace();
+            logger.log(Level.ERROR, ioe.getMessage(), ioe);
         }
     }
 
@@ -240,7 +244,7 @@ public class JTime {
                 timeToSpeech(time);
             }
         } catch (IllegalArgumentException iae) {
-            logger.info("Bad time format");
+            logger.log(Level.INFO, "Bad time format");
         }
     }
 
@@ -284,7 +288,7 @@ public class JTime {
             jtime.interactiveMode();
             jtime.close();
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.log(Level.ERROR, e.getMessage(), e);
         }
 
         System.exit(0);

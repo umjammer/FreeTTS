@@ -12,7 +12,7 @@ import java.net.URL;
 /**
  * This voice directory provides a Limited Domain Cluster Unit voice imported
  * from FestVox.
- * This is designed to be a base-class handeling non-Us-English voices,
+ * This is designed to be a base-class handling non-Us-English voices,
  * the voice provided here is not a full TTS-voice.
  */
 public class %CLASSNAME% extends VoiceDirectory {

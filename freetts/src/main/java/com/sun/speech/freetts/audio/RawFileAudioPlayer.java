@@ -48,7 +48,6 @@ public class RawFileAudioPlayer implements AudioPlayer {
         os = new BufferedOutputStream(Files.newOutputStream(Paths.get(path)));
     }
 
-
     /**
      * Sets the audio format for this player
      *

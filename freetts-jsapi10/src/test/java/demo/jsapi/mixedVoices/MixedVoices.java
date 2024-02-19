@@ -9,8 +9,9 @@
 package demo.jsapi.mixedVoices;
 
 import java.io.File;
+import java.lang.System.Logger.Level;
 import java.util.Locale;
-import java.util.logging.Logger;
+import java.lang.System.Logger;
 import javax.speech.Central;
 import javax.speech.synthesis.SpeakableAdapter;
 import javax.speech.synthesis.SpeakableEvent;
@@ -26,7 +27,7 @@ import javax.speech.synthesis.Voice;
 public class MixedVoices {
 
     /** Logger instance. */
-    private static final Logger logger = Logger.getLogger(MixedVoices.class.getName());
+    private static final Logger logger = System.getLogger(MixedVoices.class.getName());
 
     private static void usage() {
         System.out.println("MixedVoices [-showEvents] [-showPropertyChanges]");
@@ -107,8 +108,7 @@ public class MixedVoices {
             Synthesizer synthesizer1 = Central.createSynthesizer(generalDesc);
 
             if (synthesizer1 == null) {
-                logger.info(
-                        noSynthesizerMessage("general domain synthesizer"));
+                logger.log(Level.INFO, noSynthesizerMessage("general domain synthesizer"));
                 System.exit(1);
             }
 
@@ -124,7 +124,7 @@ public class MixedVoices {
             Synthesizer synthesizer2 = Central.createSynthesizer(limitedDesc);
 
             if (synthesizer2 == null) {
-                logger.info(noSynthesizerMessage("time domain synthesizer"));
+                logger.log(Level.INFO, noSynthesizerMessage("time domain synthesizer"));
                 System.exit(1);
             }
 
@@ -188,7 +188,7 @@ public class MixedVoices {
                                 dumpEvent(e);
                             }
 
-                            private void dumpEvent(SpeakableEvent e) {
+                            private static void dumpEvent(SpeakableEvent e) {
                                 System.out.println(" EVT: " + e.paramString() + " source: " + e.getSource());
                             }
                         });
@@ -292,7 +292,7 @@ public class MixedVoices {
             synthesizer1.deallocate();
             synthesizer2.deallocate();
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.log(Level.ERROR, e.getMessage(), e);
         }
 
         System.exit(0);

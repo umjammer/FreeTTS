@@ -96,7 +96,7 @@ public class PhoneSetImpl implements PhoneSet {
      * @param feature the name of the feature
      * @return the key used to obtain the value
      */
-    private String getKey(String phoneme, String feature) {
+    private static String getKey(String phoneme, String feature) {
         return phoneme + feature;
     }
 

@@ -313,8 +313,7 @@ abstract public class LexiconImpl implements Lexicon {
                                                 boolean binary,
                                                 int estimatedSize) throws IOException {
         if (binary) {
-            if (useNewIO && is instanceof FileInputStream) {
-                FileInputStream fis = (FileInputStream) is;
+            if (useNewIO && is instanceof FileInputStream fis) {
                 return loadMappedBinaryLexicon(fis, estimatedSize);
             } else {
                 DataInputStream dis = new DataInputStream(new BufferedInputStream(is));
@@ -516,7 +515,7 @@ abstract public class LexiconImpl implements Lexicon {
      * @param s   the string to output
      * @throws IOException if errors occur during writing
      */
-    private void outString(DataOutputStream dos, String s) throws IOException {
+    private static void outString(DataOutputStream dos, String s) throws IOException {
         dos.writeByte((byte) s.length());
         for (int i = 0; i < s.length(); i++) {
             dos.writeChar(s.charAt(i));
@@ -761,7 +760,6 @@ abstract public class LexiconImpl implements Lexicon {
         }
         return phonemeList;
     }
-
 
     /**
      * Tests to see if this lexicon is identical to the other for

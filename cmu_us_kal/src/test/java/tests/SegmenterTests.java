@@ -118,7 +118,6 @@ public class SegmenterTests {
         assertEquals("t", i.toString(), "seg t");
         i = i.getNext();
 
-
         // spot check the SylStructure
         Relation sylStructure = u.getRelation("SylStructure");
         //assertTrue("sylStructure size", sylStructure.getItems().size() == 6);

@@ -14,8 +14,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.SequenceInputStream;
 import java.util.Vector;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.lang.System.Logger.Level;
+import java.lang.System.Logger;
 import javax.sound.sampled.AudioFileFormat;
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
@@ -30,7 +30,7 @@ import com.sun.speech.freetts.util.Utilities;
 public class SingleFileAudioPlayer implements AudioPlayer {
 
     /** Logger instance. */
-    private static final Logger LOGGER = Logger.getLogger(SingleFileAudioPlayer.class.getName());
+    private static final Logger logger = System.getLogger(SingleFileAudioPlayer.class.getName());
 
     private AudioFormat currentFormat = null;
     private String baseName;
@@ -77,7 +77,6 @@ public class SingleFileAudioPlayer implements AudioPlayer {
         currentFormat = format;
     }
 
-
     /**
      * Gets the audio format for this player
      *
@@ -87,7 +86,6 @@ public class SingleFileAudioPlayer implements AudioPlayer {
     public AudioFormat getAudioFormat() {
         return currentFormat;
     }
-
 
     /**
      * Pauses audio output
@@ -102,7 +100,6 @@ public class SingleFileAudioPlayer implements AudioPlayer {
     @Override
     public synchronized void resume() {
     }
-
 
     /**
      * Cancels currently playing audio
@@ -119,7 +116,6 @@ public class SingleFileAudioPlayer implements AudioPlayer {
     @Override
     public synchronized void reset() {
     }
-
 
     /**
      * Starts the first sample timer
@@ -138,18 +134,17 @@ public class SingleFileAudioPlayer implements AudioPlayer {
             InputStream is = new SequenceInputStream(outputList.elements());
             AudioInputStream ais = new AudioInputStream(is,
                     currentFormat, totBytes / currentFormat.getFrameSize());
-            if (LOGGER.isLoggable(Level.FINE)) {
-                LOGGER.fine("Avail " + ais.available());
-                LOGGER.fine("totBytes " + totBytes);
-                LOGGER.fine("FS " + currentFormat.getFrameSize());
+            if (logger.isLoggable(Level.DEBUG)) {
+                logger.log(Level.DEBUG, "Avail " + ais.available());
+                logger.log(Level.DEBUG, "totBytes " + totBytes);
+                logger.log(Level.DEBUG, "FS " + currentFormat.getFrameSize());
             }
-            LOGGER.info("Wrote synthesized speech to " + baseName);
+            logger.log(Level.INFO, "Wrote synthesized speech to " + baseName);
             AudioSystem.write(ais, outputType, file);
         } catch (IllegalArgumentException iae) {
             throw new IOException("Can't write audio type " + outputType, iae);
         }
     }
-
 
     /**
      * Returns the current volume.
@@ -170,7 +165,6 @@ public class SingleFileAudioPlayer implements AudioPlayer {
     public void setVolume(float volume) {
     }
 
-
     /**
      * Starts the output of a set of data. Audio data for a single
      * utterance should be grouped between begin/end pairs.
@@ -185,7 +179,7 @@ public class SingleFileAudioPlayer implements AudioPlayer {
 
     /**
      * Marks the end of a set of data. Audio data for a single
-     * utterance should be groupd between begin/end pairs.
+     * utterance should be grouped between begin/end pairs.
      *
      * @return true if the audio was output properly, false if the
      * output was cancelled or interrupted.
@@ -196,7 +190,6 @@ public class SingleFileAudioPlayer implements AudioPlayer {
         totBytes += outputData.length;
         return true;
     }
-
 
     /**
      * Waits for all queued audio to be played
@@ -219,14 +212,12 @@ public class SingleFileAudioPlayer implements AudioPlayer {
         return -1L;
     }
 
-
     /**
      * Resets the audio clock
      */
     @Override
     public synchronized void resetTime() {
     }
-
 
     /**
      * Writes the given bytes to the audio stream
@@ -257,7 +248,7 @@ public class SingleFileAudioPlayer implements AudioPlayer {
     }
 
     /**
-     * Returns the name of this audioplayer
+     * Returns the name of this audio player
      *
      * @return the name of the audio player
      */

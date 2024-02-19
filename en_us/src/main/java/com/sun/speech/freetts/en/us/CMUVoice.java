@@ -91,7 +91,6 @@ public abstract class CMUVoice extends Voice {
         BulkTimer.LOAD.stop("FeatureSet");
     }
 
-
     /**
      * Sets up the utterance processors for this voice. Subclasses
      * should define this method to setup the utterance processors for
@@ -124,7 +123,6 @@ public abstract class CMUVoice extends Voice {
         processors.add(getPostLexicalAnalyzer());
         processors.add(new Durator(durzCart, phoneDurations));
         processors.add(new ContourGenerator(getResource("f0_lr_terms.txt"), 170.0f, 34.0f));
-
 
         processors.add(getUnitSelector());
         processors.add(getPitchmarkGenerator());

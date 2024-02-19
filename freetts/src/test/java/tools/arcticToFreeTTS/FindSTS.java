@@ -35,7 +35,7 @@ import java.io.OutputStreamWriter;
  * Intel floating-point math.
  * </p>
  */
-public strictfp class FindSTS {
+public class FindSTS {
 
     static float lpc_min;
     static float lpc_max;
@@ -589,7 +589,7 @@ class Wave {
      * in <code>dis</code>, else <code>false</code>
      * @throws IOException on ill-formatted input (end of file, for example)
      */
-    private boolean checkChars(DataInputStream dis, String chars) throws IOException {
+    private static boolean checkChars(DataInputStream dis, String chars) throws IOException {
         char[] carray = chars.toCharArray();
         for (char c : carray) {
             if ((char) dis.readByte() != c) {

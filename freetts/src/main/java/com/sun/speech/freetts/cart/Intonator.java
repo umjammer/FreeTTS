@@ -22,7 +22,7 @@ import com.sun.speech.freetts.UtteranceProcessor;
  * Annotates the <code>Relation.SYLLABLE</code> relations of an
  * utterance with "accent"
  * and "endtone" features.  Though not required, a typical use of
- * this is to use the ToBI (tones and break indeces) scheme for
+ * this is to use the ToBI (tones and break indices) scheme for
  * transcribing intonation and accent in English, developed by Janet
  * Pierrehumbert and Mary Beckman.  This implementation is independent
  * of the ToBI scheme:  ToBI annotations are not

@@ -9,7 +9,8 @@
 package demo.freetts.rtp;
 
 import java.io.IOException;
-import java.util.logging.Logger;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import javax.media.MediaException;
 import javax.media.rtp.SessionManagerException;
 
@@ -29,7 +30,7 @@ import org.jvoicexml.rtp.freetts.RtpServer;
 public class RtpServerDemo {
 
     /** Logger instance. */
-    private static final Logger logger = Logger.getLogger(RtpServerDemo.class.getName());
+    private static final Logger logger = System.getLogger(RtpServerDemo.class.getName());
 
     /**
      * Example of how to list all the known voices.
@@ -66,7 +67,7 @@ public class RtpServerDemo {
         Voice helloVoice = voiceManager.getVoice(voiceName);
 
         if (helloVoice == null) {
-            logger.info("Cannot find a voice named " + voiceName + ".  Please specify a different voice.");
+            logger.log(Level.INFO, "Cannot find a voice named " + voiceName + ".  Please specify a different voice.");
             System.exit(1);
         }
 
@@ -78,7 +79,7 @@ public class RtpServerDemo {
             server.addTarget(49150);
             player = new RtpAudioPlayer(ds);
         } catch (IOException | SessionManagerException | MediaException e) {
-            e.printStackTrace();
+            logger.log(Level.ERROR, e.getMessage(), e);
         }
 
         // Allocates the resources for the voice.
@@ -93,7 +94,7 @@ public class RtpServerDemo {
             server.initSendStream(ds);
             server.startSending();
         } catch (IOException | MediaException e) {
-            e.printStackTrace();
+            logger.log(Level.ERROR, e.getMessage(), e);
         }
 
         // Wait until all data is being delivered.
@@ -108,7 +109,7 @@ public class RtpServerDemo {
             server.dispose();
         } catch (IOException e) {
             // TODO Auto-generated catch block
-            e.printStackTrace();
+            logger.log(Level.ERROR, e.getMessage(), e);
         }
 
         System.exit(0);

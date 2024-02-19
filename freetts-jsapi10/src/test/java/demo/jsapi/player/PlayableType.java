@@ -41,7 +41,6 @@ public class PlayableType {
      */
     public static final PlayableType URL = new PlayableType("URL");
 
-
     /**
      * Constructs a PlayableType with the given name.
      *
@@ -50,7 +49,6 @@ public class PlayableType {
     private PlayableType(String typeName) {
         this.typeName = typeName;
     }
-
 
     /**
      * Returns the name of the type.

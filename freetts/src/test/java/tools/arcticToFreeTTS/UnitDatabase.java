@@ -6,17 +6,23 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeSet;
 
+import static java.lang.System.getLogger;
+
 
 /**
  * Database containing both the Catalog and the Track Files.
  */
 public class UnitDatabase {
+
+    private static final Logger logger = getLogger(UnitDatabase.class.getName());
 
     static float lpcMin;
     static float lpcRange;
@@ -248,7 +254,7 @@ public class UnitDatabase {
 
             System.out.println("Done!");
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.log(Level.ERROR, e.getMessage(), e);
         }
     }
 }

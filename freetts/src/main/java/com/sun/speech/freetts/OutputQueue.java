@@ -93,7 +93,7 @@ public class OutputQueue {
      */
     public synchronized Utterance pend() {
         Utterance utterance;
-        while (list.size() == 0) {
+        while (list.isEmpty()) {
             try {
                 wait();
             } catch (InterruptedException ie) {

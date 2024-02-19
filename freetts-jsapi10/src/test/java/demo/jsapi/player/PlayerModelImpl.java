@@ -16,12 +16,13 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.lang.System.Logger.Level;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.logging.Logger;
+import java.lang.System.Logger;
 import javax.speech.AudioException;
 import javax.speech.Central;
 import javax.speech.Engine;
@@ -35,6 +36,8 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
 import javax.swing.ListModel;
 
+import static java.lang.System.getLogger;
+
 
 /**
  * Implements the text-to-speech data model of the Player application, using
@@ -43,7 +46,7 @@ import javax.swing.ListModel;
 public class PlayerModelImpl implements PlayerModel {
 
     /** Logger instance. */
-    private static final Logger logger = Logger.getLogger(PlayerModelImpl.class.getName());
+    private static final Logger logger = getLogger(PlayerModelImpl.class.getName());
 
     private Synthesizer synthesizer;
     private Monitor monitor;
@@ -78,7 +81,7 @@ public class PlayerModelImpl implements PlayerModel {
 
             while (e.hasMoreElements()) {
                 MySynthesizerModeDesc myModeDesc = new MySynthesizerModeDesc((SynthesizerModeDesc) e.nextElement(), this);
-                logger.fine(myModeDesc.getEngineName() + " " +
+                logger.log(Level.DEBUG, myModeDesc.getEngineName() + " " +
                         myModeDesc.getLocale() + " " +
                         myModeDesc.getModeName() + " " +
                         myModeDesc.getRunning());
@@ -88,14 +91,14 @@ public class PlayerModelImpl implements PlayerModel {
             if (synthesizerList.getSize() > 0) {
                 setSynthesizer(0);
             } else {
-                logger.info(noSynthesizerMessage());
+                logger.log(Level.INFO, noSynthesizerMessage());
             }
             if (synthesizer == null) {
-                logger.info("PlayerModelImpl: Can't find synthesizer");
+                logger.log(Level.INFO, "PlayerModelImpl: Can't find synthesizer");
                 System.exit(1);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.log(Level.ERROR, e.getMessage(), e);
         }
     }
 
@@ -107,10 +110,13 @@ public class PlayerModelImpl implements PlayerModel {
      * @return a no synthesizer message
      */
     static private String noSynthesizerMessage() {
-        String message = "No synthesizer created.  This may be the result of any\n" +
-                        "number of problems.  It's typically due to a missing\n" +
-                        "\"speech.properties\" file that should be at either of\n" +
-                        "these locations: \n\n";
+        String message = """
+                No synthesizer created.  This may be the result of any
+                number of problems.  It's typically due to a missing
+                "speech.properties" file that should be at either of
+                these locations:\s
+
+                """;
         message += "user.home    : " + System.getProperty("user.home") + "\n";
         message += "java.home/lib: " + System.getProperty("java.home") +
                 File.separator + "lib\n\n" +
@@ -140,7 +146,7 @@ public class PlayerModelImpl implements PlayerModel {
                 try {
                     playURL(new URL(playable.getName()));
                 } catch (MalformedURLException mue) {
-                    mue.printStackTrace();
+                    logger.log(Level.ERROR, mue.getMessage(), mue);
                 }
             }
         }
@@ -179,7 +185,7 @@ public class PlayerModelImpl implements PlayerModel {
         try {
             synthesizer.speak(jsmlText, null);
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.log(Level.ERROR, e.getMessage(), e);
         }
     }
 
@@ -194,7 +200,7 @@ public class PlayerModelImpl implements PlayerModel {
             FileInputStream fileStream = new FileInputStream(file);
             playInputStream(fileStream, type);
         } catch (FileNotFoundException fnfe) {
-            fnfe.printStackTrace();
+            logger.log(Level.ERROR, fnfe.getMessage(), fnfe);
         }
     }
 
@@ -212,7 +218,7 @@ public class PlayerModelImpl implements PlayerModel {
                 String line;
                 if (type == PlayableType.TEXT_FILE) {
                     while (!isStopped() && (line = reader.readLine()) != null) {
-                        if (line.length() > 0) {
+                        if (!line.isEmpty()) {
                             play(line);
                         }
                     }
@@ -221,13 +227,13 @@ public class PlayerModelImpl implements PlayerModel {
                     while ((line = reader.readLine()) != null) {
                         fileText.append(line);
                     }
-                    if (fileText.length() > 0) {
+                    if (!fileText.isEmpty()) {
                         playJSML(fileText.toString());
                     }
                 }
                 stopped = false;
             } catch (IOException ioe) {
-                ioe.printStackTrace();
+                logger.log(Level.ERROR, ioe.getMessage(), ioe);
             }
         }
         playingFile = false;
@@ -242,7 +248,7 @@ public class PlayerModelImpl implements PlayerModel {
         try {
             synthesizer.speak(url, null);
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.log(Level.ERROR, e.getMessage(), e);
         }
     }
 
@@ -274,7 +280,7 @@ public class PlayerModelImpl implements PlayerModel {
         try {
             synthesizer.resume();
         } catch (AudioException ae) {
-            ae.printStackTrace();
+            logger.log(Level.ERROR, ae.getMessage(), ae);
         }
     }
 
@@ -399,12 +405,12 @@ public class PlayerModelImpl implements PlayerModel {
             if (synthesizer == null) {
                 synthesizer = myModeDesc.createSynthesizer();
                 if (synthesizer == null) {
-                    logger.fine("still null");
+                    logger.log(Level.DEBUG, "still null");
                 } else {
-                    logger.fine("created");
+                    logger.log(Level.DEBUG, "created");
                 }
             } else {
-                logger.fine("not null");
+                logger.log(Level.DEBUG, "not null");
             }
             monitor = myModeDesc.getMonitor();
             if (myModeDesc.isSynthesizerLoaded()) {
@@ -437,7 +443,7 @@ public class PlayerModelImpl implements PlayerModel {
                 voiceList.setSelectedItem(voice);
             }
         } catch (PropertyVetoException | InterruptedException pve) {
-            pve.printStackTrace();
+            logger.log(Level.ERROR, pve.getMessage(), pve);
         }
     }
 
@@ -456,7 +462,7 @@ public class PlayerModelImpl implements PlayerModel {
                 volume = (float) ((adjustedVolume - 0.5) * 20);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.log(Level.ERROR, e.getMessage(), e);
         }
         return volume;
     }
@@ -484,7 +490,7 @@ public class PlayerModelImpl implements PlayerModel {
             try {
                 synthesizer.getSynthesizerProperties().setVolume(this.volume);
             } catch (PropertyVetoException pe) {
-                pe.printStackTrace();
+                logger.log(Level.ERROR, pe.getMessage(), pe);
             }
             return false;
         }
@@ -522,7 +528,7 @@ public class PlayerModelImpl implements PlayerModel {
             try {
                 properties.setSpeakingRate(oldSpeed);
             } catch (PropertyVetoException pe) {
-                pe.printStackTrace();
+                logger.log(Level.ERROR, pe.getMessage(), pe);
             }
             return false;
         }
@@ -554,7 +560,7 @@ public class PlayerModelImpl implements PlayerModel {
             try {
                 synthesizer.getSynthesizerProperties().setPitch(oldPitch);
             } catch (PropertyVetoException pe) {
-                pe.printStackTrace();
+                logger.log(Level.ERROR, pe.getMessage(), pe);
             }
             return false;
         }
@@ -586,7 +592,7 @@ public class PlayerModelImpl implements PlayerModel {
             try {
                 synthesizer.getSynthesizerProperties().setPitchRange(oldRange);
             } catch (PropertyVetoException pe) {
-                pe.printStackTrace();
+                logger.log(Level.ERROR, pe.getMessage(), pe);
             }
             return false;
         }
@@ -709,7 +715,7 @@ class MyVoice extends Voice {
 class MySynthesizerModeDesc extends SynthesizerModeDesc {
 
     /** Logger instance. */
-    private static final Logger logger = Logger.getLogger(MySynthesizerModeDesc.class.getName());
+    private static final Logger logger = getLogger(MySynthesizerModeDesc.class.getName());
 
     private PlayerModel playerModel;
     private Synthesizer synthesizer = null;
@@ -748,7 +754,7 @@ class MySynthesizerModeDesc extends SynthesizerModeDesc {
      * @return a Synthesizer
      */
     public synchronized Synthesizer getSynthesizer() {
-        logger.fine("MyModeDesc.getSynthesizer(): " + getEngineName());
+        logger.log(Level.DEBUG, "MyModeDesc.getSynthesizer(): " + getEngineName());
         return synthesizer;
     }
 
@@ -759,7 +765,7 @@ class MySynthesizerModeDesc extends SynthesizerModeDesc {
      */
     public Synthesizer createSynthesizer() {
         try {
-            logger.fine("Creating " + getEngineName() + "...");
+            logger.log(Level.DEBUG, "Creating " + getEngineName() + "...");
             synthesizer = Central.createSynthesizer(this);
 
             if (synthesizer == null) {
@@ -768,10 +774,10 @@ class MySynthesizerModeDesc extends SynthesizerModeDesc {
                 synthesizer.allocate();
                 synthesizer.resume();
                 monitor = new Monitor(synthesizer, getEngineName());
-                logger.fine("...created monitor");
+                logger.log(Level.DEBUG, "...created monitor");
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.log(Level.ERROR, e.getMessage(), e);
         }
         return synthesizer;
     }
@@ -784,14 +790,14 @@ class MySynthesizerModeDesc extends SynthesizerModeDesc {
     public Synthesizer loadSynthesizer() {
         try {
             if (!synthesizerLoaded) {
-                logger.fine("Loading " + getEngineName() + "...");
+                logger.log(Level.DEBUG, "Loading " + getEngineName() + "...");
                 synthesizerLoaded = true;
                 SynthesizerLoader loader = new SynthesizerLoader
                         (synthesizer, this);
                 loader.start();
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.log(Level.ERROR, e.getMessage(), e);
         }
         return synthesizer;
     }
@@ -833,6 +839,8 @@ class MySynthesizerModeDesc extends SynthesizerModeDesc {
  */
 class SynthesizerLoader extends Thread {
 
+    private static final Logger logger = getLogger(SynthesizerLoader.class.getName());
+
     private Synthesizer synthesizer;
     private MySynthesizerModeDesc modeDesc;
     private PlayerModel playerModel;
@@ -863,7 +871,7 @@ class SynthesizerLoader extends Thread {
             System.out.println("...resume");
             playerModel.setVoiceList(modeDesc);
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.log(Level.ERROR, e.getMessage(), e);
         }
     }
 }

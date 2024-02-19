@@ -355,8 +355,7 @@ abstract public class BaseSynthesizer extends BaseEngine
             return;
         }
         for (EngineListener engineListener : engineListeners) {
-            if (engineListener instanceof SynthesizerListener) {
-                SynthesizerListener sl = (SynthesizerListener) engineListener;
+            if (engineListener instanceof SynthesizerListener sl) {
                 sl.queueUpdated(event);
             }
         }
@@ -395,8 +394,7 @@ abstract public class BaseSynthesizer extends BaseEngine
             return;
         }
         for (EngineListener engineListener : engineListeners) {
-            if (engineListener instanceof SynthesizerListener) {
-                SynthesizerListener sl = (SynthesizerListener) engineListener;
+            if (engineListener instanceof SynthesizerListener sl) {
                 sl.queueEmptied(event);
             }
         }

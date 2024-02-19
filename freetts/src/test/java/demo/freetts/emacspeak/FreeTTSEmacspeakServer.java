@@ -8,8 +8,9 @@
 
 package demo.freetts.emacspeak;
 
+import java.lang.System.Logger.Level;
 import java.net.Socket;
-import java.util.logging.Logger;
+import java.lang.System.Logger;
 
 import com.sun.speech.freetts.Voice;
 import com.sun.speech.freetts.VoiceManager;
@@ -22,7 +23,7 @@ import demo.util.TTSServer;
 public class FreeTTSEmacspeakServer extends TTSServer {
 
     /** Logger instance. */
-    private static final Logger logger = Logger.getLogger(FreeTTSEmacspeakServer.class.getName());
+    private static final Logger logger = System.getLogger(FreeTTSEmacspeakServer.class.getName());
 
     private Voice emacsVoice;
 
@@ -41,7 +42,7 @@ public class FreeTTSEmacspeakServer extends TTSServer {
         VoiceManager voiceManager = VoiceManager.getInstance();
         emacsVoice = voiceManager.getVoice(voiceName);
         if (emacsVoice == null) {
-            logger.info("No such voice with the name: " + voiceName);
+            logger.log(Level.INFO, "No such voice with the name: " + voiceName);
             System.exit(1);
         }
         emacsVoice.allocate();
@@ -60,7 +61,7 @@ public class FreeTTSEmacspeakServer extends TTSServer {
                     new FreeTTSEmacspeakHandler(socket, emacsVoice);
             (new Thread(handler)).start();
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.log(Level.ERROR, e.getMessage(), e);
         }
     }
 

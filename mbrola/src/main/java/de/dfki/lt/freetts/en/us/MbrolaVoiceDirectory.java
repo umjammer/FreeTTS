@@ -22,7 +22,7 @@ public class MbrolaVoiceDirectory extends VoiceDirectory {
 
         String base = Utilities.getProperty("mbrola.base", null);
 
-        if (base == null || base.trim().length() == 0) {
+        if (base == null || base.trim().isEmpty()) {
             System.out.println("System property \"mbrola.base\" is undefined.  "
                             + "Will not use MBROLA voices.");
             return new Voice[0];
@@ -68,9 +68,11 @@ public class MbrolaVoiceDirectory extends VoiceDirectory {
                     System.err.println("DO NOT USE ~ as part of the path name\n"
                                     + "to specify the mbrola.base property.");
                 }
-                System.err.println("Make sure you FULLY specify the path to\n"
-                                + "the MBROLA directory using the mbrola.base\n"
-                                + "system property.\n");
+                System.err.println("""
+                        Make sure you FULLY specify the path to
+                        the MBROLA directory using the mbrola.base
+                        system property.
+                        """);
                 return new Voice[0];
             } else {
                 return validVoices.toArray(new Voice[count]);

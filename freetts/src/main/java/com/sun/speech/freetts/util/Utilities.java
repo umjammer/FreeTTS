@@ -34,16 +34,12 @@ public class Utilities {
      * spaces.
      *
      * @param padding the number of spaces in the string
-     * @return a string of length 'padding' containg only the SPACE
+     * @return a string of length 'padding' containing only the SPACE
      * char.
      */
     public static String pad(int padding) {
         if (padding > 0) {
-            StringBuilder sb = new StringBuilder(padding);
-            for (int i = 0; i < padding; i++) {
-                sb.append(' ');
-            }
-            return sb.toString();
+            return " ".repeat(padding);
         } else {
             return "";
         }
@@ -55,7 +51,7 @@ public class Utilities {
      *
      * @param string    the string to be padded
      * @param minLength the desired length of the string
-     * @return a string of length conntaining string
+     * @return a string of length containing string
      * padded with whitespace or truncated
      */
     public static String pad(String string, int minLength) {
@@ -163,7 +159,6 @@ public class Utilities {
         return new String(charBuffer, 0, size);
     }
 
-
     /**
      * Gets a property by name and returns its value. If the property
      * cannot be found, the default is returned
@@ -241,4 +236,4 @@ public class Utilities {
     }
 }
 
-  
+

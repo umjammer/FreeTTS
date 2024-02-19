@@ -525,7 +525,7 @@ public class PlayerPanel extends JPanel {
         clearTextButton.addActionListener(e -> textArea.setText(""));
         speakTextButton.addActionListener(e -> {
             String inputText = textArea.getText();
-            if (inputText.length() > 0) {
+            if (!inputText.isEmpty()) {
                 Playable textPlayable = Playable.createTextPlayable(inputText);
                 playerModel.addPlayable(textPlayable);
                 speakablesList.setSelectedValue(textPlayable, true);
@@ -534,7 +534,7 @@ public class PlayerPanel extends JPanel {
         });
         speakJSMLButton.addActionListener(e -> {
             String inputText = textArea.getText();
-            if (inputText.length() > 0) {
+            if (!inputText.isEmpty()) {
                 Playable jsmlPlayable = Playable.createJSMLPlayable(inputText);
                 playerModel.addPlayable(jsmlPlayable);
                 speakablesList.setSelectedValue(jsmlPlayable, true);

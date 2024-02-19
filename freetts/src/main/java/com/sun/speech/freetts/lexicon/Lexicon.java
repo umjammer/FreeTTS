@@ -96,7 +96,6 @@ public interface Lexicon {
      */
     void load() throws IOException;
 
-
     /**
      * Determines if this lexicon is loaded.
      *

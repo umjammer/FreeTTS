@@ -107,7 +107,6 @@ public class DiphoneUnitSelector implements UtteranceProcessor {
             diphoneName = segmentItem0.getFeatures().getString("name") + "-" +
                     segmentItem1.getFeatures().getString("name");
 
-
             // First half of diphone
             end0 = segmentItem0.getFeatures().getFloat("end");
             targetEnd = (int) (end0 * diphoneDatabase.getSampleInfo().getSampleRate());

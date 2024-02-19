@@ -13,8 +13,12 @@ package org.jvoicexml.rtp.freetts;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import javax.media.protocol.ContentDescriptor;
 import javax.media.protocol.PullSourceStream;
+
+import static java.lang.System.getLogger;
 
 
 /**
@@ -26,6 +30,8 @@ import javax.media.protocol.PullSourceStream;
  * @author Dirk Schnelle
  */
 public final class FreeTTSPullSourceStream implements PullSourceStream {
+
+    private static final Logger logger = getLogger(FreeTTSPullSourceStream.class.getName());
 
     /** No controls allowed. */
     private static final Object[] EMPTY_OBJECT_ARRAY = {};
@@ -39,7 +45,7 @@ public final class FreeTTSPullSourceStream implements PullSourceStream {
     /** Maximum number of bytes to read. */
     private int max;
 
-    private final Integer waitLock = 0;
+    private final Object waitLock = new Object();
 
     /**
      * Sets the input stream.
@@ -52,8 +58,7 @@ public final class FreeTTSPullSourceStream implements PullSourceStream {
         try {
             max = in.available();
         } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            logger.log(Level.ERROR, e.getMessage(), e);
         }
     }
 
@@ -90,8 +95,7 @@ public final class FreeTTSPullSourceStream implements PullSourceStream {
                 waitLock.wait();
             } catch (InterruptedException e) {
                 // TODO Auto-generated catch block
-                e.printStackTrace();
-                return;
+                logger.log(Level.ERROR, e.getMessage(), e);
             }
         }
     }

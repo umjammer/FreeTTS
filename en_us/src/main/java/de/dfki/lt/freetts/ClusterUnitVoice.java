@@ -13,8 +13,11 @@
 package de.dfki.lt.freetts;
 
 import java.io.IOException;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.net.URL;
 import java.util.Locale;
+import java.util.Objects;
 
 import com.sun.speech.freetts.Age;
 import com.sun.speech.freetts.Gender;
@@ -34,6 +37,8 @@ import com.sun.speech.freetts.relp.AudioOutput;
 import com.sun.speech.freetts.relp.SampleInfo;
 import com.sun.speech.freetts.relp.UnitConcatenator;
 
+import static java.lang.System.getLogger;
+
 
 /**
  * A simple dummy voice as a starting point for non-US-English
@@ -41,6 +46,8 @@ import com.sun.speech.freetts.relp.UnitConcatenator;
  * in order for this to become a full TTS voice.
  */
 public class ClusterUnitVoice extends Voice implements ConcatenativeVoice {
+
+    private static final Logger logger = getLogger(ClusterUnitVoice.class.getName());
 
     private PhoneSet phoneSet;
     protected URL database;
@@ -77,12 +84,8 @@ public class ClusterUnitVoice extends Voice implements ConcatenativeVoice {
         setRate(150f);
         setPitch(100F);
         setPitchRange(12F);
-        if (lexicon != null) {
-            setLexicon(lexicon);
-        } else {
-            // Use a small dummy lexicon
-            setLexicon(new CMULexicon("cmutimelex"));
-        }
+        // Use a small dummy lexicon
+        setLexicon(Objects.requireNonNullElseGet(lexicon, () -> new CMULexicon("cmutimelex")));
         this.database = database;
         this.unitNamer = unitNamer;
         this.phonesetURL = phonesetURL;
@@ -90,7 +93,7 @@ public class ClusterUnitVoice extends Voice implements ConcatenativeVoice {
         try {
             unitSelector = new ClusterUnitSelector(getDatabase(), unitNamer);
         } catch (IOException ioe) {
-            ioe.printStackTrace();
+            logger.log(Level.ERROR, ioe.getMessage(), ioe);
         }
     }
 

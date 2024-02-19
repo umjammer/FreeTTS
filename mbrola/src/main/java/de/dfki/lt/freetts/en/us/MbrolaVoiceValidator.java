@@ -49,7 +49,7 @@ public class MbrolaVoiceValidator implements Validator {
         File mbrolaBinary = new File(mbrolaVoice.getMbrolaBinary());
         File mbrolaVoiceDB = new File(mbrolaVoice.getDatabase());
 
-        if (mbrolaBase == null || mbrolaBase.length() == 0) {
+        if (mbrolaBase == null || mbrolaBase.isEmpty()) {
             throw new ValidationException("System property \"mbrola.base\" is undefined. " +
                             "You might need to set the MBROLA_DIR environment variable.");
         }

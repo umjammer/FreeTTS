@@ -196,7 +196,7 @@ class CMUDiphoneVoicePostLexicalAnalyzer implements UtteranceProcessor {
      *
      * @param utterance the utterance to fix
      */
-    private void fixPhoneme_AH(Utterance utterance) {
+    private static void fixPhoneme_AH(Utterance utterance) {
         for (Item item = utterance.getRelation(Relation.SEGMENT).getHead(); item != null; item = item.getNext()) {
             if (item.getFeatures().getString("name").equals("ah")) {
                 item.getFeatures().setString("name", "aa");

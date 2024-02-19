@@ -52,7 +52,7 @@ public abstract class VoiceDirectory {
      * @see #main(String[] args)
      */
     public String toString() {
-        String newline = System.getProperty("line.separator");
+        String newline = System.lineSeparator();
         Voice[] voices = getVoices();
         StringBuilder s = new StringBuilder();
         s.append("VoiceDirectory '");

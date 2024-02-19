@@ -8,7 +8,8 @@
 
 package demo.freetts.helloWorld;
 
-import java.util.logging.Logger;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 
 import com.sun.speech.freetts.Voice;
 import com.sun.speech.freetts.VoiceManager;
@@ -22,7 +23,7 @@ import com.sun.speech.freetts.VoiceManager;
 public class FreeTTSHelloWorld {
 
     /** Logger instance. */
-    private static final Logger logger = Logger.getLogger(FreeTTSHelloWorld.class.getName());
+    private static final Logger logger = System.getLogger(FreeTTSHelloWorld.class.getName());
 
     /**
      * Example of how to list all the known voices.
@@ -55,7 +56,7 @@ public class FreeTTSHelloWorld {
         Voice helloVoice = voiceManager.getVoice(voiceName);
 
         if (helloVoice == null) {
-            logger.info("Cannot find a voice named " + voiceName + ".  Please specify a different voice.");
+            logger.log(Level.INFO, "Cannot find a voice named " + voiceName + ".  Please specify a different voice.");
             System.exit(1);
         }
 

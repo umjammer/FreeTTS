@@ -85,7 +85,7 @@ public class FreeTTSSynthesizerModeDesc extends SynthesizerModeDesc implements E
             } catch (ValidationException ve) {
                 invalidCount++;
                 validationMessage.append(ve.getMessage());
-                validationMessage.append(System.getProperty("line.separator"));
+                validationMessage.append(System.lineSeparator());
             }
         }
         if (invalidCount == voices.length) {
@@ -97,7 +97,7 @@ public class FreeTTSSynthesizerModeDesc extends SynthesizerModeDesc implements E
      * Constructs a FreeTTSSynthesizer with the properties of this mode
      * descriptor.
      *
-     * @return a synthesizer that mathes the mode
+     * @return a synthesizer that matches the mode
      * @throws IllegalArgumentException if the properties of this
      *                                  descriptor do not match any known engine or mode
      * @throws EngineException          if the engine could not be created

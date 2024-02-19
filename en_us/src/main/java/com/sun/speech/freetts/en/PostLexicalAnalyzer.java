@@ -57,7 +57,7 @@ public class PostLexicalAnalyzer implements UtteranceProcessor {
      *
      * @param utterance the utterance to fix
      */
-    private void fixApostrophe(Utterance utterance) {
+    private static void fixApostrophe(Utterance utterance) {
         Voice voice = utterance.getVoice();
         for (Item item = utterance.getRelation(Relation.SEGMENT).getHead();
              item != null;
@@ -82,7 +82,6 @@ public class PostLexicalAnalyzer implements UtteranceProcessor {
         }
     }
 
-
     /**
      * Prepends a schwa to the given item
      *
@@ -94,7 +93,6 @@ public class PostLexicalAnalyzer implements UtteranceProcessor {
         item.getItemAs(Relation.SYLLABLE_STRUCTURE).prependItem(schwa);
     }
 
-
     /**
      * Changes the pronunciation of "the" from 'd ax'  to 'd iy' if
      * the following word starts with a vowel. "The every" is a good
@@ -102,7 +100,7 @@ public class PostLexicalAnalyzer implements UtteranceProcessor {
      *
      * @param utterance the utterance to process
      */
-    private void fixTheIy(Utterance utterance) {
+    private static void fixTheIy(Utterance utterance) {
         Voice voice = utterance.getVoice();
         for (Item item = utterance.getRelation(Relation.SEGMENT).getHead();
              item != null; item = item.getNext()) {

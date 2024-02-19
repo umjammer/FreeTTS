@@ -188,8 +188,7 @@ public abstract class BaseEngineProperties implements EngineProperties, SpeechEv
      */
     @Override
     public void dispatchSpeechEvent(SpeechEvent event) {
-        if (event instanceof SpeechEventWrapper) {
-            SpeechEventWrapper se = (SpeechEventWrapper) event;
+        if (event instanceof SpeechEventWrapper se) {
             PropertyChangeEvent pe = (PropertyChangeEvent) (se.getEventObject());
             firePropertyChangeEvent(pe);
         } else {

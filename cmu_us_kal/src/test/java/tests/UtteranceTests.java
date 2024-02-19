@@ -88,7 +88,6 @@ logger.log(Level.INFO, "voices: " + Arrays.toString(VoiceManager.getInstance().g
 
         Relation words = utterance.createRelation("Words");
 
-
         for (Item item = tokens.getHead();
              item != null; item = item.getNext()) {
             if (item.getFeatures().getString("name").equals("2001")) {
@@ -121,7 +120,7 @@ logger.log(Level.INFO, "voices: " + Arrays.toString(VoiceManager.getInstance().g
      *
      * @param u the utterance
      */
-    private void wordSylSeg(Utterance u) {
+    private static void wordSylSeg(Utterance u) {
         Relation syl = u.createRelation("Syllable");
         Relation sylStructure = u.createRelation("SylStructure");
         Relation seg = u.createRelation("Segment");
@@ -144,7 +143,7 @@ logger.log(Level.INFO, "voices: " + Arrays.toString(VoiceManager.getInstance().g
      * @param word the word
      * @return list of single character strings
      */
-    private List<String> lookup(String word) {
+    private static List<String> lookup(String word) {
         List<String> l = new ArrayList<>();
 
         for (int i = 0; i < word.length(); i++) {
@@ -254,7 +253,6 @@ logger.log(Level.INFO, "voices: " + Arrays.toString(VoiceManager.getInstance().g
         utterance.remove("one");
         assertFalse(utterance.isPresent("one"), "removed  feature found");
     }
-
 
     /**
      * Tests the detailed relations capabilities
@@ -369,4 +367,4 @@ class TestUtteranceProcessor implements UtteranceProcessor {
     }
 }
 
-  
+

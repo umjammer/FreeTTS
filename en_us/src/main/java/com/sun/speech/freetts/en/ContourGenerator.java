@@ -208,7 +208,7 @@ public class ContourGenerator implements UtteranceProcessor {
      * @param syllable the syllable of interest
      * @return the time point mid way in vowel in this syllable
      */
-    private float vowelMid(Item syllable) {
+    private static float vowelMid(Item syllable) {
         Voice voice = syllable.getUtterance().getVoice();
         Item firstSeg = syllable.getItemAs(Relation.SYLLABLE_STRUCTURE).getDaughter();
         Item segment;
@@ -241,7 +241,7 @@ public class ContourGenerator implements UtteranceProcessor {
      * @param pos    the time
      * @param f0     the frequency
      */
-    private void addTargetPoint(Relation target, float pos, float f0) {
+    private static void addTargetPoint(Relation target, float pos, float f0) {
         Item item = target.appendItem();
         item.getFeatures().setFloat("pos", pos);
         if (f0 > 500.0) {
@@ -260,7 +260,7 @@ public class ContourGenerator implements UtteranceProcessor {
      * @return <code>true</code> if this syllable is following a
      * break; otherwise <code>false</code>.
      */
-    private boolean isPostBreak(Item syllable) {
+    private static boolean isPostBreak(Item syllable) {
         return ((syllable.getPrevious() == null) || "pau".equals(postBreakPath.findFeature(syllable)));
     }
 
@@ -271,7 +271,7 @@ public class ContourGenerator implements UtteranceProcessor {
      * @return <code>true</code> if this syllable is before a
      * break; otherwise <code>false</code>.
      */
-    private boolean isPreBreak(Item syllable) {
+    private static boolean isPreBreak(Item syllable) {
         return ((syllable.getNext() == null) || "pau".equals(preBreakPath.findFeature(syllable)));
     }
 
@@ -291,7 +291,7 @@ public class ContourGenerator implements UtteranceProcessor {
      * @param list resulting F0ModelTerm is added to this list
      * @param line the string to parse
      */
-    protected void parseAndAdd(List<F0ModelTerm> list, String line) {
+    protected static void parseAndAdd(List<F0ModelTerm> list, String line) {
         try {
             StringTokenizer tokenizer = new StringTokenizer(line, " ");
             String feature = tokenizer.nextToken();

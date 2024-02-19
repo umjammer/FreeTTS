@@ -9,9 +9,10 @@
 package demo.jsapi.emacspeak;
 
 import java.io.File;
+import java.lang.System.Logger.Level;
 import java.net.Socket;
 import java.util.Locale;
-import java.util.logging.Logger;
+import java.lang.System.Logger;
 import javax.speech.Central;
 import javax.speech.synthesis.Synthesizer;
 import javax.speech.synthesis.SynthesizerModeDesc;
@@ -26,7 +27,7 @@ import demo.util.TTSServer;
 public class EmacspeakServer extends TTSServer {
 
     /** Logger instance. */
-    private static final Logger logger = Logger.getLogger(EmacspeakServer.class.getName());
+    private static final Logger logger = System.getLogger(EmacspeakServer.class.getName());
 
     // synthesizer related variables
     private Synthesizer synthesizer;
@@ -54,7 +55,7 @@ public class EmacspeakServer extends TTSServer {
             synthesizer = Central.createSynthesizer(modeDesc);
 
             if (synthesizer == null) {
-                logger.info(noSynthesizerMessage());
+                logger.log(Level.INFO, noSynthesizerMessage());
                 System.exit(1);
             }
 
@@ -76,10 +77,13 @@ public class EmacspeakServer extends TTSServer {
      * @return a no synthesizer message
      */
     static private String noSynthesizerMessage() {
-        String message = "No synthesizer created.  This may be the result of any\n" +
-                        "number of problems.  It's typically due to a missing\n" +
-                        "\"speech.properties\" file that should be at either of\n" +
-                        "these locations: \n\n";
+        String message = """
+                No synthesizer created.  This may be the result of any
+                number of problems.  It's typically due to a missing
+                "speech.properties" file that should be at either of
+                these locations:\s
+
+                """;
         message += "user.home    : " + System.getProperty("user.home") + "\n";
         message += "java.home/lib: " + System.getProperty("java.home") +
                 File.separator + "lib\n\n" +
@@ -102,7 +106,7 @@ public class EmacspeakServer extends TTSServer {
             JSAPIEmacspeakHandler handler = new JSAPIEmacspeakHandler(socket, synthesizer);
             (new Thread(handler)).start();
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.log(Level.ERROR, e.getMessage(), e);
         }
     }
 

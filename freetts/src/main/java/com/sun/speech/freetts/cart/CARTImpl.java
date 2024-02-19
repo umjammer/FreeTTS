@@ -20,8 +20,8 @@ import java.io.PrintWriter;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.util.StringTokenizer;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.lang.System.Logger.Level;
+import java.lang.System.Logger;
 import java.util.regex.Pattern;
 
 import com.sun.speech.freetts.Item;
@@ -86,7 +86,7 @@ import com.sun.speech.freetts.util.Utilities;
 public class CARTImpl implements CART {
 
     /** Logger instance. */
-    private static final Logger LOGGER = Logger.getLogger(CARTImpl.class.getName());
+    private static final Logger logger = System.getLogger(CARTImpl.class.getName());
 
     /**
      * Entry in file represents the total number of nodes in the
@@ -208,8 +208,7 @@ public class CARTImpl implements CART {
             out.println("\tnode" + Math.abs(n.hashCode()) + " [ label=\""
                     + n + "\", color=" + dumpDotNodeColor(n)
                     + ", shape=" + dumpDotNodeShape(n) + " ]\n");
-            if (n instanceof DecisionNode) {
-                DecisionNode dn = (DecisionNode) n;
+            if (n instanceof DecisionNode dn) {
                 if (dn.qtrue < cart.length && cart[dn.qtrue] != null) {
                     out.write("\tnode" + Math.abs(n.hashCode()) + " -> node"
                             + Math.abs(cart[dn.qtrue].hashCode()) + " [ label="
@@ -227,14 +226,14 @@ public class CARTImpl implements CART {
         out.close();
     }
 
-    protected String dumpDotNodeColor(Node n) {
+    protected static String dumpDotNodeColor(Node n) {
         if (n instanceof LeafNode) {
             return "green";
         }
         return "red";
     }
 
-    protected String dumpDotNodeShape(Node n) {
+    protected static String dumpDotNodeShape(Node n) {
         return "box";
     }
 
@@ -333,7 +332,7 @@ public class CARTImpl implements CART {
      * @param string of the form "type(value)"; for example, "Float(2.3)"
      * @return the value
      */
-    protected Object parseValue(String string) {
+    protected static Object parseValue(String string) {
         int openParen = string.indexOf("(");
         String type = string.substring(0, openParen);
         String value = string.substring(openParen + 1, string.length() - 1);
@@ -375,8 +374,8 @@ public class CARTImpl implements CART {
             decision = (DecisionNode) cart[nodeIndex];
             nodeIndex = decision.getNextNode(item);
         }
-        if (LOGGER.isLoggable(Level.FINER)) {
-            LOGGER.finer("LEAF " + cart[nodeIndex].getValue());
+        if (logger.isLoggable(Level.TRACE)) {
+            logger.log(Level.TRACE, "LEAF " + cart[nodeIndex].getValue());
         }
         return cart[nodeIndex].getValue();
     }
@@ -419,7 +418,7 @@ public class CARTImpl implements CART {
             } else if (value instanceof Integer) {
                 return "Integer(" + value + ")";
             } else {
-                return value.getClass().toString() + "(" + value + ")";
+                return value.getClass() + "(" + value + ")";
             }
         }
 
@@ -608,8 +607,8 @@ public class CARTImpl implements CART {
                 ret = qfalse;
             }
 
-            if (LOGGER.isLoggable(Level.FINER)) {
-                LOGGER.finer(trace(val, yes, ret));
+            if (logger.isLoggable(Level.TRACE)) {
+                logger.log(Level.TRACE, trace(val, yes, ret));
             }
 
             return ret;

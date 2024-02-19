@@ -63,7 +63,7 @@ public class ParametersToMbrolaConverter implements UtteranceProcessor {
                 targetStringBuffer.append(f0);
                 target = target.getNext();
             }
-            // logger.finer(name + " " + dur + targetStringBuffer);
+            // logger.log(Level.TRACE, name + " " + dur + targetStringBuffer);
             segment.getFeatures().setInt("mbr_dur", dur);
             segment.getFeatures().setString("mbr_targets", targetStringBuffer.toString().trim());
             prevEnd = end;

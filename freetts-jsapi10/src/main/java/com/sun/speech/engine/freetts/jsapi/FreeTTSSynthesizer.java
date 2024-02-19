@@ -10,9 +10,10 @@ package com.sun.speech.engine.freetts.jsapi;
 
 import java.beans.PropertyVetoException;
 import java.io.IOException;
+import java.lang.System.Logger.Level;
 import java.util.Enumeration;
 import java.util.Vector;
-import java.util.logging.Logger;
+import java.lang.System.Logger;
 import javax.speech.EngineException;
 import javax.speech.EngineStateError;
 import javax.speech.synthesis.SynthesizerModeDesc;
@@ -25,6 +26,8 @@ import com.sun.speech.engine.synthesis.BaseVoice;
 import com.sun.speech.freetts.OutputQueue;
 import com.sun.speech.freetts.audio.AudioPlayer;
 
+import static java.lang.System.getLogger;
+
 
 /**
  * Provides  partial support for a JSAPI 1.0 synthesizer for the
@@ -33,7 +36,7 @@ import com.sun.speech.freetts.audio.AudioPlayer;
 public class FreeTTSSynthesizer extends BaseSynthesizer {
 
     /** Logger instance. */
-    private static final Logger logger = Logger.getLogger(FreeTTSSynthesizer.class.getName());
+    private static final Logger logger = getLogger(FreeTTSSynthesizer.class.getName());
 
     /**
      * Reference to output thread.
@@ -367,7 +370,7 @@ public class FreeTTSSynthesizer extends BaseSynthesizer {
                                 }
                             }
                         } catch (EngineException ee) {
-                            logger.info("Engine Exception: " + ee.getMessage());
+                            logger.log(Level.INFO, "Engine Exception: " + ee.getMessage());
                         }
                     }
                 }
@@ -528,7 +531,7 @@ public class FreeTTSSynthesizer extends BaseSynthesizer {
          */
         public boolean isQueueEmpty() {
             synchronized (queue) {
-                return queue.size() == 0;
+                return queue.isEmpty();
             }
         }
 
@@ -541,7 +544,7 @@ public class FreeTTSSynthesizer extends BaseSynthesizer {
         public void appendQueue(FreeTTSSynthesizerQueueItem item) {
             boolean topOfQueueChanged;
             synchronized (queue) {
-                topOfQueueChanged = (queue.size() == 0);
+                topOfQueueChanged = (queue.isEmpty());
                 queue.addElement(item);
                 queue.notifyAll();
             }
@@ -559,7 +562,7 @@ public class FreeTTSSynthesizer extends BaseSynthesizer {
 
             synchronized (queue) {
                 audio.cancel();
-                if (queue.size() != 0) {
+                if (!queue.isEmpty()) {
                     item = queue.remove(0);
                     if (item != null) {
                         // item.postSpeakableCancelled();
@@ -634,11 +637,11 @@ public class FreeTTSSynthesizer extends BaseSynthesizer {
         protected FreeTTSSynthesizerQueueItem getQueueItem() {
             FreeTTSSynthesizerQueueItem item;
             synchronized (queue) {
-                while (queue.size() == 0 && !done) {
+                while (queue.isEmpty() && !done) {
                     try {
                         queue.wait();
                     } catch (InterruptedException e) {
-                        logger.severe("Unexpected interrupt");
+                        logger.log(Level.ERROR, "Unexpected interrupt");
                         // Ignore interrupts and we'll loop around
                     }
                 }
@@ -675,7 +678,7 @@ public class FreeTTSSynthesizer extends BaseSynthesizer {
          * events.
          */
         private void queueDrained() {
-            if (queue.size() == 0) {
+            if (queue.isEmpty()) {
                 long[] states = setEngineState(QUEUE_NOT_EMPTY, QUEUE_EMPTY);
                 postQueueEmptied(states[0], states[1]);
             } else {

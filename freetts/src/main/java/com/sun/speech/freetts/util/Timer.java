@@ -60,7 +60,6 @@ public class Timer {
         startTime = System.currentTimeMillis();
     }
 
-
     /**
      * Returns the current time.
      *
@@ -108,7 +107,7 @@ public class Timer {
      * @param time the time (in milliseconds) to be formatted
      * @return a string representation of the time.
      */
-    private String fmtTime(long time) {
+    private static String fmtTime(long time) {
         return fmtTime(time / 1000.0);
     }
 
@@ -118,7 +117,7 @@ public class Timer {
      * @param time the time (in seconds) to be formatted
      * @return a string representation of the time.
      */
-    private String fmtTime(double time) {
+    private static String fmtTime(double time) {
         return Utilities.pad(timeFormatter.format(time) + "s", 10);
     }
 

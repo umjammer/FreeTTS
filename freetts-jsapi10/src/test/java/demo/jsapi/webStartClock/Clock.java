@@ -12,6 +12,8 @@ import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ItemEvent;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -26,11 +28,15 @@ import javax.swing.SwingUtilities;
 
 import demo.util.TimeUtils;
 
+import static java.lang.System.getLogger;
+
 
 /**
  * A talking clock powered by FreeTTS.
  */
 public abstract class Clock extends JFrame {
+
+    private static final Logger logger = getLogger(Clock.class.getName());
 
     private JLabel timeLabel;
     private JCheckBox announceCheckBox;
@@ -49,7 +55,6 @@ public abstract class Clock extends JFrame {
     private static char speakMnemonic = 'S';
 
     private boolean debug = true;
-
 
     /**
      * Constructs a default WebStartClock.
@@ -84,7 +89,6 @@ public abstract class Clock extends JFrame {
         createCalendar();
     }
 
-
     /**
      * Start running the clock.
      */
@@ -92,7 +96,6 @@ public abstract class Clock extends JFrame {
         ClockThread clock = new ClockThread();
         clock.start();
     }
-
 
     /**
      * Creates the JPanel that allows you to specify the time announcing
@@ -136,7 +139,6 @@ public abstract class Clock extends JFrame {
         return announcePanel;
     }
 
-
     /**
      * Creates the synthesizer, called by the constructor.
      * Implement this method to create the appropriate synthesizer.
@@ -144,7 +146,6 @@ public abstract class Clock extends JFrame {
      * method, also to be implemented in the subclass.
      */
     public abstract void createSynthesizer();
-
 
     /**
      * Asks the synthesizer to speak the time given in full text.
@@ -154,7 +155,6 @@ public abstract class Clock extends JFrame {
      * @param time the time given in full text
      */
     protected abstract void speak(String time);
-
 
     /**
      * Create the GregorianCalendar that keeps track of the time.
@@ -168,7 +168,6 @@ public abstract class Clock extends JFrame {
         dateFormat.setCalendar(calendar);
     }
 
-
     /**
      * Sets the time label.
      *
@@ -178,7 +177,6 @@ public abstract class Clock extends JFrame {
         SwingUtilities.invokeLater(() -> timeLabel.setText(time));
     }
 
-
     /**
      * Updates the calendar and the display with the current time.
      */
@@ -187,7 +185,6 @@ public abstract class Clock extends JFrame {
         calendar.setTime(currentTime);
         setTimeLabel(dateFormat.format(currentTime));
     }
-
 
     /**
      * Speaks the current time.
@@ -208,7 +205,6 @@ public abstract class Clock extends JFrame {
         speak(theTime);
     }
 
-
     /**
      * Return true if we enough time has elapsed since the last announce
      * time.
@@ -218,7 +214,6 @@ public abstract class Clock extends JFrame {
     private boolean isTimeToSpeak() {
         return ((lastSpeakTime + speakInterval) < calendar.getTimeInMillis());
     }
-
 
     /**
      * Print method for debug purposes.
@@ -230,7 +225,6 @@ public abstract class Clock extends JFrame {
             System.out.println(line);
         }
     }
-
 
     /**
      * A thread for the clock.
@@ -248,7 +242,7 @@ public abstract class Clock extends JFrame {
                 try {
                     Thread.sleep(sleepTime);
                 } catch (InterruptedException ie) {
-                    ie.printStackTrace();
+                    logger.log(Level.ERROR, ie.getMessage(), ie);
                 }
             }
         }

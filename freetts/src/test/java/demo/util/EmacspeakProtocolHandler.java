@@ -13,10 +13,14 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
 
 import com.sun.speech.freetts.util.Utilities;
+
+import static java.lang.System.getLogger;
 
 
 /**
@@ -28,6 +32,8 @@ import com.sun.speech.freetts.util.Utilities;
  * for more information.
  */
 public abstract class EmacspeakProtocolHandler implements Runnable {
+
+    private static final Logger logger = getLogger(EmacspeakProtocolHandler.class.getName());
 
     // network related variables
     private Socket socket;
@@ -76,12 +82,11 @@ public abstract class EmacspeakProtocolHandler implements Runnable {
                 socket.setKeepAlive(true);
                 // socket.setSoTimeout(5000);
             } catch (IOException ioe) {
-                ioe.printStackTrace();
+                logger.log(Level.ERROR, ioe.getMessage(), ioe);
                 throw new Error();
             }
         }
     }
-
 
     /**
      * Returns the socket used.
@@ -92,7 +97,6 @@ public abstract class EmacspeakProtocolHandler implements Runnable {
         return socket;
     }
 
-
     /**
      * Set to debug mode, which will print out debug messages.
      *
@@ -101,7 +105,6 @@ public abstract class EmacspeakProtocolHandler implements Runnable {
     public void setDebug(boolean debug) {
         this.debug = debug;
     }
-
 
     /**
      * Returns true if the given input string starts with the given
@@ -115,7 +118,6 @@ public abstract class EmacspeakProtocolHandler implements Runnable {
     private static boolean matches(String start, String end, String input) {
         return (input.startsWith(start) && input.endsWith(end));
     }
-
 
     /**
      * Returns the type of the given command.
@@ -141,7 +143,6 @@ public abstract class EmacspeakProtocolHandler implements Runnable {
         return type;
     }
 
-
     /**
      * Returns the text of the given input that is within curly
      * brackets.  If there are no curly brackets (allowed in the
@@ -153,7 +154,7 @@ public abstract class EmacspeakProtocolHandler implements Runnable {
      */
     public static String textInCurlyBrackets(String input) {
         String result = "";
-        if (input.length() > 0) {
+        if (!input.isEmpty()) {
             int first = input.indexOf('{');
             if (first == -1) {
                 first = input.indexOf(' ');
@@ -169,7 +170,6 @@ public abstract class EmacspeakProtocolHandler implements Runnable {
         }
         return result.trim();
     }
-
 
     /**
      * Strips DECTalk commands from the input text.  The DECTalk
@@ -203,7 +203,6 @@ public abstract class EmacspeakProtocolHandler implements Runnable {
         return content.trim();
     }
 
-
     /**
      * Speaks the given input text.
      *
@@ -211,12 +210,10 @@ public abstract class EmacspeakProtocolHandler implements Runnable {
      */
     public abstract void speak(String input);
 
-
     /**
      * Removes all the queued text.
      */
     public abstract void cancelAll();
-
 
     /**
      * Sets the speaking rate.
@@ -224,7 +221,6 @@ public abstract class EmacspeakProtocolHandler implements Runnable {
      * @param wpm the new speaking rate (words per minute)
      */
     public abstract void setRate(float wpm);
-
 
     /**
      * Implements the run() method of Runnable
@@ -259,7 +255,7 @@ public abstract class EmacspeakProtocolHandler implements Runnable {
                         if (stripDECTalk) {
                             content = stripDECTalkCommands(content);
                         }
-                        if (content.length() > 0) {
+                        if (!content.isEmpty()) {
                             speak(content);
                         }
                         // detect if emacspeak is trying to quit
@@ -270,12 +266,11 @@ public abstract class EmacspeakProtocolHandler implements Runnable {
                 }
             }
         } catch (IOException ioe) {
-            ioe.printStackTrace();
+            logger.log(Level.ERROR, ioe.getMessage(), ioe);
         } finally {
             debugPrintln("EmacspeakProtocolHandler: thread terminated");
         }
     }
-
 
     /**
      * Returns true if the Socket is still alive.
@@ -287,7 +282,6 @@ public abstract class EmacspeakProtocolHandler implements Runnable {
                 !socket.isClosed() && socket.isConnected() &&
                 !socket.isInputShutdown() && !socket.isOutputShutdown());
     }
-
 
     /**
      * Read a line of text. A line is considered to be terminated
@@ -343,7 +337,6 @@ public abstract class EmacspeakProtocolHandler implements Runnable {
             }
         }
     }
-
 
     /**
      * Prints the given message if the <code>debug</code> System property

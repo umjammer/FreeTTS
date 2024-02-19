@@ -39,7 +39,6 @@ public class TokenizerImpl implements Tokenizer {
     /** A string containing the default post-punctuation characters. */
     public static final String DEFAULT_POSTPUNCTUATION_SYMBOLS = "\"'`.,:;!?(){}[]";
 
-
     /** The line number. */
     private int lineNumber;
 
@@ -60,7 +59,6 @@ public class TokenizerImpl implements Tokenizer {
      * this is called "file_pos" in flite
      */
     private int currentPosition;
-
 
     /** The delimiting symbols of this tokenizer. */
     private String whitespaceSymbols = DEFAULT_WHITESPACE_SYMBOLS;

@@ -9,8 +9,9 @@
 package com.sun.speech.engine.synthesis;
 
 import java.io.IOException;
+import java.lang.System.Logger.Level;
 import java.net.URL;
-import java.util.logging.Logger;
+import java.lang.System.Logger;
 import javax.speech.SpeechEvent;
 import javax.speech.synthesis.JSMLException;
 import javax.speech.synthesis.Speakable;
@@ -30,7 +31,7 @@ import org.w3c.dom.Document;
 public class BaseSynthesizerQueueItem extends SynthesizerQueueItem implements SpeechEventDispatcher {
 
     /** Logger instance. */
-    private static final Logger logger = Logger.getLogger(BaseSynthesizerQueueItem.class.getName());
+    private static final Logger logger = System.getLogger(BaseSynthesizerQueueItem.class.getName());
 
     private volatile boolean done = false;
     private volatile boolean cancelled = false;
@@ -170,7 +171,7 @@ public class BaseSynthesizerQueueItem extends SynthesizerQueueItem implements Sp
             try {
                 wait();
             } catch (InterruptedException ie) {
-                logger.info("FreeTTSSynthesizerQueueItem.Wait interrupted");
+                logger.log(Level.INFO, "FreeTTSSynthesizerQueueItem.Wait interrupted");
                 return false;
             }
         }

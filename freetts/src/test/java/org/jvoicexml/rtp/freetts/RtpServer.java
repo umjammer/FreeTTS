@@ -67,9 +67,7 @@ public class RtpServer {
      * Constructs a new object.
      *
      * @param localPort local port number.
-     * @throws IOException
      * @throws SessionManagerException
-     * @throws MediaException
      */
     public RtpServer(int localPort) throws IOException,
             SessionManagerException, MediaException {

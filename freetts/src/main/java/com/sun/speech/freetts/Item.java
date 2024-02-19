@@ -12,8 +12,10 @@
 package com.sun.speech.freetts;
 
 import java.io.PrintWriter;
+import java.lang.System.Logger.Level;
+import java.util.Objects;
 import java.util.StringTokenizer;
-import java.util.logging.Logger;
+import java.lang.System.Logger;
 
 
 /**
@@ -29,7 +31,7 @@ import java.util.logging.Logger;
 public class Item implements Dumpable {
 
     /** Logger instance. */
-    private static final Logger logger = Logger.getLogger(Item.class.getName());
+    private static final Logger logger = System.getLogger(Item.class.getName());
 
     private Relation ownerRelation;
     private ItemContents contents;
@@ -49,11 +51,7 @@ public class Item implements Dumpable {
      */
     public Item(Relation relation, ItemContents sharedContents) {
         ownerRelation = relation;
-        if (sharedContents != null) {
-            contents = sharedContents;
-        } else {
-            contents = new ItemContents();
-        }
+        contents = Objects.requireNonNullElseGet(sharedContents, ItemContents::new);
         parent = null;
         daughter = null;
         next = null;
@@ -223,7 +221,7 @@ public class Item implements Dumpable {
      * Dumps out this item to the given output stream.
      *
      * @param out where to send the output
-     * @param pad the leading whitspace
+     * @param pad the leading whitespace
      */
     @Override
     public void dump(PrintWriter out, int pad, String title) {
@@ -289,7 +287,7 @@ public class Item implements Dumpable {
                 try {
                     results = fp.process(item);
                 } catch (ProcessException pe) {
-                    logger.info("Trouble while processing " + fp);
+                    logger.log(Level.INFO, "Trouble while processing " + fp);
                 }
             } else {
                 results = item.getFeatures().getObject(feature);
@@ -297,7 +295,7 @@ public class Item implements Dumpable {
         }
         results = (results == null) ? "0" : results;
 
-        logger.finer("FI " + pathAndFeature + " are " + results);
+        logger.log(Level.TRACE, "FI " + pathAndFeature + " are " + results);
 
         return results;
     }

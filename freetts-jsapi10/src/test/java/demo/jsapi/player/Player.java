@@ -14,6 +14,8 @@ import java.awt.Font;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import javax.speech.synthesis.SynthesizerModeDesc;
 import javax.speech.synthesis.Voice;
 import javax.swing.JFileChooser;
@@ -27,8 +29,12 @@ import javax.swing.LookAndFeel;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
+import static java.lang.System.getLogger;
+
 
 public class Player extends JFrame {
+
+    private static final Logger logger = getLogger(Player.class.getName());
 
     private PlayerModel playerModel;
     private PlayerPanel playerPanel;
@@ -157,7 +163,7 @@ public class Player extends JFrame {
             SwingUtilities.updateComponentTreeUI(this);
             repaint();
         } catch (Exception ex) {
-            ex.printStackTrace();
+            logger.log(Level.ERROR, ex.getMessage(), ex);
         }
     }
 
@@ -181,7 +187,6 @@ public class Player extends JFrame {
             }
         }
     }
-
 
     /**
      * The main() method of the Player.
@@ -365,7 +370,7 @@ class PlayerMenuBar extends JMenuBar {
         fileSpeakURLMenuItem.addActionListener(e -> {
             String url = JOptionPane.showInputDialog(getParent(), "Enter URL:", "Speak URL",
                     JOptionPane.QUESTION_MESSAGE);
-            if (url != null && url.length() > 0) {
+            if (url != null && !url.isEmpty()) {
                 playPlayable(Playable.createURLPlayable(url));
             }
         });

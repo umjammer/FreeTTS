@@ -69,7 +69,6 @@ public class LPCResult {
         residualToFloatMap[128] = WaveUtils.ulawToShort((short) 255);
     }
 
-
     public LPCResult() {
         residualFold = 1;
     }
@@ -343,7 +342,7 @@ public class LPCResult {
     }
 
     /**
-     * Copies the residual puse in the given unit to the array of residuals,
+     * Copies the residual pulse in the given unit to the array of residuals,
      * starting at the given index, up until targetSize chars.
      *
      * @param source         the unit that holds the information source
@@ -451,7 +450,6 @@ public class LPCResult {
                 int sample = (int) (ob + (pp * POST_EMPHASIS));
                 samples[s++] = hibyte(sample);
                 samples[s++] = lobyte(sample);
-
 
                 outBuffer.value = pp = ob;
                 outBuffer = outBuffer.next;

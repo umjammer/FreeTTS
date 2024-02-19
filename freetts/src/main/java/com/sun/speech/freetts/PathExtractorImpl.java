@@ -16,8 +16,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.lang.System.Logger.Level;
+import java.lang.System.Logger;
 
 import com.sun.speech.freetts.util.Utilities;
 
@@ -40,7 +40,7 @@ import com.sun.speech.freetts.util.Utilities;
 public class PathExtractorImpl implements PathExtractor {
 
     /** Logger instance. */
-    private static final Logger LOGGER = Logger.getLogger(PathExtractorImpl.class.getName());
+    private static final Logger logger = System.getLogger(PathExtractorImpl.class.getName());
 
     /**
      * If this system property is set to true, paths will
@@ -164,21 +164,20 @@ public class PathExtractorImpl implements PathExtractor {
         Item pitem = findItem(item);
         Object results = null;
         if (pitem != null) {
-            if (LOGGER.isLoggable(Level.FINER)) {
-                LOGGER.finer("findFeature: Item [" + pitem + "], feature '" + feature + "'");
+            if (logger.isLoggable(Level.TRACE)) {
+                logger.log(Level.TRACE, "findFeature: Item [" + pitem + "], feature '" + feature + "'");
             }
 
             FeatureProcessor fp = pitem.getOwnerRelation().getUtterance().getVoice().getFeatureProcessor(feature);
 
             if (fp != null) {
-                if (LOGGER.isLoggable(Level.FINER)) {
-                    LOGGER.finer("findFeature: There is a feature processor for '" + feature + "'");
+                if (logger.isLoggable(Level.TRACE)) {
+                    logger.log(Level.TRACE, "findFeature: There is a feature processor for '" + feature + "'");
                 }
                 try {
                     results = fp.process(pitem);
                 } catch (ProcessException pe) {
-                    LOGGER.severe("trouble while processing " + fp);
-                    throw new Error(pe);
+                    throw new IllegalStateException("trouble while processing", pe);
                 }
             } else {
                 results = pitem.getFeatures().getObject(feature);
@@ -186,8 +185,8 @@ public class PathExtractorImpl implements PathExtractor {
         }
 
         results = (results == null) ? "0" : results;
-        if (LOGGER.isLoggable(Level.FINER)) {
-            LOGGER.finer("findFeature: ...results = '" + results + "'");
+        if (logger.isLoggable(Level.TRACE)) {
+            logger.log(Level.TRACE, "findFeature: ...results = '" + results + "'");
         }
         return results;
     }
@@ -199,7 +198,7 @@ public class PathExtractorImpl implements PathExtractor {
      * @return the compiled form which is in the form
      * of an array path traversal enums and associated strings
      */
-    private Object[] compile(String path) {
+    private static Object[] compile(String path) {
         List<Object> list = new ArrayList<>();
 
         if (path == null) {

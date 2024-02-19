@@ -8,11 +8,12 @@
 
 package com.sun.speech.engine.freetts.jsapi;
 
+import java.lang.System.Logger.Level;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Vector;
-import java.util.logging.Logger;
+import java.lang.System.Logger;
 import javax.speech.EngineCentral;
 import javax.speech.EngineList;
 import javax.speech.EngineModeDesc;
@@ -33,7 +34,7 @@ import com.sun.speech.freetts.Voice;
 public class FreeTTSEngineCentral implements EngineCentral {
 
     /** Logger instance. */
-    private static final Logger logger = Logger.getLogger(FreeTTSEngineCentral.class.getName());
+    private static final Logger logger = System.getLogger(FreeTTSEngineCentral.class.getName());
 
     private static final String ENGINE_NAME = "FreeTTS Synthesizer";
 
@@ -122,12 +123,12 @@ public class FreeTTSEngineCentral implements EngineCentral {
                     desc.validate();
                     el.add(desc);
                 } catch (ValidationException ve) {
-                    logger.info(ve.getMessage());
+                    logger.log(Level.INFO, ve.getMessage());
                 }
             }
         }
 
-        if (el.size() == 0) {
+        if (el.isEmpty()) {
             el = null;
         }
         return el;
@@ -141,7 +142,7 @@ public class FreeTTSEngineCentral implements EngineCentral {
      * @param o      the object to look for using vector.get(i).equals(o)
      * @return the item if it exists in the vector, else null
      */
-    private Object getItem(List<?> vector, Object o) {
+    private static Object getItem(List<?> vector, Object o) {
         for (Object value : vector) {
             if (value.equals(o)) {
                 return value;

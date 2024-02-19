@@ -12,9 +12,13 @@
 package org.jvoicexml.rtp.freetts;
 
 import java.io.IOException;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import javax.media.Time;
 import javax.media.protocol.PullDataSource;
 import javax.media.protocol.PullSourceStream;
+
+import static java.lang.System.getLogger;
 
 
 /**
@@ -23,6 +27,8 @@ import javax.media.protocol.PullSourceStream;
  * @author Dirk Schnelle
  */
 public final class FreeTTSDataSource extends PullDataSource {
+
+    private static final Logger logger = getLogger(FreeTTSDataSource.class.getName());
 
     /** The one and only source stream. */
     private FreeTTSPullSourceStream stream;
@@ -43,7 +49,7 @@ public final class FreeTTSDataSource extends PullDataSource {
         try {
             Thread.sleep(2000);
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            logger.log(Level.ERROR, e.getMessage(), e);
         }
     }
 

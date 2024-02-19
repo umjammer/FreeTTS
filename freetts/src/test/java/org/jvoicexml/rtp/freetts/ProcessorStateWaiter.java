@@ -40,7 +40,7 @@ import javax.media.Processor;
 final class ProcessorStateWaiter implements ControllerListener {
 
     /** The locking object. */
-    private final Integer stateLock = 0;
+    private final Object stateLock = new Object();
 
     /** <code>true</code> if the processor has been closed. */
     private boolean failed;

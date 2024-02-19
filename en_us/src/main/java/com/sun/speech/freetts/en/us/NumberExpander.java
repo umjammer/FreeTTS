@@ -249,7 +249,6 @@ public class NumberExpander {
         }
     }
 
-
     /**
      * Returns the number string list of the given string starting at
      * the given index. E.g., expandNumberAt("1100", 1) gives "one hundred"
@@ -308,17 +307,12 @@ public class NumberExpander {
                 ordinal = findMatchInArray(lastNumber, digit2enty, ord2enty);
             }
 
-            switch (lastNumber) {
-            case "hundred":
-                ordinal = "hundredth";
-                break;
-            case "thousand":
-                ordinal = "thousandth";
-                break;
-            case "billion":
-                ordinal = "billionth";
-                break;
-            }
+            ordinal = switch (lastNumber) {
+                case "hundred" -> "hundredth";
+                case "thousand" -> "thousandth";
+                case "billion" -> "billionth";
+                default -> ordinal;
+            };
 
             // if there was an ordinal, set the last element of the list
             // to that ordinal; otherwise, don't do anything
@@ -410,12 +404,12 @@ public class NumberExpander {
         } else if ((position = numberString.indexOf('.')) != -1) {
             // numbers with '.'
             String beforeDot = numberString.substring(0, position);
-            if (beforeDot.length() > 0) {
+            if (!beforeDot.isEmpty()) {
                 expandReal(beforeDot, wordRelation);
             }
             wordRelation.addWord("point");
             String afterDot = numberString.substring(position + 1);
-            if (afterDot.length() > 0) {
+            if (!afterDot.isEmpty()) {
                 expandDigits(afterDot, wordRelation);
             }
         } else {
@@ -423,7 +417,6 @@ public class NumberExpander {
             expandNumber(numberString, wordRelation);
         }
     }
-
 
     /**
      * Expands the given string of letters as a list of single char symbols.

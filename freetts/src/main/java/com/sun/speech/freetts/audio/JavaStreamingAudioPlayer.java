@@ -8,7 +8,8 @@
 
 package com.sun.speech.freetts.audio;
 
-import java.util.logging.Logger;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.DataLine;
@@ -73,7 +74,7 @@ import com.sun.speech.freetts.util.Utilities;
 public class JavaStreamingAudioPlayer implements AudioPlayer {
 
     /** Logger instance. */
-    private static final Logger logger = Logger.getLogger(JavaStreamingAudioPlayer.class.getName());
+    private static final Logger logger = System.getLogger(JavaStreamingAudioPlayer.class.getName());
 
     private volatile boolean paused;
     private volatile boolean done = false;
@@ -194,17 +195,17 @@ public class JavaStreamingAudioPlayer implements AudioPlayer {
                     try {
                         openLock.wait();
                     } catch (InterruptedException ie) {
-                        ie.printStackTrace();
+                        logger.log(Level.ERROR, ie.getMessage(), ie);
                     }
                     opened = true;
                 }
             } catch (LineUnavailableException lue) {
-                logger.info("LINE UNAVAILABLE: " + "Format is " + currentFormat);
+                logger.log(Level.INFO, "LINE UNAVAILABLE: " + "Format is " + currentFormat);
                 try {
                     Thread.sleep(openFailDelayMs);
                     totalDelayMs += openFailDelayMs;
                 } catch (InterruptedException ie) {
-                    ie.printStackTrace();
+                    logger.log(Level.ERROR, ie.getMessage(), ie);
                 }
             }
         } while (!opened && totalDelayMs < totalOpenFailDelayMs);
@@ -275,7 +276,7 @@ public class JavaStreamingAudioPlayer implements AudioPlayer {
             try {
                 Thread.sleep(cancelDelay);
             } catch (InterruptedException ie) {
-                ie.printStackTrace();
+                logger.log(Level.ERROR, ie.getMessage(), ie);
             }
         }
 
@@ -381,7 +382,7 @@ public class JavaStreamingAudioPlayer implements AudioPlayer {
      * @param line the line to set the volume on
      * @param vol  the volume (range 0 to 1)
      */
-    private void setVolume(SourceDataLine line, float vol) {
+    private static void setVolume(SourceDataLine line, float vol) {
         if (line != null && line.isControlSupported(FloatControl.Type.MASTER_GAIN)) {
             FloatControl volumeControl = (FloatControl) line.getControl(FloatControl.Type.MASTER_GAIN);
             float range = volumeControl.getMaximum() - volumeControl.getMinimum();
@@ -411,7 +412,7 @@ public class JavaStreamingAudioPlayer implements AudioPlayer {
 
     /**
      * Marks the end of a set of data. Audio data for a single
-     * utterance should be groupd between begin/end pairs.
+     * utterance should be grouped between begin/end pairs.
      *
      * @return true if the audio was output properly, false if the
      * output was cancelled or interrupted.
@@ -589,7 +590,7 @@ public class JavaStreamingAudioPlayer implements AudioPlayer {
      */
     private void debugPrint(String msg) {
         if (debug) {
-            logger.fine(this + ": " + msg);
+            logger.log(Level.DEBUG, this + ": " + msg);
         }
     }
 

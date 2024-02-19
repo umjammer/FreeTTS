@@ -5,10 +5,16 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.util.StringTokenizer;
+
+import static java.lang.System.getLogger;
 
 
 public class Track {
+
+    private static final Logger logger = getLogger(Track.class.getName());
 
     public String filename;
     public int numFrames;
@@ -157,7 +163,7 @@ public class Track {
             System.out.println(track.range);
             System.out.println(track.frames.length);
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.log(Level.ERROR, e.getMessage(), e);
         }
     }
 }

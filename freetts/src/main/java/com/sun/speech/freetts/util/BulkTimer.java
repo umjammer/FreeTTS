@@ -69,7 +69,6 @@ public class BulkTimer {
         getTimer(SELF).start();
     }
 
-
     /**
      * Stops the bulk timer.
      */

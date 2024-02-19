@@ -4,10 +4,14 @@ import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.StringTokenizer;
+
+import static java.lang.System.getLogger;
 
 
 /**
@@ -16,12 +20,14 @@ import java.util.StringTokenizer;
  * type (e.g., "ae_afternoon"), and the ArrayList is a list of the
  * actual units themselves (e.g., "ae_afternoon_23").
  * �
- * Assumption: unit indeces are in reverse order.
+ * Assumption: unit indices are in reverse order.
  */
 public class UnitCatalog extends HashMap<String, List<Unit>> {
-    /* Helpers for handling the previous and next units for each
-     * unit being read in.
-     */
+
+    private static final Logger logger = getLogger(UnitCatalog.class.getName());
+
+    // Helpers for handling the previous and next units for each
+    // unit being read in.
     private String currentFilename;
     private Unit previousUnit;
     private int currentIndex;
@@ -150,7 +156,7 @@ public class UnitCatalog extends HashMap<String, List<Unit>> {
             UnitCatalog catalog = new UnitCatalog(args[0]);
             catalog.checkCatalog();
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.log(Level.ERROR, e.getMessage(), e);
         }
     }
 }

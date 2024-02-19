@@ -13,13 +13,15 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 
 import com.sun.speech.freetts.en.us.CMULexicon;
 import com.sun.speech.freetts.lexicon.Lexicon;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import static java.lang.System.getLogger;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -32,6 +34,8 @@ import static org.junit.jupiter.api.Assertions.fail;
  * @version 1.0
  */
 public class LexiconTest {
+
+    private static final Logger logger = getLogger(LexiconTest.class.getName());
 
     BufferedReader reader = null;
     Lexicon lex = null;
@@ -50,7 +54,7 @@ public class LexiconTest {
             reader = new BufferedReader(inputReader);
             assertNotNull(reader, "Data File opened");
         } catch (Exception e) {
-            e.printStackTrace();
+logger.log(Level.ERROR, e.getMessage(), e);
         }
     }
 

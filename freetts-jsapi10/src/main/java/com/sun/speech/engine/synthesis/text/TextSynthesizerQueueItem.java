@@ -99,7 +99,6 @@ public class TextSynthesizerQueueItem extends BaseSynthesizerQueueItem {
             ENGINE_ATTRIBUTES
     };
 
-
     /*
      * Commands to be encoded in the text.
      */

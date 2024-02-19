@@ -9,8 +9,9 @@
 package demo.jsapi.helloWorld;
 
 import java.io.File;
+import java.lang.System.Logger.Level;
 import java.util.Locale;
-import java.util.logging.Logger;
+import java.lang.System.Logger;
 import javax.speech.Central;
 import javax.speech.EngineList;
 import javax.speech.synthesis.Synthesizer;
@@ -25,7 +26,7 @@ import javax.speech.synthesis.Voice;
 public class HelloWorld {
 
     /** Logger instance. */
-    private static final Logger logger = Logger.getLogger(HelloWorld.class.getName());
+    private static final Logger logger = System.getLogger(HelloWorld.class.getName());
 
     /**
      * Returns a "no synthesizer" message, and asks
@@ -35,10 +36,13 @@ public class HelloWorld {
      * @return a no synthesizer message
      */
     static private String noSynthesizerMessage() {
-        String message = "No synthesizer created.  This may be the result of any\n" +
-                        "number of problems.  It's typically due to a missing\n" +
-                        "\"speech.properties\" file that should be at either of\n" +
-                        "these locations: \n\n";
+        String message = """
+                No synthesizer created.  This may be the result of any
+                number of problems.  It's typically due to a missing
+                "speech.properties" file that should be at either of
+                these locations:\s
+
+                """;
         message += "user.home    : " + System.getProperty("user.home") + "\n";
         message += "java.home/lib: " + System.getProperty("java.home") +
                 File.separator + "lib\n\n" +
@@ -133,7 +137,7 @@ public class HelloWorld {
             // set up their speech.properties file.
             //
             if (synthesizer == null) {
-                logger.info(noSynthesizerMessage());
+                logger.log(Level.INFO, noSynthesizerMessage());
                 System.exit(1);
             }
 
@@ -154,7 +158,7 @@ public class HelloWorld {
                 }
             }
             if (voice == null) {
-                logger.info("Synthesizer does not have a voice named " + voiceName + ".");
+                logger.log(Level.INFO, "Synthesizer does not have a voice named " + voiceName + ".");
                 System.exit(1);
             }
             synthesizer.getSynthesizerProperties().setVoice(voice);
@@ -172,7 +176,7 @@ public class HelloWorld {
             System.exit(0);
 
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.log(Level.ERROR, e.getMessage(), e);
         }
     }
 }

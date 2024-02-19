@@ -18,8 +18,8 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.logging.ConsoleHandler;
 import java.util.logging.Handler;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.lang.System.Logger.Level;
+import java.lang.System.Logger;
 import java.util.regex.Pattern;
 
 
@@ -31,7 +31,7 @@ import java.util.regex.Pattern;
 public class FreeTTSTime extends FreeTTS {
 
     /** Logger instance. */
-    private static final Logger logger = Logger.getLogger(FreeTTSTime.class.getName());
+    private static final Logger logger = System.getLogger(FreeTTSTime.class.getName());
 
     private final static String VERSION = "FreeTTSTime Version 1.1, August  1, 2003";
 
@@ -95,7 +95,7 @@ public class FreeTTSTime extends FreeTTS {
                 System.out.print("Enter time: ");
                 System.out.flush();
                 time = reader.readLine();
-                if ((time == null) || (time.length() == 0) || time.equals("quit")) {
+                if ((time == null) || (time.isEmpty()) || time.equals("quit")) {
                     freetts.shutdown();
                     System.exit(0);
                 } else {
@@ -105,6 +105,7 @@ public class FreeTTSTime extends FreeTTS {
                 }
             }
         } catch (IOException e) {
+            logger.log(Level.TRACE, e.getMessage(), e);
         }
     }
 
@@ -336,7 +337,7 @@ public class FreeTTSTime extends FreeTTS {
                 timeToSpeech(time);
             }
         } catch (IllegalArgumentException iae) {
-            logger.info("Bad time format");
+            logger.log(Level.INFO, "Bad time format");
         }
     }
 
@@ -489,9 +490,9 @@ public class FreeTTSTime extends FreeTTS {
 
         if (setVerbose) {
             Handler handler = new ConsoleHandler();
-            handler.setLevel(Level.ALL);
-            Logger.getLogger("com.sun").addHandler(handler);
-            Logger.getLogger("com.sun").setLevel(Level.ALL);
+            handler.setLevel(java.util.logging.Level.ALL);
+            java.util.logging.Logger.getLogger("com.sun").addHandler(handler);
+            java.util.logging.Logger.getLogger("com.sun").setLevel(java.util.logging.Level.ALL);
         }
 
         if (setDumpUtterance) {
@@ -521,7 +522,6 @@ public class FreeTTSTime extends FreeTTS {
         if (setInputMode) {
             freetts.setInputMode(InputMode.TEXT);
         }
-
 
         freetts.startup();
 

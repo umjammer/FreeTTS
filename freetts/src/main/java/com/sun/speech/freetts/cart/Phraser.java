@@ -11,8 +11,8 @@
 
 package com.sun.speech.freetts.cart;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.lang.System.Logger.Level;
+import java.lang.System.Logger;
 
 import com.sun.speech.freetts.Item;
 import com.sun.speech.freetts.ProcessException;
@@ -31,7 +31,7 @@ import com.sun.speech.freetts.UtteranceProcessor;
 public class Phraser implements UtteranceProcessor {
 
     /** Logger instance. */
-    private static final Logger LOGGER = Logger.getLogger(UtteranceProcessor.class.getName());
+    private static final Logger logger = System.getLogger(UtteranceProcessor.class.getName());
 
     /**
      * The CART used for this Phrasing UtteranceProcessor.  It is
@@ -73,8 +73,8 @@ public class Phraser implements UtteranceProcessor {
             p.addDaughter(w);
             String results = (String) cart.interpret(w);
 
-            if (LOGGER.isLoggable(Level.FINER)) {
-                LOGGER.finer("word: " + w + ", results: " + results);
+            if (logger.isLoggable(Level.TRACE)) {
+                logger.log(Level.TRACE, "word: " + w + ", results: " + results);
             }
             if (results.equals("BB")) {
                 p = null;

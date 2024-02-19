@@ -8,15 +8,23 @@
 
 package com.sun.speech.engine.freetts.jsapi;
 
+import java.lang.System.Logger;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.System.Logger.Level;
+
 import com.sun.speech.engine.synthesis.BaseVoice;
 import com.sun.speech.freetts.ValidationException;
 import com.sun.speech.freetts.Validator;
+
+import static java.lang.System.getLogger;
 
 
 /**
  * Extends the BaseVoice class to encapsulate FreeTTSSynthesizer specific data.
  */
 public class FreeTTSVoice extends BaseVoice {
+
+    private static final Logger logger = getLogger(FreeTTSVoice.class.getName());
 
     private com.sun.speech.freetts.Voice freettsVoice;
     private Validator validator;
@@ -38,9 +46,10 @@ public class FreeTTSVoice extends BaseVoice {
         if (validatorName != null) {
             try {
                 Class<?> clazz = Class.forName(validatorName);
-                validator = (Validator) clazz.newInstance();
-            } catch (ClassNotFoundException | InstantiationException | IllegalAccessException cnfe) {
-                cnfe.printStackTrace();
+                validator = (Validator) clazz.getDeclaredConstructor().newInstance();
+            } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | NoSuchMethodException |
+                     InvocationTargetException cnfe) {
+                logger.log(Level.ERROR, cnfe.getMessage(), cnfe);
             }
         } else {
             validator = null;

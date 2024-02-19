@@ -63,7 +63,7 @@ Debug.println(helloVoice);
     }
 
     /** */
-    void speak(String text) throws Exception {
+    static void speak(String text) throws Exception {
         System.setProperty("freetts.voices", "com.sun.speech.freetts.en.us.cmu_us_kal.KevinVoiceDirectory");
         SynthesizerModeDesc desc = new SynthesizerModeDesc(Locale.US);
         Central.registerEngineCentral("com.sun.speech.engine.freetts.jsapi.FreeTTSEngineCentral");

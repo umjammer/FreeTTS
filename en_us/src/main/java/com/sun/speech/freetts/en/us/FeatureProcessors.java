@@ -474,7 +474,6 @@ public class FeatureProcessors {
         }
     }
 
-
     /**
      * Counts the number of stressed syllables since the last major break.
      * This is a feature processor. A feature processor takes an item,
@@ -538,7 +537,6 @@ public class FeatureProcessors {
         }
     }
 
-
     /**
      * Determines the break level after this syllable
      * This is a feature processor. A feature processor takes an item,
@@ -568,7 +566,6 @@ public class FeatureProcessors {
             }
         }
     }
-
 
     /**
      * Determines the word break.
@@ -750,7 +747,6 @@ public class FeatureProcessors {
         }
     }
 
-
     /**
      * Return vowel length
      * s-short l-long d-dipthong a-schwa
@@ -773,7 +769,6 @@ public class FeatureProcessors {
             return getPhoneFeature(item, "vlng");
         }
     }
-
 
     /**
      * Return vowel rnd (lip rounding)
@@ -901,7 +896,6 @@ public class FeatureProcessors {
             return segOnsetCtype(seg, "f");
         }
     }
-
 
     /**
      * Checks for coda stop

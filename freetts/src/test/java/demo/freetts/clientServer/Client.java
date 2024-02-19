@@ -14,7 +14,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
-import java.util.logging.Logger;
+import java.lang.System.Logger.Level;
+import java.lang.System.Logger;
 import javax.sound.sampled.AudioFormat;
 
 import com.sun.speech.freetts.audio.AudioPlayer;
@@ -30,7 +31,7 @@ import com.sun.speech.freetts.util.Utilities;
 public class Client {
 
     /** Logger instance. */
-    private static final Logger logger = Logger.getLogger(Client.class.getName());
+    private static final Logger logger = System.getLogger(Client.class.getName());
 
     private String serverAddress = Utilities.getProperty("server", "localhost");
     private int serverPort = Utilities.getInteger("port", 5555);
@@ -83,9 +84,9 @@ public class Client {
             return true;
         } catch (IOException ioe) {
             if (socket != null) {
-                try { socket.close(); } catch (IOException e) { e.printStackTrace(); }
+                try { socket.close(); } catch (IOException e) { logger.log(Level.ERROR, e.getMessage(), e); }
             }
-            ioe.printStackTrace();
+            logger.log(Level.ERROR, ioe.getMessage(), ioe);
             return false;
         }
     }
@@ -100,7 +101,7 @@ public class Client {
 
         char c;
         while ((c = (char) dataReader.readByte()) != '\n') {
-            logger.finest(String.valueOf(c));
+            logger.log(Level.TRACE, String.valueOf(c));
             buffer.append(c);
         }
 
@@ -122,9 +123,9 @@ public class Client {
      * @param line the line of text to send
      */
     private void sendLine(String line) {
-        logger.fine(line);
+        logger.log(Level.DEBUG, line);
         line = line.trim();
-        if (line.length() > 0) {
+        if (!line.isEmpty()) {
             writer.print(line);
             writer.print('\n');
             writer.flush();
@@ -144,7 +145,7 @@ public class Client {
                 System.out.print("Say       : ");
                 String input;
                 while ((input = systemInReader.readLine()) != null) {
-                    if (input.length() > 0 && !sendTTSRequest(input)) {
+                    if (!input.isEmpty() && !sendTTSRequest(input)) {
                         return;
                     }
                     System.out.print("Say       : ");
@@ -155,10 +156,10 @@ public class Client {
             audioPlayer.drain();
             audioPlayer.close();
 
-            logger.fine("ALL DONE");
+            logger.log(Level.DEBUG, "ALL DONE");
 
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.log(Level.ERROR, e.getMessage(), e);
         }
     }
 
@@ -193,17 +194,17 @@ public class Client {
                     return false;
                 }
                 if (numberSamples > 0) {
-                    logger.fine("Receiving : " + numberSamples + " samples");
+                    logger.log(Level.DEBUG, "Receiving : " + numberSamples + " samples");
                     receiveAndPlay(numberSamples);
                 }
             } catch (IOException ioe) {
-                ioe.printStackTrace();
+                logger.log(Level.ERROR, ioe.getMessage(), ioe);
             }
         }
         while (numberSamples > 0);
 
         if (metrics) {
-            logger.fine("FirstByte : " + (receiveTime - sendTime) + " ms");
+            logger.log(Level.DEBUG, "FirstByte : " + (receiveTime - sendTime) + " ms");
         }
 
         return true;
@@ -255,15 +256,15 @@ public class Client {
                     audioPlayer.write(socketBuffer, 0, nRead);
                 }
             } catch (IOException ioe) {
-                ioe.printStackTrace();
+                logger.log(Level.ERROR, ioe.getMessage(), ioe);
             }
 
-            logger.fine("BytesRemaining: " + bytesRemaining);
+            logger.log(Level.DEBUG, "BytesRemaining: " + bytesRemaining);
         }
 
         audioPlayer.end();
 
-        logger.fine("finished");
+        logger.log(Level.DEBUG, "finished");
     }
 
     /**

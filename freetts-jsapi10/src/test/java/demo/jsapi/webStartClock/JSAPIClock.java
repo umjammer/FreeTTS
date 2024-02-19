@@ -8,8 +8,9 @@
 
 package demo.jsapi.webStartClock;
 
+import java.lang.System.Logger.Level;
 import java.util.Locale;
-import java.util.logging.Logger;
+import java.lang.System.Logger;
 import javax.speech.EngineCreate;
 import javax.speech.EngineList;
 import javax.speech.synthesis.Synthesizer;
@@ -24,7 +25,7 @@ import com.sun.speech.engine.freetts.jsapi.FreeTTSEngineCentral;
 public class JSAPIClock extends Clock {
 
     /** Logger instance. */
-    private static final Logger logger = Logger.getLogger(JSAPIClock.class.getName());
+    private static final Logger logger = System.getLogger(JSAPIClock.class.getName());
 
     protected Synthesizer synthesizer;
 
@@ -44,19 +45,19 @@ public class JSAPIClock extends Clock {
             FreeTTSEngineCentral central = new FreeTTSEngineCentral();
             EngineList list = central.createEngineList(desc);
 
-            if (list.size() > 0) {
+            if (!list.isEmpty()) {
                 EngineCreate creator = (EngineCreate) list.get(0);
                 synthesizer = (Synthesizer) creator.createEngine();
             }
             if (synthesizer == null) {
-                logger.info("Cannot create synthesizer");
+                logger.log(Level.INFO, "Cannot create synthesizer");
                 System.exit(1);
             }
             synthesizer.allocate();
             synthesizer.resume();
 
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.log(Level.ERROR, e.getMessage(), e);
         }
     }
 

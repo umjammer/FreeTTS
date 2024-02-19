@@ -32,8 +32,8 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.StringTokenizer;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.lang.System.Logger.Level;
+import java.lang.System.Logger;
 
 import com.sun.speech.freetts.relp.Sample;
 import com.sun.speech.freetts.relp.SampleInfo;
@@ -97,7 +97,7 @@ import com.sun.speech.freetts.util.Utilities;
 public class DiphoneUnitDatabase {
 
     /** Logger instance. */
-    private static final Logger LOGGER = Logger.getLogger(DiphoneUnitDatabase.class.getName());
+    private static final Logger logger = System.getLogger(DiphoneUnitDatabase.class.getName());
 
     private String name;
     private int sampleRate;
@@ -178,7 +178,7 @@ public class DiphoneUnitDatabase {
      * <p>
      * TODO the index should probably be incorporated into the binary database
      */
-    private String getIndexName(String databaseName) {
+    private static String getIndexName(String databaseName) {
         String indexName = null;
         if (databaseName.lastIndexOf(".") != -1) {
             indexName = databaseName.substring(0, databaseName.lastIndexOf(".")) + ".idx";
@@ -297,16 +297,15 @@ public class DiphoneUnitDatabase {
      * @param diphone the diphone to add.
      */
     private void add(Diphone diphone) {
-        if (diphone instanceof AliasDiphone) {
-            AliasDiphone adiph = (AliasDiphone) diphone;
+        if (diphone instanceof AliasDiphone adiph) {
             Diphone original = (Diphone) diphoneMap.get(adiph.getOriginalName());
             if (original != null) {
                 adiph.setOriginalDiphone(original);
             } else {
                 // No original was found for this alias
                 // -- complain, and ignore
-                if (LOGGER.isLoggable(Level.FINER)) {
-                    LOGGER.finer("For diphone alias "
+                if (logger.isLoggable(Level.TRACE)) {
+                    logger.log(Level.TRACE, "For diphone alias "
                             + adiph.getName() + ", could not find original " + adiph.getOriginalName());
                 }
                 return;
@@ -337,8 +336,7 @@ public class DiphoneUnitDatabase {
                         diphone = Diphone.loadBinary(mbb);
                         if (diphone != null) {
                             // If diphone is an alias, must also get the original
-                            if (diphone instanceof AliasDiphone) {
-                                AliasDiphone adiph = (AliasDiphone) diphone;
+                            if (diphone instanceof AliasDiphone adiph) {
                                 Diphone original = getUnit(adiph.getOriginalName());
                                 if (original != null) {
                                     adiph.setOriginalDiphone(original);
@@ -346,8 +344,8 @@ public class DiphoneUnitDatabase {
                                 } else {
                                     // No original was found for this alias
                                     // -- complain, and ignore
-                                    if (LOGGER.isLoggable(Level.FINER)) {
-                                        LOGGER.finer("For diphone alias "
+                                    if (logger.isLoggable(Level.TRACE)) {
+                                        logger.log(Level.TRACE, "For diphone alias "
                                                 + adiph.getName() + ", could not find original "
                                                 + adiph.getOriginalName());
                                     }
@@ -608,8 +606,7 @@ public class DiphoneUnitDatabase {
         // we get better performance if we can map the file in
         // 1.0 seconds vs. 1.75 seconds, but we can't
         // always guarantee that we can do that.
-        if (useNewIO && is instanceof FileInputStream) {
-            FileInputStream fis = (FileInputStream) is;
+        if (useNewIO && is instanceof FileInputStream fis) {
             if (useIndexing) {
                 loadBinaryIndex(new URL(indexName));
                 mapDatabase(fis);
@@ -759,7 +756,6 @@ public class DiphoneUnitDatabase {
         return true;
     }
 
-
     /**
      * Manipulates a DiphoneUnitDatabase. This program is typically
      * used to generate the binary form (with index) of the
@@ -897,7 +893,7 @@ public class DiphoneUnitDatabase {
                 System.out.println("    -showTimes");
             }
         } catch (IOException ioe) {
-            ioe.printStackTrace();
+            logger.log(Level.ERROR, ioe.getMessage(), ioe);
         }
     }
 }

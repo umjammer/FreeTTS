@@ -8,6 +8,8 @@
 
 package demo.freetts.emacspeak;
 
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.net.Socket;
 import java.util.Vector;
 
@@ -15,14 +17,17 @@ import com.sun.speech.freetts.Voice;
 import com.sun.speech.freetts.util.Utilities;
 import demo.util.EmacspeakProtocolHandler;
 
+import static java.lang.System.getLogger;
+
 
 /**
  * Implements a simplified version of the Emacspeak speech server.
  */
 public class FreeTTSEmacspeakHandler extends EmacspeakProtocolHandler {
 
-    private SpeakCommandHandler speakCommandHandler;
+    private static final Logger logger = getLogger(FreeTTSEmacspeakHandler.class.getName());
 
+    private SpeakCommandHandler speakCommandHandler;
 
     /**
      * Constructs an Emacspeak ProtocolHandler
@@ -36,7 +41,6 @@ public class FreeTTSEmacspeakHandler extends EmacspeakProtocolHandler {
         this.speakCommandHandler.start();
         setDebug(Utilities.getBoolean("debug"));
     }
-
 
     /**
      * Speaks the given input text.
@@ -52,7 +56,6 @@ public class FreeTTSEmacspeakHandler extends EmacspeakProtocolHandler {
         }
     }
 
-
     /**
      * Removes all the queued text.
      */
@@ -60,7 +63,6 @@ public class FreeTTSEmacspeakHandler extends EmacspeakProtocolHandler {
     public void cancelAll() {
         speakCommandHandler.removeAll();
     }
-
 
     /**
      * Sets the speaking rate.
@@ -71,7 +73,6 @@ public class FreeTTSEmacspeakHandler extends EmacspeakProtocolHandler {
     public void setRate(float wpm) {
         speakCommandHandler.setRate(wpm);
     }
-
 
     /**
      * This thread is used to separate the handling of Voice.speak() from
@@ -84,7 +85,6 @@ public class FreeTTSEmacspeakHandler extends EmacspeakProtocolHandler {
         private boolean done = false;
         private final Vector<String> commandList = new Vector<>();
 
-
         /**
          * Constructs a default SpeakCommandHandler object.
          *
@@ -94,24 +94,23 @@ public class FreeTTSEmacspeakHandler extends EmacspeakProtocolHandler {
             this.voice = voice;
         }
 
-
         /**
          * Implements the run() method of the Thread class.
          */
         @Override
         public void run() {
-            while (!getSocket().isClosed() || commandList.size() > 0) {
+            while (!getSocket().isClosed() || !commandList.isEmpty()) {
                 String firstCommand = null;
                 synchronized (commandList) {
-                    while (commandList.size() == 0 &&
+                    while (commandList.isEmpty() &&
                             !getSocket().isClosed()) {
                         try {
                             commandList.wait();
                         } catch (InterruptedException ie) {
-                            ie.printStackTrace();
+                            logger.log(Level.ERROR, ie.getMessage(), ie);
                         }
                     }
-                    if (commandList.size() > 0) {
+                    if (!commandList.isEmpty()) {
                         firstCommand = commandList.remove(0);
                     }
                 }
@@ -122,7 +121,6 @@ public class FreeTTSEmacspeakHandler extends EmacspeakProtocolHandler {
             }
             debugPrintln("SpeakCommandHandler: thread terminated");
         }
-
 
         /**
          * Adds the given command to this Handler.
@@ -136,7 +134,6 @@ public class FreeTTSEmacspeakHandler extends EmacspeakProtocolHandler {
             }
         }
 
-
         /**
          * Removes all the commands from this Handler.
          */
@@ -147,7 +144,6 @@ public class FreeTTSEmacspeakHandler extends EmacspeakProtocolHandler {
             }
         }
 
-
         /**
          * Sets the speaking rate.
          *
@@ -156,7 +152,6 @@ public class FreeTTSEmacspeakHandler extends EmacspeakProtocolHandler {
         public void setRate(float wpm) {
             voice.setRate(wpm);
         }
-
 
         /**
          * Terminates this SpeakCommandHandler thread.

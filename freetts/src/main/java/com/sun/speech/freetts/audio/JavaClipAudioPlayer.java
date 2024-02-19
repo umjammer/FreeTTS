@@ -11,8 +11,8 @@ package com.sun.speech.freetts.audio;
 import java.io.IOException;
 import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.lang.System.Logger.Level;
+import java.lang.System.Logger;
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
@@ -39,7 +39,7 @@ import com.sun.speech.freetts.util.Utilities;
 public class JavaClipAudioPlayer implements AudioPlayer {
 
     /** Logger instance. */
-    private static final Logger logger = Logger.getLogger(JavaClipAudioPlayer.class.getName());
+    private static final Logger logger = System.getLogger(JavaClipAudioPlayer.class.getName());
 
     private volatile boolean paused;
     private volatile boolean cancelled = false;
@@ -255,14 +255,13 @@ public class JavaClipAudioPlayer implements AudioPlayer {
         paused = state;
     }
 
-
     /**
      * Sets the volume on the given clip
      *
      * @param clip the line to set the volume on
      * @param vol  the volume (range 0 to 1)
      */
-    private void setVolume(Clip clip, float vol) {
+    private static void setVolume(Clip clip, float vol) {
         if (clip.isControlSupported(FloatControl.Type.MASTER_GAIN)) {
             FloatControl volumeControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
             float range = volumeControl.getMaximum() - volumeControl.getMinimum();
@@ -303,7 +302,7 @@ public class JavaClipAudioPlayer implements AudioPlayer {
             in = new PipedInputStream(outputData);
             audioInput = new AudioInputStream(in, currentFormat, size);
         } catch (IOException e) {
-            logger.warning(e.getLocalizedMessage());
+            logger.log(Level.WARNING, e.getLocalizedMessage());
         }
         while (paused && !cancelled) {
             try {
@@ -325,7 +324,7 @@ public class JavaClipAudioPlayer implements AudioPlayer {
                 currentClip.open(audioInput);
                 opened = true;
             } catch (LineUnavailableException lue) {
-                logger.info("LINE UNAVAILABLE: " + "Format is " + currentFormat);
+                logger.log(Level.INFO, "LINE UNAVAILABLE: " + "Format is " + currentFormat);
                 try {
                     Thread.sleep(openFailDelayMs);
                     totalDelayMs += openFailDelayMs;
@@ -358,8 +357,8 @@ public class JavaClipAudioPlayer implements AudioPlayer {
      */
     private Clip getClip() throws LineUnavailableException {
         if (currentClip == null) {
-            if (logger.isLoggable(Level.FINE)) {
-                logger.fine("creating new clip");
+            if (logger.isLoggable(Level.DEBUG)) {
+                logger.log(Level.DEBUG, "creating new clip");
             }
             DataLine.Info info = new DataLine.Info(Clip.class, currentFormat);
             try {
@@ -480,26 +479,26 @@ public class JavaClipAudioPlayer implements AudioPlayer {
         @Override
         public void update(LineEvent event) {
             if (event.getType().equals(LineEvent.Type.START)) {
-                if (logger.isLoggable(Level.FINE)) {
-                    logger.fine(this + ": EVENT START");
+                if (logger.isLoggable(Level.DEBUG)) {
+                    logger.log(Level.DEBUG, this + ": EVENT START");
                 }
             } else if (event.getType().equals(LineEvent.Type.STOP)) {
-                if (logger.isLoggable(Level.FINE)) {
-                    logger.fine(this + ": EVENT STOP");
+                if (logger.isLoggable(Level.DEBUG)) {
+                    logger.log(Level.DEBUG, this + ": EVENT STOP");
                 }
                 synchronized (JavaClipAudioPlayer.this) {
                     JavaClipAudioPlayer.this.notifyAll();
                 }
             } else if (event.getType().equals(LineEvent.Type.OPEN)) {
-                if (logger.isLoggable(Level.FINE)) {
-                    logger.fine(this + ": EVENT OPEN");
+                if (logger.isLoggable(Level.DEBUG)) {
+                    logger.log(Level.DEBUG, this + ": EVENT OPEN");
                 }
             } else if (event.getType().equals(LineEvent.Type.CLOSE)) {
                 // When a clip is closed we no longer need it, so
                 // set currentClip to null and notify anyone who may
                 // be waiting on it.
-                if (logger.isLoggable(Level.FINE)) {
-                    logger.fine(this + ": EVENT CLOSE");
+                if (logger.isLoggable(Level.DEBUG)) {
+                    logger.log(Level.DEBUG, this + ": EVENT CLOSE");
                 }
                 synchronized (JavaClipAudioPlayer.this) {
                     JavaClipAudioPlayer.this.notifyAll();

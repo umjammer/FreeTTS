@@ -332,7 +332,7 @@ abstract public class BaseEngine implements Engine, SpeechEventDispatcher {
      * Returns an object that provides management of the audio input
      * or output of this <code>Engine</code>.
      *
-     * @return the audio manader for this <code>Engine</code>
+     * @return the audio manager for this <code>Engine</code>
      */
     @Override
     public AudioManager getAudioManager() {

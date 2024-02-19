@@ -19,6 +19,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -32,6 +34,8 @@ import java.util.StringTokenizer;
 
 import com.sun.speech.freetts.util.BulkTimer;
 import com.sun.speech.freetts.util.Utilities;
+
+import static java.lang.System.getLogger;
 
 
 /**
@@ -73,7 +77,7 @@ import com.sun.speech.freetts.util.Utilities;
  * and end of the word. So, the word "monkey" would turn into
  * "000#monkey#000".
  * <li>For each character in the word, the context window consists of
- * the characters in the padded form the preceed and follow the word.
+ * the characters in the padded form the proceeded and follow the word.
  * The number of characters on each side is dependent upon the window
  * size. So, for this implementation, the context window for the 'k'
  * in monkey is "#money#0".
@@ -113,6 +117,8 @@ import com.sun.speech.freetts.util.Utilities;
  * TODO This implementation uses ASCII 'a'-'z', which is not internationalized.
  */
 public class LetterToSoundImpl implements LetterToSound {
+
+    private static final Logger logger = getLogger(LetterToSoundImpl.class.getName());
 
     /**
      * Entry in file represents the total number of states in the
@@ -313,7 +319,6 @@ public class LetterToSoundImpl implements LetterToSound {
         }
     }
 
-
     /**
      * Creates a word from the given input line and add it to the state
      * machine.  It expects the TOTAL line to come before any of the
@@ -336,7 +341,7 @@ public class LetterToSoundImpl implements LetterToSound {
             numStates++;
             break;
         case INDEX:
-            Integer index = new Integer(tokenizer.nextToken());
+            int index = Integer.parseInt(tokenizer.nextToken());
             if (index != numStates) {
                 throw new Error("Bad INDEX in file.");
             } else {
@@ -407,8 +412,7 @@ public class LetterToSoundImpl implements LetterToSound {
     private List<String> findPhonemes() {
         Set<String> set = new HashSet<>();
         for (Object o : stateMachine) {
-            if (o instanceof FinalState) {
-                FinalState fstate = (FinalState) o;
+            if (o instanceof FinalState fstate) {
                 if (fstate.phoneList != null) {
                     set.addAll(Arrays.asList(fstate.phoneList));
                 }
@@ -416,7 +420,6 @@ public class LetterToSoundImpl implements LetterToSound {
         }
         return new ArrayList<>(set);
     }
-
 
     /**
      * Gets the <code>State</code> at the given index.  This may
@@ -681,8 +684,7 @@ public class LetterToSoundImpl implements LetterToSound {
          */
         @Override
         public boolean compare(State other) {
-            if (other instanceof DecisionState) {
-                DecisionState otherState = (DecisionState) other;
+            if (other instanceof DecisionState otherState) {
                 return index == otherState.index &&
                         c == otherState.c &&
                         qtrue == otherState.qtrue &&
@@ -775,8 +777,7 @@ public class LetterToSoundImpl implements LetterToSound {
          */
         @Override
         public boolean compare(State other) {
-            if (other instanceof FinalState) {
-                FinalState otherState = (FinalState) other;
+            if (other instanceof FinalState otherState) {
                 if (phoneList == null) {
                     return otherState.phoneList == null;
                 } else {
@@ -910,7 +911,7 @@ public class LetterToSoundImpl implements LetterToSound {
                 System.out.println("    -showTimes");
             }
         } catch (IOException ioe) {
-            ioe.printStackTrace();
+            logger.log(Level.ERROR, ioe.getMessage(), ioe);
         }
     }
 }

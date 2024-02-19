@@ -447,7 +447,7 @@ public class Utterance implements FeatureSet, Serializable {
         for (Token token : tokenList) {
             String tokenWord = token.getWord();
 
-            if (tokenWord != null && tokenWord.length() > 0) {
+            if (tokenWord != null && !tokenWord.isEmpty()) {
                 Item item = relation.appendItem();
 
                 FeatureSet featureSet = item.getFeatures();

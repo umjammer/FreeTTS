@@ -240,7 +240,7 @@ public class TextSynthesizer extends BaseSynthesizer {
          */
         public boolean isQueueEmpty() {
             synchronized (queue) {
-                return queue.size() == 0;
+                return queue.isEmpty();
             }
         }
 
@@ -252,7 +252,7 @@ public class TextSynthesizer extends BaseSynthesizer {
         public void appendQueue(TextSynthesizerQueueItem item) {
             boolean topOfQueueChanged;
             synchronized (queue) {
-                topOfQueueChanged = (queue.size() == 0);
+                topOfQueueChanged = (queue.isEmpty());
                 queue.addElement(item);
                 queue.notifyAll();
             }
@@ -284,7 +284,7 @@ public class TextSynthesizer extends BaseSynthesizer {
          */
         protected void cancelItem(int cancelType) {
             synchronized (queue) {
-                if (queue.size() == 0) {
+                if (queue.isEmpty()) {
                     return;
                 }
             }
@@ -393,7 +393,7 @@ public class TextSynthesizer extends BaseSynthesizer {
                     itemList.add(item);
                     synchronized (queue) {
                         queue.remove(0);
-                        while (queue.size() > 0) {
+                        while (!queue.isEmpty()) {
                             itemList.add(queue.remove(0));
                         }
                     }
@@ -401,7 +401,7 @@ public class TextSynthesizer extends BaseSynthesizer {
                         command = CANCEL_COMPLETE;
                         commandLock.notifyAll();
                     }
-                    while (itemList.size() > 0) {
+                    while (!itemList.isEmpty()) {
                         item = itemList.remove(0);
                         item.postSpeakableCancelled();
                     }
@@ -420,7 +420,7 @@ public class TextSynthesizer extends BaseSynthesizer {
 
                 synchronized (queue) {
                     queue.remove(0);
-                    queueEmptied = queue.size() == 0;
+                    queueEmptied = queue.isEmpty();
                     queue.notifyAll();
                 }
 
@@ -441,7 +441,7 @@ public class TextSynthesizer extends BaseSynthesizer {
          */
         protected TextSynthesizerQueueItem getQueueItem() {
             synchronized (queue) {
-                while (queue.size() == 0) {
+                while (queue.isEmpty()) {
                     try {
                         queue.wait();
                     } catch (InterruptedException e) {
@@ -591,7 +591,6 @@ public class TextSynthesizer extends BaseSynthesizer {
             return index;
         }
 
-
         /**
          * Determines if there is whitespace at the current index.
          *
@@ -629,7 +628,7 @@ public class TextSynthesizer extends BaseSynthesizer {
 
             // Pause briefly with the delay determined by the current
             // "speaking rate."  Convert the word-per-minute rate to
-            // millseconds.
+            // milliseconds.
             //
             try {
                 sleep(1000 * 60 / rate);
