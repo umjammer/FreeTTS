@@ -8,6 +8,9 @@
 
 package tests;
 
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
+import java.net.URI;
 import java.net.URL;
 
 import com.sun.speech.freetts.PartOfSpeech;
@@ -15,6 +18,7 @@ import com.sun.speech.freetts.PartOfSpeechImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import static java.lang.System.getLogger;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
@@ -25,6 +29,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  */
 public class PartOfSpeechTests {
 
+    private static final Logger logger = getLogger(PartOfSpeechTests.class.getName());
+
     PartOfSpeech pos;
 
     /**
@@ -33,10 +39,10 @@ public class PartOfSpeechTests {
     @BeforeEach
     protected void setUp() {
         try {
-            URL url = PartOfSpeechTests.class.getResource("part_of_speech.txt");
+            URI url = PartOfSpeechTests.class.getResource("part_of_speech.txt").toURI();
             pos = new PartOfSpeechImpl(url, "content");
         } catch (Exception ioe) {
-            System.out.println("Can't open part_of_speech.txt");
+            logger.log(Level.INFO, "Can't open part_of_speech.txt");
         }
     }
 

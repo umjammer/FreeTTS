@@ -14,7 +14,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
-import java.net.URL;
+import java.net.URI;
 import java.nio.ByteBuffer;
 
 
@@ -105,11 +105,11 @@ public class Utilities {
      * @return the stream associated with the URL
      * @throws IOException if there is trouble creating the stream
      */
-    public static InputStream getInputStream(URL url) throws IOException {
-        if (url.getProtocol().equals("file")) {
-            return new FileInputStream(url.getFile()); // should be FileInputStream
+    public static InputStream getInputStream(URI url) throws IOException {
+        if (url.getScheme().equals("file")) {
+            return new FileInputStream(url.toURL().getFile()); // should be FileInputStream
         } else {
-            return url.openStream();
+            return url.toURL().openStream();
         }
     }
 

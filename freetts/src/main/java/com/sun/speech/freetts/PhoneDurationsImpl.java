@@ -14,7 +14,7 @@ package com.sun.speech.freetts;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.net.URL;
+import java.net.URI;
 import java.util.Map;
 import java.util.StringTokenizer;
 
@@ -49,12 +49,12 @@ public class PhoneDurationsImpl implements PhoneDurations {
      * @param url the input source
      * @throws IOException if an error occurs
      */
-    public PhoneDurationsImpl(URL url) throws IOException {
+    public PhoneDurationsImpl(URI url) throws IOException {
         BufferedReader reader;
         String line;
 
         phoneDurations = new java.util.HashMap<>();
-        reader = new BufferedReader(new InputStreamReader(url.openStream()));
+        reader = new BufferedReader(new InputStreamReader(url.toURL().openStream()));
         line = reader.readLine();
         while (line != null) {
             if (!line.startsWith("***")) {

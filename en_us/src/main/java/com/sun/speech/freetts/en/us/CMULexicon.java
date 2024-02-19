@@ -14,7 +14,10 @@ package com.sun.speech.freetts.en.us;
 import java.io.IOException;
 import java.lang.System.Logger;
 import java.lang.System.Logger.Level;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
+import java.net.URLClassLoader;
 import java.util.List;
 
 import com.sun.speech.freetts.VoiceManager;
@@ -64,7 +67,7 @@ public class CMULexicon extends LexiconImpl {
      *                         binary ; otherwise if <code>false</code> the input
      *                         data are loaded as text.
      */
-    public CMULexicon(URL compiledURL, URL addendaURL, URL letterToSoundURL, boolean binary) {
+    public CMULexicon(URI compiledURL, URI addendaURL, URI letterToSoundURL, boolean binary) {
         setLexiconParameters(compiledURL, addendaURL, letterToSoundURL, binary);
     }
 
@@ -85,7 +88,7 @@ public class CMULexicon extends LexiconImpl {
     }
 
     public CMULexicon(String basename, boolean useBinaryIO) {
-        java.net.URLClassLoader classLoader = VoiceManager.getVoiceClassLoader();
+        URLClassLoader classLoader = VoiceManager.getVoiceClassLoader();
         String type = (useBinaryIO ? "bin" : "txt");
 
         URL letterToSoundURL = classLoader.getResource(
@@ -95,21 +98,24 @@ public class CMULexicon extends LexiconImpl {
         URL addendaURL = classLoader.getResource(
                 "/com/sun/speech/freetts/en/us/" + basename + "_addenda." + type);
 
-        /* Just another try with possibly a different class loader
-         * if the above didn't work.
-         */
+        // Just another try with possibly a different class loader
+        // if the above didn't work.
         if (letterToSoundURL == null) {
             Class<CMULexicon> cls = CMULexicon.class;
             letterToSoundURL = cls.getResource(basename + "_lts." + type);
             compiledURL = cls.getResource(basename + "_compiled." + type);
             addendaURL = cls.getResource(basename + "_addenda." + type);
             if (letterToSoundURL == null) {
-                System.err.println(
+                logger.log(Level.DEBUG,
                         "CMULexicon: Oh no! Couldn't find lexicon data for '" + basename + "' of type '" + type + "'!");
             }
         }
 
-        setLexiconParameters(compiledURL, addendaURL, letterToSoundURL, useBinaryIO);
+        try {
+            setLexiconParameters(compiledURL.toURI(), addendaURL.toURI(), letterToSoundURL.toURI(), useBinaryIO);
+        } catch (NullPointerException | URISyntaxException e) {
+            throw new IllegalStateException(e);
+        }
     }
 
     /**
@@ -284,9 +290,9 @@ public class CMULexicon extends LexiconImpl {
                         System.out.println("Loading " + baseName);
                         String path = "file:" + srcPath + "/" + baseName;
                         lex = new CMULexicon(
-                                new URL(path + "_compiled.txt"),
-                                new URL(path + "_addenda.txt"),
-                                new URL(path + "_lts.txt"),
+                                URI.create(path + "_compiled.txt"),
+                                URI.create(path + "_addenda.txt"),
+                                URI.create(path + "_lts.txt"),
                                 false);
                         BulkTimer.LOAD.start("load_text");
                         lex.load();

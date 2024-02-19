@@ -16,7 +16,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.lang.System.Logger;
 import java.lang.System.Logger.Level;
-import java.net.URL;
+import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.NoSuchElementException;
@@ -66,14 +66,14 @@ public class PartOfSpeechImpl implements PartOfSpeech {
      * @param defaultPartOfSpeech the default part of speech
      * @throws IOException if an error occurs
      */
-    public PartOfSpeechImpl(URL url, String defaultPartOfSpeech) throws IOException {
+    public PartOfSpeechImpl(URI url, String defaultPartOfSpeech) throws IOException {
 
         BufferedReader reader;
         String line;
 
         partOfSpeechMap = new HashMap<>();
         this.defaultPartOfSpeech = defaultPartOfSpeech;
-        reader = new BufferedReader(new InputStreamReader(url.openStream()));
+        reader = new BufferedReader(new InputStreamReader(url.toURL().openStream()));
         line = reader.readLine();
         lineCount++;
         while (line != null) {

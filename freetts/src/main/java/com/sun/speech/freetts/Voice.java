@@ -20,7 +20,8 @@ import java.io.Reader;
 import java.lang.System.Logger;
 import java.lang.System.Logger.Level;
 import java.lang.reflect.InvocationTargetException;
-import java.net.URL;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -1191,8 +1192,12 @@ public abstract class Voice implements UtteranceProcessor, Dumpable {
      * to which the voice class belongs. Subclasses are free to
      * override this behaviour.
      */
-    protected URL getResource(String resource) {
-        return this.getClass().getResource(resource);
+    protected URI getResource(String resource) throws IOException {
+        try {
+            return this.getClass().getResource(resource).toURI();
+        } catch (NullPointerException | URISyntaxException e) {
+            throw new IOException(e);
+        }
     }
 
     /**

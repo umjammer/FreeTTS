@@ -12,7 +12,7 @@
 package com.sun.speech.freetts.en.us;
 
 import java.io.IOException;
-import java.net.URL;
+import java.net.URI;
 
 
 /**
@@ -24,7 +24,7 @@ public class SuffixFSM extends PronounceableFSM {
     /**
      * Constructs a SuffixFSM.
      */
-    public SuffixFSM(URL url) throws IOException {
+    public SuffixFSM(URI url) throws IOException {
         super(url, false);
     }
 }

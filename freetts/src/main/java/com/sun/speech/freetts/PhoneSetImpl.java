@@ -14,7 +14,7 @@ package com.sun.speech.freetts;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.net.URL;
+import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.NoSuchElementException;
@@ -57,9 +57,9 @@ public class PhoneSetImpl implements PhoneSet {
      * @param url the input source
      * @throws IOException if an error occurs
      */
-    public PhoneSetImpl(URL url) throws IOException {
+    public PhoneSetImpl(URI url) throws IOException {
         phonesetMap = new HashMap<>();
-        BufferedReader reader = new BufferedReader(new InputStreamReader(url.openStream()));
+        BufferedReader reader = new BufferedReader(new InputStreamReader(url.toURL().openStream()));
         String line = reader.readLine();
         lineCount++;
         while (line != null) {

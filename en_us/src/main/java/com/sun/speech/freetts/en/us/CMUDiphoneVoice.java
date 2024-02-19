@@ -12,7 +12,8 @@
 package com.sun.speech.freetts.en.us;
 
 import java.io.IOException;
-import java.net.URL;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Locale;
 
 import com.sun.speech.freetts.Age;
@@ -33,7 +34,7 @@ import de.dfki.lt.freetts.ConcatenativeVoice;
  */
 public class CMUDiphoneVoice extends CMUVoice implements ConcatenativeVoice {
 
-    protected URL database;
+    protected URI database;
 
     /**
      * Creates a simple voice.  This is merely for backwards
@@ -62,7 +63,7 @@ public class CMUDiphoneVoice extends CMUVoice implements ConcatenativeVoice {
      */
     public CMUDiphoneVoice(String name, Gender gender,
                            Age age, String description, Locale locale, String domain,
-                           String organization, CMULexicon lexicon, URL database) {
+                           String organization, CMULexicon lexicon, URI database) {
         super(name, gender, age, description, locale, domain, organization, lexicon);
         setRate(150f);
         setPitch(100F);
@@ -77,14 +78,17 @@ public class CMUDiphoneVoice extends CMUVoice implements ConcatenativeVoice {
      * @return an url to the database
      */
     @Override
-    public URL getDatabase() {
+    public URI getDatabase() throws IOException {
         if (database == null) {
-            /* This is merely for backwards compatibility with
-             * versions of FreeTTS earlier than v1.2 (i.e.,
-             * before the voice manager was introduced).
-             */
-            String name = getFeatures().getString(DATABASE_NAME);
-            database = this.getClass().getResource(name);
+            try {
+                // This is merely for backwards compatibility with
+                // versions of FreeTTS earlier than v1.2 (i.e.,
+                // before the voice manager was introduced).
+                String name = getFeatures().getString(DATABASE_NAME);
+                database = this.getClass().getResource(name).toURI();
+            } catch (NullPointerException | URISyntaxException e) {
+                throw new IOException(e);
+            }
         }
         return database;
     }

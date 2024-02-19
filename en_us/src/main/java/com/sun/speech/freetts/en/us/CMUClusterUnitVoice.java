@@ -12,6 +12,7 @@
 package com.sun.speech.freetts.en.us;
 
 import java.io.IOException;
+import java.net.URI;
 import java.net.URL;
 import java.util.Locale;
 
@@ -29,7 +30,7 @@ import de.dfki.lt.freetts.ConcatenativeVoice;
  */
 public class CMUClusterUnitVoice extends CMUVoice implements ConcatenativeVoice {
 
-    protected URL database;
+    protected URI database;
 
     /**
      * Creates a simple cluster unit voice
@@ -50,7 +51,7 @@ public class CMUClusterUnitVoice extends CMUVoice implements ConcatenativeVoice 
      */
     public CMUClusterUnitVoice(String name, Gender gender, Age age,
                                String description, Locale locale, String domain,
-                               String organization, CMULexicon lexicon, URL database) {
+                               String organization, CMULexicon lexicon, URI database) {
         super(name, gender, age, description, locale, domain, organization, lexicon);
         setRate(150f);
         setPitch(100F);
@@ -65,7 +66,7 @@ public class CMUClusterUnitVoice extends CMUVoice implements ConcatenativeVoice 
      * @return an url to the database
      */
     @Override
-    public URL getDatabase() {
+    public URI getDatabase() {
         return database;
     }
 

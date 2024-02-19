@@ -15,6 +15,8 @@ package de.dfki.lt.freetts.de;
 import java.io.IOException;
 import java.lang.System.Logger;
 import java.lang.System.Logger.Level;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.List;
 
@@ -45,7 +47,7 @@ public class GermanLexicon extends LexiconImpl {
      *                         binary ; otherwise if <code>false</code> the input
      *                         data are loaded as text.
      */
-    public GermanLexicon(URL compiledURL, URL addendaURL, URL letterToSoundURL, boolean binary) {
+    public GermanLexicon(URI compiledURL, URI addendaURL, URI letterToSoundURL, boolean binary) {
         setLexiconParameters(compiledURL, addendaURL, letterToSoundURL, binary);
     }
 
@@ -89,7 +91,11 @@ public class GermanLexicon extends LexiconImpl {
             }
         }
 
-        setLexiconParameters(compiledURL, addendaURL, letterToSoundURL, useBinaryIO);
+        try {
+            setLexiconParameters(compiledURL.toURI(), addendaURL.toURI(), letterToSoundURL.toURI(), useBinaryIO);
+        } catch (NullPointerException | URISyntaxException e) {
+            throw new IllegalStateException(e);
+        }
     }
 
     /**
@@ -170,9 +176,9 @@ public class GermanLexicon extends LexiconImpl {
                         System.out.println("Loading " + baseName);
                         String path = "file:" + srcPath + "/" + baseName;
                         lex = new GermanLexicon(
-                                new URL(path + "_compiled.txt"),
-                                new URL(path + "_addenda.txt"),
-                                new URL(path + "_lts.txt"),
+                                URI.create(path + "_compiled.txt"),
+                                URI.create(path + "_addenda.txt"),
+                                URI.create(path + "_lts.txt"),
                                 false);
                         BulkTimer.LOAD.start("load_text");
                         lex.load();

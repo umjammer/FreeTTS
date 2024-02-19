@@ -21,6 +21,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.lang.System.Logger;
 import java.lang.System.Logger.Level;
+import java.net.URI;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -223,9 +224,9 @@ public class LetterToSoundImpl implements LetterToSound {
      * @throws IOException          if errors are encountered while reading the
      *                              compiled form or the addenda
      */
-    public LetterToSoundImpl(URL ltsRules, boolean binary) throws IOException {
+    public LetterToSoundImpl(URI ltsRules, boolean binary) throws IOException {
         BulkTimer.LOAD.start("LTS");
-        InputStream is = ltsRules.openStream();
+        InputStream is = ltsRules.toURL().openStream();
         if (binary) {
             loadBinary(is);
         } else {
@@ -866,7 +867,7 @@ public class LetterToSoundImpl implements LetterToSound {
                         System.out.println("Loading " + name);
                         timer.start("load_text");
                         LetterToSoundImpl text = new LetterToSoundImpl(
-                                new URL("file:" + srcPath + "/" + name + ".txt"), false);
+                                URI.create("file:" + srcPath + "/" + name + ".txt"), false);
                         timer.stop("load_text");
 
                         System.out.println("Dumping " + name);
@@ -878,12 +879,12 @@ public class LetterToSoundImpl implements LetterToSound {
 
                         timer.start("load_text");
                         LetterToSoundImpl text = new LetterToSoundImpl(
-                                new URL("file:./" + name + ".txt"), false);
+                                URI.create("file:./" + name + ".txt"), false);
                         timer.stop("load_text");
 
                         timer.start("load_binary");
                         LetterToSoundImpl binary = new LetterToSoundImpl(
-                                new URL("file:./" + name + ".bin"), true);
+                                URI.create("file:./" + name + ".bin"), true);
                         timer.stop("load_binary");
 
                         timer.start("compare");

@@ -14,7 +14,7 @@ package com.sun.speech.freetts.en;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.net.URL;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -65,15 +65,14 @@ public class ContourGenerator implements UtteranceProcessor {
      * @param modelStddev the std deviation of the frequency
      * @throws IOException if an error occurs while loading data
      */
-    public ContourGenerator(URL url, float modelMean, float modelStddev) throws IOException {
+    public ContourGenerator(URI url, float modelMean, float modelStddev) throws IOException {
         this.modelMean = modelMean;
         this.modelStddev = modelStddev;
 
         List<F0ModelTerm> termsList = new ArrayList<>();
 
         String line;
-        BufferedReader reader = new BufferedReader(
-                new InputStreamReader(url.openStream()));
+        BufferedReader reader = new BufferedReader(new InputStreamReader(url.toURL().openStream()));
         line = reader.readLine();
         while (line != null) {
             if (!line.startsWith("***")) {

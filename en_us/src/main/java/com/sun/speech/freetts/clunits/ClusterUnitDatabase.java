@@ -23,6 +23,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.lang.System.Logger;
 import java.lang.System.Logger.Level;
+import java.net.URI;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.MappedByteBuffer;
@@ -91,7 +92,7 @@ public class ClusterUnitDatabase {
      * @param isBinary the input stream is a binary stream
      * @throws IOException if there is trouble opening the DB
      */
-    ClusterUnitDatabase(URL url, boolean isBinary) throws IOException {
+    ClusterUnitDatabase(URI url, boolean isBinary) throws IOException {
         BulkTimer.LOAD.start("ClusterUnitDatabase");
         InputStream is = Utilities.getInputStream(url);
         if (isBinary) {
@@ -102,8 +103,8 @@ public class ClusterUnitDatabase {
         is.close();
         // Attempt to load debug info from a .debug resource.
         // This will silently fail if no debug info is available.
-        String urlString = url.toExternalForm();
-        URL debugURL = new URL(urlString.substring(0, urlString.lastIndexOf(".")) + ".debug");
+        String urlString = url.toString();
+        URI debugURL = URI.create(urlString.substring(0, urlString.lastIndexOf(".")) + ".debug");
         try {
             InputStream debugInfoStream = Utilities.getInputStream(debugURL);
             loadUnitOrigins(debugInfoStream);
@@ -816,7 +817,7 @@ public class ClusterUnitDatabase {
                         timer.start("load_text");
                         ClusterUnitDatabase udb = new
                                 ClusterUnitDatabase(
-                                new URL("file:" + srcPath + "/" + name),
+                                URI.create("file:" + srcPath + "/" + name),
                                 false);
                         timer.stop("load_text");
 
@@ -832,13 +833,13 @@ public class ClusterUnitDatabase {
                         timer.start("load_text");
                         ClusterUnitDatabase udb = new
                                 ClusterUnitDatabase(
-                                new URL("file:./cmu_time_awb.txt"), false);
+                                URI.create("file:./cmu_time_awb.txt"), false);
                         timer.stop("load_text");
 
                         timer.start("load_binary");
                         ClusterUnitDatabase budb =
                                 new ClusterUnitDatabase(
-                                        new URL("file:./cmu_time_awb.bin"), true);
+                                        URI.create("file:./cmu_time_awb.bin"), true);
                         timer.stop("load_binary");
 
                         timer.start("compare");

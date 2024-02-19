@@ -4,6 +4,7 @@
 
 package com.sun.speech.freetts;
 
+import java.net.URI;
 import java.net.URL;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -27,7 +28,7 @@ public class PhoneDurationsImplTest {
      */
     @BeforeEach
     public void setUp() throws Exception {
-        URL url = PhoneDurationsImplTest.class.getResource("/com/sun/speech/freetts/en/us/dur_stat.txt");
+        URI url = PhoneDurationsImplTest.class.getResource("/com/sun/speech/freetts/en/us/dur_stat.txt").toURI();
         durations = new PhoneDurationsImpl(url);
     }
 

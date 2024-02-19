@@ -15,7 +15,7 @@ package de.dfki.lt.freetts;
 import java.io.IOException;
 import java.lang.System.Logger;
 import java.lang.System.Logger.Level;
-import java.net.URL;
+import java.net.URI;
 import java.util.Locale;
 import java.util.Objects;
 
@@ -50,14 +50,14 @@ public class DiphoneVoice extends Voice implements ConcatenativeVoice {
     private static final Logger logger = getLogger(DiphoneVoice.class.getName());
 
     private PhoneSet phoneSet;
-    protected URL database;
-    protected URL phonesetURL;
-    protected URL partOfSpeechURL;
+    protected URI database;
+    protected URI phonesetURL;
+    protected URI partOfSpeechURL;
     protected DiphoneUnitSelector unitSelector;
 
     public DiphoneVoice(String name, Gender gender, Age age,
                         String description, Locale locale, String domain,
-                        String organization, Lexicon lexicon, URL database) {
+                        String organization, Lexicon lexicon, URI database) {
         this(name, gender, age, description, locale, domain,
                 organization, lexicon, database, null, null);
     }
@@ -75,8 +75,8 @@ public class DiphoneVoice extends Voice implements ConcatenativeVoice {
      */
     public DiphoneVoice(String name, Gender gender, Age age,
                         String description, Locale locale, String domain,
-                        String organization, Lexicon lexicon, URL database,
-                        URL phonesetURL, URL partOfSpeechURL) {
+                        String organization, Lexicon lexicon, URI database,
+                        URI phonesetURL, URI partOfSpeechURL) {
 
         //TODO: do something useful with the lexicon
         super(name, gender, age, description, locale, domain, organization);
@@ -127,7 +127,7 @@ public class DiphoneVoice extends Voice implements ConcatenativeVoice {
      * @return an url to the database
      */
     @Override
-    public URL getDatabase() {
+    public URI getDatabase() {
         return database;
     }
 

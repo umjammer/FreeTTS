@@ -14,7 +14,8 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.System.Logger;
 import java.lang.System.Logger.Level;
-import java.net.URL;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Arrays;
 import java.util.Locale;
 
@@ -213,9 +214,12 @@ public class MbrolaVoice extends CMUVoice {
      * the package <code>com.sun.speech.freetts.en.us</code>.
      */
     @Override
-    protected URL getResource(String resource) {
-        return com.sun.speech.freetts.en.us.CMUVoice.class.
-                getResource(resource);
+    protected URI getResource(String resource) throws IOException {
+        try {
+            return CMUVoice.class.getResource(resource).toURI();
+        } catch (URISyntaxException e) {
+            throw new IOException(e);
+        }
     }
 
     /**

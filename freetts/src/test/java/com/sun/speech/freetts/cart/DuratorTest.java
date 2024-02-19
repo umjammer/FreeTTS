@@ -1,5 +1,6 @@
 package com.sun.speech.freetts.cart;
 
+import java.net.URI;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,9 +28,9 @@ public class DuratorTest {
      */
     @BeforeEach
     public void setUp() throws Exception {
-        URL urlCart = DuratorTest.class.getResource("/com/sun/speech/freetts/en/us/durz_cart.txt");
+        URI urlCart = DuratorTest.class.getResource("/com/sun/speech/freetts/en/us/durz_cart.txt").toURI();
         CARTImpl cart = new CARTImpl(urlCart);
-        URL urlPhones = DuratorTest.class.getResource("/com/sun/speech/freetts/en/us/dur_stat.txt");
+        URI urlPhones = DuratorTest.class.getResource("/com/sun/speech/freetts/en/us/dur_stat.txt").toURI();
         PhoneDurations durations = new PhoneDurationsImpl(urlPhones);
         durator = new Durator(cart, durations);
     }

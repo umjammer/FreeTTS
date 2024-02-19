@@ -14,7 +14,7 @@ package com.sun.speech.freetts.clunits;
 import java.io.IOException;
 import java.lang.System.Logger;
 import java.lang.System.Logger.Level;
-import java.net.URL;
+import java.net.URI;
 
 import com.sun.speech.freetts.FeatureSet;
 import com.sun.speech.freetts.FeatureSetImpl;
@@ -59,7 +59,7 @@ public class ClusterUnitSelector implements UtteranceProcessor {
      * @throws IOException if an error occurs while loading the
      *                     database
      */
-    public ClusterUnitSelector(URL url) throws IOException {
+    public ClusterUnitSelector(URI url) throws IOException {
         this(url, null);
     }
 
@@ -76,14 +76,13 @@ public class ClusterUnitSelector implements UtteranceProcessor {
      * @throws IOException if an error occurs while loading the
      *                     database
      */
-    public ClusterUnitSelector(URL url, ClusterUnitNamer unitNamer) throws IOException {
+    public ClusterUnitSelector(URI url, ClusterUnitNamer unitNamer) throws IOException {
         if (url == null) {
             throw new IOException("Can't load cluster unit database");
         }
         boolean binary = url.getPath().endsWith(".bin");
         clunitDB = new ClusterUnitDatabase(url, binary);
         this.unitNamer = unitNamer;
-
     }
 
     /**

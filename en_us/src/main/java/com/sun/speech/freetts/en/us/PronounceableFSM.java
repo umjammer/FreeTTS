@@ -15,7 +15,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.URL;
+import java.net.URI;
 import java.util.StringTokenizer;
 
 
@@ -52,9 +52,9 @@ public class PronounceableFSM {
      * @param scanFromFront indicates whether this FSM should scan the input
      *                      string from the front, or from the back
      */
-    public PronounceableFSM(URL url, boolean scanFromFront) throws IOException {
+    public PronounceableFSM(URI url, boolean scanFromFront) throws IOException {
         this.scanFromFront = scanFromFront;
-        InputStream is = url.openStream();
+        InputStream is = url.toURL().openStream();
         loadText(is);
         is.close();
     }

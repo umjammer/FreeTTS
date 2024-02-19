@@ -1,6 +1,5 @@
 package tests;
 
-import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -39,12 +38,12 @@ public class CartDumping {
      * Tests that Lexicon matches those from the standard results.
      */
     @Test
-    void testCartDumping() throws IOException {
-        CARTImpl numbersCart = new CARTImpl(CMUVoice.class.getResource("nums_cart.txt"));
-        CARTImpl phrasingCart = new CARTImpl(CMUVoice.class.getResource("phrasing_cart.txt"));
-        CARTImpl accentCart = new CARTImpl(CMUVoice.class.getResource("int_accent_cart.txt"));
-        CARTImpl toneCart = new CARTImpl(CMUVoice.class.getResource("int_tone_cart.txt"));
-        CARTImpl durzCart = new CARTImpl(CMUVoice.class.getResource("durz_cart.txt"));
+    void testCartDumping() throws Exception {
+        CARTImpl numbersCart = new CARTImpl(CMUVoice.class.getResource("nums_cart.txt").toURI());
+        CARTImpl phrasingCart = new CARTImpl(CMUVoice.class.getResource("phrasing_cart.txt").toURI());
+        CARTImpl accentCart = new CARTImpl(CMUVoice.class.getResource("int_accent_cart.txt").toURI());
+        CARTImpl toneCart = new CARTImpl(CMUVoice.class.getResource("int_tone_cart.txt").toURI());
+        CARTImpl durzCart = new CARTImpl(CMUVoice.class.getResource("durz_cart.txt").toURI());
 
         //
         // Dump the CART tree as a dot file.

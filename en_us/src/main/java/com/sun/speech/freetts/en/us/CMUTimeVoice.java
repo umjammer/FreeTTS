@@ -12,7 +12,7 @@
 package com.sun.speech.freetts.en.us;
 
 import java.io.IOException;
-import java.net.URL;
+import java.net.URI;
 import java.util.Locale;
 
 import com.sun.speech.freetts.Age;
@@ -46,7 +46,7 @@ public class CMUTimeVoice extends CMUClusterUnitVoice {
      */
     public CMUTimeVoice(String name, Gender gender, Age age,
                         String description, Locale locale, String domain,
-                        String organization, CMULexicon lexicon, URL database) {
+                        String organization, CMULexicon lexicon, URI database) {
         super(name, gender, age, description, locale, domain, organization, lexicon, database);
     }
 

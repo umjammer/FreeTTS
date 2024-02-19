@@ -19,7 +19,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.lang.System.Logger;
 import java.lang.System.Logger.Level;
-import java.net.URL;
+import java.net.URI;
 import java.nio.ByteBuffer;
 import java.util.StringTokenizer;
 import java.util.regex.Pattern;
@@ -133,11 +133,11 @@ public class CARTImpl implements CART {
      * @param url the location of the CART data
      * @throws IOException if errors occur while reading the data
      */
-    public CARTImpl(URL url) throws IOException {
+    public CARTImpl(URI url) throws IOException {
         BufferedReader reader;
         String line;
 
-        reader = new BufferedReader(new InputStreamReader(url.openStream()));
+        reader = new BufferedReader(new InputStreamReader(url.toURL().openStream()));
         line = reader.readLine();
         while (line != null) {
             if (!line.startsWith("***")) {

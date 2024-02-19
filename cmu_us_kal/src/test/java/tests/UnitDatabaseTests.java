@@ -34,12 +34,8 @@ public class UnitDatabaseTests {
      * Common code run before each test
      */
     @BeforeEach
-    protected void setUp() {
-        try {
-            udb = new DiphoneUnitDatabase(KevinVoiceDirectory.class.getResource(BINARY_DB), true);
-        } catch (Exception ioe) {
-            System.out.println("Can't load db " + ioe);
-        }
+    protected void setUp() throws Exception {
+        udb = new DiphoneUnitDatabase(KevinVoiceDirectory.class.getResource(BINARY_DB).toURI(), true);
     }
 
     /**
@@ -47,10 +43,10 @@ public class UnitDatabaseTests {
      * compare.
      */
     @Test
-    void testIdentical() {
+    void testIdentical() throws Exception {
         DiphoneUnitDatabase udbTextVersion = null;
         try {
-            udbTextVersion = new DiphoneUnitDatabase(KevinVoiceDirectory.class.getResource(TEXT_DB), false);
+            udbTextVersion = new DiphoneUnitDatabase(KevinVoiceDirectory.class.getResource(TEXT_DB).toURI(), false);
 
         } catch (IOException ioe) {
             System.out.println("Can't load text db " + ioe);

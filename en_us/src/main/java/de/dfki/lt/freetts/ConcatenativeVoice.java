@@ -13,7 +13,7 @@
 package de.dfki.lt.freetts;
 
 import java.io.IOException;
-import java.net.URL;
+import java.net.URI;
 
 import com.sun.speech.freetts.UtteranceProcessor;
 
@@ -30,7 +30,7 @@ public interface ConcatenativeVoice {
      *
      * @return an url to the database
      */
-    URL getDatabase();
+    URI getDatabase() throws IOException;
 
     /**
      * Returns the pitch mark generator to be used by this voice.

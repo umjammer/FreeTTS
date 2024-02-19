@@ -12,6 +12,7 @@
 package com.sun.speech.freetts.diphone;
 
 import java.io.IOException;
+import java.net.URI;
 import java.net.URL;
 
 import com.sun.speech.freetts.FeatureSet;
@@ -45,11 +46,11 @@ public class DiphoneUnitSelector implements UtteranceProcessor {
      * @throws IOException if an error occurs while loading the
      *                     database
      */
-    public DiphoneUnitSelector(URL url) throws IOException {
+    public DiphoneUnitSelector(URI url) throws IOException {
         if (url == null) {
             throw new IOException("Can't load unit database");
         }
-        boolean binary = url.getPath().endsWith(".bin");
+        boolean binary = url.toURL().getPath().endsWith(".bin");
         diphoneDatabase = new DiphoneUnitDatabase(url, binary);
     }
 

@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.MappedByteBuffer;
@@ -111,17 +112,17 @@ abstract public class LexiconImpl implements Lexicon {
     /**
      * URL for the compiled form.
      */
-    private URL compiledURL;
+    private URI compiledURL;
 
     /**
      * URL for the addenda.
      */
-    private URL addendaURL;
+    private URI addendaURL;
 
     /**
      * URL for the letter to sound rules.
      */
-    private URL letterToSoundURL;
+    private URI letterToSoundURL;
 
     /**
      * The addenda.
@@ -151,7 +152,7 @@ abstract public class LexiconImpl implements Lexicon {
      * and <code>removeAddendum</code>, each lexicon instance has its
      * own addenda.
      */
-    private static Map<URL, Object> loadedCompiledLexicons;
+    private static Map<URI, Object> loadedCompiledLexicons;
 
     /**
      * Loaded State of the lexicon
@@ -188,7 +189,7 @@ abstract public class LexiconImpl implements Lexicon {
      * @param binary           if <code>true</code>, the input streams are binary;
      *                         otherwise, they are text.
      */
-    public LexiconImpl(URL compiledURL, URL addendaURL, URL letterToSoundURL, boolean binary) {
+    public LexiconImpl(URI compiledURL, URI addendaURL, URI letterToSoundURL, boolean binary) {
         setLexiconParameters(compiledURL, addendaURL, letterToSoundURL, binary);
     }
 
@@ -212,9 +213,9 @@ abstract public class LexiconImpl implements Lexicon {
      * @param binary           if <code>true</code>, the input streams are binary;
      *                         otherwise, they are text.
      */
-    protected void setLexiconParameters(URL compiledURL,
-                                        URL addendaURL,
-                                        URL letterToSoundURL,
+    protected void setLexiconParameters(URI compiledURL,
+                                        URI addendaURL,
+                                        URI letterToSoundURL,
                                         boolean binary) {
         this.compiledURL = compiledURL;
         this.addendaURL = addendaURL;
@@ -280,7 +281,7 @@ abstract public class LexiconImpl implements Lexicon {
         String userAddenda = Utilities.getProperty("com.sun.speech.freetts.lexicon.userAddenda", null);
         if (userAddenda != null) {
             try {
-                URL userAddendaURL = new URL(userAddenda);
+                URI userAddendaURL = URI.create(userAddenda);
                 InputStream userAddendaIS = Utilities.getInputStream(userAddendaURL);
                 if (userAddendaIS == null) {
                     throw new IOException("Can't load user addenda from " + userAddenda);

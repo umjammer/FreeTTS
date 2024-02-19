@@ -25,6 +25,7 @@ import java.lang.System.Logger;
 import java.lang.System.Logger.Level;
 import java.lang.ref.Reference;
 import java.lang.ref.WeakReference;
+import java.net.URI;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.MappedByteBuffer;
@@ -137,7 +138,7 @@ public class DiphoneUnitDatabase {
      *                 binary format; otherwise it is in text format
      * @throws IOException if there is trouble opening the DB
      */
-    public DiphoneUnitDatabase(URL url, boolean isBinary) throws IOException {
+    public DiphoneUnitDatabase(URI url, boolean isBinary) throws IOException {
         // MS, 22.04.2005: Commented out the "if" clause:
         // indexing is applied only when useNewIO is turned on and
         // data is read from a FileInputStream. This is not true when useing
@@ -542,7 +543,7 @@ public class DiphoneUnitDatabase {
      *
      * @param url the location  of the binary index file
      */
-    private void loadBinaryIndex(URL url) {
+    private void loadBinaryIndex(URI url) {
 
         diphoneIndex = new HashMap<>();
 
@@ -608,7 +609,7 @@ public class DiphoneUnitDatabase {
         // always guarantee that we can do that.
         if (useNewIO && is instanceof FileInputStream fis) {
             if (useIndexing) {
-                loadBinaryIndex(new URL(indexName));
+                loadBinaryIndex(URI.create(indexName));
                 mapDatabase(fis);
             } else {
                 loadMappedBinary(fis);
@@ -832,7 +833,7 @@ public class DiphoneUnitDatabase {
                         System.out.println("Loading " + name);
                         timer.start("load_text");
                         DiphoneUnitDatabase udb = new DiphoneUnitDatabase(
-                                new URL("file:" + srcPath + "/" + name), false);
+                                URI.create("file:" + srcPath + "/" + name), false);
                         timer.stop("load_text");
 
                         System.out.println("Dumping " + binaryName);
@@ -842,7 +843,7 @@ public class DiphoneUnitDatabase {
 
                         timer.start("load_binary");
                         DiphoneUnitDatabase budb = new DiphoneUnitDatabase(
-                                new URL("file:" + destPath + "/" + binaryName), true);
+                                URI.create("file:" + destPath + "/" + binaryName), true);
                         timer.stop("load_binary");
 
                         System.out.println("Dumping " + indexName);
@@ -855,12 +856,12 @@ public class DiphoneUnitDatabase {
 
                         timer.start("load_text");
                         DiphoneUnitDatabase udb = new DiphoneUnitDatabase(
-                                new URL("file:./diphone_units.txt"), false);
+                                URI.create("file:./diphone_units.txt"), false);
                         timer.stop("load_text");
 
                         timer.start("load_binary");
                         DiphoneUnitDatabase budb = new DiphoneUnitDatabase(
-                                new URL("file:./diphone_units.bin"), true);
+                                URI.create("file:./diphone_units.bin"), true);
                         timer.stop("load_binary");
 
                         timer.start("compare");

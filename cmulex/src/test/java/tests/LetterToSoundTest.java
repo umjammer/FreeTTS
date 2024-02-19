@@ -39,8 +39,8 @@ public class LetterToSoundTest {
      * Common code run before each test
      */
     @BeforeEach
-    protected void setUp() throws IOException {
-        lts = new LetterToSoundImpl(LetterToSoundTest.class.getResource("/com/sun/speech/freetts/en/us/cmulex_lts.bin"), true);
+    protected void setUp() throws Exception {
+        lts = new LetterToSoundImpl(LetterToSoundTest.class.getResource("/com/sun/speech/freetts/en/us/cmulex_lts.bin").toURI(), true);
         assertNotNull(lts, "LTS Rules created");
         InputStream in = LetterToSoundTest.class.getResourceAsStream("LTS.txt");
         reader = new BufferedReader(new InputStreamReader(in));
@@ -93,7 +93,7 @@ public class LetterToSoundTest {
         }
     }
 
-    /*
+    /**
      * Tests to see if the binary version of the database matches
      * that of the text database.
      */
@@ -102,12 +102,12 @@ public class LetterToSoundTest {
     void testBinaryLoad() {
         try {
             LetterToSoundImpl text = new LetterToSoundImpl(
-                    LetterToSoundTest.class.getResource("/com/sun/speech/freetts/en/us/cmulex_lts.txt"), false);
+                    LetterToSoundTest.class.getResource("/com/sun/speech/freetts/en/us/cmulex_lts.txt").toURI(), false);
             LetterToSoundImpl binary = new LetterToSoundImpl(
-                    LetterToSoundTest.class.getResource("/com/sun/speech/freetts/en/us/cmulex_lts.bin"), true);
+                    LetterToSoundTest.class.getResource("/com/sun/speech/freetts/en/us/cmulex_lts.bin").toURI(), true);
 
             assertTrue(text.compare(binary), "text binary compare");
-        } catch (IOException ioe) {
+        } catch (Exception ioe) {
             fail("Can't load lts " + ioe);
         }
     }
