@@ -1,0 +1,165 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>org.jvoicexml</groupId>
+		<artifactId>freetts-parent</artifactId>
+    <version>1.2.5</version>
+	</parent>
+
+  <artifactId>freetts-jsapi10</artifactId>
+
+  <packaging>jar</packaging>
+  <licenses>
+    <license>
+      <name>FreeTTS License</name>
+      <url>http://freetts.sourceforge.net/license.terms</url>
+    </license>
+  </licenses>
+  <developers>
+    <developer>
+      <id>Willie</id>
+      <name>Willian Walker</name>
+    </developer>
+    <developer>
+      <id>Paul</id>
+      <name>Paul Lamere</name>
+    </developer>
+    <developer>
+      <id>Philip</id>
+      <name>Philip Kwok</name>
+    </developer>
+    <developer>
+      <id>Dirk</id>
+      <name>Dirk Schnelle-Walka</name>
+      <email>dirk.schnelle@jvoicexml.org</email>
+      <timezone>Central European Time</timezone>
+    </developer>
+  </developers>
+  <organization>
+    <name>JVoiceXML</name>
+    <url>http://jvoicexml.sourceforge.net</url>
+  </organization>
+  <description>JSAPI 1.0 Base Layer for the FreeTTS Speech Synthesis System</description>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>3.2.2</version>
+        <configuration>
+          <argLine>
+            -Djava.util.logging.config.file=${project.build.testOutputDirectory}/logging.properties
+          </argLine>
+          <trimStackTrace>false</trimStackTrace>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <version>3.3.0</version>
+        <configuration>
+          <archive>
+            <manifestEntries>
+              <Built-By>${user.name}</Built-By>
+              <Implementation-Title>FreeTTS JSAPI 1.0 layer</Implementation-Title>
+            </manifestEntries>
+          </archive>
+          <!-- name="com/sun/speech/engine/**"
+           name="com/sun/speech/freetts/jsapi/**" -->
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
+  <repositories>
+    <repository>
+      <id>jitpack.io</id>
+      <url>https://jitpack.io</url>
+    </repository>
+  </repositories>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.jvoicexml</groupId>
+			<artifactId>freetts</artifactId>
+      <version>1.2.5</version>
+      <exclusions>
+        <exclusion>
+          <groupId>com.github.umjammer.jsapi</groupId>
+          <artifactId>javax.speech</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>com.github.umjammer.jsapi</groupId>
+          <artifactId>org.jvoicexml.jsapi2.freetts</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+		<dependency> <!-- jsapi1 -->
+      <groupId>com.github.umjammer</groupId> <!-- javax.speech / com.github.umjammer -->
+      <artifactId>javax-speech</artifactId>
+      <version>1.0.1</version>
+		</dependency>
+
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-api</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-engine</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.junit.platform</groupId>
+      <artifactId>junit-platform-commons</artifactId>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.jvoicexml</groupId>
+      <artifactId>cmu_time_awb</artifactId>
+      <version>1.2.5</version>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.jvoicexml</groupId>
+      <artifactId>cmu_us_kal</artifactId>
+      <version>1.2.5</version>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.jvoicexml</groupId>
+      <artifactId>cmulex</artifactId>
+      <version>1.2.5</version>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.jvoicexml</groupId>
+      <artifactId>freetts</artifactId>
+      <version>1.2.5</version>
+      <type>test-jar</type>
+      <exclusions>
+        <exclusion>
+          <groupId>com.github.umjammer.jsapi</groupId>
+          <artifactId>javax.speech</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>com.github.umjammer.jsapi</groupId>
+          <artifactId>org.jvoicexml.jsapi2.freetts</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+
+    <dependency>
+      <groupId>com.github.umjammer</groupId>
+      <artifactId>vavi-commons</artifactId>
+      <version>1.1.10</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+</project>

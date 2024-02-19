@@ -14,7 +14,7 @@ xxx Release 1.2.3
     - bugfix: src folder was not properly set in the zipped sources to deploy
     - adapted jar to include version number
     - removed class path entry from jars
-    - dynamically creating jar mainfests from ANT
+    - dynamically creating jar manifests from ANT
 
 March, 9, 2009 Release 1.2.2:
     - Introduced an AliasDiphone class as a subclass of Diphone, which
