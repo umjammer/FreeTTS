@@ -36,7 +36,6 @@ public class DuratorTest {
     }
 
     @Test
-    @Disabled("Not yet implemented")
     void testProcessUtterance() {
         List<Token> tokenList = new ArrayList<>();
         Utterance utterance = new Utterance(null, tokenList);

@@ -167,7 +167,7 @@ public class CMUDiphoneVoice extends CMUVoice implements ConcatenativeVoice {
      * @return a string representation of this object
      */
     public String toString() {
-        return "CMUDiphoneVoice";
+        return "CMUDiphoneVoice(" + getName() + ")";
     }
 }
 

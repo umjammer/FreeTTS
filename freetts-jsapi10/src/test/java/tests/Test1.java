@@ -48,7 +48,7 @@ public class Test1 {
         VoiceManager voiceManager = VoiceManager.getInstance();
         Voice helloVoice = voiceManager.getVoice(voiceName);
         helloVoice.setVolume(0.5f); // under 0.8f is too silent
-        Debug.println(helloVoice);
+Debug.println(helloVoice);
 
         helloVoice.allocate();
         helloVoice.speak("Hello world");
@@ -61,7 +61,7 @@ public class Test1 {
         speak("She sells seashells by the seashore.");
     }
 
-    /**  */
+    /** */
     static void speak(String text) throws Exception {
         System.setProperty("freetts.voices", "com.sun.speech.freetts.en.us.cmu_us_kal.KevinVoiceDirectory");
         SynthesizerModeDesc desc = new SynthesizerModeDesc(Locale.US);

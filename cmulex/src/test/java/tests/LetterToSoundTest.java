@@ -12,13 +12,16 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
+import java.net.URI;
 
 import com.sun.speech.freetts.lexicon.LetterToSound;
 import com.sun.speech.freetts.lexicon.LetterToSoundImpl;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
+import static java.lang.System.getLogger;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -32,6 +35,8 @@ import static org.junit.jupiter.api.Assertions.fail;
  */
 public class LetterToSoundTest {
 
+    private static final Logger logger = getLogger(LetterToSoundTest.class.getName());
+    
     BufferedReader reader = null;
     LetterToSound lts = null;
 
@@ -98,16 +103,16 @@ public class LetterToSoundTest {
      * that of the text database.
      */
     @Test
-    @Disabled
     void testBinaryLoad() {
         try {
             LetterToSoundImpl text = new LetterToSoundImpl(
-                    LetterToSoundTest.class.getResource("/com/sun/speech/freetts/en/us/cmulex_lts.txt").toURI(), false);
+                    URI.create("file:src/main/voices/com/sun/speech/freetts/en/us/cmulex_lts.txt"), false);
             LetterToSoundImpl binary = new LetterToSoundImpl(
                     LetterToSoundTest.class.getResource("/com/sun/speech/freetts/en/us/cmulex_lts.bin").toURI(), true);
 
             assertTrue(text.compare(binary), "text binary compare");
         } catch (Exception ioe) {
+            logger.log(Level.ERROR, ioe.getMessage(), ioe);
             fail("Can't load lts " + ioe);
         }
     }

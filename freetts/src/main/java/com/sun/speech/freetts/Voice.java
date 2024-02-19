@@ -212,13 +212,13 @@ public abstract class Voice implements UtteranceProcessor, Dumpable {
                  String description, Locale locale, String domain,
                  String organization) {
         this();
-        setName(name);
-        setGender(gender);
-        setAge(age);
-        setDescription(description);
-        setLocale(locale);
-        setDomain(domain);
-        setOrganization(organization);
+        this.name = name;
+        this.gender = gender;
+        this.age = age;
+        this.description = description;
+        this.locale = locale;
+        this.domain = domain;
+        this.organization = organization;
     }
 
     /**
