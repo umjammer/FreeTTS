@@ -79,16 +79,16 @@ public class DiphonePitchmarkGenerator implements UtteranceProcessor {
             FeatureSet featureSet = targetItem.getFeatures();
             pos = featureSet.getFloat("pos");
             f0 = featureSet.getFloat("f0");
-logger.log(Level.TRACE, "Target pos=" + pos + ", f0=" + f0);
+            logger.log(Level.TRACE, "Target pos=" + pos + ", f0=" + f0);
             if (time == pos) {
                 lf0 = f0;
                 continue;
             }
             m = (f0 - lf0) / pos;
-logger.log(Level.TRACE, "m=(" + f0 + "-" + lf0 + ")/" + pos + "=" + m);
+            logger.log(Level.TRACE, "m=(" + f0 + "-" + lf0 + ")/" + pos + "=" + m);
             for (; time < pos; pitchMarks++) {
                 time += 1 / (lf0 + (time * m));
-logger.log(Level.TRACE, "f(" + time + ")=" + ((lf0 + (time * m))));
+                logger.log(Level.TRACE, "f(" + time + ")=" + ((lf0 + (time * m))));
                 // save the time value in a list
                 timesList.add((int) (time * sampleInfo.getSampleRate()));
             }
@@ -135,7 +135,7 @@ logger.log(Level.TRACE, "f(" + time + ")=" + ((lf0 + (time * m))));
  * great improvement in compiler performance in this area such that we
  * may be able to revert to using an array without any performance
  * impact.
- *
+ * <p>
  * TODO look at replacing this with a simple int array
  */
 class IntLinkedList {

@@ -53,7 +53,7 @@ public class UtteranceTests {
      */
     @BeforeEach
     protected void setUp() {
-logger.log(Level.INFO, "voices: " + Arrays.toString(VoiceManager.getInstance().getVoices()));
+        logger.log(Level.INFO, "voices: " + Arrays.toString(VoiceManager.getInstance().getVoices()));
         voice = VoiceManager.getInstance().getVoice("kevin");
         utterance = new Utterance(voice);
         List<UtteranceProcessor> processors = voice.getUtteranceProcessors();
@@ -351,6 +351,7 @@ logger.log(Level.INFO, "voices: " + Arrays.toString(VoiceManager.getInstance().g
  * A test utterance processor
  */
 class TestUtteranceProcessor implements UtteranceProcessor {
+
     String name;
 
     public TestUtteranceProcessor(String name) {

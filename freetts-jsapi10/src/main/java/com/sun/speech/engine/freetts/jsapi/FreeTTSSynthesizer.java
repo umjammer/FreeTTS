@@ -10,10 +10,10 @@ package com.sun.speech.engine.freetts.jsapi;
 
 import java.beans.PropertyVetoException;
 import java.io.IOException;
+import java.lang.System.Logger;
 import java.lang.System.Logger.Level;
 import java.util.Enumeration;
 import java.util.Vector;
-import java.lang.System.Logger;
 import javax.speech.EngineException;
 import javax.speech.EngineStateError;
 import javax.speech.synthesis.SynthesizerModeDesc;

@@ -160,7 +160,7 @@ public class MultiFile8BitAudioPlayer implements AudioPlayer {
     public boolean end() throws IOException {
         ByteArrayInputStream bais = new ByteArrayInputStream(outputData);
         AudioInputStream ais = new AudioInputStream(bais, currentFormat,
-                        outputData.length / currentFormat.getFrameSize());
+                outputData.length / currentFormat.getFrameSize());
         String name = baseName;
         name = name + fileCount;
         name = name + "." + outputType.getExtension();

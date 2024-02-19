@@ -11,8 +11,8 @@
 
 package com.sun.speech.freetts.en;
 
-import java.lang.System.Logger.Level;
 import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 
 import com.sun.speech.freetts.ProcessException;
 import com.sun.speech.freetts.Utterance;

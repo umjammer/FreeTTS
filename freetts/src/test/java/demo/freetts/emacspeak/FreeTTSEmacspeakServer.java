@@ -8,9 +8,9 @@
 
 package demo.freetts.emacspeak;
 
+import java.lang.System.Logger;
 import java.lang.System.Logger.Level;
 import java.net.Socket;
-import java.lang.System.Logger;
 
 import com.sun.speech.freetts.Voice;
 import com.sun.speech.freetts.VoiceManager;

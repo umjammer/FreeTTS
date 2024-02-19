@@ -8,9 +8,9 @@
 
 package demo.jsapi.webStartClock;
 
+import java.lang.System.Logger;
 import java.lang.System.Logger.Level;
 import java.util.Locale;
-import java.lang.System.Logger;
 import javax.speech.EngineCreate;
 import javax.speech.EngineList;
 import javax.speech.synthesis.Synthesizer;
@@ -37,10 +37,10 @@ public class JSAPIClock extends Clock {
 
         try {
             SynthesizerModeDesc desc = new SynthesizerModeDesc(null,
-                            "time",
-                            Locale.US,
-                            Boolean.FALSE,
-                            null);
+                    "time",
+                    Locale.US,
+                    Boolean.FALSE,
+                    null);
 
             FreeTTSEngineCentral central = new FreeTTSEngineCentral();
             EngineList list = central.createEngineList(desc);

@@ -12,10 +12,10 @@
 package com.sun.speech.freetts;
 
 import java.io.PrintWriter;
+import java.lang.System.Logger;
 import java.lang.System.Logger.Level;
 import java.util.Objects;
 import java.util.StringTokenizer;
-import java.lang.System.Logger;
 
 
 /**

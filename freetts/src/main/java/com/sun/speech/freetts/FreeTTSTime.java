@@ -14,12 +14,12 @@ package com.sun.speech.freetts;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.logging.ConsoleHandler;
 import java.util.logging.Handler;
-import java.lang.System.Logger.Level;
-import java.lang.System.Logger;
 import java.util.regex.Pattern;
 
 

@@ -148,6 +148,7 @@ public class SynthesizerMonitor extends EngineMonitor {
      */
     class SynthesizerMonitorEngineListener
             extends EngineMonitorEngineListener implements SynthesizerListener {
+
         public SynthesizerMonitorEngineListener() {
         }
 

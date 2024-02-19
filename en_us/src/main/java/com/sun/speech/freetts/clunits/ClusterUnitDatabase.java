@@ -163,7 +163,7 @@ public class ClusterUnitDatabase {
 
     /**
      * Retrieves the type index for the name given a name.
-     *
+     * <p>
      * TODO perhaps replace this with  java.util.Arrays.binarySearch
      *
      * @param name the name
@@ -965,6 +965,7 @@ public class ClusterUnitDatabase {
      * Represents debug information about the origin of a unit.
      */
     static class UnitOriginInfo {
+
         String originFile;
         float originStart;
         float originEnd;

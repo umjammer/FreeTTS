@@ -9,10 +9,10 @@
 package demo.jsapi.emacspeak;
 
 import java.io.File;
+import java.lang.System.Logger;
 import java.lang.System.Logger.Level;
 import java.net.Socket;
 import java.util.Locale;
-import java.lang.System.Logger;
 import javax.speech.Central;
 import javax.speech.synthesis.Synthesizer;
 import javax.speech.synthesis.SynthesizerModeDesc;

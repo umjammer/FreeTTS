@@ -26,6 +26,7 @@ import org.xml.sax.SAXException;
  * Parses a JSML 0.6 document and returns a DOM.
  */
 public class JSMLParser {
+
     private DocumentBuilder validatingDocumentBuilder;
 
     private DocumentBuilder nonvalidatingDocumentBuilder;

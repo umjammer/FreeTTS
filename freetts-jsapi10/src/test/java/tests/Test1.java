@@ -8,7 +8,6 @@ package tests;
 
 import java.util.Arrays;
 import java.util.Locale;
-
 import javax.speech.Central;
 import javax.speech.synthesis.Synthesizer;
 import javax.speech.synthesis.SynthesizerModeDesc;
@@ -33,14 +32,14 @@ public class Test1 {
     static void listAllVoices() {
         VoiceManager voiceManager = VoiceManager.getInstance();
         Voice[] voices = voiceManager.getVoices();
-System.err.println("---- voices ----");
-Arrays.stream(voices).forEach(v -> System.err.println(v.getName()));
-System.err.println("---");
+        System.err.println("---- voices ----");
+        Arrays.stream(voices).forEach(v -> System.err.println(v.getName()));
+        System.err.println("---");
     }
 
     @Test
     void test1() throws Exception {
-listAllVoices();
+        listAllVoices();
 
         String voiceName = "kevin16";
 
@@ -49,7 +48,7 @@ listAllVoices();
         VoiceManager voiceManager = VoiceManager.getInstance();
         Voice helloVoice = voiceManager.getVoice(voiceName);
         helloVoice.setVolume(0.5f); // under 0.8f is too silent
-Debug.println(helloVoice);
+        Debug.println(helloVoice);
 
         helloVoice.allocate();
         helloVoice.speak("Hello world");
@@ -62,7 +61,7 @@ Debug.println(helloVoice);
         speak("She sells seashells by the seashore.");
     }
 
-    /** */
+    /**  */
     static void speak(String text) throws Exception {
         System.setProperty("freetts.voices", "com.sun.speech.freetts.en.us.cmu_us_kal.KevinVoiceDirectory");
         SynthesizerModeDesc desc = new SynthesizerModeDesc(Locale.US);
@@ -74,7 +73,7 @@ Debug.println(helloVoice);
 
         SynthesizerModeDesc smd = (SynthesizerModeDesc) synthesizer.getEngineModeDesc();
         Arrays.stream(smd.getVoices()).forEach(v -> System.err.println(v.getName()));
-listAllVoices();
+        listAllVoices();
         String name = "kevin16";
 //        String name = "kevin";
         javax.speech.synthesis.Voice voice = Arrays.stream(smd.getVoices())

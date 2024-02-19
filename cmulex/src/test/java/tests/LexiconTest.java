@@ -54,7 +54,7 @@ public class LexiconTest {
             reader = new BufferedReader(inputReader);
             assertNotNull(reader, "Data File opened");
         } catch (Exception e) {
-logger.log(Level.ERROR, e.getMessage(), e);
+            logger.log(Level.ERROR, e.getMessage(), e);
         }
     }
 

@@ -12,11 +12,11 @@ package de.dfki.lt.freetts.en.us;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.System.Logger;
 import java.lang.System.Logger.Level;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.Locale;
-import java.lang.System.Logger;
 
 import com.sun.speech.freetts.Age;
 import com.sun.speech.freetts.Gender;
@@ -112,7 +112,7 @@ public class MbrolaVoice extends CMUVoice {
         // unknown diphone:
         String[] cmd = {getMbrolaBinary(), "-e", "-R", getRenameList(), getDatabase(), "-", "-.raw"};
 
-logger.log(Level.TRACE, Arrays.toString(cmd));
+        logger.log(Level.TRACE, Arrays.toString(cmd));
 
         return cmd;
     }

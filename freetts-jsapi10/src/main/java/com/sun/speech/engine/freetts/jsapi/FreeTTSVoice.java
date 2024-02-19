@@ -9,8 +9,8 @@
 package com.sun.speech.engine.freetts.jsapi;
 
 import java.lang.System.Logger;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.System.Logger.Level;
+import java.lang.reflect.InvocationTargetException;
 
 import com.sun.speech.engine.synthesis.BaseVoice;
 import com.sun.speech.freetts.ValidationException;

@@ -10,10 +10,10 @@
 package de.dfki.lt.freetts.mbrola;
 
 import java.io.IOException;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.nio.ByteOrder;
 import java.util.List;
-import java.lang.System.Logger.Level;
-import java.lang.System.Logger;
 import javax.sound.sampled.AudioFormat;
 
 import com.sun.speech.freetts.ProcessException;

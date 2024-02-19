@@ -23,6 +23,7 @@ import org.w3c.dom.Text;
  * <code>TextSynthesizer</code>.
  */
 public class TextSynthesizerQueueItem extends BaseSynthesizerQueueItem {
+
     static public final String JSML = "jsml";
     static public final String[] JSML_ATTRIBUTES = {
             "lang", "mark"

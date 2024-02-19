@@ -11,8 +11,8 @@
 
 package com.sun.speech.freetts.cart;
 
-import java.lang.System.Logger.Level;
 import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 
 import com.sun.speech.freetts.Item;
 import com.sun.speech.freetts.ProcessException;

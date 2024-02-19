@@ -37,6 +37,7 @@ import com.sun.speech.freetts.Voice;
  * PA.&nbsp;1996.
  */
 public class ContourGenerator implements UtteranceProcessor {
+
     private final static PathExtractor endPath =
             new PathExtractorImpl("R:SylStructure.daughter.R:Segment.p.end", true);
     private final static PathExtractor lastDaughterEndPath =
@@ -48,9 +49,9 @@ public class ContourGenerator implements UtteranceProcessor {
     private final static PathExtractor vowelMidPath =
             new PathExtractorImpl("R:Segment.p.end", true);
     private final static PathExtractor localF0Shift = new PathExtractorImpl(
-                    "R:SylStructure.parent.R:Token.parent.local_f0_shift", true);
+            "R:SylStructure.parent.R:Token.parent.local_f0_shift", true);
     private final static PathExtractor localF0Range = new PathExtractorImpl(
-                    "R:SylStructure.parent.R:Token.parent.local_f0_range", true);
+            "R:SylStructure.parent.R:Token.parent.local_f0_range", true);
 
     private final float modelMean;
     private final float modelStddev;
@@ -164,7 +165,7 @@ public class ContourGenerator implements UtteranceProcessor {
             }
 
             if (last.getFeatures().getFloat("pos") < segEnd) {
-                addTargetPoint(target, segEnd, last.getFeatures(). getFloat("f0"));
+                addTargetPoint(target, segEnd, last.getFeatures().getFloat("f0"));
             }
         }
     }

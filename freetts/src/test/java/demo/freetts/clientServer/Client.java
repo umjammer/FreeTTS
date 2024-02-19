@@ -13,9 +13,9 @@ import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
-import java.net.Socket;
-import java.lang.System.Logger.Level;
 import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
+import java.net.Socket;
 import javax.sound.sampled.AudioFormat;
 
 import com.sun.speech.freetts.audio.AudioPlayer;
@@ -84,7 +84,11 @@ public class Client {
             return true;
         } catch (IOException ioe) {
             if (socket != null) {
-                try { socket.close(); } catch (IOException e) { logger.log(Level.ERROR, e.getMessage(), e); }
+                try {
+                    socket.close();
+                } catch (IOException e) {
+                    logger.log(Level.ERROR, e.getMessage(), e);
+                }
             }
             logger.log(Level.ERROR, ioe.getMessage(), ioe);
             return false;

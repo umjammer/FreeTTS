@@ -20,6 +20,7 @@ import javax.speech.AudioManager;
  * or modify this implementation.
  */
 public class BaseAudioManager implements AudioManager {
+
     /**
      * List of <code>AudioListeners</code> registered for
      * <code>AudioEvents</code> on this object.

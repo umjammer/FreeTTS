@@ -325,9 +325,9 @@ public class PlayerPanel extends JPanel {
         speedSlider = new JSlider(JSlider.VERTICAL, 0, 400, 0);
 
         JPanel volumePanel = createSliderPanel(volumeSlider, "Volume Control", 1, 5,
-                        "Volume", volumeMnemonic);
+                "Volume", volumeMnemonic);
         JPanel speedPanel = createSliderPanel(speedSlider, "Speed Control", 50, 100,
-                        "Words/min", wordsPerMinMnemonic);
+                "Words/min", wordsPerMinMnemonic);
 
         JPanel sliderPanel = new JPanel(new FlowLayout());
         sliderPanel.add(volumePanel);

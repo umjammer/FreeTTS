@@ -45,7 +45,7 @@ public class ItemContents {
      * @param item         the item reference in the relation
      */
     public void addItemRelation(String relationName, Item item) {
-logger.log(Level.TRACE, "AddItemRelation: " + relationName + " item: " + item);
+        logger.log(Level.TRACE, "AddItemRelation: " + relationName + " item: " + item);
         relations.setObject(relationName, item);
     }
 

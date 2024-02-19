@@ -17,6 +17,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.io.Reader;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -26,8 +28,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.lang.System.Logger.Level;
-import java.lang.System.Logger;
 
 import com.sun.speech.freetts.audio.AudioPlayer;
 import com.sun.speech.freetts.lexicon.Lexicon;
@@ -1158,7 +1158,8 @@ public abstract class Voice implements UtteranceProcessor, Dumpable {
             Class<?> cls = Class.forName(className);
             defaultAudioPlayer = (AudioPlayer) cls.getDeclaredConstructor().newInstance();
             return defaultAudioPlayer;
-        } catch (ClassNotFoundException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+        } catch (ClassNotFoundException | IllegalAccessException | InvocationTargetException |
+                 NoSuchMethodException e) {
             throw new InstantiationException("Can't find class " + className);
         } catch (ClassCastException e) {
             throw new InstantiationException(className + " cannot be cast " + "to AudioPlayer");
@@ -1370,6 +1371,7 @@ public abstract class Voice implements UtteranceProcessor, Dumpable {
      * Tokenizes a FreeTTSSpeakable
      */
     private class FreeTTSSpeakableTokenizer {
+
         FreeTTSSpeakable speakable;
         Tokenizer tok = getTokenizer();
 

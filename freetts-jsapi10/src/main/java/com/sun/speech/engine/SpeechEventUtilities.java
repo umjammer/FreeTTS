@@ -191,6 +191,7 @@ public class SpeechEventUtilities {
      * @see #postSpeechEvent
      */
     protected static class SpeechAWTEventTarget extends Component {
+
         SpeechAWTEventTarget() {
             super();
             enableEvents(SpeechAWTEvent.EVENT_ID);
@@ -216,6 +217,7 @@ public class SpeechEventUtilities {
      * @see #postSpeechEvent
      */
     protected static class SpeechAWTEvent extends AWTEvent {
+
         static final int EVENT_ID = AWTEvent.RESERVED_ID_MAX + 14830;
         SpeechEventDispatcher dispatcher;
         SpeechEvent event;

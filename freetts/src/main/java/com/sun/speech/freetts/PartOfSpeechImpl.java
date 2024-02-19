@@ -14,13 +14,13 @@ package com.sun.speech.freetts;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.lang.System.Logger;
 import java.lang.System.Logger.Level;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.StringTokenizer;
-import java.lang.System.Logger;
 
 
 /**

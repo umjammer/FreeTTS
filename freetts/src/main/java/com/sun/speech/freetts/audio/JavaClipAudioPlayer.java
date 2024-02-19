@@ -11,8 +11,8 @@ package com.sun.speech.freetts.audio;
 import java.io.IOException;
 import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
-import java.lang.System.Logger.Level;
 import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
@@ -71,11 +71,11 @@ public class JavaClipAudioPlayer implements AudioPlayer {
      */
     public JavaClipAudioPlayer() {
         drainDelay = Utilities.getLong("com.sun.speech.freetts.audio.AudioPlayer.drainDelay",
-                        150L);
+                150L);
         openFailDelayMs = Utilities.getLong("com.sun.speech.freetts.audio.AudioPlayer.openFailDelayMs",
-                        0);
+                0);
         totalOpenFailDelayMs = Utilities.getLong("com.sun.speech.freetts.audio.AudioPlayer.totalOpenFailDelayMs",
-                        0);
+                0);
         audioMetrics = Utilities.getBoolean("com.sun.speech.freetts.audio.AudioPlayer.showAudioMetrics");
         setPaused(false);
         outputData = new PipedOutputStream();
@@ -470,6 +470,7 @@ public class JavaClipAudioPlayer implements AudioPlayer {
      * Provides a LineListener for this clas.
      */
     private class JavaClipLineListener implements LineListener {
+
         /**
          * Implements update() method of LineListener interface. Responds to the
          * line events as appropriate.

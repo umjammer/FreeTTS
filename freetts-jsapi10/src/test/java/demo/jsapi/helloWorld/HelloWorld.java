@@ -9,9 +9,9 @@
 package demo.jsapi.helloWorld;
 
 import java.io.File;
+import java.lang.System.Logger;
 import java.lang.System.Logger.Level;
 import java.util.Locale;
-import java.lang.System.Logger;
 import javax.speech.Central;
 import javax.speech.EngineList;
 import javax.speech.synthesis.Synthesizer;

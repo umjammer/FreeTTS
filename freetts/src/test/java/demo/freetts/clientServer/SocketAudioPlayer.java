@@ -10,9 +10,9 @@ package demo.freetts.clientServer;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.lang.System.Logger;
 import java.lang.System.Logger.Level;
 import java.net.Socket;
-import java.lang.System.Logger;
 import javax.sound.sampled.AudioFormat;
 
 import com.sun.speech.freetts.audio.AudioPlayer;

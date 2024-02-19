@@ -9,9 +9,9 @@
 package demo.jsapi.mixedVoices;
 
 import java.io.File;
+import java.lang.System.Logger;
 import java.lang.System.Logger.Level;
 import java.util.Locale;
-import java.lang.System.Logger;
 import javax.speech.Central;
 import javax.speech.synthesis.SpeakableAdapter;
 import javax.speech.synthesis.SpeakableEvent;
@@ -42,9 +42,9 @@ public class MixedVoices {
      */
     static private String noSynthesizerMessage(String synthesizer) {
         String message = "Cannot find " + synthesizer + ".\n" +
-                        "This may be the result of any number of problems.  It's\n" +
-                        "typically due to a missing \"speech.properties\" file that\n" +
-                        "should be at either of these locations: \n\n";
+                "This may be the result of any number of problems.  It's\n" +
+                "typically due to a missing \"speech.properties\" file that\n" +
+                "should be at either of these locations: \n\n";
         message += "user.home    : " + System.getProperty("user.home") + "\n";
         message += "java.home/lib: " + System.getProperty("java.home") +
                 File.separator + "lib\n\n" +
@@ -146,9 +146,9 @@ public class MixedVoices {
                                 System.out.println("  PCE Voice changed to " + newVoice);
                             } else {
                                 System.out.println("  PCE " + pce.getPropertyName()
-                                                + " changed from "
-                                                + pce.getOldValue() + " to " +
-                                                pce.getNewValue() + ".");
+                                        + " changed from "
+                                        + pce.getOldValue() + " to " +
+                                        pce.getNewValue() + ".");
                             }
                         });
             }
@@ -250,7 +250,7 @@ public class MixedVoices {
             synthesizer1.getSynthesizerProperties().setVolume(1.0f);
             synthesizer1.speakPlainText("I can talk with a higher quality voice", null);
             synthesizer1.speakPlainText("Here is a low quality tongue twister. "
-                            + "She sells seashells by the seashore.", null);
+                    + "She sells seashells by the seashore.", null);
             synthesizer1.waitEngineState(Synthesizer.QUEUE_EMPTY);
 
             synthesizer1.getSynthesizerProperties().setVoice(kevinHQ);

@@ -12,8 +12,8 @@
 package com.sun.speech.freetts.relp;
 
 import java.io.IOException;
-import java.lang.System.Logger.Level;
 import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import javax.sound.sampled.AudioFormat;
 
 import com.sun.speech.freetts.ProcessException;

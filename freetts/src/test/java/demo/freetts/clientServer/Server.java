@@ -12,9 +12,9 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.lang.System.Logger;
 import java.lang.System.Logger.Level;
 import java.net.Socket;
-import java.lang.System.Logger;
 
 import com.sun.speech.freetts.Voice;
 import com.sun.speech.freetts.VoiceManager;
@@ -200,7 +200,7 @@ class SocketTTSHandler implements Runnable {
                     return;
                 } else if (metrics) {
                     System.out.println("Time To Sending First Byte: " +
-                                    (socketAudioPlayer.getFirstByteSentTime() - requestReceivedTime) + " ms");
+                            (socketAudioPlayer.getFirstByteSentTime() - requestReceivedTime) + " ms");
                 }
             }
             if (command != null) {

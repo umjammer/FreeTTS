@@ -26,7 +26,7 @@ import com.sun.speech.freetts.UtteranceProcessor;
  * Determines duration timing for <code>Relation.SEGMENT</code> relations in an
  * utterance. Annotates the <code>Relation.SEGMENT</code> relation with an "end"
  * time feature.
- *
+ * <p>
  * TODO: The mean words-per-minute rate should become part of the CART data.
  *  For now, it is passed into the constructor.
  *

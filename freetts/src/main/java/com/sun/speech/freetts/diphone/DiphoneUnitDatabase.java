@@ -21,6 +21,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.lang.ref.Reference;
 import java.lang.ref.WeakReference;
 import java.net.URL;
@@ -32,8 +34,6 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.StringTokenizer;
-import java.lang.System.Logger.Level;
-import java.lang.System.Logger;
 
 import com.sun.speech.freetts.relp.Sample;
 import com.sun.speech.freetts.relp.SampleInfo;

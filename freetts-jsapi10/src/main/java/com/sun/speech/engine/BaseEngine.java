@@ -655,7 +655,7 @@ abstract public class BaseEngine implements Engine, SpeechEventDispatcher {
         long currentState = getEngineState();
         if ((currentState & state) != 0) {
             throw new EngineStateError("Invalid EngineState: expected=("
-                            + stateToString(state) + ") current state=(" + stateToString(currentState) + ")");
+                    + stateToString(state) + ") current state=(" + stateToString(currentState) + ")");
         }
     }
 

@@ -113,7 +113,7 @@ import static java.lang.System.getLogger;
  * <pre>
  *   -Dcom.sun.speech.freetts.lexicon.LTSTokenize=load
  * </pre>
- *
+ * <p>
  * TODO This implementation uses ASCII 'a'-'z', which is not internationalized.
  */
 public class LetterToSoundImpl implements LetterToSound {
@@ -587,6 +587,7 @@ public class LetterToSoundImpl implements LetterToSound {
      * @see FinalState
      */
     interface State {
+
         void writeBinary(DataOutputStream dos) throws IOException;
 
         boolean compare(State other);

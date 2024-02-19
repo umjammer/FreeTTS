@@ -55,7 +55,7 @@ public class LPCResult {
     private float lpcRange;
 
     private final static int MAX_SAMPLE_SIZE = Utilities.getInteger("com.sun.speech.freetts.LpcResult.maxSamples",
-                    1024);
+            1024);
 
     /**
      * Given a residual, maps it using WaveUtils.ulawToShort() to a float.
@@ -400,9 +400,9 @@ public class LPCResult {
      *
      * @param numberSamples the number of samples desirred
      * @param utterance     the utterance
-     *
-     * TODO well there is a bunch of duplicated code here ..
-     *  these should be combined into one routine.
+     *                      <p>
+     *                      TODO well there is a bunch of duplicated code here ..
+     *                       these should be combined into one routine.
      */
     private byte[] getWaveSamples(int numberSamples, Utterance utterance) {
         int numberChannels = getNumberOfChannels();
@@ -632,7 +632,7 @@ public class LPCResult {
     private Wave getWave() {
         // construct a new wave object
         AudioFormat audioFormat = new AudioFormat(getSampleRate(),
-                        Wave.DEFAULT_SAMPLE_SIZE_IN_BITS, 1, Wave.DEFAULT_SIGNED, true);
+                Wave.DEFAULT_SAMPLE_SIZE_IN_BITS, 1, Wave.DEFAULT_SIGNED, true);
         return new Wave(audioFormat, getWaveSamples(getNumberOfSamples() * 2, null));
     }
 

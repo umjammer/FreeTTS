@@ -8,8 +8,8 @@
 
 package com.sun.speech.freetts.audio;
 
-import java.lang.System.Logger.Level;
 import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import javax.sound.sampled.AudioFormat;
 
 import com.sun.speech.freetts.util.BulkTimer;

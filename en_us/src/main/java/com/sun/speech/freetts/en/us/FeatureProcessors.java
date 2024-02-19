@@ -323,6 +323,7 @@ public class FeatureProcessors {
      * performs some sort of processing on the item and returns an object.
      */
     public static class TokenPosGuess implements FeatureProcessor {
+
         /**
          * Performs some processing on the given item.
          *
@@ -1114,7 +1115,7 @@ public class FeatureProcessors {
                 return seg.getFeatures().getObject("end").toString();
             } else {
                 return Float.toString(seg.getFeatures().getFloat("end") -
-                                seg.getPrevious().getFeatures().getFloat("end")
+                        seg.getPrevious().getFeatures().getFloat("end")
                 );
             }
         }

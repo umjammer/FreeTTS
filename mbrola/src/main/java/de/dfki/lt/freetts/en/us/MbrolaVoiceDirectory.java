@@ -24,26 +24,26 @@ public class MbrolaVoiceDirectory extends VoiceDirectory {
 
         if (base == null || base.trim().isEmpty()) {
             System.out.println("System property \"mbrola.base\" is undefined.  "
-                            + "Will not use MBROLA voices.");
+                    + "Will not use MBROLA voices.");
             return new Voice[0];
         } else {
 
             CMULexicon lexicon = new CMULexicon("cmulex");
 
             Voice mbrola1 = new MbrolaVoice("us1", "us1", 150f, 180F, 22F,
-                            "mbrola_us1", Gender.FEMALE, Age.YOUNGER_ADULT,
-                            "MBROLA Voice us1",
-                            Locale.US, "general", "mbrola", lexicon);
+                    "mbrola_us1", Gender.FEMALE, Age.YOUNGER_ADULT,
+                    "MBROLA Voice us1",
+                    Locale.US, "general", "mbrola", lexicon);
 
             Voice mbrola2 = new MbrolaVoice("us2", "us2", 150f, 115F, 12F,
-                            "mbrola_us2", Gender.MALE, Age.YOUNGER_ADULT,
-                            "MBROLA Voice us2",
-                            Locale.US, "general", "mbrola", lexicon);
+                    "mbrola_us2", Gender.MALE, Age.YOUNGER_ADULT,
+                    "MBROLA Voice us2",
+                    Locale.US, "general", "mbrola", lexicon);
 
             Voice mbrola3 = new MbrolaVoice("us3", "us3", 150f, 125F, 12F,
-                            "mbrola_us3", Gender.MALE, Age.YOUNGER_ADULT,
-                            "MBROLA Voice us3",
-                            Locale.US, "general", "mbrola", lexicon);
+                    "mbrola_us3", Gender.MALE, Age.YOUNGER_ADULT,
+                    "MBROLA Voice us3",
+                    Locale.US, "general", "mbrola", lexicon);
 
             Voice[] voices = {mbrola1, mbrola2, mbrola3};
 
@@ -62,11 +62,11 @@ public class MbrolaVoiceDirectory extends VoiceDirectory {
             }
             if (count == 0) {
                 System.err.println("\n"
-                                + "Could not validate any MBROLA voices at\n\n"
-                                + "  " + base + "\n");
+                        + "Could not validate any MBROLA voices at\n\n"
+                        + "  " + base + "\n");
                 if (base.indexOf('~') != -1) {
                     System.err.println("DO NOT USE ~ as part of the path name\n"
-                                    + "to specify the mbrola.base property.");
+                            + "to specify the mbrola.base property.");
                 }
                 System.err.println("""
                         Make sure you FULLY specify the path to

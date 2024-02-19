@@ -9,9 +9,9 @@
 package com.sun.speech.engine.synthesis;
 
 import java.io.IOException;
+import java.lang.System.Logger;
 import java.lang.System.Logger.Level;
 import java.net.URL;
-import java.lang.System.Logger;
 import javax.speech.SpeechEvent;
 import javax.speech.synthesis.JSMLException;
 import javax.speech.synthesis.Speakable;

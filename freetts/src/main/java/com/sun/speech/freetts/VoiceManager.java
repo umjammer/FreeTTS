@@ -203,7 +203,7 @@ public class VoiceManager {
             for (int i = 0; i < voiceDirectoryNames.size(); i++) {
                 @SuppressWarnings("unchecked")
                 Class<VoiceDirectory> c = (Class<VoiceDirectory>) Class.forName(
-                                voiceDirectoryNames.get(i), true, CLASSLOADER);
+                        voiceDirectoryNames.get(i), true, CLASSLOADER);
                 voiceDirectories.add(c.getDeclaredConstructor().newInstance());
             }
 
@@ -306,7 +306,7 @@ public class VoiceManager {
 
         // next, try loading voices.txt
         try {
-            voiceDirectoryNames.addVector(getVoiceDirectoryNamesFromFile(getBaseDirectory()+ "voices.txt"));
+            voiceDirectoryNames.addVector(getVoiceDirectoryNamesFromFile(getBaseDirectory() + "voices.txt"));
         } catch (IOException e) {
             // do nothing
         }

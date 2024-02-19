@@ -17,11 +17,11 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.util.StringTokenizer;
-import java.lang.System.Logger.Level;
-import java.lang.System.Logger;
 import java.util.regex.Pattern;
 
 import com.sun.speech.freetts.Item;
@@ -616,11 +616,11 @@ public class CARTImpl implements CART {
 
         private String trace(Object value, boolean match, int next) {
             return "NODE " + getFeature() + " ["
-                            + value + "] "
-                            + comparisonType + " ["
-                            + getValue() + "] "
-                            + (match ? "Yes" : "No") + " next " +
-                            next;
+                    + value + "] "
+                    + comparisonType + " ["
+                    + getValue() + "] "
+                    + (match ? "Yes" : "No") + " next " +
+                    next;
         }
 
         /**
@@ -628,10 +628,10 @@ public class CARTImpl implements CART {
          */
         public String toString() {
             return "NODE " + getFeature() + " "
-                            + comparisonType + " "
-                            + getValueString() + " "
-                            + qtrue + " "
-                            + qfalse;
+                    + comparisonType + " "
+                    + getValueString() + " "
+                    + qtrue + " "
+                    + qfalse;
         }
     }
 
@@ -682,6 +682,7 @@ public class CARTImpl implements CART {
      * The final Node of a CART.  This just a marker class.
      */
     static class LeafNode extends Node {
+
         /**
          * Create a new LeafNode with the given value.
          *

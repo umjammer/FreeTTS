@@ -12,9 +12,9 @@
 package com.sun.speech.freetts.clunits;
 
 import java.io.IOException;
-import java.net.URL;
-import java.lang.System.Logger.Level;
 import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
+import java.net.URL;
 
 import com.sun.speech.freetts.FeatureSet;
 import com.sun.speech.freetts.FeatureSetImpl;
@@ -287,6 +287,7 @@ public class ClusterUnitSelector implements UtteranceProcessor {
      * Move to the next unit and repeat the process.
      */
     static class Viterbi {
+
         private int numStates = -1;
         private boolean bigIsGood = false;
         private ViterbiPoint timeline = null;
@@ -857,6 +858,7 @@ public class ClusterUnitSelector implements UtteranceProcessor {
      * about its next ViterbiPoint, i.e. they can form a queue.
      */
     static class ViterbiPoint {
+
         Item item;
         // TODO: remove the numStates attribute from ViterbiPoint, as this is only statePaths.length
         int numStates = 0;
@@ -921,6 +923,7 @@ public class ClusterUnitSelector implements UtteranceProcessor {
      * a queue.
      */
     static class ViterbiCandidate {
+
         int score = 0;
         Object value = null;
         int ival = 0;
@@ -962,6 +965,7 @@ public class ClusterUnitSelector implements UtteranceProcessor {
      * Describes a Viterbi path.
      */
     static class ViterbiPath {
+
         int score = 0;
         int state = 0;
         ViterbiCandidate candidate = null;
@@ -1028,6 +1032,7 @@ public class ClusterUnitSelector implements UtteranceProcessor {
  * Information returned from getOptimalCoupling.
  */
 class Cost {
+
     int cost = 0;
     int u0Move = -1;
     int u1Move = -1;

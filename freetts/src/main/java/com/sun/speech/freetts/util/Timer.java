@@ -158,7 +158,7 @@ public class Timer {
      */
     public static void showTimesShortTitle(String title) {
         String titleBar = "# ----------------------------- " + title +
-                        "----------------------------------------------------------- ";
+                "----------------------------------------------------------- ";
         System.out.println(Utilities.pad(titleBar, 78));
         System.out.print(Utilities.pad("# Name", 15) + " ");
         System.out.print(Utilities.pad("Count", 6));
@@ -239,7 +239,6 @@ public class Timer {
      * uses it and shows its output.
      *
      * @param args program arguments (not used)
-     *
      * @see "mvn -P demo antrun:run@Timer"
      */
     public static void main(String[] args) {
