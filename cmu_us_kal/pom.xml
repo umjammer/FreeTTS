@@ -1,0 +1,259 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>org.jvoicexml</groupId>
+		<artifactId>freetts-parent</artifactId>
+    <version>1.2.5-SNAPSHOT</version>
+	</parent>
+
+  <artifactId>cmu_us_kal</artifactId>
+
+  <packaging>jar</packaging>
+  <licenses>
+    <license>
+      <name>FreeTTS License</name>
+      <url>http://freetts.sourceforge.net/license.terms</url>
+    </license>
+  </licenses>
+  <developers>
+    <developer>
+      <id>Willie</id>
+      <name>Willian Walker</name>
+    </developer>
+    <developer>
+      <id>Paul</id>
+      <name>Paul Lamere</name>
+    </developer>
+    <developer>
+      <id>Philip</id>
+      <name>Philip Kwok</name>
+    </developer>
+    <developer>
+      <id>Dirk</id>
+      <name>Dirk Schnelle-Walka</name>
+      <email>dirk.schnelle@jvoicexml.org</email>
+      <timezone>Central European Time</timezone>
+    </developer>
+  </developers>
+  <organization>
+    <name>JVoiceXML</name>
+    <url>http://jvoicexml.sourceforge.net</url>
+  </organization>
+  <description>default diphone voice for FreeTTS</description>
+
+  <properties>
+    <user_voice_base_path>com/sun/speech/freetts/en/us/cmu_us_kal</user_voice_base_path>
+  </properties>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-antrun-plugin</artifactId>
+        <version>3.1.0</version>
+        <executions>
+          <execution>
+            <id>kal8_db</id>
+            <phase>compile</phase>
+            <goals>
+              <goal>run</goal>
+            </goals>
+            <configuration>
+              <target>
+                <property name="antrun.source.directory" value="${voice.directory}" />
+                <property name="antrun.staging.directory" value="${project.build.outputDirectory}" />
+                <property name="user_voice_base_path" value="${user_voice_base_path}" />
+                <mkdir dir="${antrun.staging.directory}/${user_voice_base_path}" />
+                <java classname="com.sun.speech.freetts.diphone.DiphoneUnitDatabase" fork="true">
+                  <classpath>
+                    <path refid="maven.compile.classpath"/>
+                    <path refid="maven.test.classpath"/>
+                  </classpath>
+                  <jvmarg value="-Djava.util.logging.config.file=${antrun.staging.directory}/logging.properties" />
+                  <arg line="-src ${antrun.source.directory}/com/sun/speech/freetts/en/us/cmu_us_kal" />
+                  <arg line="-dest ${antrun.staging.directory}/com/sun/speech/freetts/en/us/cmu_us_kal" />
+                  <arg line="-generate_binary cmu_us_kal.txt" />
+                </java>
+              </target>
+            </configuration>
+          </execution>
+          <execution>
+            <id>kal16_db</id>
+            <phase>compile</phase>
+            <goals>
+              <goal>run</goal>
+            </goals>
+            <configuration>
+              <target>
+                <property name="antrun.source.directory" value="${voice.directory}" />
+                <property name="antrun.staging.directory" value="${project.build.outputDirectory}" />
+                <property name="user_voice_base_path" value="${user_voice_base_path}" />
+                <mkdir dir="${antrun.staging.directory}/${user_voice_base_path}" />
+                <java classname="com.sun.speech.freetts.diphone.DiphoneUnitDatabase" fork="true">
+                  <classpath>
+                    <path refid="maven.compile.classpath"/>
+                    <path refid="maven.test.classpath"/>
+                  </classpath>
+                  <jvmarg value="-Djava.util.logging.config.file=${antrun.staging.directory}/logging.properties" />
+                  <arg line="-src ${antrun.source.directory}/${user_voice_base_path}" />
+                  <arg line="-dest ${antrun.staging.directory}/${user_voice_base_path}" />
+                  <arg line="-generate_binary cmu_us_kal16.txt" />
+                </java>
+              </target>
+              <failOnError>true</failOnError>
+            </configuration>
+          </execution>
+
+          <execution>
+            <id>test-resource</id>
+            <phase>generate-test-resources</phase>
+            <goals>
+              <goal>run</goal>
+            </goals>
+            <configuration>
+              <target>
+                <copy file="${voice.directory}/${user_voice_base_path}/cmu_us_kal.txt"
+                      todir="${project.build.testOutputDirectory}/${user_voice_base_path}/" />
+              </target>
+              <failOnError>true</failOnError>
+            </configuration>
+          </execution>
+
+          <execution>
+            <id>KevinVoiceDirectory</id>
+            <goals>
+              <goal>run</goal>
+            </goals>
+            <phase>integration-test</phase>
+            <configuration>
+              <target>
+                <java classname="com.sun.speech.freetts.en.us.cmu_us_kal.KevinVoiceDirectory" fork="true">
+                  <classpath>
+                    <path refid="maven.compile.classpath"/>
+                    <path refid="maven.test.classpath"/>
+                  </classpath>
+                  <jvmarg value="-Djava.util.logging.config.file=${project.build.testOutputDirectory}/logging.properties" />
+                </java>
+              </target>
+              <failOnError>true</failOnError>
+            </configuration>
+          </execution>
+          <execution>
+            <id>FreeTTS</id>
+            <goals>
+              <goal>run</goal>
+            </goals>
+            <phase>integration-test</phase>
+            <configuration>
+              <target>
+                <java classname="com.sun.speech.freetts.FreeTTS" fork="true">
+                  <classpath>
+                    <path refid="maven.compile.classpath"/>
+                    <path refid="maven.test.classpath"/>
+                  </classpath>
+                  <jvmarg value="-Djava.util.logging.config.file=${project.build.testOutputDirectory}/logging.properties" />
+                </java>
+              </target>
+              <failOnError>true</failOnError>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>3.2.2</version>
+        <configuration>
+          <argLine>
+            -Djava.util.logging.config.file=${project.build.testOutputDirectory}/logging.properties
+          </argLine>
+          <excludes>
+            <exclude>**/UtteranceTests.java</exclude>
+            <exclude>**/SegmenterTests.java</exclude>
+          </excludes>
+          <trimStackTrace>false</trimStackTrace>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <version>3.3.0</version>
+        <configuration>
+          <archive>
+            <manifestEntries>
+              <Built-By>${user.name}</Built-By>
+              <Main-Class>com.sun.speech.freetts.en.us.cmu_us_kal.KevinVoiceDirectory</Main-Class>
+              <FreeTTSVoiceDefinition>true</FreeTTSVoiceDefinition>
+              <Implementation-Title>default diphone voice for FreeTTS</Implementation-Title>
+            </manifestEntries>
+          </archive>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-failsafe-plugin</artifactId>
+        <version>3.1.2</version>
+        <configuration>
+          <argLine>
+            -Djava.util.logging.config.file=${project.build.testOutputDirectory}/logging.properties
+          </argLine>
+          <includes>
+            <include>**/UtteranceTests.java</include>
+            <include>**/SegmenterTests.java</include>
+          </includes>
+          <trimStackTrace>false</trimStackTrace>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
+  <repositories>
+    <repository>
+      <id>jitpack.io</id>
+      <url>https://jitpack.io</url>
+    </repository>
+  </repositories>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.jvoicexml</groupId>
+			<artifactId>en_us</artifactId>
+      <version>1.2.5-SNAPSHOT</version>
+		</dependency>
+
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-api</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-engine</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.junit.platform</groupId>
+      <artifactId>junit-platform-commons</artifactId>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.jvoicexml</groupId>
+      <artifactId>cmulex</artifactId>
+      <version>1.2.5-SNAPSHOT</version>
+      <scope>runtime</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>com.github.umjammer</groupId>
+      <artifactId>vavi-commons</artifactId>
+      <version>1.1.10</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+</project>

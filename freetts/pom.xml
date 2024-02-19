@@ -1,0 +1,354 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>org.jvoicexml</groupId>
+		<artifactId>freetts-parent</artifactId>
+    <version>1.2.5-SNAPSHOT</version>
+	</parent>
+
+  <artifactId>freetts</artifactId>
+
+  <packaging>jar</packaging>
+  <licenses>
+    <license>
+      <name>FreeTTS License</name>
+      <url>http://freetts.sourceforge.net/license.terms</url>
+    </license>
+  </licenses>
+  <developers>
+    <developer>
+      <id>Willie</id>
+      <name>Willian Walker</name>
+    </developer>
+    <developer>
+      <id>Paul</id>
+      <name>Paul Lamere</name>
+    </developer>
+    <developer>
+      <id>Philip</id>
+      <name>Philip Kwok</name>
+    </developer>
+    <developer>
+      <id>Dirk</id>
+      <name>Dirk Schnelle-Walka</name>
+      <email>dirk.schnelle@jvoicexml.org</email>
+      <timezone>Central European Time</timezone>
+    </developer>
+  </developers>
+  <organization>
+    <name>JVoiceXML</name>
+    <url>http://jvoicexml.sourceforge.net</url>
+  </organization>
+  <description>FreeTTS Speech Synthesis System</description>
+
+  <properties>
+    <jsapi.groupId>com.github.umjammer.jsapi</jsapi.groupId> <!-- org.jvoicexml / com.github.umjammer.jsapi -->
+    <jsapi.version>0.6.4</jsapi.version>
+  </properties>
+
+  <profiles>
+    <profile>
+      <id>local (not on jitpack)</id>
+      <activation>
+        <os>
+          <family>linux</family>
+          <arch>x86_64</arch>
+        </os>
+        <property>
+          <name>env.JITPACK</name>
+          <value>!true</value>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>native-maven-plugin</artifactId>
+            <version>1.0-alpha-11</version>
+            <extensions>true</extensions>
+            <configuration>
+              <javahOS>linux</javahOS>
+              <compilerProvider>generic-classic</compilerProvider>
+              <compilerStartOptions>
+                <compilerStartOption>-g -Wall -O2 -fomit-frame-pointer -fPIC</compilerStartOption>
+                <!-- unless locating jdk includes, cause error why??? -->
+                <compilerStartOption>-arch x86_64
+                </compilerStartOption>
+              </compilerStartOptions>
+              <sources>
+                <source>
+                  <directory>src/test/native</directory>
+                  <fileNames>
+                    <fileName>client.c</fileName>
+                  </fileNames>
+                </source>
+              </sources>
+              <linkerStartOptions>
+                <linkerStartOption> -arch x86_64 -v
+                  -L/usr/local/lib -lc</linkerStartOption>
+              </linkerStartOptions>
+              <linkerFinalName/>
+            </configuration>
+            <executions>
+              <execution>
+                <id>client</id>
+                <phase>test-compile</phase>
+                <goals>
+                  <goal>compile</goal>
+                  <goal>link</goal>
+                </goals>
+                <configuration>
+                  <linkerEndOptions>
+                    <linkerEndOption>-o ${project.build.testOutputDirectory}/client</linkerEndOption>
+                  </linkerEndOptions>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+    <profile>
+      <id>demo</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-antrun-plugin</artifactId>
+            <version>3.1.0</version>
+            <executions>
+              <execution>
+                <id>rtp-server</id>
+                <goals>
+                  <goal>run</goal>
+                </goals>
+                <configuration>
+                  <target>
+                    <java classname="demo.freetts.rtp.RtpServerDemo" fork="true">
+                      <classpath>
+                        <path refid="maven.compile.classpath"/>
+                        <path refid="maven.test.classpath"/>
+                      </classpath>
+                      <jvmarg value="-Djava.util.logging.config.file=${project.build.testOutputDirectory}/logging.properties" />
+                    </java>
+                  </target>
+                </configuration>
+              </execution>
+              <execution>
+                <id>rtp-client</id>
+                <goals>
+                  <goal>run</goal>
+                </goals>
+                <configuration>
+                  <target>
+                    <java classname="demo.freetts.rtp.RtpClientDemo" fork="true">
+                      <classpath>
+                        <path refid="maven.compile.classpath"/>
+                        <path refid="maven.test.classpath"/>
+                      </classpath>
+                      <jvmarg value="-Djava.util.logging.config.file=${project.build.testOutputDirectory}/logging.properties" />
+                    </java>
+                  </target>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <configuration>
+          <includes>
+            <include>**/*</include>
+          </includes>
+          <argLine>
+            -Djava.util.logging.config.file=${project.build.testOutputDirectory}/logging.properties
+          </argLine>
+          <trimStackTrace>false</trimStackTrace>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <version>3.3.0</version>
+        <configuration>
+          <archive>
+            <manifestEntries>
+              <Built-By>${user.name}</Built-By>
+              <Main-Class>com.sun.speech.freetts.FreeTTS</Main-Class>
+              <Implementation-Title>FreeTTS core library</Implementation-Title>
+            </manifestEntries>
+          </archive>
+          <excludes>
+            <exclude>**/*.bin</exclude>
+            <exclude>**/*.idx</exclude>
+          </excludes>
+        </configuration>
+        <executions>
+          <execution>
+            <goals>
+              <goal>test-jar</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-antrun-plugin</artifactId>
+        <version>3.1.0</version>
+        <executions>
+          <execution>
+            <id>hello-world</id>
+            <goals>
+              <goal>run</goal>
+            </goals>
+            <configuration>
+              <target>
+                <java classname="demo.freetts.helloWorld.FreeTTSHelloWorld" fork="true">
+                  <classpath>
+                    <path refid="maven.compile.classpath"/>
+                    <path refid="maven.test.classpath"/>
+                  </classpath>
+                  <jvmarg value="-Djava.util.logging.config.file=${project.build.testOutputDirectory}/logging.properties" />
+                </java>
+              </target>
+              <failOnError>true</failOnError>
+            </configuration>
+          </execution>
+          <execution>
+            <id>WaveUtils</id>
+            <goals>
+              <goal>run</goal>
+            </goals>
+            <configuration>
+              <target>
+                <java classname="com.sun.speech.freetts.util.WaveUtils" fork="true">
+                  <classpath>
+                    <path refid="maven.compile.classpath"/>
+                    <path refid="maven.test.classpath"/>
+                  </classpath>
+                  <jvmarg value="-Djava.util.logging.config.file=${project.build.testOutputDirectory}/logging.properties" />
+                </java>
+              </target>
+              <failOnError>true</failOnError>
+            </configuration>
+          </execution>
+          <execution>
+            <id>VoiceDirectory</id>
+            <goals>
+              <goal>run</goal>
+            </goals>
+            <phase>integration-test</phase>
+            <configuration>
+              <target>
+                <java classname="com.sun.speech.freetts.VoiceDirectory" fork="true">
+                  <classpath>
+                    <path refid="maven.compile.classpath"/>
+                    <path refid="maven.test.classpath"/>
+                  </classpath>
+                  <jvmarg value="-Djava.util.logging.config.file=${project.build.testOutputDirectory}/logging.properties" />
+                </java>
+              </target>
+              <failOnError>true</failOnError>
+            </configuration>
+          </execution>
+          <execution>
+            <id>Timer</id>
+            <goals>
+              <goal>run</goal>
+            </goals>
+            <phase>integration-test</phase>
+            <configuration>
+              <skip>false</skip>
+              <target>
+                <java classname="com.sun.speech.freetts.util.Timer" fork="true">
+                  <classpath>
+                    <path refid="maven.compile.classpath"/>
+                    <path refid="maven.test.classpath"/>
+                  </classpath>
+                  <jvmarg value="-Djava.util.logging.config.file=${project.build.testOutputDirectory}/logging.properties" />
+                </java>
+              </target>
+              <failOnError>true</failOnError>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+
+  <repositories>
+    <repository>
+      <id>jitpack.io</id>
+      <url>https://jitpack.io</url>
+    </repository>
+    <repository> <!-- jmf(test) -->
+      <id>umjammer-mvn-repo</id>
+      <url>https://raw.github.com/umjammer/umjammer/mvn-repo/</url>
+    </repository>
+  </repositories>
+
+  <dependencies>
+    <dependency>
+      <groupId>${jsapi.groupId}</groupId>
+      <artifactId>javax.speech</artifactId>
+      <version>${jsapi.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>${jsapi.groupId}</groupId>
+      <artifactId>org.jvoicexml.jsapi2.freetts</artifactId>
+      <version>${jsapi.version}</version>
+      <exclusions>
+        <exclusion>
+          <artifactId>org.jvoicexml.jsapi2</artifactId>
+          <groupId>com.github.umjammer.jsapi</groupId>
+        </exclusion>
+        <exclusion>
+          <artifactId>freetts</artifactId>
+          <groupId>org.mobicents.external.freetts</groupId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-api</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-engine</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.junit.platform</groupId>
+      <artifactId>junit-platform-commons</artifactId>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>com.github.umjammer</groupId>
+      <artifactId>vavi-commons</artifactId>
+      <version>1.1.10</version>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>javax.media</groupId>
+      <artifactId>jmf</artifactId>
+      <version>2.1.1e</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+</project>

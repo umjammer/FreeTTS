@@ -1,0 +1,116 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>org.jvoicexml</groupId>
+    <artifactId>freetts-parent</artifactId>
+    <version>1.2.5-SNAPSHOT</version>
+  </parent>
+
+  <artifactId>germanlex</artifactId>
+
+  <packaging>jar</packaging>
+  <licenses>
+    <license>
+      <name>SUN Binary Code License Agreement</name>
+      <url>
+        http://download.oracle.com/otndocs/jcp/7089-jta-1.0.1B-mr-class-oth-JSpec/7089-jta-1.0.1B-mr-class-oth-JSpec-license.html
+      </url>
+    </license>
+  </licenses>
+  <organization>
+    <name>SUN Microsystems</name>
+    <url>http://www.sun.com</url>
+  </organization>
+  <description>JSAPI 1.0 Specification Implementation</description>
+
+  <properties>
+    <user_voice_base_path>de/dfki/lt/freetts/de</user_voice_base_path>
+  </properties>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-antrun-plugin</artifactId>
+        <version>3.1.0</version>
+        <executions>
+          <execution>
+            <id>germanlex_db</id>
+            <phase>compile</phase>
+            <goals>
+              <goal>run</goal>
+            </goals>
+            <configuration>
+              <target>
+                <property name="antrun.source.directory" value="${voice.directory}" />
+                <property name="antrun.staging.directory" value="${project.build.outputDirectory}" />
+                <property name="user_voice_base_path" value="${user_voice_base_path}" />
+                <mkdir dir="${antrun.staging.directory}/${user_voice_base_path}" />
+                <java classname="de.dfki.lt.freetts.de.GermanLexicon" fork="true">
+                  <classpath>
+                    <path refid="maven.compile.classpath"/>
+                    <path refid="maven.test.classpath"/>
+                  </classpath>
+                  <arg line="-src ${antrun.source.directory}/${user_voice_base_path}" />
+                  <arg line="-dest ${antrun.staging.directory}/${user_voice_base_path}" />
+                  <arg line="-name germanlex" />
+                  <arg line="-generate_binary" />
+                </java>
+              </target>
+              <failOnError>true</failOnError>
+            </configuration>
+          </execution>
+          <execution>
+            <id>germanlex_lts_db</id>
+            <phase>compile</phase>
+            <goals>
+              <goal>run</goal>
+            </goals>
+            <configuration>
+              <target>
+                <property name="antrun.source.directory" value="${voice.directory}" />
+                <property name="antrun.staging.directory" value="${project.build.outputDirectory}" />
+                <property name="user_voice_base_path" value="${user_voice_base_path}" />
+                <mkdir dir="${antrun.staging.directory}/${user_voice_base_path}" />
+                <java classname="com.sun.speech.freetts.lexicon.LetterToSoundImpl" fork="true">
+                  <classpath>
+                    <path refid="maven.compile.classpath"/>
+                    <path refid="maven.test.classpath"/>
+                  </classpath>
+                  <arg line="-src ${antrun.source.directory}/${user_voice_base_path}" />
+                  <arg line="-dest ${antrun.staging.directory}/${user_voice_base_path}" />
+                  <arg line="-name germanlex_lts" />
+                  <arg line="-generate_binary" />
+                </java>
+              </target>
+              <failOnError>true</failOnError>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <version>3.3.0</version>
+        <configuration>
+          <archive>
+            <manifest>
+              <addClasspath>true</addClasspath>
+            </manifest>
+          </archive>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.jvoicexml</groupId>
+      <artifactId>en_us</artifactId>
+      <version>1.2.5-SNAPSHOT</version>
+    </dependency>
+  </dependencies>
+</project>

@@ -1,0 +1,139 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+	<parent>
+    <groupId>org.jvoicexml</groupId>
+		<artifactId>freetts-parent</artifactId>
+    <version>1.2.5-SNAPSHOT</version>
+	</parent>
+
+  <artifactId>cmutimelex</artifactId>
+
+  <packaging>jar</packaging>
+  <licenses>
+    <license>
+      <name>FreeTTS License</name>
+      <url>http://freetts.sourceforge.net/license.terms</url>
+    </license>
+  </licenses>
+  <developers>
+    <developer>
+      <id>Willie</id>
+      <name>Willian Walker</name>
+    </developer>
+    <developer>
+      <id>Paul</id>
+      <name>Paul Lamere</name>
+    </developer>
+    <developer>
+      <id>Philip</id>
+      <name>Philip Kwok</name>
+    </developer>
+    <developer>
+      <id>Dirk</id>
+      <name>Dirk Schnelle-Walka</name>
+      <email>dirk.schnelle@jvoicexml.org</email>
+      <timezone>Central European Time</timezone>
+    </developer>
+  </developers>
+  <organization>
+    <name>JVoiceXML</name>
+    <url>http://jvoicexml.sourceforge.net</url>
+  </organization>
+  <description>CMU Lexicon for the time domain for en_us</description>
+
+  <properties>
+    <user_voice_base_path>com/sun/speech/freetts/en/us</user_voice_base_path>
+  </properties>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-antrun-plugin</artifactId>
+        <version>3.1.0</version>
+        <executions>
+          <execution>
+            <id>cmutimelex_db</id>
+            <phase>compile</phase>
+            <goals>
+              <goal>run</goal>
+            </goals>
+            <configuration>
+              <target>
+                <property name="antrun.source.directory" value="src/main/voices" />
+                <property name="antrun.staging.directory" value="${project.build.outputDirectory}" />
+                <property name="user_voice_base_path" value="${user_voice_base_path}" />
+                <mkdir dir="${antrun.staging.directory}/${user_voice_base_path}" />
+                <java classname="com.sun.speech.freetts.en.us.CMULexicon" fork="true">
+                  <classpath>
+                    <path refid="maven.compile.classpath"/>
+                    <path refid="maven.test.classpath"/>
+                  </classpath>
+                  <arg line="-src ${antrun.source.directory}/com/sun/speech/freetts/en/us" />
+                  <arg line="-dest ${antrun.staging.directory}/com/sun/speech/freetts/en/us" />
+                  <arg line="-name cmutimelex" />
+                  <arg line="-generate_binary" />
+                </java>
+              </target>
+              <failOnError>true</failOnError>
+            </configuration>
+          </execution>
+          <execution>
+            <id>cmutimelex_lts_db</id>
+            <phase>compile</phase>
+            <goals>
+              <goal>run</goal>
+            </goals>
+            <configuration>
+              <target>
+                <property name="antrun.source.directory" value="src/main/voices" />
+                <property name="antrun.staging.directory" value="${project.build.outputDirectory}" />
+                <property name="user_voice_base_path" value="${user_voice_base_path}" />
+                <mkdir dir="${antrun.staging.directory}/${user_voice_base_path}" />
+                <java classname="com.sun.speech.freetts.lexicon.LetterToSoundImpl" fork="true">
+                  <classpath>
+                    <path refid="maven.compile.classpath"/>
+                    <path refid="maven.test.classpath"/>
+                  </classpath>
+                  <arg line="-src ${antrun.source.directory}/${user_voice_base_path}" />
+                  <arg line="-dest ${antrun.staging.directory}/${user_voice_base_path}" />
+                  <arg line="-name cmutimelex_lts" />
+                  <arg line="-generate_binary" />
+                </java>
+              </target>
+              <failOnError>true</failOnError>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <version>3.3.0</version>
+        <configuration>
+          <archive>
+            <!--
+              <include>com/sun/speech/freetts/en/us/cmutimelex_*.bin</include>
+            -->
+            <manifestEntries>
+              <Built-By>${user.name}</Built-By>
+              <Implementation-Title>CMU lexicon for en_us for FreeTTS</Implementation-Title>
+            </manifestEntries>
+          </archive>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.jvoicexml</groupId>
+			<artifactId>en_us</artifactId>
+      <version>1.2.5-SNAPSHOT</version>
+			<scope>runtime</scope>
+		</dependency>
+	</dependencies>
+</project>
