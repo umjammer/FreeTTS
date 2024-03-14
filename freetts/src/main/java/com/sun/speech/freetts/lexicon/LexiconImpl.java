@@ -24,7 +24,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URI;
-import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
@@ -473,7 +472,7 @@ abstract public class LexiconImpl implements Lexicon {
      * @param phones the phones
      * @return the phones split into an array
      */
-    protected String[] getPhones(String phones) {
+    protected static String[] getPhones(String phones) {
         List<String> phoneList = new ArrayList<>();
         StringTokenizer tokenizer = new StringTokenizer(phones, " ");
         while (tokenizer.hasMoreTokens()) {

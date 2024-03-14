@@ -1,7 +1,6 @@
 package com.sun.speech.freetts.cart;
 
 import java.net.URI;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,7 +9,6 @@ import com.sun.speech.freetts.PhoneDurationsImpl;
 import com.sun.speech.freetts.Token;
 import com.sun.speech.freetts.Utterance;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 

@@ -11,7 +11,6 @@ package tests;
 import java.lang.System.Logger;
 import java.lang.System.Logger.Level;
 import java.net.URI;
-import java.net.URL;
 
 import com.sun.speech.freetts.PartOfSpeech;
 import com.sun.speech.freetts.PartOfSpeechImpl;

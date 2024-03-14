@@ -13,7 +13,6 @@ package com.sun.speech.freetts.diphone;
 
 import java.io.IOException;
 import java.net.URI;
-import java.net.URL;
 
 import com.sun.speech.freetts.FeatureSet;
 import com.sun.speech.freetts.Item;

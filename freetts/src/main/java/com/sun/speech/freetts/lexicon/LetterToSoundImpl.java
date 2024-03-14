@@ -22,7 +22,6 @@ import java.io.InputStreamReader;
 import java.lang.System.Logger;
 import java.lang.System.Logger.Level;
 import java.net.URI;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -449,7 +448,7 @@ public class LetterToSoundImpl implements LetterToSound {
      * @param s the string to parse
      * @return the parsed <code>State</code>
      */
-    protected State getState(String s) {
+    protected static State getState(String s) {
         StringTokenizer tokenizer = new StringTokenizer(s, " ");
         return getState(tokenizer.nextToken(), tokenizer);
     }
@@ -463,7 +462,7 @@ public class LetterToSoundImpl implements LetterToSound {
      *                  <code>State</code>
      * @return the parsed <code>State</code>
      */
-    protected State getState(String type, StringTokenizer tokenizer) {
+    protected static State getState(String type, StringTokenizer tokenizer) {
         if (type.equals(STATE)) {
             int index = Integer.parseInt(tokenizer.nextToken());
             String c = tokenizer.nextToken();
@@ -482,7 +481,7 @@ public class LetterToSoundImpl implements LetterToSound {
      * @param word the original word
      * @return the padded word
      */
-    protected char[] getFullBuff(String word) {
+    protected static char[] getFullBuff(String word) {
         char[] full_buff = new char[word.length() + (2 * WINDOW_SIZE)];
 
         // Make full_buff look like "000#word#000"

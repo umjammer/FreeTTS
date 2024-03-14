@@ -6,6 +6,8 @@
 
 # FreeTTS
 
+<img alt="logo" src="https://github.com/umjammer/FreeTTS/assets/493908/fdd5fb35-4431-4b0e-95e6-235bdb473dc3" width="200" />
+
 mavenized FreeTTS Speech Synthesis System
 
 ## Install

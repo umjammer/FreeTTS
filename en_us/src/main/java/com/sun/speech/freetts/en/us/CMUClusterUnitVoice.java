@@ -13,7 +13,6 @@ package com.sun.speech.freetts.en.us;
 
 import java.io.IOException;
 import java.net.URI;
-import java.net.URL;
 import java.util.Locale;
 
 import com.sun.speech.freetts.Age;

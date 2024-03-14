@@ -5,7 +5,7 @@
   <parent>
     <groupId>org.jvoicexml</groupId>
     <artifactId>freetts-parent</artifactId>
-    <version>1.2.5</version>
+    <version>1.2.6</version>
   </parent>
 
   <artifactId>cmu_time_awb</artifactId>
@@ -143,19 +143,19 @@
     <dependency>
       <groupId>org.jvoicexml</groupId>
       <artifactId>en_us</artifactId>
-      <version>1.2.5</version>
+      <version>1.2.6</version>
     </dependency>
 
     <dependency>
       <groupId>org.jvoicexml</groupId>
       <artifactId>cmudict04</artifactId>
-      <version>1.2.5</version>
+      <version>1.2.6</version>
       <scope>runtime</scope>
     </dependency>
     <dependency>
       <groupId>org.jvoicexml</groupId>
       <artifactId>cmutimelex</artifactId>
-      <version>1.2.5</version>
+      <version>1.2.6</version>
       <scope>runtime</scope>
     </dependency>
   </dependencies>

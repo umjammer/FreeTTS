@@ -1,7 +1,6 @@
 package com.sun.speech.freetts.en.us.cmu_us_kal;
 
 import java.lang.System.Logger;
-import java.lang.System.Logger.Level;
 import java.net.URISyntaxException;
 import java.util.Locale;
 
