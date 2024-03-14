@@ -5,7 +5,6 @@
 package com.sun.speech.freetts;
 
 import java.net.URI;
-import java.net.URL;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

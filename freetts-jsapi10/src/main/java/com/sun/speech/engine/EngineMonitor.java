@@ -219,7 +219,7 @@ public class EngineMonitor {
      * @param b the buffer to which to append <code>s</code> to
      * @param s the <code>String</code> to append to <code>b</code>
      */
-    protected void appendBuffer(StringBuffer b, String s) {
+    protected static void appendBuffer(StringBuffer b, String s) {
         if (!b.isEmpty())
             b.append(":");
         b.append(s);
