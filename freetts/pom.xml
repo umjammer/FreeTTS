@@ -43,11 +43,6 @@
   </organization>
   <description>FreeTTS Speech Synthesis System</description>
 
-  <properties>
-    <jsapi.groupId>com.github.umjammer.jsapi</jsapi.groupId> <!-- org.jvoicexml / com.github.umjammer.jsapi -->
-    <jsapi.version>0.6.4</jsapi.version>
-  </properties>
-
   <profiles>
     <profile>
       <id>local (not on jitpack)</id>
@@ -289,34 +284,9 @@
       <id>jitpack.io</id>
       <url>https://jitpack.io</url>
     </repository>
-    <repository> <!-- jmf(test) -->
-      <id>umjammer-mvn-repo</id>
-      <url>https://raw.github.com/umjammer/umjammer/mvn-repo/</url>
-    </repository>
   </repositories>
 
   <dependencies>
-    <dependency>
-      <groupId>${jsapi.groupId}</groupId>
-      <artifactId>javax.speech</artifactId>
-      <version>${jsapi.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>${jsapi.groupId}</groupId>
-      <artifactId>org.jvoicexml.jsapi2.freetts</artifactId>
-      <version>${jsapi.version}</version>
-      <exclusions>
-        <exclusion>
-          <artifactId>org.jvoicexml.jsapi2</artifactId>
-          <groupId>com.github.umjammer.jsapi</groupId>
-        </exclusion>
-        <exclusion>
-          <artifactId>freetts</artifactId>
-          <groupId>org.mobicents.external.freetts</groupId>
-        </exclusion>
-      </exclusions>
-    </dependency>
-
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-api</artifactId>
