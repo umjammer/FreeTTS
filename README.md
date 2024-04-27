@@ -7,12 +7,18 @@
 # FreeTTS
 
 <img alt="logo" src="https://github.com/umjammer/FreeTTS/assets/493908/fdd5fb35-4431-4b0e-95e6-235bdb473dc3" width="200" />
+<br/>
+<br/>
 
 mavenized FreeTTS Speech Synthesis System
 
 ## Install
 
  * [maven](https://jitpack.io/#umjammer/FreeTTS)
+
+## References
+
+ * https://www.javatpoint.com/convert-text-to-speech-in-java
 
 ## TODO
 
@@ -30,3 +36,6 @@ synthesis engine, which in turn is based upon University of Edinburgh's Festival
 FestVox project.
 
 Detailed documentation on FreeTTS can be found at https://freetts.sourceforge.io
+
+---
+<sub>image by <a href="https://www.javatpoint.com/convert-text-to-speech-in-java">javatpoint.com</a></sub>
