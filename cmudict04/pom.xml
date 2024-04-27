@@ -5,7 +5,7 @@
   <parent>
     <groupId>org.jvoicexml</groupId>
     <artifactId>freetts-parent</artifactId>
-    <version>1.2.6</version>
+    <version>1.2.7</version>
   </parent>
 
   <artifactId>cmudict04</artifactId>
@@ -132,12 +132,12 @@
     <dependency>
       <groupId>org.jvoicexml</groupId>
       <artifactId>freetts</artifactId>
-      <version>1.2.6</version>
+      <version>1.2.7</version>
     </dependency>
     <dependency>
       <groupId>org.jvoicexml</groupId>
       <artifactId>en_us</artifactId>
-      <version>1.2.6</version>
+      <version>1.2.7</version>
     </dependency>
   </dependencies>
 </project>
